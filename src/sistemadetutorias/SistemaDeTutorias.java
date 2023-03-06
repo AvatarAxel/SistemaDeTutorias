@@ -24,7 +24,7 @@ public class SistemaDeTutorias extends Application {
         Scene scene = new Scene(root);
         
         stage.setResizable(false);
-        stage.getIcons().add(new Image("SistemaDeTutorias/images/icon.png"));
+        stage.getIcons().add(new Image("images/icon.png"));
         stage.setTitle("Inicio de Sesión");
         stage.centerOnScreen();
         stage.setScene(scene);
