@@ -33,3 +33,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+# To Upload JAR libraries
+!/libs/*jar
