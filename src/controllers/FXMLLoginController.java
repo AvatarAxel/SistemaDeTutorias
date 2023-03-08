@@ -18,6 +18,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.StringUtils;
+import singleton.User;
 import util.Alerts;
 
 /**
@@ -46,14 +47,13 @@ public class FXMLLoginController implements Initializable {
     
     private void goMenuWindow(){
         try{
-        Stage primaryStage = (Stage) tfEmail.getScene().getWindow();
-        Scene menuScene = new Scene(FXMLLoader.load(getClass().getResource("/GUI/FXMLMainMenu.fxml")));
-        primaryStage.setScene(menuScene);
-        primaryStage.setTitle("Menu");
-        primaryStage.show();
+            Stage primaryStage = (Stage) tfEmail.getScene().getWindow();
+            Scene menuScene = new Scene(FXMLLoader.load(getClass().getResource("/GUI/FXMLMainMenu.fxml")));
+            primaryStage.setScene(menuScene);
+            primaryStage.setTitle("Menu");
+            primaryStage.show();
         } catch (IOException e) {
-            //Utilidades.mostrarAlertaConfirmacion("Error", "No se puede cargar el menu", Alert.AlertType.ERROR);
-            e.printStackTrace();
+            Alerts.showAlert("Error", "No se puede cargar el menu", Alert.AlertType.ERROR);
         }
     }
     

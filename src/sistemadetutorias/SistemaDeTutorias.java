@@ -28,26 +28,12 @@ public class SistemaDeTutorias extends Application {
         
         Scene scene = new Scene(root);
         
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.getIcons().add(new Image("images/icon.png"));
         stage.setTitle("Inicio de Sesión");
         stage.centerOnScreen();
         stage.setScene(scene);
         stage.show();
-        
-        DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        Connection connection=dataBaseConnection.getConnection();
-        System.out.println("S" + connection.toString());
-        /*String query="SELECT * from usuario;";
-        PreparedStatement statement=connection.prepareStatement(query);
-        ResultSet resultSet=statement.executeQuery();
-        System.out.println(resultSet.getString("nombre"));*/
-      /*  if (!resultSet.next()){
-                throw new SQLException("No se encontraron experiencias");
-           
-        }else{System.out.println("Hay algo");    }*/
-        
-      
     }
 
     /**
