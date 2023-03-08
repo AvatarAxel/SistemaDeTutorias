@@ -12,8 +12,18 @@
         <menus>
           <Menu mnemonicParsing="false" text="Reportes">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#menuCreate" text="Crear" />
-                  <MenuItem mnemonicParsing="false" onAction="#menuRead" text="Consultar" />
+                  <Menu mnemonicParsing="false" text="Reporte General">
+                     <items>
+                    <MenuItem mnemonicParsing="false" onAction="#menuCreate" text="Crear" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuRead" text="Consultar" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Reporte Tutorias">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#menuCreate" text="Crear" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuRead" text="Consultar" />
+                     </items>
+                  </Menu>
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Problematicas">

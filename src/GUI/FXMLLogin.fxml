@@ -8,14 +8,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLLoginController">
-   <children>
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles/globalStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLLoginController">
+    <children>
       <ImageView fitHeight="400.0" fitWidth="274.0" layoutY="1.0" pickOnBounds="true">
          <image>
             <Image url="@../images/icon.png" />
          </image>
       </ImageView>
-      <TextField fx:id="tfEmail" layoutX="392.0" layoutY="115.0" />
+      <TextField fx:id="tfEmail" layoutX="392.0" layoutY="115.0" stylesheets="@../styles/globalStyles.css" />
       <PasswordField fx:id="pfPassword" layoutX="392.0" layoutY="205.0" />
       <Label layoutX="280.0" layoutY="14.0" text="Inicio de Sesión">
          <font>
