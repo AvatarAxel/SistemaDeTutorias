@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -23,10 +24,14 @@ public class SistemaDeTutorias extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-       Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/GUI/FXMLLogin.fxml"));
         
         Scene scene = new Scene(root);
         
+        stage.setResizable(false);
+        stage.getIcons().add(new Image("images/icon.png"));
+        stage.setTitle("Inicio de Sesión");
+        stage.centerOnScreen();
         stage.setScene(scene);
         stage.show();
         

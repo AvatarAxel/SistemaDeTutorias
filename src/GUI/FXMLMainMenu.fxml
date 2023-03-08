@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
+   <children>
+      <MenuBar prefHeight="25.0" prefWidth="600.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Reportes">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#menuCreate" text="Crear" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuRead" text="Consultar" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Problematicas">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#menuRead" text="Consultar" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuSolution" text="Solucionar" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Ajustes">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+              </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Ayuda">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>

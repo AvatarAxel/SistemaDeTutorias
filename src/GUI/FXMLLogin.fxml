@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLLoginController">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="274.0" layoutY="1.0" pickOnBounds="true">
+         <image>
+            <Image url="@../images/icon.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="tfEmail" layoutX="392.0" layoutY="115.0" />
+      <PasswordField fx:id="pfPassword" layoutX="392.0" layoutY="205.0" />
+      <Label layoutX="280.0" layoutY="14.0" text="Inicio de Sesión">
+         <font>
+            <Font name="System Bold" size="35.0" />
+         </font></Label>
+      <Label layoutX="324.0" layoutY="119.0" text="Correo" />
+      <Label layoutX="300.0" layoutY="209.0" text="Contraseña" />
+      <Button layoutX="407.0" layoutY="312.0" mnemonicParsing="false" onAction="#clicLogin" text="Iniciar" />
+      <Label fx:id="lbEmail" layoutX="393.0" layoutY="143.0" prefHeight="17.0" prefWidth="149.0" textFill="RED" />
+      <Label fx:id="lbPassword" layoutX="392.0" layoutY="234.0" prefHeight="17.0" prefWidth="149.0" textFill="RED" />
+   </children>
+</AnchorPane>
