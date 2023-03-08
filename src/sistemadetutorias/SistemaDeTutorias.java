@@ -4,6 +4,11 @@
  */
 package sistemadetutorias;
 
+import dataaccess.DataBaseConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,6 +34,20 @@ public class SistemaDeTutorias extends Application {
         stage.centerOnScreen();
         stage.setScene(scene);
         stage.show();
+        
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection=dataBaseConnection.getConnection();
+        System.out.println("S" + connection.toString());
+        /*String query="SELECT * from usuario;";
+        PreparedStatement statement=connection.prepareStatement(query);
+        ResultSet resultSet=statement.executeQuery();
+        System.out.println(resultSet.getString("nombre"));*/
+      /*  if (!resultSet.next()){
+                throw new SQLException("No se encontraron experiencias");
+           
+        }else{System.out.println("Hay algo");    }*/
+        
+      
     }
 
     /**
