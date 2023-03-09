@@ -8,34 +8,35 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
    <children>
-      <MenuBar prefHeight="25.0" prefWidth="600.0">
+      <MenuBar fx:id="mbMainMenu" prefHeight="25.0" prefWidth="600.0">
         <menus>
           <Menu mnemonicParsing="false" text="Reportes">
             <items>
                   <Menu mnemonicParsing="false" text="Reporte General">
                      <items>
-                    <MenuItem mnemonicParsing="false" onAction="#menuCreate" text="Crear" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuRead" text="Consultar" />
+                    <MenuItem fx:id="miCreateGeneralReport" mnemonicParsing="false" onAction="#menuCreateGeneralReport" text="Crear" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuReadGeneralReport" text="Consultar" />
                      </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Reporte Tutorias">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#menuCreate" text="Crear" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuRead" text="Consultar" />
+                        <MenuItem fx:id="miCreateTutorialReport" mnemonicParsing="false" onAction="#menuCreateTutorialReport" text="Crear" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuReadTutorialReport" text="Consultar" />
                      </items>
                   </Menu>
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Problematicas">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#menuRead" text="Consultar" />
-                  <MenuItem mnemonicParsing="false" onAction="#menuSolution" text="Solucionar" />
+              <MenuItem mnemonicParsing="false" onAction="#menuReadProblematic" text="Consultar" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuSolutionProblematic" text="Solucionar" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="Ajustes">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-              </items>
+            <Menu mnemonicParsing="false" text="Oferta Academica">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#menuUploadOffer" text="Registrar" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuReadOffer" text="Consultar" />
+               </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Ayuda">
             <items>

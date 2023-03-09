@@ -9,9 +9,9 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import singleton.User;
-import util.Alerts;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import util.Navigator;
 
 /**
  * FXML Controller class
@@ -20,6 +20,13 @@ import util.Alerts;
  */
 public class FXMLMainMenuController implements Initializable {
 
+    @FXML
+    private MenuBar mbMainMenu;
+    @FXML
+    private MenuItem miCreateGeneralReport;
+    @FXML
+    private MenuItem miCreateTutorialReport;
+    
     /**
      * Initializes the controller class.
      */
@@ -29,18 +36,36 @@ public class FXMLMainMenuController implements Initializable {
     }
 
     @FXML
-    private void menuCreate(ActionEvent event) {
-        Alerts.showAlert("Prueba", "Prueba", Alert.AlertType.INFORMATION);
+    private void menuCreateGeneralReport(ActionEvent event) {
     }
 
     @FXML
-    private void menuRead(ActionEvent event) {
-        Alerts.showAlert("Prueba", "Prueba", Alert.AlertType.INFORMATION);
+    private void menuReadGeneralReport(ActionEvent event) {
     }
 
     @FXML
-    private void menuSolution(ActionEvent event) {
-        Alerts.showAlert("Prueba", "Prueba", Alert.AlertType.INFORMATION);
+    private void menuCreateTutorialReport(ActionEvent event) {
+    }
+
+    @FXML
+    private void menuReadTutorialReport(ActionEvent event) {
+    }
+
+    @FXML
+    private void menuReadProblematic(ActionEvent event) {
+    }
+
+    @FXML
+    private void menuSolutionProblematic(ActionEvent event) {
+    }
+
+    @FXML
+    private void menuUploadOffer(ActionEvent event) {
+        Navigator.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLRegistrarOfertaAcademica.fxml", "Registrar Oferta Académica");
+    }
+
+    @FXML
+    private void menuReadOffer(ActionEvent event) {
     }
     
 }
