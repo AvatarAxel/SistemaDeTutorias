@@ -4,12 +4,14 @@
  */
 package controllers;
 
+import BussinessLogic.ExperienciaEducativaDAO;
 import Domain.ExperienciaEducativa;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -23,7 +25,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Stage;
 import util.Alerts;
 import util.Navigator;
 
@@ -67,12 +68,7 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
         colNombre.setCellValueFactory (new PropertyValueFactory ("nombre"));
         colSeccion.setCellValueFactory (new PropertyValueFactory ("seccion"));
         colModalidad.setCellValueFactory (new PropertyValueFactory ("modalidad"));
-        
-        //<-- Estas columnas no existen en la base de datos -->
-        colSalon.setCellValueFactory (new PropertyValueFactory ("nrc"));
-        colDescripción.setCellValueFactory (new PropertyValueFactory ("nrc"));
-        colProgramaEducativo.setCellValueFactory (new PropertyValueFactory ("nrc"));
-        
+          
         listExperienciasEducativas = FXCollections.observableArrayList();
     }
 
@@ -101,8 +97,19 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
 
     @FXML
     private void clicSave(ActionEvent event) {
+        ArrayList<ExperienciaEducativa> listedExperienciasEducativas = new ArrayList<>();
+        listedExperienciasEducativas.addAll(listExperienciasEducativas);
+        ExperienciaEducativaDAO experienciaEducativaDAO = new ExperienciaEducativaDAO();
+        
+        try {
+            for (int i = 0; i < listedExperienciasEducativas.size(); i++) {
+                experienciaEducativaDAO.uploadAcademicOffer(listedExperienciasEducativas.get(i));
+            }
+        } catch (SQLException ex) {
+            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
+        }
+        
         Navigator.NavigateToWindow(tbExperiencias.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
-        //TODO: Save into the Database
     }
 
     @FXML

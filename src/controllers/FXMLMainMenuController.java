@@ -57,6 +57,7 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuSolutionProblematic(ActionEvent event) {
+        Navigator.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLRegistrarSolucionAProblematica.fxml", "Registrar Solución a Problematica Academica");
     }
 
     @FXML

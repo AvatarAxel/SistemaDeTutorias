@@ -13,28 +13,15 @@ public class ExperienciaEducativa {
     private String nombre;
     private String seccion;
     private String modalidad;
-    private String salon;
-    private String descripcion;
-    private String programaEducativo;
-
+    
     public ExperienciaEducativa() {
     }
-    
+
     public ExperienciaEducativa(String nrc, String nombre, String seccion, String modalidad) {
         this.nrc = nrc;
         this.nombre = nombre;
         this.seccion = seccion;
         this.modalidad = modalidad;
-    }
-
-    public ExperienciaEducativa(String nrc, String nombre, String seccion, String modalidad, String salon, String descripcion, String programaEducativo) {
-        this.nrc = nrc;
-        this.nombre = nombre;
-        this.seccion = seccion;
-        this.modalidad = modalidad;
-        this.salon = salon;
-        this.descripcion = descripcion;
-        this.programaEducativo = programaEducativo;
     }
 
     public String getNrc() {
@@ -69,33 +56,9 @@ public class ExperienciaEducativa {
         this.modalidad = modalidad;
     }
 
-    public String getSalon() {
-        return salon;
-    }
-
-    public void setSalon(String salon) {
-        this.salon = salon;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getProgramaEducativo() {
-        return programaEducativo;
-    }
-
-    public void setProgramaEducativo(String programaEducativo) {
-        this.programaEducativo = programaEducativo;
-    }
-
     @Override
     public String toString() {
-        return "ExperienciaEducativa{" + "nrc=" + nrc + ", nombre=" + nombre + ", seccion=" + seccion + ", modalidad=" + modalidad + ", salon=" + salon + ", descripcion=" + descripcion + ", programaEducativo=" + programaEducativo + '}';
+        return "ExperienciaEducativa{" + "nrc=" + nrc + ", nombre=" + nombre + ", seccion=" + seccion + ", modalidad=" + modalidad + '}';
     }
-    
+            
 }
