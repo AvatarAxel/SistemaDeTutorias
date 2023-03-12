@@ -13,7 +13,12 @@ import java.sql.SQLException;
 public class SolucionAProblematicaDAO implements ISolucionAProblematicaDAO {
 
     @Override
-    public int insertSolucionAPRoblematica(int idProblematica, String solucion) throws SQLException {
+    public int insertSolucionAProblematica(int idProblematica, String solucion) throws SQLException {
+        return 0;
+    }
+
+    @Override
+    public int updateSolucionAProblematica(int idProblematica, String solucion) throws SQLException {
         return 0;
     }
     

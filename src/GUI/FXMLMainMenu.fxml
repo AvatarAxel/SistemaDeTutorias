@@ -28,8 +28,13 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Problematicas">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#menuReadProblematic" text="Consultar" />
-                  <MenuItem mnemonicParsing="false" onAction="#menuSolutionProblematic" text="Solucionar" />
+                  <Menu mnemonicParsing="false" text="Solucionar">
+                     <items>
+                    <MenuItem mnemonicParsing="false" onAction="#menuReadProblematic" text="Consultar Solución" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuSolutionProblematic" text="Registrar Solución" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuUpdateSolution" text="Editar Solución" />
+                     </items>
+                  </Menu>
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Oferta Academica">

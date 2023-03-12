@@ -12,6 +12,8 @@ import java.sql.SQLException;
  */
 public interface ISolucionAProblematicaDAO {
     
-    public int insertSolucionAPRoblematica(int idProblematica, String solucion) throws SQLException;
+    public int insertSolucionAProblematica(int idProblematica, String solucion) throws SQLException;
+    
+    public int updateSolucionAProblematica(int idProblematica, String solucion) throws SQLException;
     
 }

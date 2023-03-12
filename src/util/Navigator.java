@@ -35,7 +35,7 @@ public class Navigator {
             primaryStage.setTitle(windowTitle);
             primaryStage.show();
         } catch (IOException e) {
-            Alerts.showAlert("Error", "No se puede cargar el menu", Alert.AlertType.ERROR);
+            Alerts.showAlert("Error", "No se puede cargar la ventana", Alert.AlertType.ERROR);
         }
     }
     

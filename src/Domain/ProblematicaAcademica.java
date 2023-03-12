@@ -61,4 +61,7 @@ public class ProblematicaAcademica {
         this.solucion = solucion;
     }
     
+    public String getDescripcionSolucion(){
+        return this.solucion.getDescripcion();
+    }
 }

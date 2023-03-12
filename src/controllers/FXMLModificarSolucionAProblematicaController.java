@@ -11,7 +11,11 @@ import Domain.SolucionAProblematica;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,8 +36,10 @@ import util.Navigator;
  *
  * @author Panther
  */
-public class FXMLRegistrarSolucionAProblematicaController implements Initializable {
+public class FXMLModificarSolucionAProblematicaController implements Initializable {
 
+    @FXML
+    private TableView<ProblematicaAcademica> tbProblematicas;
     @FXML
     private TableColumn colDescripcion;
     @FXML
@@ -43,12 +49,11 @@ public class FXMLRegistrarSolucionAProblematicaController implements Initializab
     @FXML
     private TableColumn colNumeroAlumnos;
     @FXML
-    private TextArea txtSolucion;
+    private TableColumn colSolucion;
     @FXML
-    private TableView<ProblematicaAcademica> tbProblematicas;
-    
+    private TextArea txtSolucion;
+
     private ObservableList<ProblematicaAcademica> listProblematicas;
-    
     /**
      * Initializes the controller class.
      */
@@ -58,21 +63,23 @@ public class FXMLRegistrarSolucionAProblematicaController implements Initializab
         configureTableColumns();
         loadInformation();
         selectedItem();
-    }    
+    }
 
     private void configureTableColumns() {
         colDescripcion.setCellValueFactory (new PropertyValueFactory ("descripcion"));
         colProfesor.setCellValueFactory (new PropertyValueFactory ("profesor"));
         colGravedad.setCellValueFactory (new PropertyValueFactory ("gravedad"));
         colNumeroAlumnos.setCellValueFactory (new PropertyValueFactory ("numeroAlumnos"));
-          
+        colSolucion.setCellValueFactory (new PropertyValueFactory ("descripcionSolucion"));
         listProblematicas = FXCollections.observableArrayList();
     }
     
     private void loadInformation(){
         ProblematicaAcademicaDAO problematicaAcademicaDAO = new ProblematicaAcademicaDAO();
+        
         try{
             ArrayList<ProblematicaAcademica> loadedProblematicas = problematicaAcademicaDAO.getProblematicas();
+            
             listProblematicas.clear();
             listProblematicas.addAll(loadedProblematicas);
             tbProblematicas.setItems(listProblematicas);
@@ -82,12 +89,13 @@ public class FXMLRegistrarSolucionAProblematicaController implements Initializab
         
         
     }
-
+    
     private void selectedItem(){
+        
         tbProblematicas.getSelectionModel().selectedItemProperty().addListener(
             (ObservableValue<? extends ProblematicaAcademica> observable, ProblematicaAcademica oldValue, ProblematicaAcademica newValue) -> {
                 if(oldValue != null){
-                    listProblematicas.get(listProblematicas.indexOf(oldValue)).getSolucion().setDescripcion(txtSolucion.getText());
+                    tbProblematicas.getItems().get(listProblematicas.indexOf(oldValue)).getSolucion().setDescripcion(txtSolucion.getText());
                     //System.out.println("SoluciónViejo: "+ listProblematicas.get(listProblematicas.indexOf(oldValue)).getSolucion().getDescripcion());
                 }
                 if (newValue != null) {
@@ -95,7 +103,8 @@ public class FXMLRegistrarSolucionAProblematicaController implements Initializab
                     txtSolucion.setText(newValue.getSolucion().getDescripcion());
                     tbProblematicas.refresh();
                 }
-            });
+            }
+        );
     }
     
     @FXML
@@ -105,16 +114,13 @@ public class FXMLRegistrarSolucionAProblematicaController implements Initializab
 
     @FXML
     private void clicSave(ActionEvent event) {
-        ObservableList<ProblematicaAcademica> problem = tbProblematicas.getItems();
         SolucionAProblematicaDAO solucionAProblematica = new SolucionAProblematicaDAO();
-        for (ProblematicaAcademica problematicaAcademica : problem) {
-            if(!StringUtils.isBlank(problematicaAcademica.getSolucion().getDescripcion())){
-                try {
-                    solucionAProblematica.insertSolucionAProblematica(problematicaAcademica.getIdProblematica(), problematicaAcademica.getSolucion().getDescripcion());
-                } catch (SQLException sqle) {
-                }
-                System.out.println("Problema: " + problematicaAcademica.getSolucion().getDescripcion());
+        try {
+            for(int i=0; i<listProblematicas.size(); i++){
+                solucionAProblematica.updateSolucionAProblematica(i, listProblematicas.get(i).getSolucion().getDescripcion());
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLModificarSolucionAProblematicaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
