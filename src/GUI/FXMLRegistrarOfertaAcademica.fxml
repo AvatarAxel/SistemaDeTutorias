@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLRegistrarOfertaAcademicaController">
+    <stylesheets>
+        <URL value="@/styles/globalStyles.css" />
+    </stylesheets>
+   <children>
+      <TableView fx:id="tbExperiencias" layoutX="13.0" layoutY="8.0" prefHeight="322.0" prefWidth="575.0">
+        <columns>
+          <TableColumn fx:id="colNrc" prefWidth="75.0" text="NRC" />
+          <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
+            <TableColumn fx:id="colProgramaEducativo" prefWidth="75.0" text="Programa Educativo" />
+            <TableColumn fx:id="colSeccion" prefWidth="75.0" text="Sección" />
+            <TableColumn fx:id="colModalidad" prefWidth="75.0" text="Modalidad" />
+            <TableColumn fx:id="colSalon" prefWidth="75.0" text="Salón" />
+            <TableColumn fx:id="colDescripción" prefWidth="124.0" text="Descripción" />
+        </columns>
+      </TableView>
+      <Button layoutX="520.0" layoutY="352.0" mnemonicParsing="false" onAction="#clicExit" text="Cancelar" />
+      <Button layoutX="454.0" layoutY="352.0" mnemonicParsing="false" onAction="#clicSave" text="Guardar" />
+      <Button layoutX="385.0" layoutY="352.0" mnemonicParsing="false" onAction="#clicUpload" prefHeight="25.0" prefWidth="59.0" text="Subir" />
+   </children>
+</AnchorPane>
