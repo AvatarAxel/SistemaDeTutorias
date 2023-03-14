@@ -6,3 +6,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     Created on : 6/03/2023, 04:56:44 PM
     Author     : Panther
 */
+
+Button {
+    -fx-background-color: #28AD56;
+    -fx-border-color: #FFFFFF;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Times New Roman";
+    -fx-border-width: 2;
+    -fx-font-style: italic;
+}
