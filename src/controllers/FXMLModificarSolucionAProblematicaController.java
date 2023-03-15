@@ -78,7 +78,7 @@ public class FXMLModificarSolucionAProblematicaController implements Initializab
         ProblematicaAcademicaDAO problematicaAcademicaDAO = new ProblematicaAcademicaDAO();
         
         try{
-            ArrayList<ProblematicaAcademica> loadedProblematicas = problematicaAcademicaDAO.getProblematicas();
+            ArrayList<ProblematicaAcademica> loadedProblematicas = problematicaAcademicaDAO.getProblematicasSinSolucion();
             
             listProblematicas.clear();
             listProblematicas.addAll(loadedProblematicas);
@@ -117,7 +117,7 @@ public class FXMLModificarSolucionAProblematicaController implements Initializab
         SolucionAProblematicaDAO solucionAProblematica = new SolucionAProblematicaDAO();
         try {
             for(int i=0; i<listProblematicas.size(); i++){
-                solucionAProblematica.updateSolucionAProblematica(i, listProblematicas.get(i).getSolucion().getDescripcion());
+                solucionAProblematica.updateSolucionAProblematica(listProblematicas.get(i).getSolucion().getIdSolucion(), listProblematicas.get(i).getSolucion().getDescripcion());
             }
         } catch (SQLException ex) {
             Logger.getLogger(FXMLModificarSolucionAProblematicaController.class.getName()).log(Level.SEVERE, null, ex);

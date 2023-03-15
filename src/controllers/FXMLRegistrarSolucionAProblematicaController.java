@@ -72,7 +72,7 @@ public class FXMLRegistrarSolucionAProblematicaController implements Initializab
     private void loadInformation(){
         ProblematicaAcademicaDAO problematicaAcademicaDAO = new ProblematicaAcademicaDAO();
         try{
-            ArrayList<ProblematicaAcademica> loadedProblematicas = problematicaAcademicaDAO.getProblematicas();
+            ArrayList<ProblematicaAcademica> loadedProblematicas = problematicaAcademicaDAO.getProblematicasSinSolucion();
             listProblematicas.clear();
             listProblematicas.addAll(loadedProblematicas);
             tbProblematicas.setItems(listProblematicas);
