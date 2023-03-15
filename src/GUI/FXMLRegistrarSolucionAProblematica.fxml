@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLRegistrarSolucionAProblematicaController">
+    <stylesheets>
+        <URL value="@/styles/globalStyles.css" />
+    </stylesheets>
+   <children>
+      <TableView fx:id="tbProblematicas" prefHeight="200.0" prefWidth="600.0">
+        <columns>
+          <TableColumn fx:id="colDescripcion" prefWidth="281.0" text="Descripción" />
+          <TableColumn fx:id="colProfesor" prefWidth="108.0" text="Profesor" />
+            <TableColumn fx:id="colGravedad" prefWidth="78.0" text="Gravedad" />
+            <TableColumn fx:id="colNumeroAlumnos" prefWidth="132.0" text="Número de Alumnos" />
+        </columns>
+      </TableView>
+      <Label layoutX="14.0" layoutY="216.0" text="Solución" />
+      <TextArea fx:id="txtSolucion" layoutX="14.0" layoutY="239.0" prefHeight="104.0" prefWidth="568.0" />
+      <Button layoutX="530.0" layoutY="361.0" mnemonicParsing="false" onAction="#clicCancel" text="Cancelar" />
+      <Button layoutX="460.0" layoutY="361.0" mnemonicParsing="false" onAction="#clicSave" text="Guardar" />
+   </children>
+</AnchorPane>
