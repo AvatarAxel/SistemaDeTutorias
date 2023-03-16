@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="340.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLRegistrarEstudiantesController">
+    <stylesheets>
+        <URL value="@/styles/globalStyles.css" />
+    </stylesheets>
+   <children>
+      <Button layoutX="387.0" layoutY="282.0" mnemonicParsing="false" onAction="#buttonSave" text="Guardar" />
+      <TextField fx:id="textNombre" layoutX="14.0" layoutY="71.0" prefHeight="29.0" prefWidth="245.0" promptText="Nombre(s)" />
+      <TextField fx:id="textApellidoPaterno" layoutX="309.0" layoutY="71.0" prefHeight="29.0" prefWidth="245.0" promptText="Apellido Paterno" />
+      <TextField fx:id="textApellidoMaterno" layoutX="14.0" layoutY="165.0" prefHeight="29.0" prefWidth="245.0" promptText="Apellido Materno" />
+      <TextField fx:id="textMatricula" layoutX="309.0" layoutY="165.0" prefHeight="29.0" prefWidth="245.0" promptText="Matricula" />
+      <Button layoutX="482.0" layoutY="282.0" mnemonicParsing="false" onAction="#buttonCancel" text="Cancelar" />
+   </children>
+</AnchorPane>

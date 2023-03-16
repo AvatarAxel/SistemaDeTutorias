@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLRegistrarTutorAcademicoController">
+    <stylesheets>
+        <URL value="@/styles/globalStyles.css" />
+    </stylesheets>
+   <children>
+      <Button layoutX="375.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonSave" text="Guardar" />
+      <TableView fx:id="tableProfesores" layoutX="66.0" layoutY="100.0" prefHeight="200.0" prefWidth="470.0">
+        <columns>
+          <TableColumn fx:id="columNamesProfesores" prefWidth="338.0" text="Profesores" />
+          <TableColumn fx:id="columNumeroPersonal" prefWidth="131.0" text="No. De Personal" />
+        </columns>
+      </TableView>
+      <TextField fx:id="searchProfesores" layoutX="66.0" layoutY="29.0" prefHeight="29.0" prefWidth="387.0" promptText="Nombre / Numero de personal" />
+      <Button layoutX="475.0" layoutY="29.0" mnemonicParsing="false" onAction="#buttonSearch" text="Buscar" />
+      <Button layoutX="463.0" layoutY="342.0" mnemonicParsing="false" text="Cancelar" />
+   </children>
+</AnchorPane>
