@@ -21,6 +21,6 @@
       </TableView>
       <TextField fx:id="searchProfesores" layoutX="66.0" layoutY="29.0" prefHeight="29.0" prefWidth="387.0" promptText="Nombre / Numero de personal" />
       <Button layoutX="475.0" layoutY="29.0" mnemonicParsing="false" onAction="#buttonSearch" text="Buscar" />
-      <Button layoutX="463.0" layoutY="342.0" mnemonicParsing="false" text="Cancelar" />
+      <Button layoutX="463.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonCancel" text="Cancelar" />
    </children>
 </AnchorPane>

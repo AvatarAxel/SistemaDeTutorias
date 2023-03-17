@@ -44,5 +44,9 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
     @FXML
     private void buttonSearch(ActionEvent event) {
     }
+
+    @FXML
+    private void buttonCancel(ActionEvent event) {
+    }
     
 }

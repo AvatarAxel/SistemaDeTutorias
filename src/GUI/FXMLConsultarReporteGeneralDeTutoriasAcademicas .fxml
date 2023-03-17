@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="761.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLConsultarReporteGeneralDeTutoriasAcademicasController">
+    <stylesheets>
+        <URL value="@/styles/globalStyles.css" />
+    </stylesheets>
+   <children>
+      <Label layoutX="24.0" layoutY="38.0" text="Programa Educativo:" />
+      <Label layoutX="24.0" layoutY="75.0" text="Periodo:" />
+      <Label layoutX="24.0" layoutY="112.0" text="Total de alumnos registrados:" />
+      <Label layoutX="24.0" layoutY="155.0" text="Total de alumnos que aistieron:" />
+      <Label layoutX="392.0" layoutY="38.0" text="No, De sesión:" />
+      <Label layoutX="392.0" layoutY="75.0" text="Fecha:" />
+      <Label layoutX="24.0" layoutY="201.0" text="Problematicas academicas reportadas por los alumnos" />
+      <TableView layoutX="25.0" layoutY="220.0" prefHeight="200.0" prefWidth="551.0">
+        <columns>
+          <TableColumn fx:id="columExperienciaEducativa" prefWidth="152.0" text="Experiencias Educativas" />
+          <TableColumn fx:id="columProfesores" prefWidth="128.0" text="Profesores" />
+            <TableColumn fx:id="columProblematicaAcademicas" prefWidth="170.0" text="Problematicas Academicas" />
+            <TableColumn fx:id="columCantidadAlumnos" prefWidth="100.0" text="Cant. Alumnos" />
+        </columns>
+      </TableView>
+      <Label layoutX="25.0" layoutY="451.0" text="Lista de Comentarios generales " />
+      <TableView layoutX="25.0" layoutY="470.0" prefHeight="200.0" prefWidth="551.0">
+        <columns>
+          <TableColumn prefWidth="176.0" text="Nombre de los tutores" />
+          <TableColumn prefWidth="374.0" text="Comentarios" />
+        </columns>
+      </TableView>
+      <Button layoutX="378.0" layoutY="708.0" mnemonicParsing="false" onAction="#buttonDescargarPDF" text="Descargar PDF" />
+      <Button layoutX="507.0" layoutY="708.0" mnemonicParsing="false" onAction="#buttonGuardar" text="Guardar" />
+      <Label fx:id="labelProgramaEducativo" layoutX="159.0" layoutY="38.0" text="NONE" />
+      <Label fx:id="labelPeriodo" layoutX="83.0" layoutY="75.0" text="NONE" />
+      <Label fx:id="LabelTotalAlumnosResgistrados" layoutX="217.0" layoutY="112.0" text="NONE" />
+      <Label fx:id="labelTotalAlumnos" layoutX="228.0" layoutY="155.0" text="NONE" />
+      <Label fx:id="labelNumeroSesion" layoutX="488.0" layoutY="38.0" text="NONE" />
+      <Label fx:id="labelFecha" layoutX="436.0" layoutY="75.0" text="NONE" />
+   </children>
+</AnchorPane>
