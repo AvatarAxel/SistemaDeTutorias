@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controllers.FXMLModificarSolucionAProblematicaController">
+    <stylesheets>
+        <URL value="@/styles/globalStyles.css" />
+    </stylesheets>
+    <children>
+      <TableView fx:id="tbProblematicas" prefHeight="200.0" prefWidth="600.0">
+        <columns>
+          <TableColumn fx:id="colDescripcion" prefWidth="175.0" text="Descripción" />
+          <TableColumn fx:id="colProfesor" prefWidth="84.0" text="Profesor" />
+            <TableColumn fx:id="colGravedad" prefWidth="76.0" text="Gravedad" />
+            <TableColumn fx:id="colNumeroAlumnos" prefWidth="126.0" text="Número de Alumnos" />
+            <TableColumn fx:id="colSolucion" prefWidth="138.0" text="Solución" />
+        </columns>
+      </TableView>
+      <Label layoutX="14.0" layoutY="216.0" text="Solución" />
+      <TextArea fx:id="txtSolucion" layoutX="14.0" layoutY="239.0" prefHeight="104.0" prefWidth="568.0" />
+      <Button layoutX="530.0" layoutY="361.0" mnemonicParsing="false" onAction="#clicCancel" text="Cancelar" />
+      <Button layoutX="460.0" layoutY="361.0" mnemonicParsing="false" onAction="#clicSave" text="Guardar" />
+   </children>
+</AnchorPane>
