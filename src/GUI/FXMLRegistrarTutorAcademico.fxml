@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.web.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
@@ -7,20 +9,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLRegistrarTutorAcademicoController">
+<AnchorPane id="AnchorPane" prefHeight="356.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLRegistrarTutorAcademicoController">
     <stylesheets>
         <URL value="@/styles/globalStyles.css" />
     </stylesheets>
    <children>
-      <Button layoutX="375.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonSave" text="Guardar" />
-      <TableView fx:id="tableProfesores" layoutX="66.0" layoutY="100.0" prefHeight="200.0" prefWidth="470.0">
-        <columns>
-          <TableColumn fx:id="columNamesProfesores" prefWidth="338.0" text="Profesores" />
-          <TableColumn fx:id="columNumeroPersonal" prefWidth="131.0" text="No. De Personal" />
-        </columns>
-      </TableView>
-      <TextField fx:id="searchProfesores" layoutX="66.0" layoutY="29.0" prefHeight="29.0" prefWidth="387.0" promptText="Nombre / Numero de personal" />
+      <Button layoutX="380.0" layoutY="303.0" mnemonicParsing="false" onAction="#buttonRegister" text="Registrar" />
+      <TextField fx:id="textFieldSearchProfesores" layoutX="66.0" layoutY="29.0" onKeyReleased="#validateInsputsNumeroDePersonal" onKeyTyped="#validateLengthNumeroDePersonal" prefHeight="29.0" prefWidth="387.0" promptText="Numero de personal" />
       <Button layoutX="475.0" layoutY="29.0" mnemonicParsing="false" onAction="#buttonSearch" text="Buscar" />
-      <Button layoutX="463.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonCancel" text="Cancelar" />
+      <Button layoutX="469.0" layoutY="303.0" mnemonicParsing="false" onAction="#buttonCancel" text="Cancelar" />
+      <Label layoutX="66.0" layoutY="99.0" text="Nombre:" />
+      <Label layoutX="66.0" layoutY="144.0" text="Apellido Paterno:" />
+      <Label layoutX="66.0" layoutY="191.0" text="Apellido Materno:" />
+      <Label layoutX="66.0" layoutY="234.0" text="Numero de personal:" />
+      <Label fx:id="labelNombre" layoutX="131.0" layoutY="99.0" prefHeight="19.0" prefWidth="322.0" />
+      <Label fx:id="labelApellidoPaterno" layoutX="175.0" layoutY="144.0" prefHeight="19.0" prefWidth="237.0" />
+      <Label fx:id="labelApellidoMaterno" layoutX="180.0" layoutY="191.0" prefHeight="19.0" prefWidth="280.0" />
+      <Label fx:id="labelNumeroDePersonal" layoutX="205.0" layoutY="234.0" prefHeight="19.0" prefWidth="309.0" />
+      <Label fx:id="labelError" layoutX="66.0" layoutY="65.0" prefHeight="19.0" prefWidth="387.0" textFill="#da0e0e" />
    </children>
 </AnchorPane>

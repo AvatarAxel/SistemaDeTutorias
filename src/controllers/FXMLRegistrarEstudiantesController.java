@@ -40,7 +40,6 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
     
     private int maxLengthNombreOrApellidos = 30;
     private boolean[] validationTextFields = {false, false, false, false, false};
-    
     private Pattern validateCharacter = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$");
     private Pattern validateCharacterMatricula = Pattern.compile("^[sS]\\d{8}$");
     @FXML
