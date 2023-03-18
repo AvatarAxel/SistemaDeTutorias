@@ -13,7 +13,7 @@
         <URL value="@/styles/globalStyles.css" />
     </stylesheets>
    <children>
-      <Button fx:id="buttonGuardar" layoutX="387.0" layoutY="282.0" mnemonicParsing="false" onAction="#buttonSave" text="Guardar" />
+      <Button fx:id="buttonRegister" layoutX="387.0" layoutY="282.0" mnemonicParsing="false" onAction="#buttonSave" text="Guardar" />
       <TextField fx:id="textNombre" layoutX="14.0" layoutY="71.0" onKeyReleased="#validateInputsNombre" onKeyTyped="#validateLengthNombre" prefHeight="29.0" prefWidth="245.0" promptText="Nombre(s)" />
       <TextField fx:id="textApellidoPaterno" layoutX="309.0" layoutY="71.0" onKeyReleased="#validateInputsApellidoPaterno" onKeyTyped="#validateLengthApellidoPaterno" prefHeight="29.0" prefWidth="245.0" promptText="Apellido Paterno" />
       <TextField fx:id="textApellidoMaterno" layoutX="14.0" layoutY="165.0" onKeyReleased="#validateInputsApellidoMaterno" onKeyTyped="#validateLengthApellidoMaterno" prefHeight="29.0" prefWidth="245.0" promptText="Apellido Materno" />

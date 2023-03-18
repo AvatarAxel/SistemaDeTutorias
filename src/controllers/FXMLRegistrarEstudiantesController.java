@@ -4,7 +4,11 @@
  */
 package controllers;
 
+import BussinessLogic.EstudianteDAO;
+import Domain.Estudiante;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -36,14 +40,11 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
     @FXML
     private TextField textApellidoMaterno;
     @FXML
-    private TextField textMatricula;
-    
+    private TextField textMatricula;    
     private int maxLengthNombreOrApellidos = 30;
     private boolean[] validationTextFields = {false, false, false, false, false};
     private Pattern validateCharacter = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$");
     private Pattern validateCharacterMatricula = Pattern.compile("^[sS]\\d{8}$");
-    @FXML
-    private Button buttonGuardar;
     @FXML
     private Label labelInvalidateNombre;
     @FXML
@@ -52,36 +53,26 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
     private Label labelInvalidateApellidoMaterno;
     @FXML
     private Label labelInvalidateMatricula;
+    @FXML
+    private Button buttonRegister;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        buttonRegister.setDisable(true);
     }    
 
     @FXML
     private void buttonSave(ActionEvent event) {
-        if (!validationTextFields[0] || !validationTextFields[1]
-                || !validationTextFields[2] || !validationTextFields[3]) {
-            Alerts.showAlert("NO", "No se puede registrar", Alert.AlertType.INFORMATION);
-        } else {
-            Alerts.showAlert("Si", "Si se puede registrar", Alert.AlertType.INFORMATION);
-        }
+        registerEstudiante();
+        restartGui();
     }
 
     @FXML
     private void buttonCancel(ActionEvent event) {
-        Optional<ButtonType> repuestaDialogo = Alerts.showAlert("Apoco si paa", "Tons", Alert.AlertType.CONFIRMATION);
-        if (repuestaDialogo.get() == ButtonType.OK) {
-            closeWindow();
-        }
-    }
-
-    private void closeWindow() {
-        Stage escenario = (Stage) textMatricula.getScene().getWindow();
-        escenario.close();
+        closeWindow();
     }
 
     @FXML
@@ -92,7 +83,10 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
             } else {                
                 return null;
             }
-        }));
+        }));        
+        if (textNombre.getText().length() > 30) {
+            textNombre.setText("");
+        }
     }
 
     @FXML
@@ -103,7 +97,10 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
             } else {
                 return null;
             }
-        }));        
+        }));
+        if (textApellidoPaterno.getText().length() > 20) {
+            textApellidoPaterno.setText("");
+        }        
     }
 
     @FXML
@@ -115,6 +112,9 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
                 return null;
             }
         }));        
+        if (textApellidoMaterno.getText().length() > 20) {
+            textApellidoMaterno.setText("");
+        }         
     }
 
     @FXML
@@ -126,6 +126,9 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
                 return null;
             }
         }));
+        if (textMatricula.getText().length() > 9) {
+            textMatricula.setText("");
+        }
     }
 
     @FXML
@@ -137,9 +140,10 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
         } else {
             labelInvalidateNombre.setText("");
             validationTextFields[0] = true;
-        }           
+        }                           
+        enableButton();
     }
-
+    
     @FXML
     private void validateInputsApellidoPaterno(KeyEvent event) {
         Matcher matcher = validateCharacter.matcher(textApellidoPaterno.getText());
@@ -149,7 +153,8 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
         } else {
             labelInvalidateApellidoPaterno.setText("");
             validationTextFields[1] = true;
-        }        
+        }
+        enableButton();
     }
 
     @FXML
@@ -161,7 +166,8 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
         } else {
             labelInvalidateApellidoMaterno.setText("");
             validationTextFields[2] = true;
-        }        
+        } 
+        enableButton();
     }
 
     @FXML
@@ -174,6 +180,58 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
             labelInvalidateMatricula.setText("");
             validationTextFields[3] = true;
         }
+        enableButton();
+    }
+    
+    private void registerEstudiante() {
+        Estudiante estudiante = new Estudiante();
+        try {
+            EstudianteDAO estudianteDao = new EstudianteDAO();
+            boolean estudianteExists = estudianteDao.validateExistEstudiante(textMatricula.getText().toLowerCase());
+            if (!estudianteExists) {
+                estudiante.setNombre(textNombre.getText());
+                estudiante.setApellidoPaterno(textApellidoPaterno.getText());
+                estudiante.setApellidoMaterno(textApellidoMaterno.getText());
+                estudiante.setMatricula(textMatricula.getText().toLowerCase());                
+                if(estudianteDao.setEstudianteRegister(estudiante, 14203)){
+                    Alerts.showAlert("Información", "Registro realizado con éxito", Alert.AlertType.ERROR);
+                }                                
+            } else {
+                Alerts.showAlert("Información", "Registro ya existente", Alert.AlertType.INFORMATION);
+            }
+        } catch (SQLException e) {
+            Alerts.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+        }
+    }
+    
+    private void restartGui(){
+        textNombre.setText("");
+        textApellidoPaterno.setText("");
+        textApellidoMaterno.setText("");
+        textMatricula.setText("");
+        labelInvalidateNombre.setText("");
+        labelInvalidateApellidoPaterno.setText("");
+        labelInvalidateApellidoMaterno.setText("");
+        labelInvalidateMatricula.setText("");
+        validationTextFields[0] = false;
+        validationTextFields[2] = false;
+        validationTextFields[3] = false;
+        validationTextFields[4] = false;
+        buttonRegister.setDisable(true);
+    }
+    
+    private void enableButton() {
+        if (!validationTextFields[0] || !validationTextFields[1]
+                || !validationTextFields[2] || !validationTextFields[3]) {
+            buttonRegister.setDisable(true);
+        } else {
+            buttonRegister.setDisable(false);
+        }
+    }
+    
+    private void closeWindow() {
+        Stage escenario = (Stage) textMatricula.getScene().getWindow();
+        escenario.close();
     }
     
 }
