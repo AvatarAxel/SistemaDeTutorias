@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public interface IProblematicaAcademicaDAO {
     
+    public ArrayList<ProblematicaAcademica> getProblematicasSinSolucion() throws SQLException;
+    
     public ArrayList<ProblematicaAcademica> getProblematicas() throws SQLException;
     
 }

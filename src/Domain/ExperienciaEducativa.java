@@ -13,15 +13,17 @@ public class ExperienciaEducativa {
     private String nombre;
     private String seccion;
     private String modalidad;
+    private String clave;
     
     public ExperienciaEducativa() {
     }
 
-    public ExperienciaEducativa(String nrc, String nombre, String seccion, String modalidad) {
+    public ExperienciaEducativa(String nrc, String nombre, String seccion, String modalidad, String clave) {
         this.nrc = nrc;
         this.nombre = nombre;
         this.seccion = seccion;
         this.modalidad = modalidad;
+        this.clave = clave;
     }
 
     public String getNrc() {
@@ -54,6 +56,14 @@ public class ExperienciaEducativa {
 
     public void setModalidad(String modalidad) {
         this.modalidad = modalidad;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
     }
 
     @Override

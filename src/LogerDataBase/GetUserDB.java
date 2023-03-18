@@ -27,8 +27,8 @@ public class GetUserDB {
                     password = br.readLine();
                     usuarioDB.setUser(user);
                     usuarioDB.setPassword(password);
-                    System.out.println(user);
-                    System.out.println(password);
+                    //System.out.println(user);
+                    //System.out.println(password);
                     br.close();
                 }catch(IOException e1){
                     System.out.println("Error en la lectura");
