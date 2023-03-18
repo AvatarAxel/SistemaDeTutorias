@@ -15,12 +15,10 @@
       <TableView fx:id="tbExperiencias" layoutX="13.0" layoutY="8.0" prefHeight="322.0" prefWidth="575.0">
         <columns>
           <TableColumn fx:id="colNrc" prefWidth="75.0" text="NRC" />
-          <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
-            <TableColumn fx:id="colProgramaEducativo" prefWidth="75.0" text="Programa Educativo" />
-            <TableColumn fx:id="colSeccion" prefWidth="75.0" text="Sección" />
-            <TableColumn fx:id="colModalidad" prefWidth="75.0" text="Modalidad" />
-            <TableColumn fx:id="colSalon" prefWidth="75.0" text="Salón" />
-            <TableColumn fx:id="colDescripción" prefWidth="124.0" text="Descripción" />
+          <TableColumn fx:id="colNombre" prefWidth="177.0" text="Nombre" />
+            <TableColumn fx:id="colProgramaEducativo" prefWidth="131.0" text="Programa Educativo" />
+            <TableColumn fx:id="colSeccion" prefWidth="60.0" text="Sección" />
+            <TableColumn fx:id="colModalidad" prefWidth="131.0" text="Modalidad" />
         </columns>
       </TableView>
       <Button layoutX="520.0" layoutY="352.0" mnemonicParsing="false" onAction="#clicExit" text="Cancelar" />

@@ -28,9 +28,11 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
         
         
         if(connection != null){
-            String consulta ="SELECT * FROM problematicas_academicas WHERE idSolucion = ?";
+            String consulta ="SELECT * FROM problematicas_academicas\n" +
+                "WHERE problematicas_academicas.idProblematica NOT IN \n" +
+                "  (SELECT soluciones_a_problematicas_academicas.idProblematica\n" +
+                "  FROM soluciones_a_problematicas_academicas)";
             PreparedStatement statement = connection.prepareStatement(consulta);
-            statement.setInt(1, 0);
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()){
                 ProblematicaAcademica problematicaAcademicaTemp = new ProblematicaAcademica();
@@ -55,9 +57,15 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
         
         
         if(connection != null){
-            String consulta ="SELECT idProblematica, problematicas_academicas.descripcion, titulo,numeroDeEstudiantesAfectados, idReporteTutoria, soluciones_a_problematicas_academicas.idSolucion, soluciones_a_problematicas_academicas.descripcion AS descripcion_solucion FROM problematicas_academicas INNER JOIN soluciones_a_problematicas_academicas ON problematicas_academicas.idSolucion = soluciones_a_problematicas_academicas.idSolucion";
+            String consulta ="SELECT problematicas_academicas.idProblematica,\n" +
+                "problematicas_academicas.descripcion,\n" +
+                "titulo,numeroDeEstudiantesAfectados,\n" +
+                "idReporteTutoria,\n" +
+                "soluciones_a_problematicas_academicas.idSolucion,\n" +
+                "soluciones_a_problematicas_academicas.descripcion AS descripcion_solucion\n" +
+                "FROM problematicas_academicas INNER JOIN soluciones_a_problematicas_academicas\n" +
+                "ON problematicas_academicas.idProblematica = soluciones_a_problematicas_academicas.idProblematica";
             PreparedStatement statement = connection.prepareStatement(consulta);
-            statement.setInt(1, 0);
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()){
                 ProblematicaAcademica problematicaAcademicaTemp = new ProblematicaAcademica();

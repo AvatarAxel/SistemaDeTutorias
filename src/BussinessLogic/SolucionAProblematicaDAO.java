@@ -21,14 +21,15 @@ public class SolucionAProblematicaDAO implements ISolucionAProblematicaDAO {
     @Override
     public int insertSolucionAProblematica(int idProblematica, String solucion) throws SQLException {
         int respuesta = 0;
-        SolucionAProblematica profesor = new SolucionAProblematica();
+        SolucionAProblematica solucionAProblematica = new SolucionAProblematica();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         
         if(connection != null){
-            String query = ("INSERT INTO soluciones_a_problematicas_academicas (descripcion) VALUES (?);");
+            String query = ("INSERT INTO soluciones_a_problematicas_academicas (descripcion, idProblematica) VALUES (?, ?);");
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, idProblematica);
+            statement.setString(1, solucion);
+            statement.setInt(2, idProblematica);
             int filasAfectadas = statement.executeUpdate();
             respuesta = 1;
         }

@@ -7,7 +7,6 @@ package controllers;
 import BussinessLogic.ProblematicaAcademicaDAO;
 import BussinessLogic.SolucionAProblematicaDAO;
 import Domain.ProblematicaAcademica;
-import Domain.SolucionAProblematica;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -37,10 +36,6 @@ public class FXMLRegistrarSolucionAProblematicaController implements Initializab
     @FXML
     private TableColumn colDescripcion;
     @FXML
-    private TableColumn colProfesor;
-    @FXML
-    private TableColumn colGravedad;
-    @FXML
     private TableColumn colNumeroAlumnos;
     @FXML
     private TextArea txtSolucion;
@@ -48,6 +43,8 @@ public class FXMLRegistrarSolucionAProblematicaController implements Initializab
     private TableView<ProblematicaAcademica> tbProblematicas;
     
     private ObservableList<ProblematicaAcademica> listProblematicas;
+    @FXML
+    private TableColumn<?, ?> colSolucion;
     
     /**
      * Initializes the controller class.
@@ -62,10 +59,8 @@ public class FXMLRegistrarSolucionAProblematicaController implements Initializab
 
     private void configureTableColumns() {
         colDescripcion.setCellValueFactory (new PropertyValueFactory ("descripcion"));
-        colProfesor.setCellValueFactory (new PropertyValueFactory ("profesor"));
-        colGravedad.setCellValueFactory (new PropertyValueFactory ("gravedad"));
         colNumeroAlumnos.setCellValueFactory (new PropertyValueFactory ("numeroAlumnos"));
-          
+        colSolucion.setCellValueFactory (new PropertyValueFactory ("solucion"));
         listProblematicas = FXCollections.observableArrayList();
     }
     
@@ -111,11 +106,15 @@ public class FXMLRegistrarSolucionAProblematicaController implements Initializab
             if(!StringUtils.isBlank(problematicaAcademica.getSolucion().getDescripcion())){
                 try {
                     solucionAProblematica.insertSolucionAProblematica(problematicaAcademica.getIdProblematica(), problematicaAcademica.getSolucion().getDescripcion());
+                    Alerts.showAlert("Finalizado", "Operación realizada con éxito", Alert.AlertType.INFORMATION);
+                    Navigator.NavigateToWindow(tbProblematicas.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
                 } catch (SQLException sqle) {
+                    Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
                 }
-                System.out.println("Problema: " + problematicaAcademica.getSolucion().getDescripcion());
+                //System.out.println("Problema: " + problematicaAcademica.getSolucion().getDescripcion());
             }
         }
+        
     }
     
 }
