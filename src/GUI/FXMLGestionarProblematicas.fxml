@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="849.0" prefWidth="664.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLGestionarProblematicasController">
+<AnchorPane id="AnchorPane" prefHeight="849.0" prefWidth="648.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLGestionarProblematicasController">
    <children>
       <TableView fx:id="tblProblematicas" layoutX="65.0" layoutY="84.0" prefHeight="190.0" prefWidth="511.0">
         <columns>
@@ -27,7 +27,7 @@
       <Button fx:id="btn_ModifyE" layoutX="242.0" layoutY="292.0" mnemonicParsing="false" onAction="#modifyEnviromentOn" prefHeight="25.0" prefWidth="59.0" text="Editar" />
       <Button fx:id="btn_Delete" layoutX="344.0" layoutY="739.0" mnemonicParsing="false" onAction="#deleteEnviromentOn" prefHeight="25.0" prefWidth="59.0" text="Eliminar" />
       <Button fx:id="btn_Update" layoutX="499.0" layoutY="739.0" mnemonicParsing="false" onAction="#updateProblematica" prefHeight="20.0" prefWidth="73.0" text="Guardar" />
-      <Label layoutX="130.0" layoutY="35.0" text="Gestión de Problemáticas Académicas">
+      <Label layoutX="117.0" layoutY="35.0" text="Gestión de Problemáticas Académicas">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
