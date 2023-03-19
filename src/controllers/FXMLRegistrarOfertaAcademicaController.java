@@ -47,10 +47,6 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
     private TableColumn colSeccion;
     @FXML
     private TableColumn colModalidad;
-    @FXML
-    private TableColumn colSalon;
-    @FXML
-    private TableColumn colDescripción;
             
     private ObservableList<ExperienciaEducativa> listExperienciasEducativas;
     
@@ -68,7 +64,7 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
         colNombre.setCellValueFactory (new PropertyValueFactory ("nombre"));
         colSeccion.setCellValueFactory (new PropertyValueFactory ("seccion"));
         colModalidad.setCellValueFactory (new PropertyValueFactory ("modalidad"));
-          
+        colProgramaEducativo.setCellValueFactory (new PropertyValueFactory ("clave"));
         listExperienciasEducativas = FXCollections.observableArrayList();
     }
 
@@ -80,10 +76,10 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
             String experienciaEducativa;
             while ((experienciaEducativa = bufferedReader.readLine()) != null) {
                 String[] atributes = experienciaEducativa.split(",");
-                loadedExperienciasEducativas.add(new ExperienciaEducativa(atributes[0], atributes[1], atributes[2], atributes[3]));
+                loadedExperienciasEducativas.add(new ExperienciaEducativa(atributes[0], atributes[1], atributes[2], atributes[3],atributes[4]));
             }
         }
-        
+        loadedExperienciasEducativas.remove(0);
         listExperienciasEducativas.clear();
         listExperienciasEducativas.addAll(loadedExperienciasEducativas);
         tbExperiencias.setItems(listExperienciasEducativas);

@@ -7,12 +7,9 @@ package controllers;
 import BussinessLogic.ProblematicaAcademicaDAO;
 import BussinessLogic.SolucionAProblematicaDAO;
 import Domain.ProblematicaAcademica;
-import Domain.SolucionAProblematica;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +24,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.apache.commons.lang3.StringUtils;
 import util.Alerts;
 import util.Navigator;
 
@@ -42,10 +38,6 @@ public class FXMLModificarSolucionAProblematicaController implements Initializab
     private TableView<ProblematicaAcademica> tbProblematicas;
     @FXML
     private TableColumn colDescripcion;
-    @FXML
-    private TableColumn colProfesor;
-    @FXML
-    private TableColumn colGravedad;
     @FXML
     private TableColumn colNumeroAlumnos;
     @FXML
@@ -67,10 +59,8 @@ public class FXMLModificarSolucionAProblematicaController implements Initializab
 
     private void configureTableColumns() {
         colDescripcion.setCellValueFactory (new PropertyValueFactory ("descripcion"));
-        colProfesor.setCellValueFactory (new PropertyValueFactory ("profesor"));
-        colGravedad.setCellValueFactory (new PropertyValueFactory ("gravedad"));
         colNumeroAlumnos.setCellValueFactory (new PropertyValueFactory ("numeroAlumnos"));
-        colSolucion.setCellValueFactory (new PropertyValueFactory ("descripcionSolucion"));
+        colSolucion.setCellValueFactory (new PropertyValueFactory ("solucion"));
         listProblematicas = FXCollections.observableArrayList();
     }
     
@@ -117,10 +107,12 @@ public class FXMLModificarSolucionAProblematicaController implements Initializab
         SolucionAProblematicaDAO solucionAProblematica = new SolucionAProblematicaDAO();
         try {
             for(int i=0; i<listProblematicas.size(); i++){
-                solucionAProblematica.updateSolucionAProblematica(i, listProblematicas.get(i).getSolucion().getDescripcion());
+                solucionAProblematica.updateSolucionAProblematica(listProblematicas.get(i).getSolucion().getIdSolucion(), listProblematicas.get(i).getSolucion().getDescripcion());
             }
+            Alerts.showAlert("Finalizado", "Operación realizada con éxito", Alert.AlertType.INFORMATION);
+            Navigator.NavigateToWindow(tbProblematicas.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLModificarSolucionAProblematicaController.class.getName()).log(Level.SEVERE, null, ex);
+            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
     

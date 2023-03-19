@@ -28,12 +28,13 @@ public class ProfesorDAO implements IProfesorDAO {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, numeroDePersonal);
             ResultSet resultSet = statement.executeQuery();
-            
-            profesor.setNumeroDePersonal(resultSet.getInt("numeroDePersonal"));
-            profesor.setNombre(resultSet.getString("nombre"));
-            profesor.setApellidoPaterno("apellidoPaterno");
-            profesor.setApellidoMaterno("apellidoMaterno");
-            profesor.setCorreoElectronicoInstitucional(resultSet.getString("correoElectronicoInstitucional"));
+            if(resultSet.next()){
+                profesor.setNumeroDePersonal(resultSet.getInt("numeroDePersonal"));
+                profesor.setNombre(resultSet.getString("nombre"));
+                profesor.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
+                profesor.setApellidoMaterno(resultSet.getString("apellidoMaterno"));
+                profesor.setCorreoElectronicoInstitucional(resultSet.getString("correoElectronicoInstitucional"));
+            }
         }
 
         return profesor;

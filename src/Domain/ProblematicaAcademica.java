@@ -64,4 +64,31 @@ public class ProblematicaAcademica {
     public String getDescripcionSolucion(){
         return this.solucion.getDescripcion();
     }
+
+    @Override
+    public String toString() {
+        return "ProblematicaAcademica{" + "idProblematica=" + idProblematica + ", descripcion=" + descripcion + ", numeroDeEstudiantesAfectados=" + numeroDeEstudiantesAfectados + ", solucion=" + solucion + '}';
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean isEquals=false;
+        if (object == this) {
+            isEquals=true;
+        }
+        if (object!= null && object instanceof ProblematicaAcademica) {
+            ProblematicaAcademica other = (ProblematicaAcademica) object;
+            isEquals=this.getDescripcion().equals(other.getDescripcion()) &&
+                    this.getNumeroDeEstudiantesAfectados()== other.getNumeroDeEstudiantesAfectados() &&
+                    this.getIdProblematica() == other.getIdProblematica() &&
+                    this.getDescripcionSolucion().equals(other.getDescripcionSolucion());
+        }
+        return isEquals;
+    }
 }
