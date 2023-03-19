@@ -33,8 +33,8 @@ public class DataBaseConnection {
     private void connect() throws SQLException{
         usuarioDB = obtenerUsuarioDB.getUser();
         connection=DriverManager.getConnection(DB,usuarioDB.getUser(),usuarioDB.getPassword());
-        System.out.println("C" + usuarioDB.getUser());
-        System.out.println("C" + usuarioDB.getPassword());
+        //System.out.println("C" + usuarioDB.getUser());
+        //System.out.println("C" + usuarioDB.getPassword());
     }
 
     public void closeConection(){

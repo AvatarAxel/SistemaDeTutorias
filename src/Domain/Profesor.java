@@ -65,6 +65,33 @@ public class Profesor {
     public void setCorreoElectronicoInstitucional(String correoElectronicoInstitucional) {
         this.correoElectronicoInstitucional = correoElectronicoInstitucional;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Profesor{" + "numeroDePersonal=" + numeroDePersonal + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correoElectronicoInstitucional=" + correoElectronicoInstitucional + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean isEquals=false;
+        if (object == this) {
+            isEquals=true;
+        }
+        if (object!= null && object instanceof Profesor) {
+            Profesor other = (Profesor) object;
+            isEquals=this.getNombre().equals(other.getNombre()) &&
+                    this.getApellidoPaterno().equals(other.getApellidoPaterno()) &&
+                    this.getApellidoMaterno().equals(other.getApellidoMaterno()) &&
+                    this.getNumeroDePersonal() == other.getNumeroDePersonal() &&
+                    this.getCorreoElectronicoInstitucional().equals(other.getCorreoElectronicoInstitucional());
+        }
+        return isEquals;
+    }
+           
 }

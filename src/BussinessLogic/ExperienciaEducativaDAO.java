@@ -17,24 +17,30 @@ import java.sql.SQLException;
 public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
 
     @Override
-    public int uploadAcademicOffer(ExperienciaEducativa experienciaEduvcativa) throws SQLException {
+    public int uploadAcademicOffer(ExperienciaEducativa experienciaEducativa) throws SQLException {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         
         int result = 0;
 
         if(connection != null){
-            String query = ("INSERT INTO problematicaacademica "
-                        + "(nrc, nombre, seccion, modalidad) "
-                        + "VALUES (?, ?, ?, ?)");
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, experienciaEduvcativa.getNrc());
-            statement.setString(2, experienciaEduvcativa.getNombre());
-            statement.setString(3, experienciaEduvcativa.getSeccion());
-            statement.setString(4, experienciaEduvcativa.getModalidad());
+            if(experienciaEducativa != null){
+                String query = ("INSERT INTO experiencias_educativas "
+                            + "(nrc, nombre, seccion, modalidad, Clave) "
+                            + "VALUES (?, ?, ?, ?, ?)");
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, experienciaEducativa.getNrc());
+                statement.setString(2, experienciaEducativa.getNombre());
+                statement.setString(3, experienciaEducativa.getSeccion());
+                statement.setString(4, experienciaEducativa.getModalidad());
+                statement.setString(5, experienciaEducativa.getClave());
+
+                int affectedRows = statement.executeUpdate();
+                result = (affectedRows == 1) ? 1 : 0;
+            }else{
+                result = 0;
+            }
             
-            int affectedRows = statement.executeUpdate();
-            result = (affectedRows == 1) ? 1 : 0;
             connection.close();
         }
         

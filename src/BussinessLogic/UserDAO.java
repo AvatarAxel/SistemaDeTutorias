@@ -27,9 +27,5 @@ public class UserDAO implements IUserDAO{
         ResultSet resultSet = statement.executeQuery();
         
         return user;
-    }
-    
-    
-    
-    
+    }    
 }
