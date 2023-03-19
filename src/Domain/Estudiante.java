@@ -12,17 +12,15 @@ public class Estudiante {
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
-    private String correoElectronicoInstitucional;
     private String Matricula;
 
     public Estudiante() {
     }
 
-    public Estudiante(String nombre, String apellidoPaterno, String apellidoMaterno, String correoElectronicoInstitucional, String Matricula) {
+    public Estudiante(String nombre, String apellidoPaterno, String apellidoMaterno, String Matricula) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
-        this.correoElectronicoInstitucional = correoElectronicoInstitucional;
         this.Matricula = Matricula;
     }
         
@@ -37,11 +35,7 @@ public class Estudiante {
     public String getApellidoMaterno() {
         return apellidoMaterno;
     }
-
-    public String getCorreoElectronicoInstitucional() {
-        return correoElectronicoInstitucional;
-    }
-
+    
     public String getMatricula() {
         return Matricula;
     }
@@ -56,10 +50,6 @@ public class Estudiante {
 
     public void setApellidoMaterno(String apellidoMaterno) {
         this.apellidoMaterno = apellidoMaterno;
-    }
-
-    public void setCorreoElectronicoInstitucional(String correoElectronicoInstitucional) {
-        this.correoElectronicoInstitucional = correoElectronicoInstitucional;
     }
 
     public void setMatricula(String Matricula) {

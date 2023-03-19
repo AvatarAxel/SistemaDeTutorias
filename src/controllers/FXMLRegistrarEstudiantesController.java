@@ -8,8 +8,6 @@ import BussinessLogic.EstudianteDAO;
 import Domain.Estudiante;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Locale;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -40,8 +37,7 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
     @FXML
     private TextField textApellidoMaterno;
     @FXML
-    private TextField textMatricula;    
-    private int maxLengthNombreOrApellidos = 30;
+    private TextField textMatricula;
     private boolean[] validationTextFields = {false, false, false, false, false};
     private Pattern validateCharacter = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$");
     private Pattern validateCharacterMatricula = Pattern.compile("^[sS]\\d{8}$");

@@ -24,7 +24,7 @@ public class SistemaDeTutorias extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/GUI/FXMLRegistrarTutorAcademico.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/GUI/FXMLLogin.fxml"));
         
         Scene scene = new Scene(root);
         

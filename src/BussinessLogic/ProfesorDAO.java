@@ -5,14 +5,11 @@
 package BussinessLogic;
 
 import Domain.Profesor;
-import com.mysql.cj.util.Util;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javafx.scene.control.Alert;
-import util.Alerts;
 
 /**
  *
@@ -64,4 +61,22 @@ public class ProfesorDAO implements IProfesorDAO {
         return profesor;
     }
     
+    public boolean setTutorRegister(int numeroDePersonal) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String query = ("UPDATE `profesores` SET `esRegistrado` = '1' WHERE (`numeroDePersonal` = ?);");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, numeroDePersonal);
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }
+
 }

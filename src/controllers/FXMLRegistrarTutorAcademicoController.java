@@ -5,7 +5,10 @@
 package controllers;
 
 import BussinessLogic.ProfesorDAO;
+import BussinessLogic.TutorAcademicoDAO;
+import BussinessLogic.UserDAO;
 import Domain.Profesor;
+import Domain.TutorAcademico;
 import static java.lang.Integer.parseInt;
 import java.net.URL;
 import java.sql.SQLException;
@@ -25,6 +28,8 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import util.Alerts;
+import util.Email;
+import util.Random;
 
 /**
  * FXML Controller class
@@ -43,7 +48,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
     private Label labelNumeroDePersonal;
     @FXML    
     private TextField textFieldSearchProfesores;
-    private boolean validateFieldSearchField = false;    
+    private boolean validateFieldSearchField = false;
     private Pattern validateCharacterNumeroPersonal = Pattern.compile("^[0-9]{5}$");
     @FXML
     private Label labelError;
@@ -80,6 +85,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
                 labelApellidoMaterno.setText(profesor.getApellidoMaterno());
                 labelCorreoInstitucional.setText(profesor.getCorreoElectronicoInstitucional());
                 labelNumeroDePersonal.setText(profesor.getNumeroDePersonal() + "");
+                buttonRegister.setDisable(false);
             } else {
                 Alerts.showAlert("Aviso", "No hay registros", Alert.AlertType.INFORMATION);
             }
@@ -95,6 +101,10 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
 
     @FXML
     private void buttonRegisterAction(ActionEvent event) {
+        Optional<ButtonType> result = Alerts.showAlert("Confirmación", "¿Seguro de realizar dicha acción?", Alert.AlertType.CONFIRMATION);
+        if (result.get() == ButtonType.OK) {
+            registerTutor();
+        }
     }
 
     @FXML
@@ -105,10 +115,9 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
             validateFieldSearchField = false;
         } else {
             labelError.setText("");
-            validateFieldSearchField = true;            
+            validateFieldSearchField = true;
         }
         buttonSearch.setDisable(!validateFieldSearchField);
-        buttonRegister.setDisable(!validateFieldSearchField);
     }
     
     @FXML
@@ -131,6 +140,38 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
         labelApellidoMaterno.setText("");
         labelCorreoInstitucional.setText("");
         labelNumeroDePersonal.setText("");
+    }
+    
+    private void registerTutor() {
+        Random randomPassword = new Random();
+        TutorAcademico tutorAcademico = new TutorAcademico();
+        tutorAcademico.setNombre(labelNombre.getText());
+        tutorAcademico.setApellidoPaterno(labelApellidoMaterno.getText());
+        tutorAcademico.setApellidoMaterno(labelApellidoMaterno.getText());
+        tutorAcademico.setContraseña(randomPassword.passwordGenerator());
+        tutorAcademico.setCorreoElectronicoInstitucional(labelCorreoInstitucional.getText());
+        tutorAcademico.setNumeroDePersonal(parseInt(labelNumeroDePersonal.getText()));
+        try {
+            TutorAcademicoDAO tutorAcademicoDao = new TutorAcademicoDAO();            
+            UserDAO userDao = new UserDAO();
+            boolean result = tutorAcademicoDao.setTutorRegister(tutorAcademico);
+            boolean resultAssignment = userDao.setRolUserTutor(parseInt(labelNumeroDePersonal.getText()));
+            if (result && resultAssignment) {
+                ProfesorDAO profesorDao = new ProfesorDAO();
+                if (profesorDao.setTutorRegister(parseInt(labelNumeroDePersonal.getText()))) {                    
+                    Email emailService = new Email();
+                    emailService.sendEmailNewUser(tutorAcademico.getContraseña(), tutorAcademico.getContraseña());
+                    Alerts.showAlert("Aviso", "Registro realizado con éxito", Alert.AlertType.INFORMATION);
+                }
+            }
+        } catch (SQLException e) {
+            Alerts.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+        }
+        clearLabels();
+        textFieldSearchProfesores.setText("");
+        buttonRegister.setDisable(true);
+        buttonSearch.setDisable(true);
+        validateFieldSearchField = false;
     }
     
     private void closeWindow() {
