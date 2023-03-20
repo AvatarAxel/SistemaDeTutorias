@@ -15,5 +15,6 @@ import java.util.ArrayList;
 public interface IExperiencaEducativaDAO {
     
     public int uploadAcademicOffer(ExperienciaEducativa experienciaEducativa) throws SQLException;
+    public ExperienciaEducativa consultExperiencias()throws SQLException;
     
 }
