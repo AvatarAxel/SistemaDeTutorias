@@ -4,8 +4,8 @@
  */
 package controllers;
 
+import BussinessLogic.ProblematicaAcademicaDAO;
 import BussinessLogic.ReporteDeTutoriaAcademicaDAO;
-import BussinessLogic.TutoriaAcademicaDAO;
 import Domain.ProblematicaAcademica;
 import Domain.ReporteDeTutoriaAcademica;
 import Domain.TutoriaAcademica;
@@ -19,15 +19,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import singleton.SingletonTutoriaAcademica;
 import util.Alerts;
-import util.Navigator;
 
 /**
  * FXML Controller class
@@ -63,7 +60,7 @@ public class FXMLReporteGeneralController implements Initializable {
     private ObservableList<ProblematicaAcademica> listProblematicasAcademicas;
     private ObservableList<ReporteDeTutoriaAcademica> listReportesDeTutoria;
     @FXML
-    private TableView<?> tableProblematicasTutorias;
+    private TableView<ProblematicaAcademica> tableProblematicasTutorias;
     @FXML
     private TableView<ReporteDeTutoriaAcademica> tableReportes;
     private TutoriaAcademica tutoriaAcademica;
@@ -73,6 +70,7 @@ public class FXMLReporteGeneralController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configureTableComentariosGenerales();
+        configureTableProblematicas();
     }    
 
     @FXML
@@ -85,11 +83,11 @@ public class FXMLReporteGeneralController implements Initializable {
         closeWindow();
     }
     
-    private void configureTableProblematicas() {
-        columExperienciaEducativa.setCellValueFactory(new PropertyValueFactory(""));
-        columProfesores.setCellValueFactory(new PropertyValueFactory(""));
-        columProblematicaAcademicas.setCellValueFactory(new PropertyValueFactory(""));
-        columCantidadAlumnos.setCellValueFactory(new PropertyValueFactory(""));
+    private void configureTableProblematicas() {        
+        columExperienciaEducativa.setCellValueFactory(new PropertyValueFactory("ExperienciaEducativaAndNRC"));
+        columProfesores.setCellValueFactory(new PropertyValueFactory("nombreCompletoProfesor"));
+        columProblematicaAcademicas.setCellValueFactory(new PropertyValueFactory("Descripcion"));
+        columCantidadAlumnos.setCellValueFactory(new PropertyValueFactory("NumeroDeEstudiantesAfectados"));
         listProblematicasAcademicas = FXCollections.observableArrayList();
     }
     
@@ -110,6 +108,20 @@ public class FXMLReporteGeneralController implements Initializable {
             Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
+    
+    private void loadInformationProblematicas() {
+        try {
+            ProblematicaAcademicaDAO problematicaAcademicaDao = new ProblematicaAcademicaDAO();
+            ArrayList<ProblematicaAcademica> listProblematicasRecived = new ArrayList<>();
+            for (int i = 0; i < listReportesDeTutoria.size(); i++) {
+                listProblematicasRecived = problematicaAcademicaDao.getProblematicasByReporte(listReportesDeTutoria.get(i).getIdReporteTutoria());                
+                listProblematicasAcademicas.addAll(listProblematicasRecived);
+            }
+            tableProblematicasTutorias.setItems(listProblematicasAcademicas);
+        } catch (SQLException sqle) {
+            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+        }
+    }
 
     public void receiveTutoriaAcademica(TutoriaAcademica tutoriaAcademicaRecived) {
         tutoriaAcademica = tutoriaAcademicaRecived;
@@ -117,10 +129,11 @@ public class FXMLReporteGeneralController implements Initializable {
     }
     
     public void configureScene(){
-        labelPeriodo.setText(tutoriaAcademica.getFechaInicio()+" - "+tutoriaAcademica.getFechaFin());        
+        labelFecha.setText(tutoriaAcademica.getFechaInicio()+" - "+tutoriaAcademica.getFechaFin());        
         labelNumeroSesion.setText(" - "+tutoriaAcademica.getNumeroDeSesion());
         labelProgramaEducativo.setText("Ingenieria de software");
         loadInformationComentariosGenerales();
+        loadInformationProblematicas();
     }
     
     private void closeWindow(){

@@ -64,7 +64,7 @@ public class FXMLLoginController implements Initializable {
     }
     
     private void doLogin(String username, String password){
-        //Conexión con la base de datos para iniciar sesión
+        //Conexión con la base de datos para iniciar sesión        
         if(true){//Reemplazar el true por el resultado de la consulta
             Navigator.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
         }else{

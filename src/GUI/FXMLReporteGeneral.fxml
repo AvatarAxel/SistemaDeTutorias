@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="622.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLReporteGeneralController">
+<AnchorPane id="AnchorPane" prefHeight="622.0" prefWidth="960.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLReporteGeneralController">
     <stylesheets>
         <URL value="@/styles/globalStyles.css" />
     </stylesheets>
@@ -16,31 +16,31 @@
         <Label layoutX="19.0" layoutY="48.0" text="Periodo:" />
         <Label layoutX="18.0" layoutY="76.0" text="Total de alumnos registrados:" />
         <Label layoutX="20.0" layoutY="104.0" text="Total de alumnos que aistieron:" />
-        <Label layoutX="389.0" layoutY="20.0" text="No, De sesión:" />
-        <Label layoutX="389.0" layoutY="48.0" text="Fecha:" />
+        <Label layoutX="643.0" layoutY="20.0" text="No, De sesión:" />
+        <Label layoutX="643.0" layoutY="58.0" text="Fecha:" />
         <Label layoutX="20.0" layoutY="135.0" text="Problematicas academicas reportadas por los alumnos" />
-        <TableView fx:id="tableProblematicasTutorias" layoutX="18.0" layoutY="154.0" prefHeight="165.0" prefWidth="558.0">
+        <TableView fx:id="tableProblematicasTutorias" layoutX="18.0" layoutY="154.0" prefHeight="165.0" prefWidth="885.0">
             <columns>
-                <TableColumn fx:id="columExperienciaEducativa" prefWidth="152.0" text="Experiencias Educativas" />
-                <TableColumn fx:id="columProfesores" prefWidth="128.0" text="Profesores" />
-                <TableColumn fx:id="columProblematicaAcademicas" prefWidth="170.0" text="Problematicas Academicas" />
-                <TableColumn fx:id="columCantidadAlumnos" prefWidth="107.0" text="Cant. Alumnos" />
+                <TableColumn fx:id="columExperienciaEducativa" prefWidth="197.0" text="Experiencias Educativas" />
+                <TableColumn fx:id="columProfesores" prefWidth="175.0" text="Profesores" />
+                <TableColumn fx:id="columProblematicaAcademicas" prefWidth="407.0" text="Problematicas Academicas" />
+                <TableColumn fx:id="columCantidadAlumnos" prefWidth="105.0" text="Cant. Alumnos" />
             </columns>
         </TableView>
         <Label layoutX="19.0" layoutY="333.0" text="Lista de Comentarios generales " />
-        <TableView fx:id="tableReportes" layoutX="18.0" layoutY="352.0" prefHeight="200.0" prefWidth="558.0" style="-fx-alignment: CENTER-LEFT; -fx-wrap-text: true;">
+        <TableView fx:id="tableReportes" layoutX="18.0" layoutY="352.0" prefHeight="200.0" prefWidth="885.0" style="-fx-alignment: CENTER-LEFT; -fx-wrap-text: true;">
             <columns>
-                <TableColumn fx:id="columTutores" prefWidth="176.0" text="Nombre de los tutores" style="-fx-alignment: CENTER-LEFT; -fx-wrap-text: true;"/>
-                <TableColumn fx:id="columComentarios" prefWidth="381.0" text="Comentarios" style="-fx-alignment: CENTER-LEFT; -fx-wrap-text: true;" />
+                <TableColumn fx:id="columTutores" prefWidth="214.0" style="-fx-alignment: CENTER-LEFT; -fx-wrap-text: true;" text="Nombre de los tutores" />
+                <TableColumn fx:id="columComentarios" prefWidth="670.0" style="-fx-alignment: CENTER-LEFT; -fx-wrap-text: true;" text="Comentarios" />
             </columns>
         </TableView>
-        <Button layoutX="384.0" layoutY="567.0" mnemonicParsing="false" onAction="#buttonDescargarPDF" text="Descargar PDF" />
-        <Button layoutX="511.0" layoutY="567.0" mnemonicParsing="false" onAction="#buttonSalir" prefHeight="29.0" prefWidth="65.0" text="Salir" />
+        <Button layoutX="711.0" layoutY="573.0" mnemonicParsing="false" onAction="#buttonDescargarPDF" text="Descargar PDF" />
+        <Button layoutX="838.0" layoutY="573.0" mnemonicParsing="false" onAction="#buttonSalir" prefHeight="29.0" prefWidth="65.0" text="Salir" />
         <Label fx:id="labelProgramaEducativo" layoutX="155.0" layoutY="20.0" prefHeight="19.0" prefWidth="183.0" />
         <Label fx:id="labelPeriodo" layoutX="74.0" layoutY="48.0" prefHeight="19.0" prefWidth="226.0" />
         <Label fx:id="LabelTotalAlumnosResgistrados" layoutX="212.0" layoutY="76.0" prefHeight="19.0" prefWidth="162.0" />
         <Label fx:id="labelTotalAlumnos" layoutX="220.0" layoutY="104.0" prefHeight="19.0" prefWidth="150.0" />
-        <Label fx:id="labelNumeroSesion" layoutX="482.0" layoutY="20.0" prefHeight="19.0" prefWidth="88.0" />
-        <Label fx:id="labelFecha" layoutX="438.0" layoutY="48.0" prefHeight="19.0" prefWidth="134.0" />
+        <Label fx:id="labelNumeroSesion" layoutX="766.0" layoutY="20.0" prefHeight="19.0" prefWidth="88.0" />
+        <Label fx:id="labelFecha" layoutX="713.0" layoutY="58.0" prefHeight="19.0" prefWidth="214.0" />
     </children>
 </AnchorPane>

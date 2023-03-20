@@ -4,7 +4,9 @@
  */
 package BussinessLogic;
 
+import Domain.ExperienciaEducativa;
 import Domain.ProblematicaAcademica;
+import Domain.Profesor;
 import Domain.SolucionAProblematica;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
@@ -80,5 +82,42 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
         
         return listProblematicasAcademicas;
     }
+    
+    public ArrayList<ProblematicaAcademica> getProblematicasByReporte(int idReporteTutoria) throws SQLException {
+        ArrayList <ProblematicaAcademica> listProblematicaAcademica = new ArrayList<>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String query = ("SELECT p.idProblematica, p.descripcion, p.numeroDeEstudiantesAfectados, \n"
+                    + "    e.nrc, e.nombre as nombreExperiencia, \n"
+                    + "    pr.nombre, pr.apellidoPaterno, pr.apellidoMaterno\n"
+                    + "FROM problematicas_academicas p\n"
+                    + "INNER JOIN experiencias_educativas e ON p.nrc = e.nrc\n"
+                    + "INNER JOIN profesores pr ON e.numeroDePersonal = pr.numeroDePersonal\n"
+                    + "WHERE p.idReporteTutoria = ?;");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, idReporteTutoria);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                ProblematicaAcademica  problematicaAcademica = new ProblematicaAcademica();
+                Profesor profesor = new Profesor();                
+                ExperienciaEducativa experienciaEducativa = new ExperienciaEducativa();
+                experienciaEducativa.setNombre(resultSet.getString("nombreExperiencia"));
+                experienciaEducativa.setNrc(resultSet.getString("nrc"));
+                profesor.setNombre(resultSet.getString("nombre"));
+                profesor.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
+                profesor.setApellidoMaterno(resultSet.getString("apellidoMaterno"));
+                problematicaAcademica.setProfesor(profesor);
+                problematicaAcademica.setExperienciaEducativa(experienciaEducativa);
+                problematicaAcademica.setSolucion(new SolucionAProblematica(0,""));
+                problematicaAcademica.setDescripcion(resultSet.getString("descripcion"));
+                problematicaAcademica.setNumeroDeEstudiantesAfectados(resultSet.getInt("numeroDeEstudiantesAfectados"));                
+                listProblematicaAcademica.add(problematicaAcademica);
+            }
+        }
+        connection.close();
+        return listProblematicaAcademica;
+    }        
     
 }

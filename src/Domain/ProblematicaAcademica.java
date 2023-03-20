@@ -13,15 +13,19 @@ public class ProblematicaAcademica {
     private String descripcion;
     private int numeroDeEstudiantesAfectados;
     private SolucionAProblematica solucion = new SolucionAProblematica();
+    private Profesor profesor;
+    private ExperienciaEducativa experienciaEducativa;
 
     public ProblematicaAcademica() {
     }
 
-    public ProblematicaAcademica(int idProblematica, String descripcion, int numeroDeEstudiantesAfectados, SolucionAProblematica solucion) {
+    public ProblematicaAcademica(int idProblematica, String descripcion, int numeroDeEstudiantesAfectados, SolucionAProblematica solucion, Profesor profesor, ExperienciaEducativa experienciaEducativa) {
         this.idProblematica = idProblematica;
         this.descripcion = descripcion;
         this.numeroDeEstudiantesAfectados = numeroDeEstudiantesAfectados;
         this.solucion = solucion;
+        this.profesor = profesor;
+        this.experienciaEducativa = experienciaEducativa;
     }
 
     public ProblematicaAcademica(SolucionAProblematica solucion) {
@@ -65,9 +69,34 @@ public class ProblematicaAcademica {
         return this.solucion.getDescripcion();
     }
 
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
+
+    public ExperienciaEducativa getExperienciaEducativa() {
+        return experienciaEducativa;
+    }
+
+    public void setExperienciaEducativa(ExperienciaEducativa experienciaEducativa) {
+        this.experienciaEducativa = experienciaEducativa;
+    }
+    
+
     @Override
     public String toString() {
         return "ProblematicaAcademica{" + "idProblematica=" + idProblematica + ", descripcion=" + descripcion + ", numeroDeEstudiantesAfectados=" + numeroDeEstudiantesAfectados + ", solucion=" + solucion + '}';
+    }
+    
+    public String getNombreCompletoProfesor(){
+        return profesor.getNombre()+" "+profesor.getApellidoPaterno()+" "+profesor.getApellidoMaterno();
+    }
+    
+    public String getExperienciaEducativaAndNRC(){
+        return experienciaEducativa.getNombre()+" "+experienciaEducativa.getNrc();
     }
     
     @Override

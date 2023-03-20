@@ -70,5 +70,5 @@ public class ExperienciaEducativa {
     public String toString() {
         return "ExperienciaEducativa{" + "nrc=" + nrc + ", nombre=" + nombre + ", seccion=" + seccion + ", modalidad=" + modalidad + '}';
     }
-            
+                           
 }

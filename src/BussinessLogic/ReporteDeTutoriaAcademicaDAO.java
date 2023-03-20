@@ -38,6 +38,7 @@ public class ReporteDeTutoriaAcademicaDAO {
                 ReporteDeTutoriaAcademica  reporteDeTutoriaAcademica = new ReporteDeTutoriaAcademica();
                 TutorAcademico tutorAcademico = new TutorAcademico();
                 reporteDeTutoriaAcademica.setComentariosGenerales(resultSet.getString("comentariosGenerales"));
+                reporteDeTutoriaAcademica.setIdReporteTutoria(resultSet.getInt("idReporteTutoria"));
                 tutorAcademico.setNombre(resultSet.getString("nombre"));
                 tutorAcademico.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
                 tutorAcademico.setApellidoMaterno(resultSet.getString("apellidoMaterno"));                
