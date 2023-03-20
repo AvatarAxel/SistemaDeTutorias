@@ -43,6 +43,12 @@
                   <MenuItem mnemonicParsing="false" onAction="#menuReadOffer" text="Consultar" />
                </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="Registros">
+              <items>
+                  <MenuItem mnemonicParsing="false" onAction="#menuRegistrarEstudiantesAction" text="Registrar Estudiantes" />
+                <MenuItem mnemonicParsing="false" onAction="#menuRegistrarTutorAction" text="Registrar Tutor Academico" />
+              </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="Ayuda">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />

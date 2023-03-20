@@ -29,6 +29,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import util.Alerts;
 import util.Email;
+import util.Navigator;
 import util.Random;
 
 /**
@@ -96,7 +97,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
 
     @FXML
     private void buttonCancel(ActionEvent event) {
-        closeWindow();
+        Navigator.NavigateToWindow(labelApellidoPaterno.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }
 
     @FXML
@@ -174,8 +175,4 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
         validateFieldSearchField = false;
     }
     
-    private void closeWindow() {
-        Stage escenario = (Stage) labelApellidoMaterno.getScene().getWindow();
-        escenario.close();
-    }
 }

@@ -74,6 +74,11 @@ public class TutorAcademico {
     
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
-    }    
+    }        
+    
+    @Override
+    public String toString() {
+        return nombre+" "+apellidoPaterno+" "+apellidoMaterno;
+    }
     
 }

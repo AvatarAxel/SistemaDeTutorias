@@ -41,6 +41,7 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuReadGeneralReport(ActionEvent event) {
+        Navigator.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLConsultarReporteGeneralDeTutoriasAcademicas.fxml", "Reportes Generales de tutorias");        
     }
 
     @FXML
@@ -72,6 +73,16 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuReadOffer(ActionEvent event) {
+    }
+
+    @FXML
+    private void menuRegistrarEstudiantesAction(ActionEvent event) {
+        Navigator.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLRegistrarEstudiantes.fxml", "Registrar Estudiantes");
+    }
+
+    @FXML
+    private void menuRegistrarTutorAction(ActionEvent event) {
+        Navigator.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLRegistrarTutorAcademico.fxml", "Registrar Tutor");
     }
     
 }
