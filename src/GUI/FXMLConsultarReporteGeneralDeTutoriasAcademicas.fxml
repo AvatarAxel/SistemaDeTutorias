@@ -16,7 +16,7 @@
       <Label fx:id="labelProgramaEducativo" layoutX="169.0" layoutY="30.0" prefHeight="19.0" prefWidth="255.0" />
       <TableView fx:id="tableTutoriasAcademicas" layoutX="34.0" layoutY="84.0" prefHeight="200.0" prefWidth="532.0">
         <columns>
-          <TableColumn fx:id="columPeriodos" prefWidth="403.0" text="Periodos">
+          <TableColumn prefWidth="403.0" text="Fechas de tutoria">
                <columns>
                   <TableColumn fx:id="columFechaIncio" prefWidth="218.0" sortType="DESCENDING" text="Fecha Incio" />
                   <TableColumn fx:id="columFechaFin" prefWidth="185.0" text="Fecha Fin" />

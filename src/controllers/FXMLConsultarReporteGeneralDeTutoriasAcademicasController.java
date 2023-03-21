@@ -44,8 +44,6 @@ public class FXMLConsultarReporteGeneralDeTutoriasAcademicasController implement
     @FXML
     private TableView<TutoriaAcademica> tableTutoriasAcademicas;
     @FXML
-    private TableColumn<TutoriaAcademica, ?> columPeriodos;
-    @FXML
     private TableColumn<?, ?> columNumeroDeSesion;
     private ObservableList<TutoriaAcademica> listTutoriasAcademicas;    
     @FXML
@@ -60,6 +58,7 @@ public class FXMLConsultarReporteGeneralDeTutoriasAcademicasController implement
     public void initialize(URL url, ResourceBundle rb) {
         configureTableColumns();
         loadInformation();
+        labelProgramaEducativo.setText("Ingenieria de Software");
     }
 
     @FXML

@@ -1,11 +1,13 @@
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
 package controllers;
 
+import BussinessLogic.PeriodoEscolarDAO;
 import BussinessLogic.ProblematicaAcademicaDAO;
 import BussinessLogic.ReporteDeTutoriaAcademicaDAO;
+import Domain.PeriodoEscolar;
 import Domain.ProblematicaAcademica;
 import Domain.ReporteDeTutoriaAcademica;
 import Domain.TutoriaAcademica;
@@ -74,11 +76,6 @@ public class FXMLReporteGeneralController implements Initializable {
     }    
 
     @FXML
-    private void buttonDescargarPDF(ActionEvent event) {
-        System.out.println(" Descargado ....");
-    }
-
-    @FXML
     private void buttonSalir(ActionEvent event) {
         closeWindow();
     }
@@ -127,18 +124,52 @@ public class FXMLReporteGeneralController implements Initializable {
         tutoriaAcademica = tutoriaAcademicaRecived;
         configureScene();
     }
-    
-    public void configureScene(){
-        labelFecha.setText(tutoriaAcademica.getFechaInicio()+" - "+tutoriaAcademica.getFechaFin());        
-        labelNumeroSesion.setText(" - "+tutoriaAcademica.getNumeroDeSesion());
-        labelProgramaEducativo.setText("Ingenieria de software");
+
+    public void configureScene() {
+        labelFecha.setText(tutoriaAcademica.getFechaInicio() + " - " + tutoriaAcademica.getFechaFin());
+        labelNumeroSesion.setText(" - " + tutoriaAcademica.getNumeroDeSesion());
+        labelProgramaEducativo.setText("Ingenieria de software");        
         loadInformationComentariosGenerales();
         loadInformationProblematicas();
+        loadInformationPeriodo();
+        loadInformationListaDeAsistencias();
+        
+        try {
+            PeriodoEscolar periodoEscolar = new PeriodoEscolar();
+            PeriodoEscolarDAO periodoEscolarDao = new PeriodoEscolarDAO();
+            periodoEscolar = periodoEscolarDao.getPeriodoEscolar(tutoriaAcademica.getIdTutoriaAcademica());
+            labelPeriodo.setText(periodoEscolar.getFechaInicio()+" "+periodoEscolar.getFechaFin());
+        } catch (SQLException sqle) {
+            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+        }
+
     }
-    
+
     private void closeWindow(){
         Stage escenario = (Stage) labelNumeroSesion.getScene().getWindow();
         escenario.close();
     }    
+
+    private void loadInformationPeriodo() {
+        try {
+            PeriodoEscolar periodoEscolar = new PeriodoEscolar();
+            PeriodoEscolarDAO periodoEscolarDao = new PeriodoEscolarDAO();
+            periodoEscolar = periodoEscolarDao.getPeriodoEscolar(tutoriaAcademica.getIdTutoriaAcademica());
+            labelPeriodo.setText(periodoEscolar.getFechaInicio()+" "+periodoEscolar.getFechaFin());
+        } catch (SQLException sqle) {
+            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+        }        
+    }
+
+    private void loadInformationListaDeAsistencias() {
+        int alumnosTotalAsistentes = 0;
+        int alumnosTotalRegistrados = 0;
+        for(int i = 0; i < listReportesDeTutoria.size(); i++){
+            alumnosTotalRegistrados += listReportesDeTutoria.get(i).getNumeroDeAlumnosEnRiesgo();
+            alumnosTotalAsistentes += listReportesDeTutoria.get(i).getNumeroDeTutoradosQueAsistieron();
+        }        
+        LabelTotalAlumnosResgistrados.setText(alumnosTotalRegistrados+"");
+        labelTotalAlumnos.setText(alumnosTotalAsistentes+"");
+    }
 
 }

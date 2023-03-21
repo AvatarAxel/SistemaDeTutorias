@@ -18,17 +18,19 @@ public class ReporteDeTutoriaAcademica {
     private ArrayList<ProblematicaAcademica> problematicas;
     private TutorAcademico tutorAcademico;
     private int idReporteTutoria;
+    private int numeroDeTutoradosQueAsistieron;
 
     public ReporteDeTutoriaAcademica() {
     }
 
-    public ReporteDeTutoriaAcademica(String comentariosGenerales, Date fechaDeEntrega, int numeroDeAlumnosEnRiesgo, ArrayList<ProblematicaAcademica> problematicas, TutorAcademico tutorAcademico, int idReporteTutoria) {
+    public ReporteDeTutoriaAcademica(String comentariosGenerales, Date fechaDeEntrega, int numeroDeAlumnosEnRiesgo, ArrayList<ProblematicaAcademica> problematicas, TutorAcademico tutorAcademico, int idReporteTutoria, int numeroDeTutoradosQueAsistieron) {
         this.comentariosGenerales = comentariosGenerales;
         this.fechaDeEntrega = fechaDeEntrega;
         this.numeroDeAlumnosEnRiesgo = numeroDeAlumnosEnRiesgo;
         this.problematicas = problematicas;
         this.tutorAcademico = tutorAcademico;
         this.idReporteTutoria = idReporteTutoria;
+        this.numeroDeTutoradosQueAsistieron = numeroDeTutoradosQueAsistieron;
     }
 
     public String getComentariosGenerales() {
@@ -78,5 +80,21 @@ public class ReporteDeTutoriaAcademica {
     public void setIdReporteTutoria(int idReporteTutoria) {
         this.idReporteTutoria = idReporteTutoria;
     }
-            
+
+    public TutorAcademico getTutorAcademico() {
+        return tutorAcademico;
+    }
+
+    public void setTutorAcademico(TutorAcademico tutorAcademico) {
+        this.tutorAcademico = tutorAcademico;
+    }
+
+    public int getNumeroDeTutoradosQueAsistieron() {
+        return numeroDeTutoradosQueAsistieron;
+    }
+
+    public void setNumeroDeTutoradosQueAsistieron(int numeroDeTutoradosQueAsistieron) {
+        this.numeroDeTutoradosQueAsistieron = numeroDeTutoradosQueAsistieron;
+    }
+                    
 }
