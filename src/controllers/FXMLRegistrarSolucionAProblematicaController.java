@@ -59,7 +59,7 @@ public class FXMLRegistrarSolucionAProblematicaController implements Initializab
 
     private void configureTableColumns() {
         colDescripcion.setCellValueFactory (new PropertyValueFactory ("descripcion"));
-        colNumeroAlumnos.setCellValueFactory (new PropertyValueFactory ("numeroAlumnos"));
+        colNumeroAlumnos.setCellValueFactory (new PropertyValueFactory ("numeroDeEstudiantesAfectados"));
         colSolucion.setCellValueFactory (new PropertyValueFactory ("solucion"));
         listProblematicas = FXCollections.observableArrayList();
     }
