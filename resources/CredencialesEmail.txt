@@ -1,22 +1,2 @@
-class My.Application : Adw.Application {
-    public Application () {
-        Object (application_id: "com.example.Application");
-    }
-
-    protected override void activate () {
-        // create a Gtk Window belonging to the application itself
-        var window = new Gtk.ApplicationWindow (this) {
-          title = "Welcome to GNOME"
-        };
-        window.present ();
-    }
-
-    /*
-     * create and run the application, exit with the value returned by
-     * running the program
-     */
-    public static int main (string[] args) {
-        var app = new My.Application ();
-        return app.run (args);
-    }
-}
+tutorias-fei@outlook.com
+=sOK-I~z=e|kVgIBN-
