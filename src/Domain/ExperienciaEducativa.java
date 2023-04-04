@@ -14,6 +14,8 @@ public class ExperienciaEducativa {
     private String seccion;
     private String modalidad;
     private String clave;
+    private String profesorNombre;
+    
     
     public ExperienciaEducativa() {
     }
@@ -25,6 +27,21 @@ public class ExperienciaEducativa {
         this.modalidad = modalidad;
         this.clave = clave;
     }
+
+    public ExperienciaEducativa(String nrc, String profesorNombre,String nombre) {
+        this.nrc = nrc;
+        this.profesorNombre = profesorNombre;
+        this.nombre=nombre;
+    }
+
+    public String getProfesorNombre() {
+        return profesorNombre;
+    }
+
+    public void setProfesorNombre(String profesorNombre) {
+        this.profesorNombre = profesorNombre;
+    }
+    
 
     public String getNrc() {
         return nrc;
@@ -68,7 +85,10 @@ public class ExperienciaEducativa {
 
     @Override
     public String toString() {
-        return "ExperienciaEducativa{" + "nrc=" + nrc + ", nombre=" + nombre + ", seccion=" + seccion + ", modalidad=" + modalidad + '}';
+        return    profesorNombre + " - nrc=" + nrc;
     }
+
+ 
+   
             
 }

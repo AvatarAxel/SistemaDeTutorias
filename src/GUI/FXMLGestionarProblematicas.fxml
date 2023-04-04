@@ -12,21 +12,20 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="849.0" prefWidth="648.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLGestionarProblematicasController">
+<AnchorPane id="AnchorPane" prefHeight="828.0" prefWidth="647.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLGestionarProblematicasController">
    <children>
       <TableView fx:id="tblProblematicas" layoutX="65.0" layoutY="84.0" prefHeight="190.0" prefWidth="511.0">
         <columns>
-          <TableColumn fx:id="clm_IdProblematica" prefWidth="85.99999237060547" text="#Problemática" />
-          <TableColumn fx:id="clm_Hd" prefWidth="136.6667022705078" text="Título" />
-            <TableColumn fx:id="clm_Experiencia" prefWidth="120.0" text="Experiencia E." />
-            <TableColumn fx:id="clm_Profesor" prefWidth="167.99998982747394" text="Profesor" />
-            <TableColumn fx:id="clm_Descrip" prefWidth="167.99998982747394" text="Descrip" />
+          <TableColumn fx:id="clm_IdProblematica" minWidth="4.6666259765625" prefWidth="94.66668701171875" text="IdProblemática" />
+          <TableColumn fx:id="clm_Hd" prefWidth="181.99993896484375" text="Título" />
+            <TableColumn fx:id="clm_Experiencia" prefWidth="128.0" text="Experiencia E." />
+            <TableColumn fx:id="clm_Profesor" prefWidth="108.6666259765625" text="Profesor" />
             <TableColumn fx:id="clm_numReportes" prefWidth="167.99998982747394" text="numReportes" />
         </columns>
       </TableView>
       <Button fx:id="btn_ModifyE" layoutX="242.0" layoutY="292.0" mnemonicParsing="false" onAction="#modifyEnviromentOn" prefHeight="25.0" prefWidth="59.0" text="Editar" />
-      <Button fx:id="btn_Delete" layoutX="344.0" layoutY="739.0" mnemonicParsing="false" onAction="#deleteEnviromentOn" prefHeight="25.0" prefWidth="59.0" text="Eliminar" />
-      <Button fx:id="btn_Update" layoutX="499.0" layoutY="739.0" mnemonicParsing="false" onAction="#updateProblematica" prefHeight="20.0" prefWidth="73.0" text="Guardar" />
+      <Button fx:id="btn_Delete" layoutX="61.0" layoutY="739.0" mnemonicParsing="false" onAction="#deleteEnviromentOn" prefHeight="25.0" prefWidth="78.0" text="Eliminar" visible="false" />
+      <Button fx:id="btn_Update" layoutX="499.0" layoutY="739.0" mnemonicParsing="false" onAction="#updateProblematica" prefHeight="20.0" prefWidth="73.0" text="Actualizar" visible="false" />
       <Label layoutX="117.0" layoutY="35.0" text="Gestión de Problemáticas Académicas">
          <font>
             <Font name="System Bold" size="24.0" />
@@ -42,8 +41,8 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <ComboBox fx:id="cbx_EE" layoutX="206.0" layoutY="357.0" prefWidth="150.0" />
-      <ComboBox fx:id="cmb_Profesor" layoutX="206.0" layoutY="398.0" prefWidth="150.0" />
+      <ComboBox fx:id="cmb_EE" layoutX="206.0" layoutY="357.0" prefHeight="25.0" prefWidth="205.0" />
+      <ComboBox fx:id="cmb_Profesor" layoutX="206.0" layoutY="398.0" prefHeight="25.0" prefWidth="205.0" />
       <Line endX="433.6666259765625" fill="BLACK" layoutX="145.0" layoutY="333.0" startX="-81.66667175292969" strokeWidth="3.5" />
       <Label fx:id="lbl_Header" layoutX="65.0" layoutY="453.0" text="Título">
          <font>
@@ -55,21 +54,19 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TextArea fx:id="txt_" layoutX="62.0" layoutY="521.0" prefHeight="200.0" prefWidth="511.0" />
+      <TextArea fx:id="txt_descrip" layoutX="62.0" layoutY="515.0" prefHeight="200.0" prefWidth="511.0" />
       <TextField fx:id="txt_Title" layoutX="207.0" layoutY="450.0" prefHeight="25.0" prefWidth="367.0" />
-      <Label fx:id="lbl_NumReportados" layoutX="374.0" layoutY="361.0" text="#Reportados">
+      <Label fx:id="lbl_NumReportados" layoutX="457.0" layoutY="361.0" text="#Reportados">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="btn_Save" layoutX="462.0" layoutY="796.0" mnemonicParsing="false" onAction="#saveChanges" prefHeight="25.0" prefWidth="113.0" text="Finalizar" />
-      <Button fx:id="btn_Cancel" layoutX="71.0" layoutY="796.0" mnemonicParsing="false" onAction="#cancelChanges" prefHeight="25.0" prefWidth="113.0" text="Cancelar" />
-      <Spinner fx:id="spn_numReportados" layoutX="462.0" layoutY="357.0" prefHeight="20.0" prefWidth="113.0" />
+      <Spinner fx:id="spn_numReportados" layoutX="442.0" layoutY="401.0" prefHeight="20.0" prefWidth="113.0" />
       <Button fx:id="btn_more" layoutX="330.0" layoutY="291.0" mnemonicParsing="false" onAction="#cleanFields" prefHeight="25.0" prefWidth="52.0" text="+">
          <font>
-            <Font size="13.0" />
+            <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btn_add" layoutX="413.0" layoutY="739.0" mnemonicParsing="false" onAction="#addProblematica" prefHeight="25.0" prefWidth="78.0" text="Añadir" />
+      <Button fx:id="btn_add" layoutX="497.0" layoutY="739.0" mnemonicParsing="false" onAction="#addProblematica" prefHeight="25.0" prefWidth="78.0" text="Añadir" visible="false" />
    </children>
 </AnchorPane>

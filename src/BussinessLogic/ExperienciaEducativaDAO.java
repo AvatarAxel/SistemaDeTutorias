@@ -8,7 +8,9 @@ import Domain.ExperienciaEducativa;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -48,8 +50,26 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
     }
 
     @Override
-    public ExperienciaEducativa consultExperiencias() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ArrayList<String> consultExperienciasName() throws SQLException {
+        ArrayList<String> experienciasNames = new ArrayList<String>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query="select distinct nombre from experiencias_educativas";
+        PreparedStatement statement = connection.prepareStatement(query);
+        ResultSet resultSet=statement.executeQuery();
+        if (resultSet.next()){
+            String experiencia;
+            do{
+            experiencia=resultSet.getString("Nombre");
+            experienciasNames.add(experiencia);
+            
+            }while(resultSet.next());
+         }
+        return experienciasNames;
+         
     }
+
+  
+   
     
 }

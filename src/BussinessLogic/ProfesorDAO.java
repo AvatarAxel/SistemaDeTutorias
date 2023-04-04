@@ -4,12 +4,14 @@
  */
 package BussinessLogic;
 
+import Domain.ExperienciaEducativa;
 import Domain.Profesor;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -38,6 +40,32 @@ public class ProfesorDAO implements IProfesorDAO {
         }
         
         return profesor;
+    }
+
+    @Override
+    public ArrayList<ExperienciaEducativa> consultProfesoresNames() throws SQLException {
+    ArrayList<ExperienciaEducativa> profesoresNames = new ArrayList<ExperienciaEducativa>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query="select CONCAT(p.nombre,' ', p.apellidoPaterno,' ', p.apellidoMaterno) as profesorname, ee.nrc, ee.nombre from profesores p inner join experiencias_educativas ee on \n" +
+        "p.numeroDePersonal=ee.numeroDePersonal" ;
+        PreparedStatement statement = connection.prepareStatement(query);
+        //statement.setString(1, experienciaName);
+        ResultSet resultSet=statement.executeQuery();
+        if (resultSet.next()){
+            String profesorName;
+            String nrc;
+            String nombre;
+            do{
+            profesorName=resultSet.getString("profesorname");
+            nrc=resultSet.getString("nrc");
+            nombre=resultSet.getString("nombre");
+            ExperienciaEducativa experienciaProfesor= new ExperienciaEducativa(nrc,profesorName,nombre);
+            profesoresNames.add(experienciaProfesor);
+            
+            }while(resultSet.next());
+         }
+        return profesoresNames;    
     }
     
 }
