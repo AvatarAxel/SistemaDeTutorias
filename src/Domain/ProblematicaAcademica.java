@@ -19,19 +19,16 @@ public class ProblematicaAcademica {
     public ProblematicaAcademica() {
     }
 
-    public ProblematicaAcademica(int idProblematica, String descripcion, int numeroDeEstudiantesAfectados, SolucionAProblematica solucion, Profesor profesor, ExperienciaEducativa experienciaEducativa) {
+    public ProblematicaAcademica(int idProblematica, String descripcion, int numeroDeEstudiantesAfectados, SolucionAProblematica solucion) {
         this.idProblematica = idProblematica;
         this.descripcion = descripcion;
         this.numeroDeEstudiantesAfectados = numeroDeEstudiantesAfectados;
         this.solucion = solucion;
-        this.profesor = profesor;
-        this.experienciaEducativa = experienciaEducativa;
     }
 
     public ProblematicaAcademica(SolucionAProblematica solucion) {
         this.solucion = solucion;
     }
-    
 
     public int getIdProblematica() {
         return idProblematica;

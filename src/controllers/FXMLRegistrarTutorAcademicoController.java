@@ -27,9 +27,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import util.Alerts;
+import util.AlertManager;
 import util.Email;
-import util.Navigator;
+import util.WindowManager;
 import util.Random;
 
 /**
@@ -88,21 +88,21 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
                 labelNumeroDePersonal.setText(profesor.getNumeroDePersonal() + "");
                 buttonRegister.setDisable(false);
             } else {
-                Alerts.showAlert("Aviso", "No hay registros", Alert.AlertType.INFORMATION);
+                AlertManager.showAlert("Aviso", "No hay registros", Alert.AlertType.INFORMATION);
             }
         } catch (SQLException e) {
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
         }
     }
 
     @FXML
     private void buttonCancel(ActionEvent event) {
-        Navigator.NavigateToWindow(labelApellidoPaterno.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+        WindowManager.NavigateToWindow(labelApellidoPaterno.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }
 
     @FXML
     private void buttonRegisterAction(ActionEvent event) {
-        Optional<ButtonType> result = Alerts.showAlert("Confirmación", "¿Seguro de realizar dicha acción?", Alert.AlertType.CONFIRMATION);
+        Optional<ButtonType> result = AlertManager.showAlert("Confirmación", "¿Seguro de realizar dicha acción?", Alert.AlertType.CONFIRMATION);
         if (result.get() == ButtonType.OK) {
             registerTutor();
         }
@@ -162,11 +162,11 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
                 if (profesorDao.setTutorRegister(parseInt(labelNumeroDePersonal.getText()))) {                    
                     Email emailService = new Email();
                     emailService.sendEmailNewUser(tutorAcademico.getContraseña(), tutorAcademico.getContraseña());
-                    Alerts.showAlert("Aviso", "Registro realizado con éxito", Alert.AlertType.INFORMATION);
+                    AlertManager.showAlert("Aviso", "Registro realizado con éxito", Alert.AlertType.INFORMATION);
                 }
             }
         } catch (SQLException e) {
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
         }
         clearLabels();
         textFieldSearchProfesores.setText("");

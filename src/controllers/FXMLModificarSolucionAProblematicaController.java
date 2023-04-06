@@ -24,8 +24,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
-import util.Alerts;
-import util.Navigator;
+import util.AlertManager;
+import util.WindowManager;
 
 /**
  * FXML Controller class
@@ -74,7 +74,7 @@ public class FXMLModificarSolucionAProblematicaController implements Initializab
             listProblematicas.addAll(loadedProblematicas);
             tbProblematicas.setItems(listProblematicas);
         }catch(SQLException sqle){
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
         
         
@@ -99,7 +99,7 @@ public class FXMLModificarSolucionAProblematicaController implements Initializab
     
     @FXML
     private void clicCancel(ActionEvent event) {
-        Navigator.NavigateToWindow(tbProblematicas.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+        WindowManager.NavigateToWindow(tbProblematicas.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }
 
     @FXML
@@ -109,10 +109,10 @@ public class FXMLModificarSolucionAProblematicaController implements Initializab
             for(int i=0; i<listProblematicas.size(); i++){
                 solucionAProblematica.updateSolucionAProblematica(listProblematicas.get(i).getSolucion().getIdSolucion(), listProblematicas.get(i).getSolucion().getDescripcion());
             }
-            Alerts.showAlert("Finalizado", "Operación realizada con éxito", Alert.AlertType.INFORMATION);
-            Navigator.NavigateToWindow(tbProblematicas.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+            AlertManager.showAlert("Finalizado", "Operación realizada con éxito", Alert.AlertType.INFORMATION);
+            WindowManager.NavigateToWindow(tbProblematicas.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
         } catch (SQLException ex) {
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
     

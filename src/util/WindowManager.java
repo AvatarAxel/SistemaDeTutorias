@@ -15,9 +15,9 @@ import javafx.stage.Window;
  *
  * @author Panther
  */
-public class Navigator {
+public class WindowManager {
     public static void NavigateToWindow(Window window, String windowPath, String windowTitle){
-        Navigator navigator = new Navigator();
+        WindowManager navigator = new WindowManager();
         navigator.goToWindow(window, windowPath, windowTitle);
     }
     
@@ -35,7 +35,7 @@ public class Navigator {
             primaryStage.setTitle(windowTitle);
             primaryStage.show();
         } catch (IOException e) {
-            Alerts.showAlert("Error", "No se puede cargar la ventana", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No se puede cargar la ventana", Alert.AlertType.ERROR);
         }
     }
     
