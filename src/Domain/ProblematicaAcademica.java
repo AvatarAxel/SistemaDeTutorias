@@ -4,6 +4,9 @@
  */
 package Domain;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 /**
  *
  * @author Panther
@@ -17,6 +20,8 @@ public class ProblematicaAcademica {
     private String descripcion;
     private int numeroDeEstudiantesAfectados;
     private int idReporteTutoria;
+    LocalDate fechaFin;
+    
     private SolucionAProblematica solucion = new SolucionAProblematica();
 
     public ProblematicaAcademica() {
@@ -59,6 +64,18 @@ public class ProblematicaAcademica {
         this.descripcion = descripcion;
         this.numeroDeEstudiantesAfectados = numeroDeEstudiantesAfectados;
     }
+
+    public LocalDate getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(LocalDate fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    
+
+  
     
     
 
