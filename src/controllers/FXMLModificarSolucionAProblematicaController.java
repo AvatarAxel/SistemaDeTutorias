@@ -7,7 +7,6 @@ package controllers;
 import BussinessLogic.ProblematicaAcademicaDAO;
 import BussinessLogic.SolucionAProblematicaDAO;
 import Domain.ProblematicaAcademica;
-import Domain.SolucionAProblematica;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -126,16 +125,6 @@ public class FXMLModificarSolucionAProblematicaController implements Initializab
             AlertManager.showAlert("Advertencia", "Debes seleccionar una problematica", Alert.AlertType.WARNING);
         }
         
-//        SolucionAProblematicaDAO solucionAProblematica = new SolucionAProblematicaDAO();
-//        try {
-//            for(int i=0; i<listProblematicas.size(); i++){
-//                solucionAProblematica.updateSolucionAProblematica(listProblematicas.get(i).getSolucion().getIdSolucion(), listProblematicas.get(i).getSolucion().getDescripcion());
-//            }
-//            AlertManager.showAlert("Finalizado", "Operación realizada con éxito", Alert.AlertType.INFORMATION);
-//            WindowManager.NavigateToWindow(tbProblematicas.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
-//        } catch (SQLException ex) {
-//            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
-//        }
     }
     
 }

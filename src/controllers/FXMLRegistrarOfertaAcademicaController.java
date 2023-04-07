@@ -70,7 +70,7 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
         listExperienciasEducativas = FXCollections.observableArrayList();
     }
 
-    private void loadInformation(File file) throws IOException{
+    private void loadTable(File file) throws IOException{
         ArrayList<ExperienciaEducativa> loadedExperienciasEducativas = new ArrayList<>();
         
         if (file != null) {
@@ -123,7 +123,7 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
         if(file != null){
             
             try {
-                loadInformation(file);
+                loadTable(file);
             } catch (IOException e) {
                 AlertManager.showAlert("Error", "No se pudo cargar la información del archivo seleccionado", Alert.AlertType.ERROR);
             }
