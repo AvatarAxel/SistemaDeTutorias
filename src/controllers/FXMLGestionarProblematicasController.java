@@ -1,6 +1,7 @@
 package controllers;
 
 import BussinessLogic.ExperienciaEducativaDAO;
+import util.Alerts;
 import BussinessLogic.ProblematicaAcademicaDAO;
 import BussinessLogic.ProfesorDAO;
 import Domain.ExperienciaEducativa;
@@ -10,9 +11,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -21,7 +21,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -31,6 +33,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 
@@ -86,33 +89,41 @@ public class FXMLGestionarProblematicasController implements Initializable {
     @FXML
     private TextArea txt_descrip;
 
-    SpinnerValueFactory<Integer> valueFactory;
+    SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 30);
+    ;
+    
+     
+    private Alerts alerts = new Alerts();
     String experienciaEducativaSeleccionada = "";
     ExperienciaEducativa profesorSeleccionado;
-    private ObservableList<ProblematicaAcademica> problematicas;
     ArrayList<ExperienciaEducativa> nombresProfesoresNrc = new ArrayList<ExperienciaEducativa>();
     ArrayList<String> nombreExperiencias = new ArrayList<String>();
-    int idReporteTutoria = 1;
+    ObservableList<ProblematicaAcademica> problematicaAcademicaObservableList = FXCollections.observableArrayList();
+    int idReporteTutoria = 2;
 
-    /**
-     * Initializes the controller class.
-     */
     private final ListChangeListener<ProblematicaAcademica> selectedProblematica = new ListChangeListener<ProblematicaAcademica>() {
         @Override
         public void onChanged(ListChangeListener.Change<? extends ProblematicaAcademica> c) {
-            //mostrarDatosProblematica();
-
             ProblematicaAcademica item = new ProblematicaAcademica();
             item = getTablaProblematica();
             if (item != null) {
-                disableFields();
-                btn_Update.setVisible(false);
+                enableFields();
                 btn_add.setVisible(false);
-                showProblematica(item);
+                showProblematica();
+            } else {
+
+                disableFields();
+
+                btn_Update.setVisible(true);
+                btn_add.setVisible(false);
+                btn_Delete.setVisible(false);
+
             }
 
         }
     };
+    @FXML
+    private Button btn_Close;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -142,7 +153,6 @@ public class FXMLGestionarProblematicasController implements Initializable {
             if (experienciaEducativaSeleccionada != null) {
                 ArrayList<ExperienciaEducativa> filterList;
                 filterList = (ArrayList<ExperienciaEducativa>) nombresProfesoresNrc.stream().filter(a -> experienciaEducativaSeleccionada.equals(a.getNombre())).collect(Collectors.toList());
-                // System.out.println(filterList);
                 loadCmbProfesores(filterList);
             }
 
@@ -164,27 +174,91 @@ public class FXMLGestionarProblematicasController implements Initializable {
         });
     }
 
-    private void cancelChanges(ActionEvent event) {
-        final Node source = (Node) event.getSource();
-        final Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
-    }
-
     @FXML
     private void addProblematica(ActionEvent event) {
 
         int validateData = validateData();
         if (validateData > 0) {
+            ProblematicaAcademicaDAO problematicaDAO = new ProblematicaAcademicaDAO();
+            ProblematicaAcademica problematica = new ProblematicaAcademica();
+            problematica = convertDataToProblematica();
+            int result = 0;
+            try {
+                result = problematicaDAO.insertProblematica(problematica);
+                updateDataTable();
+                clear();
+                btn_add.setVisible(true);
+                valueFactory.setValue(0);
+                spn_numReportados.setValueFactory(valueFactory);
 
-            ProblematicaAcademica problematica = convertDataToProblematica();
-            tblProblematicas.getItems().add(problematica);
-            clean();
+            } catch (SQLException ex) {
+                alerts.showAlertErrorConexionDB();
+            }
+            if (result > 0) {
+                alerts.showAlertSuccesfulRegister();
+            }
+
         }
 
     }
 
     @FXML
     private void updateProblematica(ActionEvent event) {
+
+        int validateData = validateData();
+        if (validateData > 0) {
+            ProblematicaAcademicaDAO problematicaDAO = new ProblematicaAcademicaDAO();
+            ProblematicaAcademica problematica = new ProblematicaAcademica();
+            problematica = convertDataToProblematica();
+            problematica.setIdProblematica(this.getTablaProblematica().getIdProblematica());
+            int result = 0;
+            try {
+                result = problematicaDAO.updatetProblematica(problematica);
+                updateDataTable();
+                clear();
+
+            } catch (SQLException ex) {
+                alerts.showAlertErrorConexionDB();
+            }
+            if (result > 0) {
+                alerts.showAlertSuccesfulUpdate();
+            }
+
+        }
+
+    }
+
+    @FXML
+    private void deleteProblematica(ActionEvent event) {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        alert.setTitle("Confirmación");
+        alert.setHeaderText(null);
+
+        alert.setContentText("¿Esta seguro de eliminar esta Problemática?");
+        Optional<ButtonType> action = alert.showAndWait();
+
+        if (action.get() == ButtonType.OK) {
+            int idProblematica = this.getTablaProblematica().getIdProblematica();
+            int result = 0;
+            ProblematicaAcademicaDAO problematicaDAO = new ProblematicaAcademicaDAO();
+
+            try {
+                result = problematicaDAO.deleteProblematica(idProblematica);
+                clear();
+                updateDataTable();
+
+            } catch (SQLException ex) {
+                alerts.showAlertErrorConexionDB();
+            }
+            if (result > 0) {
+                alerts.showAlertSuccesfulDelete();
+            }
+        } else if (action.get() == ButtonType.CANCEL) {
+            alert.close();
+        }
+
     }
 
     @FXML
@@ -201,34 +275,20 @@ public class FXMLGestionarProblematicasController implements Initializable {
 
     }
 
-    @FXML
-    private void deleteEnviromentOn(ActionEvent event) {
-    }
-
-    @FXML
-    private void cleanFields(ActionEvent event) {
-
-        enableFields();
-        clean();
-        loadCmbExperiencias();
-
-    }
-
-    private void clean() {
+    private void clear() {
 
         tblProblematicas.getSelectionModel().clearSelection();
-        btn_add.setVisible(true);
+        btn_add.setVisible(false);
         btn_Delete.setVisible(false);
         btn_Update.setVisible(false);
-        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20);
-        valueFactory.setValue(0);
-        spn_numReportados.setValueFactory(valueFactory);
+
+        spn_numReportados.getEditor().clear();
+
         cmb_Profesor.getSelectionModel().clearSelection();
         cmb_EE.getSelectionModel().clearSelection();
 
         txt_Title.clear();
         txt_descrip.clear();
-        spn_numReportados.getEditor().clear();
 
     }
 
@@ -239,23 +299,23 @@ public class FXMLGestionarProblematicasController implements Initializable {
         int reportados = 0;
         String titulo = "";
         String descripcion = "";
-
+        String acceptable = "^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$";
         experiencia = experienciaEducativaSeleccionada;
         profesor = profesorSeleccionado;
         reportados = spn_numReportados.getValue();
         titulo = txt_Title.getText();
         descripcion = txt_descrip.getText();
 
-        if ((profesor != null && experiencia != null) && (titulo != null && descripcion != null && reportados > 0)) {
-            if (!titulo.chars().allMatch(Character::isWhitespace) && !descripcion.chars().allMatch(Character::isWhitespace) && !titulo.matches("[0-9]+") && !descripcion.matches("[0-9]+")) {
+        if ((profesor != null && experiencia != null) && ((titulo != null && descripcion != null) && (reportados > 0))) {
+            if (!titulo.chars().allMatch(Character::isWhitespace) && !descripcion.chars().allMatch(Character::isWhitespace) && titulo.matches(acceptable) && !descripcion.matches("[0-9]+")) {
                 validate = 1;
 
             } else {
-                JOptionPane.showMessageDialog(null, "Datos inválidos o espacios en blanco. Revise nuevamente, por favor.");
+                alerts.showAlertInvalidInputs();
 
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Datos incompletos o inválidos. Revise nuevamente, por favor.");
+            alerts.showAlertEmptyFields();
         }
 
         return validate;
@@ -299,7 +359,6 @@ public class FXMLGestionarProblematicasController implements Initializable {
         descripcion = txt_descrip.getText();
 
         ProblematicaAcademica problematica = new ProblematicaAcademica();
-        problematica.setIdProblematica(1);
         problematica.setExperienciaE(experiencia);
         problematica.setProfesor(profesor);
         problematica.setNumeroDeEstudiantesAfectados(reportados);
@@ -312,19 +371,19 @@ public class FXMLGestionarProblematicasController implements Initializable {
         return problematica;
     }
 
-    private void showProblematica(ProblematicaAcademica problematicaItem) {
-
+    private void showProblematica() {
+        ProblematicaAcademica currentProblematica = new ProblematicaAcademica();
+        currentProblematica = this.getTablaProblematica();
         btn_Delete.setVisible(true);
+        btn_Update.setVisible(true);
         btn_add.setVisible(false);
-        btn_Update.setVisible(false);
 
-        String experiencia = problematicaItem.getExperienciaE();
-        autoSelectExperiencia(experiencia, problematicaItem.getNrc());
+        String experiencia = currentProblematica.getExperienciaE();
+        autoSelectExperiencia(experiencia, currentProblematica.getNrc());
 
-        int reportados = problematicaItem.getNumeroDeEstudiantesAfectados();
-        String titulo = problematicaItem.getTitulo();
-        String descripcion = problematicaItem.getDescripcion();
-        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 30);
+        int reportados = currentProblematica.getNumeroDeEstudiantesAfectados();
+        String titulo = currentProblematica.getTitulo();
+        String descripcion = currentProblematica.getDescripcion();
         valueFactory.setValue(reportados);
         spn_numReportados.setValueFactory(valueFactory);
         txt_Title.setText(titulo);
@@ -341,6 +400,7 @@ public class FXMLGestionarProblematicasController implements Initializable {
             if (experiencia.equals(experienciaName)) {
                 cmb_EE.setValue(experiencia);
                 autoSelectProfesores(nrc);
+                break;
             }
         }
 
@@ -354,6 +414,7 @@ public class FXMLGestionarProblematicasController implements Initializable {
         for (ExperienciaEducativa experiencia : experieciasObservableList) {
             if (experiencia.getNrc().equals(nrc)) {
                 cmb_Profesor.setValue(experiencia);
+                break;
             }
         }
     }
@@ -366,26 +427,38 @@ public class FXMLGestionarProblematicasController implements Initializable {
         clm_IdProblematica.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("idProblematica"));
         clm_numReportes.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("numeroDeEstudiantesAfectados"));
 
+        loadDataTable();
+
+    }
+
+    private void loadDataTable() {
+
         ProblematicaAcademicaDAO problematicasDAO = new ProblematicaAcademicaDAO();
         ArrayList<ProblematicaAcademica> problematicas = new ArrayList<ProblematicaAcademica>();
         try {
             problematicas = problematicasDAO.getProblematicasByReporte(idReporteTutoria);
+            if (!problematicas.isEmpty()) {
+                for (ProblematicaAcademica problematica : problematicas) {
+                    problematicaAcademicaObservableList.add(problematica);
+                }
+            } else {
+                alerts.showAlertNotProblematicasFound();
+
+            }
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "SQL ERROR");
+            alerts.showAlertErrorConexionDB();
         }
 
-        ObservableList<ProblematicaAcademica> problematicaAcademicaObservableList = FXCollections.observableArrayList();
-        if (!problematicas.isEmpty()) {
-            for (ProblematicaAcademica problematica : problematicas) {
-                problematicaAcademicaObservableList.add(problematica);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "No ha registrado ni una porblemática aún");
+        tblProblematicas.setItems(problematicaAcademicaObservableList);
 
-        }
+    }
 
-         tblProblematicas.setItems(problematicaAcademicaObservableList);
+    private void updateDataTable() {
+
+        problematicaAcademicaObservableList.removeAll(problematicaAcademicaObservableList);
+        loadDataTable();
+
     }
 
     private void initializeQuerys() {
@@ -397,7 +470,8 @@ public class FXMLGestionarProblematicasController implements Initializable {
             nombreExperiencias = experieniciasDAO.consultExperienciasName();
             nombresProfesoresNrc = profesorDAO.consultProfesoresNames();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "SQL ERROR");
+            alerts.showAlertErrorConexionDB();
+
         }
 
     }
@@ -411,6 +485,37 @@ public class FXMLGestionarProblematicasController implements Initializable {
             }
         }
         return problematicaSeleccionada;
+    }
+
+    @FXML
+    private void closeWindow(ActionEvent event) {
+        final Node source = (Node) event.getSource();
+        final Stage stage = (Stage) source.getScene().getWindow();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Stage stageAlert = (Stage) alert.getDialogPane().getScene().getWindow();
+        stageAlert.getIcons().add(new Image("images/icon.png"));
+
+        alert.setTitle("Confirmación");
+        alert.setHeaderText(null);
+
+        alert.setContentText("¿Esta seguro de cerrar esta ventana?");
+        Optional<ButtonType> action = alert.showAndWait();
+
+        if (action.get() == ButtonType.OK) {
+            stage.close();
+        } else if (action.get() == ButtonType.CANCEL) {
+            alert.close();
+        }
+    }
+
+    @FXML
+    private void clearFields(ActionEvent event) {
+        clear();
+        enableFields();
+        loadCmbExperiencias();
+        btn_add.setVisible(true);
+        valueFactory.setValue(0);
+        spn_numReportados.setValueFactory(valueFactory);
     }
 
 }
