@@ -18,4 +18,17 @@ public interface IProblematicaAcademicaDAO {
     
     public ArrayList<ProblematicaAcademica> getProblematicas() throws SQLException;
     
+    public ArrayList<ProblematicaAcademica> getProblematicasByPrograma(String clave) throws SQLException;
+    
+    public ArrayList<ProblematicaAcademica> getProblematicasByReporte(int idReporte) throws SQLException;
+
+    public int insertProblematica(ProblematicaAcademica problematica) throws SQLException;
+    
+    public int updatetProblematica(ProblematicaAcademica problematica) throws SQLException;
+    
+    public int deleteProblematica(int idProblematicaAcademica) throws SQLException;
+
+
+
+    
 }

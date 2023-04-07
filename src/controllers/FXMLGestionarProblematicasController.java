@@ -1,6 +1,7 @@
 package controllers;
 
 import BussinessLogic.ExperienciaEducativaDAO;
+import BussinessLogic.ProblematicaAcademicaDAO;
 import BussinessLogic.ProfesorDAO;
 import Domain.ExperienciaEducativa;
 import Domain.ProblematicaAcademica;
@@ -91,7 +92,7 @@ public class FXMLGestionarProblematicasController implements Initializable {
     private ObservableList<ProblematicaAcademica> problematicas;
     ArrayList<ExperienciaEducativa> nombresProfesoresNrc = new ArrayList<ExperienciaEducativa>();
     ArrayList<String> nombreExperiencias = new ArrayList<String>();
-    int idReporteTutoria = 0;
+    int idReporteTutoria = 1;
 
     /**
      * Initializes the controller class.
@@ -100,14 +101,14 @@ public class FXMLGestionarProblematicasController implements Initializable {
         @Override
         public void onChanged(ListChangeListener.Change<? extends ProblematicaAcademica> c) {
             //mostrarDatosProblematica();
-            
+
             ProblematicaAcademica item = new ProblematicaAcademica();
             item = getTablaProblematica();
-            if (item!=null){
-            disableFields();
-            btn_Update.setVisible(false);
-            btn_add.setVisible(false);
-            showProblematica(item);
+            if (item != null) {
+                disableFields();
+                btn_Update.setVisible(false);
+                btn_add.setVisible(false);
+                showProblematica(item);
             }
 
         }
@@ -138,11 +139,11 @@ public class FXMLGestionarProblematicasController implements Initializable {
         cmb_EE.setItems(experienciaEducativaObservableList);
         cmb_EE.valueProperty().addListener((ov, valorAntiguo, valorNuevo) -> {
             experienciaEducativaSeleccionada = (String) valorNuevo;
-            if (experienciaEducativaSeleccionada!=null){
-            ArrayList<ExperienciaEducativa> filterList;
-            filterList = (ArrayList<ExperienciaEducativa>) nombresProfesoresNrc.stream().filter(a -> experienciaEducativaSeleccionada.equals(a.getNombre())).collect(Collectors.toList());
-           // System.out.println(filterList);
-            loadCmbProfesores(filterList);
+            if (experienciaEducativaSeleccionada != null) {
+                ArrayList<ExperienciaEducativa> filterList;
+                filterList = (ArrayList<ExperienciaEducativa>) nombresProfesoresNrc.stream().filter(a -> experienciaEducativaSeleccionada.equals(a.getNombre())).collect(Collectors.toList());
+                // System.out.println(filterList);
+                loadCmbProfesores(filterList);
             }
 
         });
@@ -171,16 +172,14 @@ public class FXMLGestionarProblematicasController implements Initializable {
 
     @FXML
     private void addProblematica(ActionEvent event) {
-        
-        
-        int validateData=validateData();
-        if (validateData>0){
-            
+
+        int validateData = validateData();
+        if (validateData > 0) {
+
             ProblematicaAcademica problematica = convertDataToProblematica();
             tblProblematicas.getItems().add(problematica);
             clean();
         }
-       
 
     }
 
@@ -215,8 +214,8 @@ public class FXMLGestionarProblematicasController implements Initializable {
 
     }
 
-    private void clean(){
-    
+    private void clean() {
+
         tblProblematicas.getSelectionModel().clearSelection();
         btn_add.setVisible(true);
         btn_Delete.setVisible(false);
@@ -226,12 +225,13 @@ public class FXMLGestionarProblematicasController implements Initializable {
         spn_numReportados.setValueFactory(valueFactory);
         cmb_Profesor.getSelectionModel().clearSelection();
         cmb_EE.getSelectionModel().clearSelection();
-       
+
         txt_Title.clear();
         txt_descrip.clear();
         spn_numReportados.getEditor().clear();
- 
+
     }
+
     private int validateData() {
         int validate = 0;
         String experiencia = "";
@@ -239,7 +239,6 @@ public class FXMLGestionarProblematicasController implements Initializable {
         int reportados = 0;
         String titulo = "";
         String descripcion = "";
-        
 
         experiencia = experienciaEducativaSeleccionada;
         profesor = profesorSeleccionado;
@@ -247,13 +246,13 @@ public class FXMLGestionarProblematicasController implements Initializable {
         titulo = txt_Title.getText();
         descripcion = txt_descrip.getText();
 
-        if ( (profesor != null && experiencia != null) && (titulo != null && descripcion != null && reportados > 0 )) {
-            if (!titulo.chars().allMatch(Character::isWhitespace) && !descripcion.chars().allMatch(Character::isWhitespace) && !titulo.matches("[0-9]+") && !descripcion.matches("[0-9]+")){
-            validate = 1;
-            
-            }else{
-             JOptionPane.showMessageDialog(null, "Datos incompletos o inválidos. Revise nuevamente, por favor.");
-            
+        if ((profesor != null && experiencia != null) && (titulo != null && descripcion != null && reportados > 0)) {
+            if (!titulo.chars().allMatch(Character::isWhitespace) && !descripcion.chars().allMatch(Character::isWhitespace) && !titulo.matches("[0-9]+") && !descripcion.matches("[0-9]+")) {
+                validate = 1;
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Datos inválidos o espacios en blanco. Revise nuevamente, por favor.");
+
             }
         } else {
             JOptionPane.showMessageDialog(null, "Datos incompletos o inválidos. Revise nuevamente, por favor.");
@@ -325,13 +324,12 @@ public class FXMLGestionarProblematicasController implements Initializable {
         int reportados = problematicaItem.getNumeroDeEstudiantesAfectados();
         String titulo = problematicaItem.getTitulo();
         String descripcion = problematicaItem.getDescripcion();
-        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20);
+        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 30);
         valueFactory.setValue(reportados);
         spn_numReportados.setValueFactory(valueFactory);
         txt_Title.setText(titulo);
         txt_descrip.setText(descripcion);
 
-        // JOptionPane.showMessageDialog(null,problematicaItem.getTitulo());
     }
 
     private void autoSelectExperiencia(String experienciaName, String nrc) {
@@ -368,9 +366,26 @@ public class FXMLGestionarProblematicasController implements Initializable {
         clm_IdProblematica.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("idProblematica"));
         clm_numReportes.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("numeroDeEstudiantesAfectados"));
 
-        problematicas = FXCollections.observableArrayList();
-        tblProblematicas.setItems(problematicas);
+        ProblematicaAcademicaDAO problematicasDAO = new ProblematicaAcademicaDAO();
+        ArrayList<ProblematicaAcademica> problematicas = new ArrayList<ProblematicaAcademica>();
+        try {
+            problematicas = problematicasDAO.getProblematicasByReporte(idReporteTutoria);
 
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "SQL ERROR");
+        }
+
+        ObservableList<ProblematicaAcademica> problematicaAcademicaObservableList = FXCollections.observableArrayList();
+        if (!problematicas.isEmpty()) {
+            for (ProblematicaAcademica problematica : problematicas) {
+                problematicaAcademicaObservableList.add(problematica);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No ha registrado ni una porblemática aún");
+
+        }
+
+         tblProblematicas.setItems(problematicaAcademicaObservableList);
     }
 
     private void initializeQuerys() {

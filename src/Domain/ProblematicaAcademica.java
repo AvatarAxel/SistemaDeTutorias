@@ -11,8 +11,8 @@ package Domain;
 public class ProblematicaAcademica {
     private int idProblematica;
     private String nrc;
-    private String ExperienciaE;
-    private String Profesor;
+    private String experienciaE;
+    private String profesor;
     private String titulo;
     private String descripcion;
     private int numeroDeEstudiantesAfectados;
@@ -44,8 +44,8 @@ public class ProblematicaAcademica {
     public ProblematicaAcademica(int idProblematica, String nrc, String ExperienciaE, String Profesor, String titulo, String descripcion, int numeroDeEstudiantesAfectados) {
         this.idProblematica = idProblematica;
         this.nrc = nrc;
-        this.ExperienciaE = ExperienciaE;
-        this.Profesor = Profesor;
+        this.experienciaE = ExperienciaE;
+        this.profesor = Profesor;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.numeroDeEstudiantesAfectados = numeroDeEstudiantesAfectados;
@@ -53,8 +53,8 @@ public class ProblematicaAcademica {
 
     public ProblematicaAcademica(String nrc, String ExperienciaE, String Profesor, String titulo, String descripcion, int numeroDeEstudiantesAfectados) {
         this.nrc = nrc;
-        this.ExperienciaE = ExperienciaE;
-        this.Profesor = Profesor;
+        this.experienciaE = ExperienciaE;
+        this.profesor = Profesor;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.numeroDeEstudiantesAfectados = numeroDeEstudiantesAfectados;
@@ -71,19 +71,19 @@ public class ProblematicaAcademica {
     }
 
     public String getExperienciaE() {
-        return ExperienciaE;
+        return experienciaE;
     }
 
     public void setExperienciaE(String ExperienciaE) {
-        this.ExperienciaE = ExperienciaE;
+        this.experienciaE = ExperienciaE;
     }
 
     public String getProfesor() {
-        return Profesor;
+        return profesor;
     }
 
     public void setProfesor(String Profesor) {
-        this.Profesor = Profesor;
+        this.profesor = Profesor;
     }
 
     public String getTitulo() {
