@@ -38,13 +38,13 @@ public class FXMLRegistrarSolucionAProblematicaController implements Initializab
     @FXML
     private TableColumn colNumeroAlumnos;
     @FXML
+    private TableColumn colSolucion;
+    @FXML
     private TextArea txtSolucion;
     @FXML
     private TableView<ProblematicaAcademica> tbProblematicas;
     
     private ObservableList<ProblematicaAcademica> listProblematicas;
-    @FXML
-    private TableColumn<?, ?> colSolucion;
     
     /**
      * Initializes the controller class.
