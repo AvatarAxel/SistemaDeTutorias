@@ -23,8 +23,8 @@
             <TableColumn fx:id="clm_numReportes" prefWidth="167.99998982747394" text="numReportes" />
         </columns>
       </TableView>
-      <Button fx:id="btn_ModifyE" layoutX="242.0" layoutY="292.0" mnemonicParsing="false" onAction="#modifyEnviromentOn" prefHeight="25.0" prefWidth="59.0" text="Editar" />
-      <Button fx:id="btn_Delete" layoutX="61.0" layoutY="739.0" mnemonicParsing="false" onAction="#deleteEnviromentOn" prefHeight="25.0" prefWidth="78.0" text="Eliminar" visible="false" />
+      <Button fx:id="btn_ModifyE" layoutX="249.0" layoutY="291.0" mnemonicParsing="false" onAction="#modifyEnviromentOn" prefHeight="25.0" prefWidth="59.0" text="Editar" />
+      <Button fx:id="btn_Delete" layoutX="61.0" layoutY="739.0" mnemonicParsing="false" onAction="#deleteProblematica" prefHeight="25.0" prefWidth="78.0" text="Eliminar" visible="false" />
       <Button fx:id="btn_Update" layoutX="499.0" layoutY="739.0" mnemonicParsing="false" onAction="#updateProblematica" prefHeight="20.0" prefWidth="73.0" text="Actualizar" visible="false" />
       <Label layoutX="117.0" layoutY="35.0" text="Gestión de Problemáticas Académicas">
          <font>
@@ -56,17 +56,18 @@
       </Label>
       <TextArea fx:id="txt_descrip" layoutX="62.0" layoutY="515.0" prefHeight="200.0" prefWidth="511.0" />
       <TextField fx:id="txt_Title" layoutX="207.0" layoutY="450.0" prefHeight="25.0" prefWidth="367.0" />
-      <Label fx:id="lbl_NumReportados" layoutX="457.0" layoutY="361.0" text="#Reportados">
+      <Label fx:id="lbl_NumReportados" layoutX="469.0" layoutY="361.0" text="#Reportados">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Spinner fx:id="spn_numReportados" layoutX="442.0" layoutY="401.0" prefHeight="20.0" prefWidth="113.0" />
-      <Button fx:id="btn_more" layoutX="330.0" layoutY="291.0" mnemonicParsing="false" onAction="#cleanFields" prefHeight="25.0" prefWidth="52.0" text="+">
+      <Spinner fx:id="spn_numReportados" layoutX="442.0" layoutY="401.0" prefHeight="25.0" prefWidth="133.0" />
+      <Button fx:id="btn_more" layoutX="339.0" layoutY="289.0" mnemonicParsing="false" onAction="#clearFields" prefHeight="25.0" prefWidth="52.0" text="+">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
       <Button fx:id="btn_add" layoutX="497.0" layoutY="739.0" mnemonicParsing="false" onAction="#addProblematica" prefHeight="25.0" prefWidth="78.0" text="Añadir" visible="false" />
+      <Button fx:id="btn_Close" layoutX="61.0" layoutY="788.0" mnemonicParsing="false" onAction="#closeWindow" prefHeight="25.0" prefWidth="59.0" text="Cerrar" />
    </children>
 </AnchorPane>
