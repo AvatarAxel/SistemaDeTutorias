@@ -5,9 +5,7 @@
 package controllers;
 
 import BussinessLogic.ExperienciaEducativaDAO;
-import BussinessLogic.ProblematicaAcademicaDAO;
 import Domain.ExperienciaEducativa;
-import Domain.ProblematicaAcademica;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -94,7 +92,7 @@ public class FXMLEditarOfertaAcademicaController implements Initializable {
         int selectedRow = tbExperienciasEducativas.getSelectionModel().getSelectedIndex();
         if(selectedRow >= 0){
             experienciaEducativa = listExperienciasEducativas.get(selectedRow);
-            System.out.println("Error: "+experienciaEducativa.toString());
+            //System.out.println("Error: "+experienciaEducativa.toString());
             navigateToExperienciaEducativaDetails();
             loadTable();
         }else{

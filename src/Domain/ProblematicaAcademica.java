@@ -12,7 +12,7 @@ public class ProblematicaAcademica {
     private int idProblematica;
     private String descripcion;
     private int numeroDeEstudiantesAfectados;
-    private SolucionAProblematica solucion = new SolucionAProblematica();
+    private SolucionAProblematica solucion;
     private Profesor profesor;
     private ExperienciaEducativa experienciaEducativa;
 
@@ -65,7 +65,7 @@ public class ProblematicaAcademica {
     public String getDescripcionSolucion(){
         return this.solucion.getDescripcion();
     }
-
+   
     public Profesor getProfesor() {
         return profesor;
     }
