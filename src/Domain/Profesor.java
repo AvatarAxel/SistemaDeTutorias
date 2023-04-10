@@ -67,7 +67,7 @@ public class Profesor {
     public void setCorreoElectronicoInstitucional(String correoElectronicoInstitucional) {
         this.correoElectronicoInstitucional = correoElectronicoInstitucional;
     }
-
+    
     @Override
     public String toString() {
         return "Profesor{" + "numeroDePersonal=" + numeroDePersonal + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correoElectronicoInstitucional=" + correoElectronicoInstitucional + '}';
