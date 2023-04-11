@@ -1,13 +1,12 @@
- /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
 package controllers;
 
-import BussinessLogic.PeriodoEscolarDAO;
+import BussinessLogic.EstudianteDAO;
 import BussinessLogic.ProblematicaAcademicaDAO;
 import BussinessLogic.ReporteDeTutoriaAcademicaDAO;
-import Domain.PeriodoEscolar;
 import Domain.ProblematicaAcademica;
 import Domain.ReporteDeTutoriaAcademica;
 import Domain.TutoriaAcademica;
@@ -15,8 +14,12 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -59,13 +62,14 @@ public class FXMLReporteGeneralController implements Initializable {
     private TableColumn<?, ?> columTutores;
     @FXML
     private TableColumn<?, ?> columComentarios;
-    private ObservableList<ProblematicaAcademica> listProblematicasAcademicas;
-    private ObservableList<ReporteDeTutoriaAcademica> listReportesDeTutoria;
     @FXML
     private TableView<ProblematicaAcademica> tableProblematicasTutorias;
     @FXML
     private TableView<ReporteDeTutoriaAcademica> tableReportes;
     private TutoriaAcademica tutoriaAcademica;
+    private ObservableList<ProblematicaAcademica> listProblematicasAcademicas;
+    private ObservableList<ReporteDeTutoriaAcademica> listReportesDeTutoria;
+
     /**
      * Initializes the controller class.
      */
@@ -73,27 +77,31 @@ public class FXMLReporteGeneralController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configureTableComentariosGenerales();
         configureTableProblematicas();
-    }    
+    }
 
     @FXML
     private void buttonSalir(ActionEvent event) {
         closeWindow();
     }
-    
-    private void configureTableProblematicas() {        
+
+    private void configureTableProblematicas() {
+        Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
+        tableProblematicasTutorias.setPlaceholder(noticeLoadingTable);
         columExperienciaEducativa.setCellValueFactory(new PropertyValueFactory("ExperienciaEducativaAndNRC"));
         columProfesores.setCellValueFactory(new PropertyValueFactory("nombreCompletoProfesor"));
         columProblematicaAcademicas.setCellValueFactory(new PropertyValueFactory("Descripcion"));
         columCantidadAlumnos.setCellValueFactory(new PropertyValueFactory("NumeroDeEstudiantesAfectados"));
         listProblematicasAcademicas = FXCollections.observableArrayList();
     }
-    
+
     private void configureTableComentariosGenerales() {
+        Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
+        tableReportes.setPlaceholder(noticeLoadingTable);
         columTutores.setCellValueFactory(new PropertyValueFactory("tutor"));
-        columComentarios.setCellValueFactory(new PropertyValueFactory("comentariosGenerales"));                
+        columComentarios.setCellValueFactory(new PropertyValueFactory("comentariosGenerales"));
         listReportesDeTutoria = FXCollections.observableArrayList();
     }
-    
+
     private void loadInformationComentariosGenerales() {
         ReporteDeTutoriaAcademicaDAO ReporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
         try {
@@ -105,13 +113,13 @@ public class FXMLReporteGeneralController implements Initializable {
             Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
-    
+
     private void loadInformationProblematicas() {
         try {
             ProblematicaAcademicaDAO problematicaAcademicaDao = new ProblematicaAcademicaDAO();
             ArrayList<ProblematicaAcademica> listProblematicasRecived = new ArrayList<>();
             for (int i = 0; i < listReportesDeTutoria.size(); i++) {
-                listProblematicasRecived = problematicaAcademicaDao.getProblematicasByReporte(listReportesDeTutoria.get(i).getIdReporteTutoria());                
+                listProblematicasRecived = problematicaAcademicaDao.getProblematicasByReporte(listReportesDeTutoria.get(i).getIdReporteTutoria());
                 listProblematicasAcademicas.addAll(listProblematicasRecived);
             }
             tableProblematicasTutorias.setItems(listProblematicasAcademicas);
@@ -126,50 +134,44 @@ public class FXMLReporteGeneralController implements Initializable {
     }
 
     public void configureScene() {
-        labelFecha.setText(tutoriaAcademica.getFechaInicio() + " - " + tutoriaAcademica.getFechaFin());
-        labelNumeroSesion.setText(" - " + tutoriaAcademica.getNumeroDeSesion());
-        labelProgramaEducativo.setText("Ingenieria de software");        
-        loadInformationComentariosGenerales();
-        loadInformationProblematicas();
-        loadInformationPeriodo();
-        loadInformationListaDeAsistencias();
-        
-        try {
-            PeriodoEscolar periodoEscolar = new PeriodoEscolar();
-            PeriodoEscolarDAO periodoEscolarDao = new PeriodoEscolarDAO();
-            periodoEscolar = periodoEscolarDao.getPeriodoEscolar(tutoriaAcademica.getIdTutoriaAcademica());
-            labelPeriodo.setText(periodoEscolar.getFechaInicio()+" "+periodoEscolar.getFechaFin());
-        } catch (SQLException sqle) {
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
-        }
-
+        ExecutorService executorService;
+        executorService = Executors.newFixedThreadPool(1);
+        Task configureSceneTask = new Task() {
+            @Override
+            protected Void call() throws Exception {
+                labelFecha.setText(tutoriaAcademica.getFechaInicio() + " - " + tutoriaAcademica.getFechaFin());
+                labelNumeroSesion.setText(String.valueOf(tutoriaAcademica.getNumeroDeSesion()));
+                labelProgramaEducativo.setText("Ingenieria de software");
+                labelPeriodo.setText(tutoriaAcademica.getFechasPeriodoEscolar());
+                loadInformationComentariosGenerales();
+                loadInformationProblematicas();
+                Platform.runLater(() -> {
+                    loadInformationListaDeAsistencias();
+                });
+                return null;
+            }
+        };
+        executorService.submit(configureSceneTask);
+        executorService.shutdown();
     }
 
-    private void closeWindow(){
+    private void closeWindow() {
         Stage escenario = (Stage) labelNumeroSesion.getScene().getWindow();
         escenario.close();
-    }    
-
-    private void loadInformationPeriodo() {
-        try {
-            PeriodoEscolar periodoEscolar = new PeriodoEscolar();
-            PeriodoEscolarDAO periodoEscolarDao = new PeriodoEscolarDAO();
-            periodoEscolar = periodoEscolarDao.getPeriodoEscolar(tutoriaAcademica.getIdTutoriaAcademica());
-            labelPeriodo.setText(periodoEscolar.getFechaInicio()+" "+periodoEscolar.getFechaFin());
-        } catch (SQLException sqle) {
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
-        }        
     }
 
     private void loadInformationListaDeAsistencias() {
-        int alumnosTotalAsistentes = 0;
-        int alumnosTotalRegistrados = 0;
-        for(int i = 0; i < listReportesDeTutoria.size(); i++){
-            alumnosTotalRegistrados += listReportesDeTutoria.get(i).getNumeroDeAlumnosEnRiesgo();
-            alumnosTotalAsistentes += listReportesDeTutoria.get(i).getNumeroDeTutoradosQueAsistieron();
-        }        
-        LabelTotalAlumnosResgistrados.setText(alumnosTotalRegistrados+"");
-        labelTotalAlumnos.setText(alumnosTotalAsistentes+"");
+        try {            
+            int alumnosTotalAsistentes = 0;
+            for (int i = 0; i < listReportesDeTutoria.size(); i++) {                
+                alumnosTotalAsistentes += listReportesDeTutoria.get(i).getNumeroDeAlumnosEnRiesgo();
+            }
+            labelTotalAlumnos.setText(String.valueOf(alumnosTotalAsistentes));
+            EstudianteDAO estudianteDAO = new EstudianteDAO();
+            LabelTotalAlumnosResgistrados.setText(String.valueOf(estudianteDAO.getAllEstudiantesWithTutor(14203)));
+        } catch (SQLException sqle) {
+            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+        }
     }
 
 }

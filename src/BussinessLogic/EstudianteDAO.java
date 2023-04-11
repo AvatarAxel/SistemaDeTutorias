@@ -5,7 +5,6 @@
 package BussinessLogic;
 
 import Domain.Estudiante;
-import Domain.Profesor;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -60,4 +59,23 @@ public class EstudianteDAO {
         return result;
     }    
     
+    public int getAllEstudiantesWithTutor(int clave) throws SQLException {
+        int allEstudiantes = 0;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String query = ("SELECT COUNT(*) AS TotalEstudiantes\n"
+                    + "FROM estudiantes\n"
+                    + "WHERE clave = ? AND numeroDePersonal IS NOT NULL;");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, clave);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            allEstudiantes = resultSet.getInt(1);
+        }
+        connection.close();
+        return allEstudiantes;
+    }
+
 }

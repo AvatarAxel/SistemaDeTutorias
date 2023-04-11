@@ -15,15 +15,17 @@ public class TutoriaAcademica {
     private Date fechaInicio;
     private Date fechaFin;
     private int idTutoriaAcademica;
+    private PeriodoEscolar periodoEscolar;
 
     public TutoriaAcademica() {
     }
 
-    public TutoriaAcademica(int numeroDeSesion, Date fechaInicio, Date fechaFin, int idTutoriaAcademica) {
+    public TutoriaAcademica(int numeroDeSesion, Date fechaInicio, Date fechaFin, int idTutoriaAcademica, PeriodoEscolar periodoEscolar) {
         this.numeroDeSesion = numeroDeSesion;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.idTutoriaAcademica = idTutoriaAcademica;
+        this.periodoEscolar = periodoEscolar;
     }
 
     public int getNumeroDeSesion() {
@@ -56,6 +58,20 @@ public class TutoriaAcademica {
 
     public void setIdTutoriaAcademica(int idTutoriaAcademica) {
         this.idTutoriaAcademica = idTutoriaAcademica;
-    }    
-        
+    }
+
+    public PeriodoEscolar getPeriodoEscolar() {
+        return periodoEscolar;
+    }
+
+    public void setPeriodoEscolar(PeriodoEscolar periodoEscolar) {
+        this.periodoEscolar = periodoEscolar;
+    }
+    
+    public String getFechasPeriodoEscolar(){
+        String fechasPeriodoEscolar = util.DateLatinAmerica.DateConvertToPeriod(periodoEscolar.getFechaInicio())
+                + " - " + util.DateLatinAmerica.DateConvertToPeriod(periodoEscolar.getFechaFin());
+        return fechasPeriodoEscolar;
+    }
+
 }

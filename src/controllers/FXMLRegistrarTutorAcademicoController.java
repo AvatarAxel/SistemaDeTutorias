@@ -27,6 +27,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -58,11 +59,11 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
     private TableColumn<?, ?> columNombre;
     @FXML
     private TableColumn<?, ?> columCorreoInstitucional;
-    private ObservableList<Profesor> listProfesores;
     @FXML
     private TableColumn<?, ?> columApellidoPaterno;
     @FXML
     private TableColumn<?, ?> columApellidoMaterno;
+    private ObservableList<Profesor> listProfesores;
 
     /**
      * Initializes the controller class.
@@ -75,19 +76,31 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
     }
 
     private void loadInformationProfesores() {
-        try {
-            ArrayList<Profesor> loadedListProfesores = new ArrayList<>();
-            ProfesorDAO profesorDao = new ProfesorDAO();
-            loadedListProfesores = profesorDao.getProfesoresUnregistered();
-            listProfesores.clear();
-            listProfesores.addAll(loadedListProfesores);
-            tableProfesor.setItems(listProfesores);
-        } catch (SQLException e) {
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
-        }
+        ExecutorService executorService;
+        executorService = Executors.newFixedThreadPool(1);
+        Task loadInformationProfesoresTask = new Task() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    ArrayList<Profesor> loadedListProfesores = new ArrayList<>();
+                    ProfesorDAO profesorDao = new ProfesorDAO();
+                    loadedListProfesores = profesorDao.getProfesoresUnregistered();
+                    listProfesores.clear();
+                    listProfesores.addAll(loadedListProfesores);
+                    tableProfesor.setItems(listProfesores);
+                } catch (SQLException e) {
+                    Alerts.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+                }
+                return null;
+            }
+        };
+        executorService.submit(loadInformationProfesoresTask);
+        executorService.shutdown();
     }
 
     private void configureTableColumns() {
+        Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
+        tableProfesor.setPlaceholder(noticeLoadingTable);
         columNumeroDePersonal.setCellValueFactory(new PropertyValueFactory("numeroDePersonal"));
         columNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
         columApellidoPaterno.setCellValueFactory(new PropertyValueFactory("apellidoPaterno"));
