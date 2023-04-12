@@ -18,7 +18,8 @@ public interface IExperiencaEducativaDAO {
     
     public ExperienciaEducativa consultExperiencias()throws SQLException;
     
-    public ArrayList<ExperienciaEducativa> getExperienciasEducativas()throws SQLException;
-    
     public int updateAcademicOffer(ExperienciaEducativa experienciaEducativa) throws SQLException;
+
+    public ArrayList<String> consultExperienciasName()throws SQLException;
+    
 }

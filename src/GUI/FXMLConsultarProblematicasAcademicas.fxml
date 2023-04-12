@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="425.0" prefWidth="770.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="controllers.FXMLConsultarProblematicasAcademicasController">
+   <children>
+      <Label layoutX="235.0" layoutY="23.0" text="Problemáticas Académicas">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tblProblematicas" layoutX="20.0" layoutY="129.0" prefHeight="213.0" prefWidth="735.0">
+         <columns>
+            <TableColumn fx:id="clm_IdProblematica" minWidth="4.6666259765625" prefWidth="94.66668701171875" text="IdProblemática" />
+            <TableColumn fx:id="clm_Hd" prefWidth="166.66661834716797" text="Título" />
+            <TableColumn fx:id="clm_Experiencia" prefWidth="143.3333740234375" text="Experiencia E." />
+            <TableColumn fx:id="clm_Profesor" prefWidth="108.6666259765625" text="Profesor" />
+            <TableColumn fx:id="clm_numReportes" minWidth="0.0" prefWidth="92.6666259765625" text="numReportes" />
+            <TableColumn fx:id="clm_fecha" prefWidth="126.0" text="Fecha" />
+         </columns>
+      </TableView>
+      <Button fx:id="btn_detail" layoutX="20.0" layoutY="363.0" mnemonicParsing="false" onAction="#openProblematicaSelected" text="Ver Detalle" />
+      <TextField fx:id="txt_Experiencia" layoutX="17.0" layoutY="85.0" prefHeight="25.0" prefWidth="175.0" promptText="Experiencia" />
+      <TextField fx:id="txt_Profesor" layoutX="276.0" layoutY="85.0" prefHeight="25.0" prefWidth="175.0" promptText="Nombre del Profesor" />
+      <Button fx:id="btn_searchExperiencia" layoutX="201.0" layoutY="85.0" mnemonicParsing="false" onAction="#searchByExperiencia" text="Buscar" />
+      <Button fx:id="btn_searchByProfesor" layoutX="465.0" layoutY="85.0" mnemonicParsing="false" onAction="#searchByProfesor" text="Buscar" />
+      <DatePicker fx:id="txt_date" layoutX="535.0" layoutY="85.0" prefHeight="25.0" prefWidth="145.0" promptText="Fecha" />
+      <Button fx:id="btn_searchByFecha" layoutX="691.0" layoutY="85.0" mnemonicParsing="false" onAction="#searchByFecha" text="Buscar" />
+      <Button fx:id="btn_closeWinodw" layoutX="692.0" layoutY="28.0" mnemonicParsing="false" onAction="#closeWindow" text="Cerrar" />
+      <Label fx:id="lbl_idProblematica" layoutX="29.0" layoutY="80.0" prefHeight="35.0" prefWidth="131.0" text="IdProblemática: " visible="false">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_titulo" layoutX="29.0" layoutY="129.0" prefHeight="35.0" prefWidth="131.0" text="Titulo" visible="false">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_profesor" layoutX="414.0" layoutY="184.0" prefHeight="35.0" prefWidth="184.0" text="Profesor" visible="false">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_descrip" layoutX="29.0" layoutY="236.0" prefHeight="35.0" prefWidth="184.0" text="Descripción : " visible="false">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_fecha" layoutX="424.0" layoutY="129.0" prefHeight="35.0" prefWidth="184.0" text="Fecha" visible="false">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_afectados" layoutX="244.0" layoutY="80.0" prefHeight="35.0" prefWidth="253.0" text="Número de Estudiantes Afectados" visible="false">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_ee" layoutX="29.0" layoutY="184.0" prefHeight="35.0" prefWidth="184.0" text="Experiencia Educativa" visible="false">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="btn_back" layoutX="20.0" layoutY="363.0" mnemonicParsing="false" onAction="#backTable" text="Regresar" visible="false" />
+      <Label fx:id="lbl_idProblematicaData" layoutX="154.0" layoutY="89.0" text="Label" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_tituloData" layoutX="105.0" layoutY="137.0" prefHeight="20.0" prefWidth="290.0" text="Label" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_eeData" layoutX="187.0" layoutY="192.0" prefHeight="20.0" prefWidth="204.0" text="Label" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_descripData" layoutX="29.0" layoutY="278.0" prefHeight="65.0" prefWidth="646.0" text="Label" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_profesorData" layoutX="487.0" layoutY="192.0" prefHeight="20.0" prefWidth="253.0" text="Label" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_fechaData" layoutX="481.0" layoutY="137.0" prefHeight="20.0" prefWidth="253.0" text="Label" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_afectadosData" layoutX="487.0" layoutY="89.0" prefHeight="20.0" prefWidth="253.0" text="Label" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
