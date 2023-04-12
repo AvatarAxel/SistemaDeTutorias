@@ -93,7 +93,13 @@ public class FXMLEditarOfertaAcademicaController implements Initializable {
         if(selectedRow >= 0){
             experienciaEducativa = listExperienciasEducativas.get(selectedRow);
             //System.out.println("Error: "+experienciaEducativa.toString());
-            navigateToExperienciaEducativaDetails();
+            //navigateToExperienciaEducativaDetails();
+            WindowManager.NavigateToFloatingWindow(
+                    tbExperienciasEducativas.getScene().getWindow(), 
+                    experienciaEducativa,
+                    "/GUI/FXMLEditarOfertaAcademicaDetalles.fxml",
+                    "Titulo",
+                    "passExperienciaEducativa");
             loadTable();
         }else{
             AlertManager.showAlert("Experiencia Educativa no seleccionada",
@@ -108,11 +114,11 @@ public class FXMLEditarOfertaAcademicaController implements Initializable {
             Parent root = loader.load();
             FXMLEditarOfertaAcademicaDetallesController controladorFormulario = loader.getController();
             controladorFormulario.passExperienciaEducativa(experienciaEducativa);
-            Scene escenaFormulario = new Scene(root);
-            Stage escenarioFormulario = new Stage();
-            escenarioFormulario.setScene(escenaFormulario);
-            escenarioFormulario.initModality(Modality.APPLICATION_MODAL);
-            escenarioFormulario.showAndWait();
+            Scene primaryScene = new Scene(root);
+            Stage floatingStage = new Stage();
+            floatingStage.setScene(primaryScene);
+            floatingStage.initModality(Modality.APPLICATION_MODAL);
+            floatingStage.showAndWait();
             
         } catch (IOException ex) {
             ex.printStackTrace();
