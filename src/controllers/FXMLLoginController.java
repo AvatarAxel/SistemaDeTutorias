@@ -14,8 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.apache.commons.lang3.StringUtils;
-import util.Alerts;
-import util.Navigator;
+import util.AlertManager;
+import util.WindowManager;
 
 /**
  * FXML Controller class
@@ -66,9 +66,9 @@ public class FXMLLoginController implements Initializable {
     private void doLogin(String username, String password){
         //Conexión con la base de datos para iniciar sesión        
         if(true){//Reemplazar el true por el resultado de la consulta
-            Navigator.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+            WindowManager.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
         }else{
-            Alerts.showAlert("Prueba", "Prueba " + username + " " + password, Alert.AlertType.INFORMATION);
+            AlertManager.showAlert("Prueba", "Prueba " + username + " " + password, Alert.AlertType.INFORMATION);
         }
     }
 

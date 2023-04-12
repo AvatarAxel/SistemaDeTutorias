@@ -29,7 +29,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import util.Alerts;
+import util.AlertManager;
 
 /**
  * FXML Controller class
@@ -110,7 +110,7 @@ public class FXMLReporteGeneralController implements Initializable {
             listReportesDeTutoria.addAll(loadedReporteDeTutoriaAcademica);
             tableReportes.setItems(listReportesDeTutoria);
         } catch (SQLException sqle) {
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
 
@@ -124,7 +124,7 @@ public class FXMLReporteGeneralController implements Initializable {
             }
             tableProblematicasTutorias.setItems(listProblematicasAcademicas);
         } catch (SQLException sqle) {
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
 
@@ -170,7 +170,7 @@ public class FXMLReporteGeneralController implements Initializable {
             EstudianteDAO estudianteDAO = new EstudianteDAO();
             LabelTotalAlumnosResgistrados.setText(String.valueOf(estudianteDAO.getAllEstudiantesWithTutor(14203)));
         } catch (SQLException sqle) {
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
 

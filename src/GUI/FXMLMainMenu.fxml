@@ -41,6 +41,7 @@
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#menuUploadOffer" text="Registrar" />
                   <MenuItem mnemonicParsing="false" onAction="#menuReadOffer" text="Consultar" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuUpdateOffer" text="Editar" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Registros">

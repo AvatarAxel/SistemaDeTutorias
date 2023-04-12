@@ -42,7 +42,7 @@ public class ProblematicaAcademicaDAOTest {
     /**
      * Test of getProblematicasSinSolucion method, of class ProblematicaAcademicaDAO.
      */
-    /*@Test
+    @Test
     public void testGetProblematicasSinSolucionSuccess() throws Exception {
         System.out.println("getProblematicasSinSolucionSuccess");
         ProblematicaAcademicaDAO instance = new ProblematicaAcademicaDAO();
@@ -51,7 +51,7 @@ public class ProblematicaAcademicaDAOTest {
         expResult.add(new ProblematicaAcademica(9, "tangible", 9, new SolucionAProblematica(0,"")));
         ArrayList<ProblematicaAcademica> result = instance.getProblematicasSinSolucion();
         assertEquals(expResult, result);
-    }*/
+    }
     /**
      * Test of getProblematicasSinSolucion method, of class ProblematicaAcademicaDAO.
      */

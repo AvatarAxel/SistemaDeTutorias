@@ -14,6 +14,7 @@ public class ExperienciaEducativa {
     private String seccion;
     private String modalidad;
     private String clave;
+    private String programaEducativo;
     
     public ExperienciaEducativa() {
     }
@@ -66,9 +67,40 @@ public class ExperienciaEducativa {
         this.clave = clave;
     }
 
+    public String getProgramaEducativo() {
+        return programaEducativo;
+    }
+
+    public void setProgramaEducativo(String programaEducativo) {
+        this.programaEducativo = programaEducativo;
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean isEquals=false;
+        if (object == this) {
+            isEquals=true;
+        }
+        if (object!= null && object instanceof ExperienciaEducativa) {
+            ExperienciaEducativa other = (ExperienciaEducativa) object;
+            isEquals=this.getClave().equals(other.getClave()) &&
+                    this.getModalidad().equals(other.getModalidad()) &&
+                    this.getNrc().equals(other.getNrc()) &&
+                    this.getSeccion().equals(other.getSeccion()) &&
+                    this.getNombre().equals(other.getNombre());
+        }
+        return isEquals;
+    }
+
     @Override
     public String toString() {
-        return "ExperienciaEducativa{" + "nrc=" + nrc + ", nombre=" + nombre + ", seccion=" + seccion + ", modalidad=" + modalidad + '}';
+        return "ExperienciaEducativa{" + "nrc=" + nrc + ", nombre=" + nombre + ", seccion=" + seccion + ", modalidad=" + modalidad + ", clave=" + clave + ", programaEducativo=" + programaEducativo + '}';
     }
                            
 }

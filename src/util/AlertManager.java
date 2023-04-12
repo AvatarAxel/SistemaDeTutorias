@@ -15,7 +15,7 @@ import javafx.util.Duration;
  *
  * @author Panther
  */
-public class Alerts {
+public class AlertManager {
     public static Optional<ButtonType> showAlert(String titulo, String mensaje, Alert.AlertType tipoAlerta){
         Alert alerta = new Alert(tipoAlerta);
         alerta.setTitle(titulo);

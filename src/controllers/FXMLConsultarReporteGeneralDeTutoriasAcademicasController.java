@@ -33,8 +33,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import util.Alerts;
-import util.Navigator;
+import util.AlertManager;
+import util.WindowManager;
 
 /**
  * FXML Controller class
@@ -76,7 +76,7 @@ public class FXMLConsultarReporteGeneralDeTutoriasAcademicasController implement
 
     @FXML
     private void buttonCancelarAction(ActionEvent event) {
-        Navigator.NavigateToWindow(labelProgramaEducativo.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+        WindowManager.NavigateToWindow(labelProgramaEducativo.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }
 
     private void configureTableColumns() {
@@ -101,7 +101,7 @@ public class FXMLConsultarReporteGeneralDeTutoriasAcademicasController implement
                     loadInformationPeriodoEscolar();
                     tableTutoriasAcademicas.setItems(listTutoriasAcademicas);
                 } catch (SQLException sqle) {
-                    Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+                    AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
                 }
                 return null;
             }
@@ -118,7 +118,7 @@ public class FXMLConsultarReporteGeneralDeTutoriasAcademicasController implement
                 listTutoriasAcademicas.get(i).setPeriodoEscolar(periodoEscolar);                
             }
         } catch (SQLException sqle) {
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }    
     

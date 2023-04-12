@@ -12,26 +12,23 @@ public class ProblematicaAcademica {
     private int idProblematica;
     private String descripcion;
     private int numeroDeEstudiantesAfectados;
-    private SolucionAProblematica solucion = new SolucionAProblematica();
+    private SolucionAProblematica solucion;
     private Profesor profesor;
     private ExperienciaEducativa experienciaEducativa;
 
     public ProblematicaAcademica() {
     }
 
-    public ProblematicaAcademica(int idProblematica, String descripcion, int numeroDeEstudiantesAfectados, SolucionAProblematica solucion, Profesor profesor, ExperienciaEducativa experienciaEducativa) {
+    public ProblematicaAcademica(int idProblematica, String descripcion, int numeroDeEstudiantesAfectados, SolucionAProblematica solucion) {
         this.idProblematica = idProblematica;
         this.descripcion = descripcion;
         this.numeroDeEstudiantesAfectados = numeroDeEstudiantesAfectados;
         this.solucion = solucion;
-        this.profesor = profesor;
-        this.experienciaEducativa = experienciaEducativa;
     }
 
     public ProblematicaAcademica(SolucionAProblematica solucion) {
         this.solucion = solucion;
     }
-    
 
     public int getIdProblematica() {
         return idProblematica;
@@ -68,7 +65,7 @@ public class ProblematicaAcademica {
     public String getDescripcionSolucion(){
         return this.solucion.getDescripcion();
     }
-
+   
     public Profesor getProfesor() {
         return profesor;
     }

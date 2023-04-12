@@ -20,8 +20,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyEvent;
-import util.Alerts;
-import util.Navigator;
+import util.AlertManager;
+import util.WindowManager;
 
 /**
  * FXML Controller class
@@ -68,7 +68,7 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
 
     @FXML
     private void buttonCancel(ActionEvent event) {
-        Navigator.NavigateToWindow(labelInvalidateApellidoPaterno.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+        WindowManager.NavigateToWindow(labelInvalidateApellidoPaterno.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }
 
     @FXML
@@ -190,13 +190,13 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
                 estudiante.setApellidoMaterno(textApellidoMaterno.getText());
                 estudiante.setMatricula(textMatricula.getText().toLowerCase());                
                 if(estudianteDao.setEstudianteRegister(estudiante, 14203)){
-                    Alerts.showAlert("Información", "Registro realizado con éxito", Alert.AlertType.INFORMATION);
+                    AlertManager.showAlert("Información", "Registro realizado con éxito", Alert.AlertType.ERROR);
                 }                                
             } else {
-                Alerts.showAlert("Información", "Registro ya existente", Alert.AlertType.INFORMATION);
+                AlertManager.showAlert("Información", "Registro ya existente", Alert.AlertType.INFORMATION);
             }
         } catch (SQLException e) {
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
         }
     }
     
