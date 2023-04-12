@@ -36,7 +36,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
-import util.Alerts;
+import util.AlertManager;
 
 /**
  * FXML Controller class
@@ -103,7 +103,7 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
     private Button btn_searchByProfesor;
     @FXML
     private Button btn_searchByFecha;
-    private Alerts alerts = new Alerts();
+    private AlertManager alerts = new AlertManager();
     ObservableList<ProblematicaAcademica> problematicaAcademicaObservableList = FXCollections.observableArrayList();
     String clavePrograma = "14203";
     @FXML
@@ -164,7 +164,7 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
         } else {
             ObservableList<ProblematicaAcademica> filteredData = FXCollections.observableArrayList();
             for (ProblematicaAcademica problematica : problematicaAcademicaObservableList) {
-                if (problematica.getProfesor().contains(keyword)) {
+                if (problematica.getNombreProfesor().contains(keyword)) {
                     filteredData.add(problematica);
                 }
             }
@@ -358,7 +358,7 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
         String afectados = String.valueOf(currentProblematica.getNumeroDeEstudiantesAfectados());
         String titulo = currentProblematica.getTitulo();
         String experiencia = currentProblematica.getExperienciaE();
-        String profesor = currentProblematica.getProfesor();
+        String profesor = currentProblematica.getNombreProfesor();
         String descripcion = currentProblematica.getDescripcion();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String fecha = currentProblematica.getFechaFin().format(dateTimeFormatter);

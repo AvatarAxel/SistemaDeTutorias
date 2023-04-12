@@ -69,7 +69,6 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
          
     }
 
-    @Override
     public ArrayList<ExperienciaEducativa> getExperienciasEducativas() throws SQLException {
         ArrayList<ExperienciaEducativa> listExperienciaEducativas = new ArrayList<>();
         
@@ -127,6 +126,11 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
         }
         
         return result;
+    }
+
+    @Override
+    public ExperienciaEducativa consultExperiencias() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }

@@ -1,7 +1,7 @@
 package controllers;
 
 import BussinessLogic.ExperienciaEducativaDAO;
-import util.Alerts;
+import util.AlertManager;
 import BussinessLogic.ProblematicaAcademicaDAO;
 import BussinessLogic.ProfesorDAO;
 import Domain.ExperienciaEducativa;
@@ -93,7 +93,7 @@ public class FXMLGestionarProblematicasController implements Initializable {
     ;
     
      
-    private Alerts alerts = new Alerts();
+    private AlertManager alerts = new AlertManager();
     String experienciaEducativaSeleccionada = "";
     ExperienciaEducativa profesorSeleccionado;
     ArrayList<ExperienciaEducativa> nombresProfesoresNrc = new ArrayList<ExperienciaEducativa>();
@@ -360,7 +360,7 @@ public class FXMLGestionarProblematicasController implements Initializable {
 
         ProblematicaAcademica problematica = new ProblematicaAcademica();
         problematica.setExperienciaE(experiencia);
-        problematica.setProfesor(profesor);
+        problematica.setNombreProfesor(profesor);
         problematica.setNumeroDeEstudiantesAfectados(reportados);
         problematica.setTitulo(titulo);
         problematica.setDescripcion(descripcion);

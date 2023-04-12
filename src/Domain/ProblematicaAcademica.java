@@ -15,7 +15,7 @@ public class ProblematicaAcademica {
     private int idProblematica;
     private String nrc;
     private String experienciaE;
-    private String profesor;
+    private String nombreProfesor;
     private String titulo;
     private String descripcion;
     private int numeroDeEstudiantesAfectados;
@@ -48,38 +48,32 @@ public class ProblematicaAcademica {
         this.solucion = solucion;
     }
 
-    public ProblematicaAcademica(int idProblematica, String nrc, String ExperienciaE, String Profesor, String titulo, String descripcion, int numeroDeEstudiantesAfectados) {
+    public ProblematicaAcademica(int idProblematica, String nrc, String ExperienciaE, String nombreProfesor, String titulo, String descripcion, int numeroDeEstudiantesAfectados) {
         this.idProblematica = idProblematica;
         this.nrc = nrc;
         this.experienciaE = ExperienciaE;
-        this.profesor = Profesor;
+        this.nombreProfesor = nombreProfesor;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.numeroDeEstudiantesAfectados = numeroDeEstudiantesAfectados;
     }
 
-    public ProblematicaAcademica(String nrc, String ExperienciaE, String Profesor, String titulo, String descripcion, int numeroDeEstudiantesAfectados) {
+    public ProblematicaAcademica(String nrc, String ExperienciaE, String nombreProfesor, String titulo, String descripcion, int numeroDeEstudiantesAfectados) {
         this.nrc = nrc;
         this.experienciaE = ExperienciaE;
-        this.profesor = Profesor;
+        this.nombreProfesor = nombreProfesor;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.numeroDeEstudiantesAfectados = numeroDeEstudiantesAfectados;
     }
 
-    public LocalDate getFechaFin() {
-        return fechaFin;
+    public int getIdProblematica() {
+        return idProblematica;
     }
 
-    public void setFechaFin(LocalDate fechaFin) {
-        this.fechaFin = fechaFin;
+    public void setIdProblematica(int idProblematica) {
+        this.idProblematica = idProblematica;
     }
-
-    
-
-  
-    
-    
 
     public String getNrc() {
         return nrc;
@@ -93,16 +87,16 @@ public class ProblematicaAcademica {
         return experienciaE;
     }
 
-    public void setExperienciaE(String ExperienciaE) {
-        this.experienciaE = ExperienciaE;
+    public void setExperienciaE(String experienciaE) {
+        this.experienciaE = experienciaE;
     }
 
-    public String getProfesor() {
-        return profesor;
+    public String getNombreProfesor() {
+        return nombreProfesor;
     }
 
-    public void setProfesor(String Profesor) {
-        this.profesor = Profesor;
+    public void setNombreProfesor(String nombreProfesor) {
+        this.nombreProfesor = nombreProfesor;
     }
 
     public String getTitulo() {
@@ -111,14 +105,6 @@ public class ProblematicaAcademica {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
-    }
-         
-    public int getIdProblematica() {
-        return idProblematica;
-    }
-
-    public void setIdProblematica(int idProblematica) {
-        this.idProblematica = idProblematica;
     }
 
     public String getDescripcion() {
@@ -137,6 +123,14 @@ public class ProblematicaAcademica {
         this.numeroDeEstudiantesAfectados = numeroDeEstudiantesAfectados;
     }
 
+    public LocalDate getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(LocalDate fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
     public SolucionAProblematica getSolucion() {
         return solucion;
     }
@@ -144,11 +138,7 @@ public class ProblematicaAcademica {
     public void setSolucion(SolucionAProblematica solucion) {
         this.solucion = solucion;
     }
-    
-    public String getDescripcionSolucion(){
-        return this.solucion.getDescripcion();
-    }
-   
+
     public Profesor getProfesor() {
         return profesor;
     }
@@ -164,8 +154,13 @@ public class ProblematicaAcademica {
     public void setExperienciaEducativa(ExperienciaEducativa experienciaEducativa) {
         this.experienciaEducativa = experienciaEducativa;
     }
-    
 
+    
+    
+    public String getDescripcionSolucion(){
+        return this.solucion.getDescripcion();
+    }
+   
     @Override
     public String toString() {
         return "ProblematicaAcademica{" + "idProblematica=" + idProblematica + ", descripcion=" + descripcion + ", numeroDeEstudiantesAfectados=" + numeroDeEstudiantesAfectados + ", solucion=" + solucion + '}';
