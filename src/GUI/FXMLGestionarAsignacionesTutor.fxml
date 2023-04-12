@@ -59,5 +59,6 @@
       <Label fx:id="lbl_programa" layoutX="506.0" layoutY="211.0" text="Label" textFill="#5da844" visible="false" />
       <Label fx:id="lbl_nombreTutor" layoutX="506.0" layoutY="443.0" text="Label" textFill="#5da844" visible="false" />
       <Label fx:id="lbl_numeroEstudiantes" layoutX="506.0" layoutY="486.0" text="Label" textFill="#5da844" visible="false" />
+      <Label fx:id="lbl_matricula" layoutX="506.0" layoutY="261.0" text="Label" textFill="#5da844" visible="false" />
    </children>
 </AnchorPane>

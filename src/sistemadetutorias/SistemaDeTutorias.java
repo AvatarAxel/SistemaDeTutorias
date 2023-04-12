@@ -23,7 +23,18 @@ import javafx.stage.Stage;
 public class SistemaDeTutorias extends Application {
     
     @Override
-    public void start(Stage stage) throws Exception {
+     public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/GUI/FXMLGestionarProblematicas.fxml"));
+      // Parent root = FXMLLoader.load(getClass().getResource("/GUI/FXMLConsultarProblematicasAcademicas.fxml"));
+        Scene scene = new Scene(root);  
+        stage.setResizable(true);
+        stage.getIcons().add(new Image("images/icon.png"));
+       // stage.setTitle("Gestión de Problemáticas Académicas");
+        stage.centerOnScreen();
+        stage.setScene(scene);
+        stage.show();
+    }
+    /*public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/GUI/FXMLLogin.fxml"));
         
         Scene scene = new Scene(root);
@@ -34,7 +45,7 @@ public class SistemaDeTutorias extends Application {
         stage.centerOnScreen();
         stage.setScene(scene);
         stage.show();
-    }
+    } */
 
     /**
      * @param args the command line arguments
