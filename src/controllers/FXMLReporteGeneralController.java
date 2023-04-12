@@ -170,7 +170,7 @@ public class FXMLReporteGeneralController implements Initializable {
             EstudianteDAO estudianteDAO = new EstudianteDAO();
             LabelTotalAlumnosResgistrados.setText(String.valueOf(estudianteDAO.getAllEstudiantesWithTutor(14203)));
         } catch (SQLException sqle) {
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
 

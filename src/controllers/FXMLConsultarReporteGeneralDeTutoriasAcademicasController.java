@@ -101,7 +101,7 @@ public class FXMLConsultarReporteGeneralDeTutoriasAcademicasController implement
                     loadInformationPeriodoEscolar();
                     tableTutoriasAcademicas.setItems(listTutoriasAcademicas);
                 } catch (SQLException sqle) {
-                    Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+                    AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
                 }
                 return null;
             }

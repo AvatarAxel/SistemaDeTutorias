@@ -35,7 +35,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import util.Alerts;
+import util.AlertManager;
 import util.Email;
 import util.WindowManager;
 import util.Random;
@@ -89,7 +89,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
                     listProfesores.addAll(loadedListProfesores);
                     tableProfesor.setItems(listProfesores);
                 } catch (SQLException e) {
-                    Alerts.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+                    AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
                 }
                 return null;
             }
@@ -111,12 +111,12 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
 
     @FXML
     private void buttonCancel(ActionEvent event) {
-        Navigator.NavigateToWindow(textFieldSearchProfesores.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+        WindowManager.NavigateToWindow(textFieldSearchProfesores.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }
 
     @FXML
     private void buttonRegisterAction(ActionEvent event) throws InterruptedException {
-        Optional<ButtonType> result = Alerts.showAlert("Confirmación", "¿Seguro de realizar dicha acción?", Alert.AlertType.CONFIRMATION);
+        Optional<ButtonType> result = AlertManager.showAlert("Confirmación", "¿Seguro de realizar dicha acción?", Alert.AlertType.CONFIRMATION);
         if (result.get() == ButtonType.OK) {            
             registerTutor();            
         }
@@ -155,7 +155,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
             boolean resultRolAssignment = userDao.setRolUserTutor(tutorAcademico.getNumeroDePersonal());
             boolean markRegistration = profesorDao.setTutorRegister(tutorAcademico.getNumeroDePersonal());
             if (resultRegister && resultRolAssignment && markRegistration) {
-                Alerts.showTemporalAlert(" ", "Registro realizado con éxito", Alert.AlertType.INFORMATION, 2);
+                AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", Alert.AlertType.INFORMATION, 2);
                 notifyTheNewUser(tutorAcademico.getCorreoElectronicoInstitucional(), randomPassword);                                                                
             }
         } catch (SQLException e) {
