@@ -10,25 +10,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="389.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLRegistrarTutorAcademicoController">
+<AnchorPane id="AnchorPane" prefHeight="428.0" prefWidth="890.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLRegistrarTutorAcademicoController">
     <stylesheets>
         <URL value="@/styles/globalStyles.css" />
     </stylesheets>
    <children>
-      <Button fx:id="buttonRegister" layoutX="379.0" layoutY="318.0" mnemonicParsing="false" onAction="#buttonRegisterAction" text="Registrar" />
-      <TextField fx:id="textFieldSearchProfesores" layoutX="66.0" layoutY="29.0" onKeyReleased="#validateInsputsNumeroDePersonal" onKeyTyped="#validateLengthNumeroDePersonal" prefHeight="29.0" prefWidth="387.0" promptText="Numero de personal        eje. 12345" />
-      <Button fx:id="buttonSearch" layoutX="475.0" layoutY="29.0" mnemonicParsing="false" onAction="#buttonSearchAction" text="Buscar" />
-      <Button layoutX="469.0" layoutY="318.0" mnemonicParsing="false" onAction="#buttonCancel" text="Cancelar" />
-      <Label layoutX="66.0" layoutY="99.0" text="Nombre:" />
-      <Label layoutX="66.0" layoutY="144.0" text="Apellido Paterno:" />
-      <Label layoutX="66.0" layoutY="191.0" text="Apellido Materno:" />
-      <Label layoutX="66.0" layoutY="234.0" text="Numero de personal:" />
-      <Label fx:id="labelNombre" layoutX="131.0" layoutY="99.0" prefHeight="19.0" prefWidth="322.0" />
-      <Label fx:id="labelApellidoPaterno" layoutX="175.0" layoutY="144.0" prefHeight="19.0" prefWidth="237.0" />
-      <Label fx:id="labelApellidoMaterno" layoutX="180.0" layoutY="191.0" prefHeight="19.0" prefWidth="280.0" />
-      <Label fx:id="labelNumeroDePersonal" layoutX="205.0" layoutY="234.0" prefHeight="19.0" prefWidth="309.0" />
-      <Label fx:id="labelError" layoutX="66.0" layoutY="65.0" prefHeight="19.0" prefWidth="387.0" textFill="#da0e0e" />
-      <Label layoutX="66.0" layoutY="271.0" text="Correo electronico institucional: " />
-      <Label fx:id="labelCorreoInstitucional" layoutX="276.0" layoutY="271.0" prefHeight="19.0" prefWidth="270.0" />
+      <Button fx:id="buttonRegister" layoutX="689.0" layoutY="368.0" mnemonicParsing="false" onAction="#buttonRegisterAction" text="Registrar" />
+      <TextField fx:id="textFieldSearchProfesores" layoutX="131.0" layoutY="29.0" onKeyTyped="#validateLengthNumeroDePersonal" prefHeight="29.0" prefWidth="728.0" promptText="Numero de personal / Nombre / Apellidos" />
+      <Button layoutX="785.0" layoutY="368.0" mnemonicParsing="false" onAction="#buttonCancel" text="Cancelar" />
+      <TableView fx:id="tableProfesor" layoutX="24.0" layoutY="84.0" onMouseClicked="#selectProfesor" prefHeight="263.0" prefWidth="833.0">
+        <columns>
+          <TableColumn fx:id="columNumeroDePersonal" prefWidth="134.0" text="Numero de personal" />
+          <TableColumn fx:id="columNombre" minWidth="0.0" prefWidth="159.0" text="Nombre" />
+            <TableColumn fx:id="columApellidoPaterno" prefWidth="195.0" text="Apellido Paterno" />
+            <TableColumn fx:id="columApellidoMaterno" prefWidth="165.0" text="Apellido Materno" />
+            <TableColumn fx:id="columCorreoInstitucional" prefWidth="179.0" text="Correo Institucional" />
+        </columns>
+      </TableView>
+      <Label layoutX="24.0" layoutY="34.0" prefHeight="19.0" prefWidth="117.0" text="Buscar profesor:" />
    </children>
 </AnchorPane>

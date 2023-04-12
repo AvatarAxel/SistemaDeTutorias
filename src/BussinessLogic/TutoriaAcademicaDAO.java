@@ -29,7 +29,7 @@ public class TutoriaAcademicaDAO {
             statement.setString(1, clave);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                TutoriaAcademica  tutoriaAcademica = new TutoriaAcademica();
+                TutoriaAcademica  tutoriaAcademica = new TutoriaAcademica();                
                 tutoriaAcademica.setIdTutoriaAcademica(resultSet.getInt("idTutoriaAcademica"));
                 tutoriaAcademica.setNumeroDeSesion(resultSet.getInt("numeroDeSesion"));
                 tutoriaAcademica.setFechaInicio(resultSet.getDate("fechaInicio"));

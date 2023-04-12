@@ -5,7 +5,6 @@
 package BussinessLogic;
 
 import Domain.PeriodoEscolar;
-import Domain.Profesor;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,7 +23,7 @@ public class PeriodoEscolarDAO {
         Connection connection = dataBaseConnection.getConnection();
 
         if (connection != null) {
-            String query = ("SELECT pe.fechaInicio, pe.fechaFin\n"
+            String query = ("SELECT pe.fechaInicio, pe.fechaFin, pe.idPeriodoEscolar\n"
                     + "FROM tutorias_academicas AS ta\n"
                     + "JOIN periodos_escolares AS pe\n"
                     + "ON ta.idPeriodoEscolar = pe.idPeriodoEscolar\n"
@@ -33,6 +32,7 @@ public class PeriodoEscolarDAO {
             statement.setInt(1, idTutoriaAcademica);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
+                periodoEscolar.setIdPeriodoEscolar(resultSet.getInt("idPeriodoEscolar"));
                 periodoEscolar.setFechaInicio(resultSet.getDate("fechaInicio"));
                 periodoEscolar.setFechaFin(resultSet.getDate("fechaFin"));
             }

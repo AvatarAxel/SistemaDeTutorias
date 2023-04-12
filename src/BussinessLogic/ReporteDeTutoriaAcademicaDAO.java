@@ -6,7 +6,6 @@ package BussinessLogic;
 
 import Domain.ReporteDeTutoriaAcademica;
 import Domain.TutorAcademico;
-import Domain.TutoriaAcademica;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
  * @author michikato
  */
 public class ReporteDeTutoriaAcademicaDAO {
-    
+
     public ArrayList<ReporteDeTutoriaAcademica> getReportesDeTutorias(int idTutoriaAcademica) throws SQLException {
         ArrayList<ReporteDeTutoriaAcademica> listReporteDeTutoriaAcademica = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -43,20 +42,20 @@ public class ReporteDeTutoriaAcademicaDAO {
             statement.setInt(1, idTutoriaAcademica);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                ReporteDeTutoriaAcademica  reporteDeTutoriaAcademica = new ReporteDeTutoriaAcademica();
+                ReporteDeTutoriaAcademica reporteDeTutoriaAcademica = new ReporteDeTutoriaAcademica();
                 TutorAcademico tutorAcademico = new TutorAcademico();
                 reporteDeTutoriaAcademica.setComentariosGenerales(resultSet.getString("comentariosGenerales"));
                 reporteDeTutoriaAcademica.setIdReporteTutoria(resultSet.getInt("idReporteTutoria"));
                 reporteDeTutoriaAcademica.setNumeroDeAlumnosEnRiesgo(resultSet.getInt("totalRegistrados"));
-                reporteDeTutoriaAcademica.setNumeroDeTutoradosQueAsistieron(resultSet.getInt("totalAsistentes"));                
+                reporteDeTutoriaAcademica.setNumeroDeTutoradosQueAsistieron(resultSet.getInt("totalAsistentes"));
                 tutorAcademico.setNombre(resultSet.getString("nombre"));
                 tutorAcademico.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
-                tutorAcademico.setApellidoMaterno(resultSet.getString("apellidoMaterno"));                
+                tutorAcademico.setApellidoMaterno(resultSet.getString("apellidoMaterno"));
                 reporteDeTutoriaAcademica.setTutor(tutorAcademico);
                 listReporteDeTutoriaAcademica.add(reporteDeTutoriaAcademica);
             }
         }
         connection.close();
         return listReporteDeTutoriaAcademica;
-    }       
-            }
+    }
+}

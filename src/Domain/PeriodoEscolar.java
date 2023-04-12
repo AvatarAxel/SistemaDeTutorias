@@ -14,8 +14,8 @@ public class PeriodoEscolar {
     private String clave ;
     private Date fechaInicio;
     private Date fechaFin;
-    private int idPeriodoEscolar;
-
+    private int idPeriodoEscolar;    
+    
     public PeriodoEscolar() {
     }
 
@@ -57,5 +57,5 @@ public class PeriodoEscolar {
     public void setIdPeriodoEscolar(int idPeriodoEscolar) {
         this.idPeriodoEscolar = idPeriodoEscolar;
     }
-        
+
 }

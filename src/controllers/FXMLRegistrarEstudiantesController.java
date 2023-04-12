@@ -20,7 +20,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 import util.AlertManager;
 import util.WindowManager;
 
