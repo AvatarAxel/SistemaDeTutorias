@@ -69,7 +69,64 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
          
     }
 
-  
-   
+    @Override
+    public ArrayList<ExperienciaEducativa> getExperienciasEducativas() throws SQLException {
+        ArrayList<ExperienciaEducativa> listExperienciaEducativas = new ArrayList<>();
+        
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if(connection != null){
+            String query = ("SELECT experiencias_educativas.nrc, experiencias_educativas.nombre, experiencias_educativas.seccion, \n" +
+                    "experiencias_educativas.modalidad, experiencias_educativas.Clave, programas_educativos.nombre AS programaEducativo\n" +
+                    "FROM experiencias_educativas INNER JOIN programas_educativos ON experiencias_educativas.Clave = programas_educativos.clave;");
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()){
+                ExperienciaEducativa experienciaEducativaTemp = new ExperienciaEducativa();
+                experienciaEducativaTemp.setNrc(resultSet.getString("nrc"));
+                experienciaEducativaTemp.setNombre(resultSet.getString("nombre"));
+                experienciaEducativaTemp.setSeccion(resultSet.getString("seccion"));
+                experienciaEducativaTemp.setProgramaEducativo(resultSet.getString("programaEducativo"));
+                experienciaEducativaTemp.setModalidad(resultSet.getString("modalidad"));
+                experienciaEducativaTemp.setClave(resultSet.getString("Clave"));
+                listExperienciaEducativas.add(experienciaEducativaTemp);
+            }
+            connection.close();
+        }
+        
+        return listExperienciaEducativas;
+    }
+
+    @Override
+    public int updateAcademicOffer(ExperienciaEducativa experienciaEducativa) throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        
+        int result = 0;
+
+        if(connection != null){
+            if(experienciaEducativa != null){
+                String query = ("UPDATE experiencias_educativas "
+                        + "SET nombre = ?, seccion = ?, modalidad = ?, Clave = ?"
+                        + "WHERE (`nrc` = ?);");
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, experienciaEducativa.getNombre());
+                statement.setString(2, experienciaEducativa.getSeccion());
+                statement.setString(3, experienciaEducativa.getModalidad());
+                statement.setString(4, experienciaEducativa.getClave());
+                statement.setString(5, experienciaEducativa.getNrc());
+
+                int affectedRows = statement.executeUpdate();
+                result = (affectedRows == 1) ? 1 : 0;
+            }else{
+                result = 0;
+            }
+            
+            connection.close();
+        }
+        
+        return result;
+    }
     
 }

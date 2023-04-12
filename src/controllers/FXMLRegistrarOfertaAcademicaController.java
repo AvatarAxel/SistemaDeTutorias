@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,13 +21,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import util.Alerts;
-import util.Navigator;
+import util.AlertManager;
+import util.WindowManager;
 
 /**
  * FXML Controller class
@@ -68,7 +70,7 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
         listExperienciasEducativas = FXCollections.observableArrayList();
     }
 
-    private void loadInformation(File file) throws IOException{
+    private void loadTable(File file) throws IOException{
         ArrayList<ExperienciaEducativa> loadedExperienciasEducativas = new ArrayList<>();
         
         if (file != null) {
@@ -88,7 +90,11 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
     
     @FXML
     private void clicExit(ActionEvent event) {
-        Navigator.NavigateToWindow(tbExperiencias.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+        Optional<ButtonType> optionResult = AlertManager.showAlert("Confirmación", "¿Seguro de realizar dicha acción?", Alert.AlertType.CONFIRMATION);
+
+        if(optionResult.get() == ButtonType.OK){
+            WindowManager.NavigateToWindow(tbExperiencias.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+        }
     }
 
     @FXML
@@ -102,10 +108,10 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
                 experienciaEducativaDAO.uploadAcademicOffer(listedExperienciasEducativas.get(i));
             }
         } catch (SQLException ex) {
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
         }
         
-        Navigator.NavigateToWindow(tbExperiencias.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+        WindowManager.NavigateToWindow(tbExperiencias.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }
 
     @FXML
@@ -117,9 +123,9 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
         if(file != null){
             
             try {
-                loadInformation(file);
+                loadTable(file);
             } catch (IOException e) {
-                Alerts.showAlert("Error", "No se pudo cargar la información del archivo seleccionado", Alert.AlertType.ERROR);
+                AlertManager.showAlert("Error", "No se pudo cargar la información del archivo seleccionado", Alert.AlertType.ERROR);
             }
             
         }

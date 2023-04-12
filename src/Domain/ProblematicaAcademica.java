@@ -22,7 +22,9 @@ public class ProblematicaAcademica {
     private int idReporteTutoria;
     LocalDate fechaFin;
     
-    private SolucionAProblematica solucion = new SolucionAProblematica();
+    private SolucionAProblematica solucion;
+    private Profesor profesor;
+    private ExperienciaEducativa experienciaEducativa;
 
     public ProblematicaAcademica() {
     }
@@ -146,10 +148,35 @@ public class ProblematicaAcademica {
     public String getDescripcionSolucion(){
         return this.solucion.getDescripcion();
     }
+   
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
+
+    public ExperienciaEducativa getExperienciaEducativa() {
+        return experienciaEducativa;
+    }
+
+    public void setExperienciaEducativa(ExperienciaEducativa experienciaEducativa) {
+        this.experienciaEducativa = experienciaEducativa;
+    }
+    
 
     @Override
     public String toString() {
         return "ProblematicaAcademica{" + "idProblematica=" + idProblematica + ", descripcion=" + descripcion + ", numeroDeEstudiantesAfectados=" + numeroDeEstudiantesAfectados + ", solucion=" + solucion + '}';
+    }
+    
+    public String getNombreCompletoProfesor(){
+        return profesor.getNombre()+" "+profesor.getApellidoPaterno()+" "+profesor.getApellidoMaterno();
+    }
+    
+    public String getExperienciaEducativaAndNRC(){
+        return experienciaEducativa.getNombre()+" "+experienciaEducativa.getNrc();
     }
     
     @Override

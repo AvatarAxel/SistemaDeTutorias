@@ -1,6 +1,8 @@
 package BussinessLogic;
 
+import Domain.ExperienciaEducativa;
 import Domain.ProblematicaAcademica;
+import Domain.Profesor;
 import Domain.SolucionAProblematica;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
@@ -248,5 +250,7 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
     
 
  
+
+
 
 }
