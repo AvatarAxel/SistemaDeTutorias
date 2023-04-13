@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.embed.swing.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="351.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLConsultarReporteGeneralDeTutoriasAcademicasController">
+    <stylesheets>
+        <URL value="@/styles/globalStyles.css" />
+    </stylesheets>
+   <children>
+      <Label layoutX="34.0" layoutY="30.0" prefHeight="19.0" prefWidth="135.0" text="Programa educativo: " />
+      <Label fx:id="labelProgramaEducativo" layoutX="169.0" layoutY="30.0" prefHeight="19.0" prefWidth="255.0" />
+      <TableView fx:id="tableTutoriasAcademicas" layoutX="34.0" layoutY="84.0" onMouseClicked="#selectPeriodo" prefHeight="200.0" prefWidth="532.0">
+        <columns>
+          <TableColumn fx:id="columPeriodo" prefWidth="431.0" text="Periodo escolar" />
+          <TableColumn fx:id="columNumeroDeSesion" prefWidth="100.0" text="No. De Sesión" />
+        </columns>
+      </TableView>
+      <Button fx:id="buttonConsultar" layoutX="397.0" layoutY="308.0" mnemonicParsing="false" onAction="#buttonConsultarAction" text="Consultar" />
+      <Button layoutX="494.0" layoutY="308.0" mnemonicParsing="false" onAction="#buttonCancelarAction" text="Cancelar" />
+   </children>
+</AnchorPane>

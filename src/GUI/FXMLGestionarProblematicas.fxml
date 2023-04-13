@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="828.0" prefWidth="647.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLGestionarProblematicasController">
+   <children>
+      <TableView fx:id="tblProblematicas" layoutX="65.0" layoutY="84.0" prefHeight="190.0" prefWidth="511.0">
+        <columns>
+          <TableColumn fx:id="clm_IdProblematica" minWidth="4.6666259765625" prefWidth="94.66668701171875" text="IdProblemática" />
+          <TableColumn fx:id="clm_Hd" prefWidth="181.99993896484375" text="Título" />
+            <TableColumn fx:id="clm_Experiencia" prefWidth="128.0" text="Experiencia E." />
+            <TableColumn fx:id="clm_Profesor" prefWidth="108.6666259765625" text="Profesor" />
+            <TableColumn fx:id="clm_numReportes" prefWidth="167.99998982747394" text="numReportes" />
+        </columns>
+      </TableView>
+      <Button fx:id="btn_ModifyE" layoutX="249.0" layoutY="291.0" mnemonicParsing="false" onAction="#modifyEnviromentOn" prefHeight="25.0" prefWidth="59.0" text="Editar" />
+      <Button fx:id="btn_Delete" layoutX="61.0" layoutY="739.0" mnemonicParsing="false" onAction="#deleteProblematica" prefHeight="25.0" prefWidth="78.0" text="Eliminar" visible="false" />
+      <Button fx:id="btn_Update" layoutX="499.0" layoutY="739.0" mnemonicParsing="false" onAction="#updateProblematica" prefHeight="20.0" prefWidth="73.0" text="Actualizar" visible="false" />
+      <Label layoutX="117.0" layoutY="35.0" text="Gestión de Problemáticas Académicas">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_Profesor" layoutX="65.0" layoutY="401.0" text="Profesor">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_EE" layoutX="62.0" layoutY="361.0" text="Experiencia Educativa">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="cmb_EE" layoutX="206.0" layoutY="357.0" prefHeight="25.0" prefWidth="205.0" />
+      <ComboBox fx:id="cmb_Profesor" layoutX="206.0" layoutY="398.0" prefHeight="25.0" prefWidth="205.0" />
+      <Line endX="433.6666259765625" fill="BLACK" layoutX="145.0" layoutY="333.0" startX="-81.66667175292969" strokeWidth="3.5" />
+      <Label fx:id="lbl_Header" layoutX="65.0" layoutY="453.0" text="Título">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_description" layoutX="62.0" layoutY="495.0" text="Descripción">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="txt_descrip" layoutX="62.0" layoutY="515.0" prefHeight="200.0" prefWidth="511.0" />
+      <TextField fx:id="txt_Title" layoutX="207.0" layoutY="450.0" prefHeight="25.0" prefWidth="367.0" />
+      <Label fx:id="lbl_NumReportados" layoutX="469.0" layoutY="361.0" text="#Reportados">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Spinner fx:id="spn_numReportados" layoutX="442.0" layoutY="401.0" prefHeight="25.0" prefWidth="133.0" />
+      <Button fx:id="btn_more" layoutX="339.0" layoutY="289.0" mnemonicParsing="false" onAction="#clearFields" prefHeight="25.0" prefWidth="52.0" text="+">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btn_add" layoutX="497.0" layoutY="739.0" mnemonicParsing="false" onAction="#addProblematica" prefHeight="25.0" prefWidth="78.0" text="Añadir" visible="false" />
+      <Button fx:id="btn_Close" layoutX="61.0" layoutY="788.0" mnemonicParsing="false" onAction="#closeWindow" prefHeight="25.0" prefWidth="59.0" text="Cerrar" />
+   </children>
+</AnchorPane>

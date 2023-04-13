@@ -4,8 +4,10 @@
  */
 package BussinessLogic;
 
+import Domain.ExperienciaEducativa;
 import Domain.Profesor;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,5 +16,5 @@ import java.sql.SQLException;
 public interface IProfesorDAO {
     
     public Profesor getProfesor(int numeroDePersonal) throws SQLException;
-    
+    public ArrayList<ExperienciaEducativa> consultProfesoresNames()throws SQLException;
 }
