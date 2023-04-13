@@ -4,6 +4,8 @@
  */
 package Domain;
 
+import javafx.scene.control.CheckBox;
+
 /**
  *
  * @author michikato

@@ -36,8 +36,8 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import util.Alerts;
-import util.Navigator;
+import util.AlertManager;
+import util.WindowManager;
 /**
  * FXML Controller class
  *
@@ -125,7 +125,7 @@ import util.Navigator;
             estudiantes.addAll(consultaEstudiantesPorTutorAcademico);
             tbEstudiantes.setItems(estudiantes);            
         }catch(SQLException sqle){
-            Alerts.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);        
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);        
         }
     }    
 
@@ -141,7 +141,7 @@ import util.Navigator;
     private void closeWindow() {
         Stage escenario = (Stage) lbProgramaEducativo.getScene().getWindow();
         escenario.close();
-        Navigator.NavigateToWindow(lbProgramaEducativo.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+        WindowManager.NavigateToWindow(lbProgramaEducativo.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }    
 
     @FXML
