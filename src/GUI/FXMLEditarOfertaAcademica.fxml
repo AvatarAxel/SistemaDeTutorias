@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLEditarOfertaAcademicaController">
+    <stylesheets>
+        <URL value="@/styles/globalStyles.css" />
+    </stylesheets>
+   <children>
+      <TableView fx:id="tbExperienciasEducativas" layoutX="14.0" layoutY="16.0" onMouseClicked="#clicExperienciaEducativa" prefHeight="336.0" prefWidth="573.0">
+        <columns>
+          <TableColumn fx:id="colNrc" prefWidth="75.0" text="NRC" />
+          <TableColumn fx:id="colNombre" prefWidth="151.0" text="Nombre" />
+            <TableColumn fx:id="colProgramaEducativo" prefWidth="179.0" text="Programa Educativo" />
+            <TableColumn fx:id="colSeccion" prefWidth="57.0" text="Sección" />
+            <TableColumn fx:id="colModalidad" prefWidth="110.0" text="Modalidad" />
+        </columns>
+      </TableView>
+      <Button layoutX="512.0" layoutY="361.0" mnemonicParsing="false" onAction="#clicExit" prefHeight="25.0" prefWidth="74.0" text="Salir" />
+   </children>
+</AnchorPane>

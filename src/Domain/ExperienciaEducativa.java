@@ -14,6 +14,8 @@ public class ExperienciaEducativa {
     private String seccion;
     private String modalidad;
     private String clave;
+    private String profesorNombre;
+    private String programaEducativo;
     
     public ExperienciaEducativa() {
     }
@@ -25,6 +27,21 @@ public class ExperienciaEducativa {
         this.modalidad = modalidad;
         this.clave = clave;
     }
+
+    public ExperienciaEducativa(String nrc, String profesorNombre,String nombre) {
+        this.nrc = nrc;
+        this.profesorNombre = profesorNombre;
+        this.nombre=nombre;
+    }
+
+    public String getProfesorNombre() {
+        return profesorNombre;
+    }
+
+    public void setProfesorNombre(String profesorNombre) {
+        this.profesorNombre = profesorNombre;
+    }
+    
 
     public String getNrc() {
         return nrc;
@@ -66,9 +83,40 @@ public class ExperienciaEducativa {
         this.clave = clave;
     }
 
+    public String getProgramaEducativo() {
+        return programaEducativo;
+    }
+
+    public void setProgramaEducativo(String programaEducativo) {
+        this.programaEducativo = programaEducativo;
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean isEquals=false;
+        if (object == this) {
+            isEquals=true;
+        }
+        if (object!= null && object instanceof ExperienciaEducativa) {
+            ExperienciaEducativa other = (ExperienciaEducativa) object;
+            isEquals=this.getClave().equals(other.getClave()) &&
+                    this.getModalidad().equals(other.getModalidad()) &&
+                    this.getNrc().equals(other.getNrc()) &&
+                    this.getSeccion().equals(other.getSeccion()) &&
+                    this.getNombre().equals(other.getNombre());
+        }
+        return isEquals;
+    }
+
     @Override
     public String toString() {
-        return "ExperienciaEducativa{" + "nrc=" + nrc + ", nombre=" + nombre + ", seccion=" + seccion + ", modalidad=" + modalidad + '}';
+        return    profesorNombre + " - nrc=" + nrc;
     }
             
 }

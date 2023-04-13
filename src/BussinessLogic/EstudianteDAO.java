@@ -10,12 +10,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import javafx.scene.control.Alert;
 
 /**
  *
- * @author Propietario
+ * @author michikato
  */
 public class EstudianteDAO {
 
@@ -44,7 +42,8 @@ public class EstudianteDAO {
     public boolean validateExistEstudiante(String matricula) throws SQLException{
         boolean result = false;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        Connection connection = dataBaseConnection.getConnection();        
+        Connection connection = dataBaseConnection.getConnection();
+        
         if(connection!=null){
             String query = ("SELECT COUNT(*) FROM estudiantes WHERE matricula = ?");            
             PreparedStatement statement = connection.prepareStatement(query);

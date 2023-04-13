@@ -4,29 +4,29 @@
  */
 package Domain;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 /**
  *
- * @author Propietario
+ * @author michikato
  */
 public class TutoriaAcademica {
-    private int idTutoriaAcademica;
     private int numeroDeSesion;
-    private LocalDate fechaInicio;
-    private LocalDate fechaFin;
-    private LocalDate fechaCierreEntregaReporte;
-    private String idPeriodoEscolar;
-    private String periodoEscolar;
-    private int codigoRespuesta;
-    private int clave;
+    private Date fechaInicio;
+    private Date fechaFin;
+    private Date fechaCierreEntregaReporte;
+    private int idTutoriaAcademica;
+    private PeriodoEscolar periodoEscolar;
 
-    public int getIdTutoriaAcademica() {
-        return idTutoriaAcademica;
+    public TutoriaAcademica() {
     }
 
-    public void setIdTutoriaAcademica(int idTutoriaAcademica) {
+    public TutoriaAcademica(int numeroDeSesion, Date fechaInicio, Date fechaFin, int idTutoriaAcademica, PeriodoEscolar periodoEscolar) {
+        this.numeroDeSesion = numeroDeSesion;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
         this.idTutoriaAcademica = idTutoriaAcademica;
+        this.periodoEscolar = periodoEscolar;
     }
 
     public int getNumeroDeSesion() {
@@ -37,60 +37,50 @@ public class TutoriaAcademica {
         this.numeroDeSesion = numeroDeSesion;
     }
 
-    public LocalDate getFechaInicio() {
+    public Date getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(LocalDate fechaInicio) {
+    public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public LocalDate getFechaFin() {
+    public Date getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(LocalDate fechaFin) {
+    public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
     }
 
-    public LocalDate getFechaCierreEntregaReporte() {
+    public Date getFechaCierreEntregaReporte() {
         return fechaCierreEntregaReporte;
     }
 
-    public void setFechaCierreEntregaReporte(LocalDate fechaCierreEntregaReporte) {
+    public void setFechaCierreEntregaReporte(Date fechaCierreEntregaReporte) {
         this.fechaCierreEntregaReporte = fechaCierreEntregaReporte;
     }
-
-    public String getIdPeriodoEscolar() {
-        return idPeriodoEscolar;
+    
+    public int getIdTutoriaAcademica() {
+        return idTutoriaAcademica;
     }
 
-    public void setIdPeriodoEscolar(String idPeriodoEscolar) {
-        this.idPeriodoEscolar = idPeriodoEscolar;
+    public void setIdTutoriaAcademica(int idTutoriaAcademica) {
+        this.idTutoriaAcademica = idTutoriaAcademica;
     }
 
-    public String getPeriodoEscolar() {
+    public PeriodoEscolar getPeriodoEscolar() {
         return periodoEscolar;
     }
 
-    public void setPeriodoEscolar(String periodoEscolar) {
+    public void setPeriodoEscolar(PeriodoEscolar periodoEscolar) {
         this.periodoEscolar = periodoEscolar;
     }
-
-    public int getCodigoRespuesta() {
-        return codigoRespuesta;
-    }
-
-    public void setCodigoRespuesta(int codigoRespuesta) {
-        this.codigoRespuesta = codigoRespuesta;
-    }
-
-    public int getClave() {
-        return clave;
-    }
-
-    public void setClave(int clave) {
-        this.clave = clave;
-    }
     
+    public String getFechasPeriodoEscolar(){
+        String fechasPeriodoEscolar = util.DateLatinAmerica.DateConvertToPeriod(periodoEscolar.getFechaInicio())
+                + " - " + util.DateLatinAmerica.DateConvertToPeriod(periodoEscolar.getFechaFin());
+        return fechasPeriodoEscolar;
+    }
+
 }

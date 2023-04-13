@@ -4,11 +4,9 @@
  */
 package Domain;
 
-import javafx.scene.control.CheckBox;
-
 /**
  *
- * @author Propietario
+ * @author michikato
  */
 public class Estudiante {
     private String nombre;
@@ -26,11 +24,10 @@ public class Estudiante {
         this.checkBoxEnRiesgo = new CheckBox();
     }
 
-    public Estudiante(String nombre, String apellidoPaterno, String apellidoMaterno, String correoElectronicoInstitucional, String Matricula) {
+    public Estudiante(String nombre, String apellidoPaterno, String apellidoMaterno, String Matricula) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
-        this.correoElectronicoInstitucional = correoElectronicoInstitucional;
         this.Matricula = Matricula;
     }
         

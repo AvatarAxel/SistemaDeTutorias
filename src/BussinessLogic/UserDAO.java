@@ -56,4 +56,26 @@ public class UserDAO implements IUserDAO{
         }
         return tutores;
     } 
+    
+    public boolean setRolUserTutor(int numeroDePersonal) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String query = ("INSERT INTO roles_usuarios (`numeroDePersonal`, `idRol`) VALUES (?, '3');");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, numeroDePersonal);
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }
+
+    
+    
+    
 }

@@ -4,17 +4,37 @@
  */
 package Domain;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 /**
  *
  * @author Panther
  */
 public class ProblematicaAcademica {
     private int idProblematica;
+    private String nrc;
+    private String experienciaE;
+    private String nombreProfesor;
+    private String titulo;
     private String descripcion;
     private int numeroDeEstudiantesAfectados;
-    private SolucionAProblematica solucion = new SolucionAProblematica();
+    private int idReporteTutoria;
+    LocalDate fechaFin;
+    
+    private SolucionAProblematica solucion;
+    private Profesor profesor;
+    private ExperienciaEducativa experienciaEducativa;
 
     public ProblematicaAcademica() {
+    }
+
+    public int getIdReporteTutoria() {
+        return idReporteTutoria;
+    }
+
+    public void setIdReporteTutoria(int idReporteTutoria) {
+        this.idReporteTutoria = idReporteTutoria;
     }
 
     public ProblematicaAcademica(int idProblematica, String descripcion, int numeroDeEstudiantesAfectados, SolucionAProblematica solucion) {
@@ -27,7 +47,25 @@ public class ProblematicaAcademica {
     public ProblematicaAcademica(SolucionAProblematica solucion) {
         this.solucion = solucion;
     }
-    
+
+    public ProblematicaAcademica(int idProblematica, String nrc, String ExperienciaE, String nombreProfesor, String titulo, String descripcion, int numeroDeEstudiantesAfectados) {
+        this.idProblematica = idProblematica;
+        this.nrc = nrc;
+        this.experienciaE = ExperienciaE;
+        this.nombreProfesor = nombreProfesor;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.numeroDeEstudiantesAfectados = numeroDeEstudiantesAfectados;
+    }
+
+    public ProblematicaAcademica(String nrc, String ExperienciaE, String nombreProfesor, String titulo, String descripcion, int numeroDeEstudiantesAfectados) {
+        this.nrc = nrc;
+        this.experienciaE = ExperienciaE;
+        this.nombreProfesor = nombreProfesor;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.numeroDeEstudiantesAfectados = numeroDeEstudiantesAfectados;
+    }
 
     public int getIdProblematica() {
         return idProblematica;
@@ -35,6 +73,38 @@ public class ProblematicaAcademica {
 
     public void setIdProblematica(int idProblematica) {
         this.idProblematica = idProblematica;
+    }
+
+    public String getNrc() {
+        return nrc;
+    }
+
+    public void setNrc(String nrc) {
+        this.nrc = nrc;
+    }
+
+    public String getExperienciaE() {
+        return experienciaE;
+    }
+
+    public void setExperienciaE(String experienciaE) {
+        this.experienciaE = experienciaE;
+    }
+
+    public String getNombreProfesor() {
+        return nombreProfesor;
+    }
+
+    public void setNombreProfesor(String nombreProfesor) {
+        this.nombreProfesor = nombreProfesor;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getDescripcion() {
@@ -53,6 +123,14 @@ public class ProblematicaAcademica {
         this.numeroDeEstudiantesAfectados = numeroDeEstudiantesAfectados;
     }
 
+    public LocalDate getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(LocalDate fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
     public SolucionAProblematica getSolucion() {
         return solucion;
     }
@@ -60,14 +138,40 @@ public class ProblematicaAcademica {
     public void setSolucion(SolucionAProblematica solucion) {
         this.solucion = solucion;
     }
+
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
+
+    public ExperienciaEducativa getExperienciaEducativa() {
+        return experienciaEducativa;
+    }
+
+    public void setExperienciaEducativa(ExperienciaEducativa experienciaEducativa) {
+        this.experienciaEducativa = experienciaEducativa;
+    }
+
+    
     
     public String getDescripcionSolucion(){
         return this.solucion.getDescripcion();
     }
-
+   
     @Override
     public String toString() {
         return "ProblematicaAcademica{" + "idProblematica=" + idProblematica + ", descripcion=" + descripcion + ", numeroDeEstudiantesAfectados=" + numeroDeEstudiantesAfectados + ", solucion=" + solucion + '}';
+    }
+    
+    public String getNombreCompletoProfesor(){
+        return profesor.getNombre()+" "+profesor.getApellidoPaterno()+" "+profesor.getApellidoMaterno();
+    }
+    
+    public String getExperienciaEducativaAndNRC(){
+        return experienciaEducativa.getNombre()+" "+experienciaEducativa.getNrc();
     }
     
     @Override
@@ -75,7 +179,7 @@ public class ProblematicaAcademica {
         int hash = 3;
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object object) {
         boolean isEquals=false;
@@ -91,4 +195,6 @@ public class ProblematicaAcademica {
         }
         return isEquals;
     }
+
+
 }

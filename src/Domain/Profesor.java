@@ -4,6 +4,8 @@
  */
 package Domain;
 
+import java.util.Objects;
+
 /**
  *
  * @author Panther
@@ -65,7 +67,7 @@ public class Profesor {
     public void setCorreoElectronicoInstitucional(String correoElectronicoInstitucional) {
         this.correoElectronicoInstitucional = correoElectronicoInstitucional;
     }
-
+    
     @Override
     public String toString() {
         return "Profesor{" + "numeroDePersonal=" + numeroDePersonal + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correoElectronicoInstitucional=" + correoElectronicoInstitucional + '}';
@@ -83,7 +85,7 @@ public class Profesor {
         if (object == this) {
             isEquals=true;
         }
-        if (object!= null && object instanceof Profesor) {
+        if (object!= null && objectgi instanceof Profesor) {
             Profesor other = (Profesor) object;
             isEquals=this.getNombre().equals(other.getNombre()) &&
                     this.getApellidoPaterno().equals(other.getApellidoPaterno()) &&
