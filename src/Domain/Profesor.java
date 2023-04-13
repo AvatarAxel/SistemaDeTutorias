@@ -85,7 +85,7 @@ public class Profesor {
         if (object == this) {
             isEquals=true;
         }
-        if (object!= null && object instanceof Profesor) {
+        if (object!= null && objectgi instanceof Profesor) {
             Profesor other = (Profesor) object;
             isEquals=this.getNombre().equals(other.getNombre()) &&
                     this.getApellidoPaterno().equals(other.getApellidoPaterno()) &&

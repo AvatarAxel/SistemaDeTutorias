@@ -14,6 +14,7 @@ public class TutoriaAcademica {
     private int numeroDeSesion;
     private Date fechaInicio;
     private Date fechaFin;
+    private Date fechaCierreEntregaReporte;
     private int idTutoriaAcademica;
     private PeriodoEscolar periodoEscolar;
 
@@ -50,6 +51,14 @@ public class TutoriaAcademica {
 
     public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
+    }
+
+    public Date getFechaCierreEntregaReporte() {
+        return fechaCierreEntregaReporte;
+    }
+
+    public void setFechaCierreEntregaReporte(Date fechaCierreEntregaReporte) {
+        this.fechaCierreEntregaReporte = fechaCierreEntregaReporte;
     }
     
     public int getIdTutoriaAcademica() {

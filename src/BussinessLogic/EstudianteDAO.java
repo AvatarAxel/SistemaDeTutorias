@@ -57,25 +57,27 @@ public class EstudianteDAO {
         }        
         connection.close();
         return result;
-    }    
-    
-    public int getAllEstudiantesWithTutor(int clave) throws SQLException {
-        int allEstudiantes = 0;
-        DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        Connection connection = dataBaseConnection.getConnection();
-
-        if (connection != null) {
-            String query = ("SELECT COUNT(*) AS TotalEstudiantes\n"
-                    + "FROM estudiantes\n"
-                    + "WHERE clave = ? AND numeroDePersonal IS NOT NULL;");
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, clave);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            allEstudiantes = resultSet.getInt(1);
-        }
-        connection.close();
-        return allEstudiantes;
     }
-
+    
+    public static ArrayList<Estudiante> obtenerEstudiantesPorTutorAcademico(int numeroPersonal) throws SQLException {
+        ArrayList<Estudiante> estudiantes = new ArrayList<>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();        
+        if (connection != null) {
+            String consulta = "SELECT * FROM estudiantes WHERE numeroDePersonal = ?";
+            PreparedStatement configurarConsulta = connection.prepareStatement(consulta);
+            configurarConsulta.setInt(1, numeroPersonal);
+            ResultSet resultado = configurarConsulta.executeQuery();
+            while (resultado.next()) {
+                Estudiante estudiante = new Estudiante();
+                estudiante.setMatricula(resultado.getString("matricula"));
+                estudiante.setNombre(resultado.getString("nombre"));
+                estudiante.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+                estudiante.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+                estudiantes.add(estudiante);
+            }
+            connection.close();
+        }
+        return estudiantes;
+    }    
 }
