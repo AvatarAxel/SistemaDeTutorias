@@ -99,7 +99,8 @@ import util.Navigator;
     
     private void configureTableColumns() {
         estudiantes = FXCollections.observableArrayList();
-        int numEstudiantesAsistentes = 0, numEstudiantesEnRiesgo = 0;
+        int numEstudiantesAsistentes = 1;
+        int numEstudiantesEnRiesgo = 1;
         columnMatricula.setCellValueFactory(new PropertyValueFactory("matricula"));
         columnNombreCompleto.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Estudiante, String>, ObservableValue<String>>() {
             @Override
@@ -112,22 +113,8 @@ import util.Navigator;
         
         columnEsAsistente.setCellValueFactory(new PropertyValueFactory<Estudiante, Boolean>("checkBoxEsAsistente"));
         tfNumEstudiantesAsistentes.setText(String.valueOf(numEstudiantesAsistentes));
-
-        //columnEnRiesgo.setCellValueFactory(new PropertyValueFactory<Estudiante, Boolean>("checkBoxEnRiesgo"));  
-        //tfNumEstudiantesAsistentes.setText(String.valueOf(numEstudiantesEnRiesgo));
-    columnEnRiesgo.setCellValueFactory(new PropertyValueFactory<>("enRiesgo"));
-    //columnEnRiesgo.setCellFactory(CheckBoxTableCell.forTableColumn(columnEnRiesgo));
-    columnEnRiesgo.setCellFactory(CheckBoxTableCell.forTableColumn(columnEnRiesgo));  
-    columnEnRiesgo.setEditable(true);
-    columnEnRiesgo.setOnEditCommit(event -> {
-        int estudiantesEnRiesgo = Integer.parseInt(tfNumEstudiantesEnRiesgo.getText());
-        if (event.getNewValue()) {
-            estudiantesEnRiesgo++;
-        } else {
-            estudiantesEnRiesgo--;
-        }
-        tfNumEstudiantesEnRiesgo.setText(Integer.toString(estudiantesEnRiesgo));
-    });
+        columnEnRiesgo.setCellValueFactory(new PropertyValueFactory<Estudiante, Boolean>("checkBoxEnRiesgo")); 
+        tfNumEstudiantesAsistentes.setText(String.valueOf(numEstudiantesEnRiesgo));
     }    
     
     private void loadEstudiantes() {

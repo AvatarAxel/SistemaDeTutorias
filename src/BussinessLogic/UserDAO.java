@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -27,5 +28,32 @@ public class UserDAO implements IUserDAO{
         ResultSet resultSet = statement.executeQuery();
         
         return user;
-    }    
+    }
+
+    public static ArrayList<Usuario> getUsuarioTutoresporProgramaEducativo(int clave) throws SQLException {
+    ArrayList<Usuario> tutores = new ArrayList<>();
+    DataBaseConnection dataBaseConnection = new DataBaseConnection();
+    Connection connection = dataBaseConnection.getConnection();        
+        if (connection != null) {
+            String consulta = "SELECT u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.numeroDePersonal FROM usuarios u\n" +
+            "INNER JOIN programas_educativos_usuarios pu ON u.numeroDePersonal = pu.numeroDePersonal\n" +
+            "INNER JOIN programas_educativos p ON p.clave = pu.clave\n" +
+            "INNER JOIN roles_usuarios ru ON u.numeroDePersonal = ru.numeroDePersonal\n" +
+            "INNER JOIN roles r ON r.idRol = ru.idRol\n" +
+            "WHERE r.idRol= 3 AND p.clave =?";
+            PreparedStatement configurarConsulta = connection.prepareStatement(consulta);
+            configurarConsulta.setInt(1, clave);
+            ResultSet resultado = configurarConsulta.executeQuery();
+            while (resultado.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setNombre(resultado.getString("nombre"));
+                usuario.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+                usuario.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+                usuario.setNumeroPersonal(resultado.getInt("numeroDePersonal"));
+                tutores.add(usuario);
+            }
+            connection.close();
+        }
+        return tutores;
+    } 
 }

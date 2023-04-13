@@ -5,6 +5,8 @@
 package util;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -35,7 +37,13 @@ public class Navigator {
             primaryStage.setTitle(windowTitle);
             primaryStage.show();
         } catch (IOException e) {
-            Alerts.showAlert("Error", "No se puede cargar la ventana", Alert.AlertType.ERROR);
+            //Alerts.showAlert("Error", "No se puede cargar la ventana", Alert.AlertType.ERROR);
+StringWriter sw = new StringWriter();
+PrintWriter pw = new PrintWriter(sw);
+e.printStackTrace(pw);
+String sStackTrace = sw.toString(); // stack trace as a string
+System.out.println(sStackTrace);
+Alerts.showAlert("Error EXAMPLE", e.toString(), Alert.AlertType.ERROR);            
         }
     }
     
