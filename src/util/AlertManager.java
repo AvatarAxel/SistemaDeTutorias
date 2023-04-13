@@ -23,27 +23,29 @@ public class AlertManager {
     private Alert alertError = new Alert(Alert.AlertType.ERROR);
     private Alert alertConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
     private Alert alertWarning = new Alert(Alert.AlertType.WARNING);
-    
-     Stage stageInformation = (Stage) alertInformation.getDialogPane().getScene().getWindow();
-     Stage stageError = (Stage) alertError.getDialogPane().getScene().getWindow();
-     Stage stageConfirmation = (Stage) alertConfirmation.getDialogPane().getScene().getWindow();
-     Stage stageWarning = (Stage) alertWarning.getDialogPane().getScene().getWindow();
-   
-    public static Optional<ButtonType> showAlert(String titulo, String mensaje, Alert.AlertType tipoAlerta){
+
+    Stage stageInformation = (Stage) alertInformation.getDialogPane().getScene().getWindow();
+    Stage stageError = (Stage) alertError.getDialogPane().getScene().getWindow();
+    Stage stageConfirmation = (Stage) alertConfirmation.getDialogPane().getScene().getWindow();
+    Stage stageWarning = (Stage) alertWarning.getDialogPane().getScene().getWindow();
+
+    public static Optional<ButtonType> showAlert(String titulo, String mensaje, Alert.AlertType tipoAlerta) {
         Alert alerta = new Alert(tipoAlerta);
         alerta.setTitle(titulo);
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         return alerta.showAndWait();
     }
-    
-    public static Optional<ButtonType> showTemporalAlert(String title, String message, Alert.AlertType alertType, int time) {
-        Alert alert = new Alert(alertType, message);
+
+    public static void showTemporalAlert(String title, String message, int time) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, message);
+        alert.setTitle(title);
         alert.setHeaderText(null);
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(time), event -> alert.hide()));
         timeline.play();
-        return alert.showAndWait();
+        alert.showAndWait();
     }
+
     public void showAlertErrorConexionDB() {
         stageError.getIcons().add(new Image("images/icon.png"));
         alertError.setTitle("Atención");
@@ -59,55 +61,57 @@ public class AlertManager {
         alertInformation.setContentText("Se ha registrado correctamente");
         alertInformation.showAndWait();
     }
-    
-     public void showAlertSuccesfulUpdate() {
-        
+
+    public void showAlertSuccesfulUpdate() {
+
         stageInformation.getIcons().add(new Image("images/icon.png"));
         alertInformation.setTitle("Proceso completado");
         alertInformation.setHeaderText("Actualización exitosa");
         alertInformation.setContentText("Se ha modificado correctamente");
         alertInformation.showAndWait();
     }
-     
-      public void showAlertSuccesfulDelete() {
+
+    public void showAlertSuccesfulDelete() {
         stageInformation.getIcons().add(new Image("images/icon.png"));
         alertInformation.setTitle("Proceso completado");
         alertInformation.setHeaderText("Petición exitosa");
         alertInformation.setContentText("Se ha elimindado correctamente");
         alertInformation.showAndWait();
     }
-     public void showAlertNotProblematicasFound() {
+
+    public void showAlertNotProblematicasFound() {
         stageInformation.getIcons().add(new Image("images/icon.png"));
         alertInformation.setTitle("Información");
         alertInformation.setHeaderText("Registros");
         alertInformation.setContentText("Aún no se han registrado problemáticas");
         alertInformation.showAndWait();
     }
-     
-     public void showAlertEmptyFields() {
+
+    public void showAlertEmptyFields() {
         stageWarning.getIcons().add(new Image("images/icon.png"));
         alertWarning.setTitle("Advertencia");
         alertWarning.setHeaderText("Campos Vacíos");
         alertWarning.setContentText("Por favor,revise nuevamente.");
         alertWarning.showAndWait();
     }
-       public void showAlertInvalidInputs() {
+
+    public void showAlertInvalidInputs() {
         stageWarning.getIcons().add(new Image("images/icon.png"));
         alertWarning.setTitle("Advertencia");
         alertWarning.setHeaderText("Ha ingresado datos inválidos");
         alertWarning.setContentText("Por favor,revise nuevamente.");
         alertWarning.showAndWait();
     }
-    
-      public void showAlertManyTutorados() {
+
+    public void showAlertManyTutorados() {
         stageWarning.getIcons().add(new Image("images/icon.png"));
         alertWarning.setTitle("Advertencia");
         alertWarning.setHeaderText("Excedio la asignación de estudiantes");
         alertWarning.setContentText("Menos de 30 estudiantes");
         alertWarning.showAndWait();
     }
-      
-        public void showAlertIncorrectLogin() {
+
+    public void showAlertIncorrectLogin() {
         stageWarning.getIcons().add(new Image("images/icon.png"));
         alertWarning.setTitle("Advertencia");
         alertWarning.setHeaderText("Usuario o Contraseña incorrecta");
@@ -115,6 +119,4 @@ public class AlertManager {
         alertWarning.showAndWait();
     }
 
-
-    
 }

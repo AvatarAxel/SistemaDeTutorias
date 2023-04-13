@@ -119,7 +119,7 @@ public class FXMLReporteGeneralController implements Initializable {
             ProblematicaAcademicaDAO problematicaAcademicaDao = new ProblematicaAcademicaDAO();
             ArrayList<ProblematicaAcademica> listProblematicasRecived = new ArrayList<>();
             for (int i = 0; i < listReportesDeTutoria.size(); i++) {
-                listProblematicasRecived = problematicaAcademicaDao.getProblematicasByReporte(listReportesDeTutoria.get(i).getIdReporteTutoria());
+                listProblematicasRecived = problematicaAcademicaDao.getAllProblematicasByReporte(listReportesDeTutoria.get(i).getIdReporteTutoria());
                 listProblematicasAcademicas.addAll(listProblematicasRecived);
             }
             tableProblematicasTutorias.setItems(listProblematicasAcademicas);

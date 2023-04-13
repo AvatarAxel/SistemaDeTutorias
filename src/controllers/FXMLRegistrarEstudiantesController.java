@@ -190,7 +190,7 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
                 estudiante.setApellidoMaterno(textApellidoMaterno.getText());
                 estudiante.setMatricula(textMatricula.getText().toLowerCase());                
                 if(estudianteDao.setEstudianteRegister(estudiante, 14203)){
-                    AlertManager.showAlert("Información", "Registro realizado con éxito", Alert.AlertType.ERROR);
+                    AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
                 }                                
             } else {
                 AlertManager.showAlert("Información", "Registro ya existente", Alert.AlertType.INFORMATION);
