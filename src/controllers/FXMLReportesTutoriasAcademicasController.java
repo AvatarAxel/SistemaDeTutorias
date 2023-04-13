@@ -29,8 +29,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import util.Alerts;
-import util.Navigator;
+import util.AlertManager;
+import util.WindowManager;
+
 
 /**
  * FXML Controller class
@@ -85,8 +86,8 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
             tutoresAcademicos.add(tutorAcademico);
             cbTutorAcademico.setItems(tutoresAcademicos);        
         }catch(SQLException sqle){
-            Alerts.showAlert("Error LOAD", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);        
-            Alerts.showAlert("Error LOAD", sqle.toString(), Alert.AlertType.ERROR);        
+            AlertManager.showAlert("Error LOAD", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);        
+            AlertManager.showAlert("Error LOAD", sqle.toString(), Alert.AlertType.ERROR);        
             
         }
     }
@@ -121,11 +122,11 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
                 listaReportesTutoriasAcademicas.addAll(resultadoConsulta);
                 tbReportesTutoriasAcademicas.setItems(listaReportesTutoriasAcademicas);             
             }else{
-            Alerts.showAlert("LOAD", "NO hay reportes", Alert.AlertType.ERROR);                    
+            AlertManager.showAlert("LOAD", "NO hay reportes", Alert.AlertType.ERROR);                    
             }      
         }catch(SQLException sqle){
-            Alerts.showAlert("Error LOAD", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);        
-            Alerts.showAlert("Error LOAD", sqle.toString(), Alert.AlertType.ERROR);        
+            AlertManager.showAlert("Error LOAD", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);        
+            AlertManager.showAlert("Error LOAD", sqle.toString(), Alert.AlertType.ERROR);        
             
         }
         /*ReporteTutoriaAcademicaDAO reporteTutoriaAcademicaDAO = new ReporteTutoriaAcademicaDAO();
@@ -151,12 +152,12 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
     private void clicButtonConsult(ActionEvent event) {
         Stage escenario = (Stage) lbInstruccion1.getScene().getWindow();
         escenario.close();        
-        Navigator.NavigateToWindow(lbInstruccion1.getScene().getWindow(), "/GUI/FXMLConsultarReporteTutoriaAcademica.fxml", "Consultar Reporte de Tutorías Académicas");
+        WindowManager.NavigateToWindow(lbInstruccion1.getScene().getWindow(), "/GUI/FXMLConsultarReporteTutoriaAcademica.fxml", "Consultar Reporte de Tutorías Académicas");
     }
     
     private void closeWindow() {
         Stage escenario = (Stage) lbInstruccion1.getScene().getWindow();
         escenario.close();
-        Navigator.NavigateToWindow(lbInstruccion1.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+        WindowManager.NavigateToWindow(lbInstruccion1.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }     
 }
