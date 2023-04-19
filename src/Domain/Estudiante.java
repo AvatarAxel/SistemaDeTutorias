@@ -39,6 +39,9 @@ public class Estudiante {
     public String getMatricula() {
         return Matricula;
     }
+    public String getNombreCompleto(){
+    return this.nombre +" " +this.apellidoPaterno+" "+this.apellidoMaterno;
+    }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;

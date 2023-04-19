@@ -97,7 +97,7 @@ public class ExperienciaEducativa {
         return hash;
     }
 
-    @Override
+    /*@Override
     public boolean equals(Object object) {
         boolean isEquals=false;
         if (object == this) {
@@ -112,7 +112,7 @@ public class ExperienciaEducativa {
                     this.getNombre().equals(other.getNombre());
         }
         return isEquals;
-    }
+    }*/
 
     @Override
     public String toString() {

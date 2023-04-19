@@ -52,6 +52,9 @@ public class TutorAcademico {
         return contraseña;
     }    
 
+   public String getNombreCompleto(){
+    return this.nombre +" " +this.apellidoPaterno+" "+this.apellidoMaterno;
+    }   
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
