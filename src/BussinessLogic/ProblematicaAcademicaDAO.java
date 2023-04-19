@@ -120,8 +120,11 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                 problematica.setNumeroDeEstudiantesAfectados(numeroAfectados);
                 problematica.setIdReporteTutoria(idReporteTutoria);
                 problematica.setNrc(nrc);
-                problematica.setExperienciaE(experiencia);
-                problematica.setNombreProfesor(profesor);
+                problematica.setExperienciaEducativa(new ExperienciaEducativa());
+                problematica.setProfesor(new Profesor());
+
+                problematica.setExperienciaName(experiencia);
+                problematica.setProfesorName(profesor);
                 problematica.setSolucion(new SolucionAProblematica(0, ""));
                 problematicas.add(problematica);
 
@@ -236,8 +239,8 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                 problematica.setNumeroDeEstudiantesAfectados(numeroAfectados);
                 problematica.setIdReporteTutoria(idReporteTutoria);
                 problematica.setNrc(nrc);
-                problematica.setExperienciaE(experiencia);
-                problematica.setNombreProfesor(profesor);
+                problematica.setExperienciaName(experiencia);
+                problematica.setProfesorName(profesor);
                 problematica.setFechaFin(fecha);
                 problematica.setSolucion(new SolucionAProblematica(0, ""));
                 problematicas.add(problematica);

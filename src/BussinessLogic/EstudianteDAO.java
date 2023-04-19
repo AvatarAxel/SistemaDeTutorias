@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -75,7 +76,48 @@ public class EstudianteDAO {
             allEstudiantes = resultSet.getInt(1);
         }
         connection.close();
-        return allEstudiantes;
+        return allEstudiantes; 
     }
+    
+   public ArrayList<Estudiante> getEstudiantesByPrograma(String clave) throws SQLException{
+   
+   ArrayList<Estudiante> estudiantes = new ArrayList<Estudiante>();
+   DataBaseConnection dataBaseConnection = new DataBaseConnection();
+   Connection connection = dataBaseConnection.getConnection();
+   
+   
+        if(connection!=null){
+            String query = ("SELECT * from Estudiantes WHERE clave = ?");            
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, clave); 
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            int resultQuery = resultSet.getInt(1);
+            if (resultSet.next()){
+            String nombre;
+            String apellidoMaterno;
+            String apellidoPaterno;
+            String matricula;
+          
+            do{
+            nombre =resultSet.getString("nombre");
+            apellidoMaterno=resultSet.getString("apellidoMaterno");
+            apellidoPaterno=resultSet.getString("apellidoPaterno");
+            matricula=resultSet.getString("matricula");
+            Estudiante estudiante= new Estudiante();
+            estudiante.setNombre(nombre);
+            estudiante.setApellidoPaterno(apellidoPaterno);
+            estudiante.setApellidoMaterno(apellidoMaterno);
+            estudiante.setMatricula(matricula);
+            estudiantes.add(estudiante);
+            
+            }while(resultSet.next());
+         }
+        }        
+        connection.close();
+   
+   
+   return estudiantes;
+   }
 
 }

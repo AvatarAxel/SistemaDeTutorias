@@ -91,7 +91,6 @@ public class ProfesorDAO implements IProfesorDAO {
         String query="select CONCAT(p.nombre,' ', p.apellidoPaterno,' ', p.apellidoMaterno) as profesorname, ee.nrc, ee.nombre from profesores p inner join experiencias_educativas ee on \n" +
         "p.numeroDePersonal=ee.numeroDePersonal" ;
         PreparedStatement statement = connection.prepareStatement(query);
-        //statement.setString(1, experienciaName);
         ResultSet resultSet=statement.executeQuery();
         if (resultSet.next()){
             String profesorName;

@@ -9,7 +9,9 @@ import Domain.TutorAcademico;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -38,6 +40,46 @@ public class TutorAcademicoDAO {
         }
         connection.close();
         return result;
+    }
+
+    public ArrayList<TutorAcademico> getAllTutores() throws SQLException {
+
+        ArrayList<TutorAcademico> tutores = new ArrayList<TutorAcademico>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String query = ("select u.* from usuarios u\n" +
+                            "inner join roles_usuarios ru on ru.numeroDePersonal=u.numeroDePersonal\n" +
+                            "inner join roles r on r.idRol=ru.idRol");
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            int resultQuery = resultSet.getInt(1);
+            if (resultSet.next()) {
+                String nombre;
+                String apellidoMaterno;
+                String apellidoPaterno;
+                int numeroDePersonal;
+
+                do {
+                    nombre = resultSet.getString("nombre");
+                    apellidoMaterno = resultSet.getString("apellidoMaterno");
+                    apellidoPaterno = resultSet.getString("apellidoPaterno");
+                    numeroDePersonal = resultSet.getInt("numeroDePersonal");
+                    TutorAcademico tutor = new TutorAcademico();
+                    tutor.setNombre(nombre);
+                    tutor.setApellidoPaterno(apellidoPaterno);
+                    tutor.setApellidoMaterno(apellidoMaterno);
+                    tutor.setNumeroDePersonal(numeroDePersonal);
+                    tutores.add(tutor);
+
+                } while (resultSet.next());
+            }
+        }
+        connection.close();
+
+        return tutores;
     }
 
 }
