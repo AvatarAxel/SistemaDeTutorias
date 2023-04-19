@@ -1,8 +1,18 @@
 
 package controllers;
 
+import BussinessLogic.EstudianteDAO;
+import BussinessLogic.ProfesorDAO;
+import BussinessLogic.TutorAcademicoDAO;
+import Domain.Estudiante;
+import Domain.Tutor;
+import Domain.TutorAcademico;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable; 
@@ -11,6 +21,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import util.AlertManager;
 
 /**
  * FXML Controller class
@@ -20,25 +32,21 @@ import javafx.scene.control.TextField;
 public class FXMLGestionarAsignacionesTutorController implements Initializable {
 
     @FXML
-    private TableView<?> tblEstudiantes;
+    private TableView<Estudiante> tblEstudiantes;
     @FXML
-    private TableColumn<?, ?> clm_estudiantes;
+    private TableColumn clm_estudiantes;
     @FXML
-    private TableColumn<?, ?> clm_tutor;
+    private TableColumn clm_tutor;
     @FXML
-    private TableView<?> tbl_tutores;
+    private TableView<TutorAcademico> tbl_tutores;
     @FXML
-    private TableColumn<?, ?> clm_estudiantesAcargo;
+    private TableColumn  clm_estudiantesAcargo;
     @FXML
     private Button btn_asignar;
     @FXML
     private TextField txt_estudiante;
     @FXML
     private TextField txt_tutor;
-    @FXML
-    private Button btn_searchEstudiante;
-    @FXML
-    private Button btn_searchTutorByNombre;
     @FXML
     private Label lbl_infoEstudiante;
     @FXML
@@ -53,22 +61,87 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
     private Label lbl_numeroEstudiantes;
     @FXML
     private TableColumn<?, ?> clm_currentTutor;
+    @FXML
+    private Label lbl_matricula;
+    
+    ObservableList<Estudiante> estudiantesObservableList = FXCollections.observableArrayList();
+    ObservableList<TutorAcademico> tutoresObservableList = FXCollections.observableArrayList();
+
+    private AlertManager alerts = new AlertManager();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        initializeTableEstudiantes();
+        initializeTableTutores();
+        this.initializeQuerys();
     }    
+    
+    
+    private void initializeTableEstudiantes() {
+
+        clm_estudiantes.setCellValueFactory(new PropertyValueFactory<Estudiante, String>("nombreCompleto"));
+        //clm_currentTutor.setCellValueFactory(new PropertyValueFactory<Estudiante, String>("nombreCompleto"));
+   
+    }
+    
+    private void initializeTableTutores() {
+
+        clm_tutor.setCellValueFactory(new PropertyValueFactory<TutorAcademico, String>("nombreCompleto"));
+       // clm_estudiantesAcargo.
+   
+    }
+
+    private void loadDataTableEstudiantes(ArrayList<Estudiante> estudiantes) {
+
+            if (!estudiantes.isEmpty()) {
+                for (Estudiante estudiante : estudiantes) {
+                    estudiantesObservableList.add(estudiante);
+                }
+            } else {
+                alerts.showAlertNotProblematicasFound();
+
+            }
+        tblEstudiantes.setItems(estudiantesObservableList);
+
+    }
+    
+      private void loadDataTableTutores(ArrayList<TutorAcademico> tutores) {
+
+            if (!tutores.isEmpty()) {
+                for (TutorAcademico tutor : tutores) {
+                    tutoresObservableList.add(tutor);
+                }
+            } else {
+                alerts.showAlertNotProblematicasFound();
+
+            }
+        tbl_tutores.setItems(tutoresObservableList);
+
+    }
+    
+     private void initializeQuerys() {
+        EstudianteDAO estudianteDAO = new EstudianteDAO();
+
+        TutorAcademicoDAO tutorDAO = new TutorAcademicoDAO();
+        
+        ArrayList<Estudiante> estudiantes= new  ArrayList<Estudiante>();
+        ArrayList<TutorAcademico> tutores= new  ArrayList<TutorAcademico>();
+
+        try {
+            estudiantes = estudianteDAO.getEstudiantesByPrograma("2");
+            tutores = tutorDAO.getAllTutores();
+            loadDataTableEstudiantes(estudiantes);
+            loadDataTableTutores(tutores);
+        } catch (SQLException ex) {
+            alerts.showAlertErrorConexionDB();
+
+        }
+
+    }
 
     @FXML
     private void updateAsignacion(ActionEvent event) {
     }
 
-    @FXML
-    private void searchEstudianteByNombre(ActionEvent event) {
-    }
-
-    @FXML
-    private void searchTutorByNombre(ActionEvent event) {
-    }
     
 }
