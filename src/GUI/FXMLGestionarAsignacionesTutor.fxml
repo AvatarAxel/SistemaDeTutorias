@@ -24,17 +24,15 @@
             <TableColumn fx:id="clm_estudiantesAcargo" prefWidth="216.66664632161456" text="Número de Estudiantes a Cargo" />
          </columns>
       </TableView>
-      <Button fx:id="btn_asignar" layoutX="459.0" layoutY="633.0" mnemonicParsing="false" onAction="#updateAsignacion" prefHeight="35.0" prefWidth="121.0" text="Asignar" textAlignment="CENTER" visible="false">
+      <Button fx:id="btn_asignar" layoutX="459.0" layoutY="633.0" mnemonicParsing="false" onAction="#updateAsignacion" prefHeight="35.0" prefWidth="121.0" text="Asignar" textAlignment="CENTER">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </Button>
       <Line endX="265.2928466796875" layoutX="127.0" layoutY="366.0" startX="-100.0" />
       <Line endX="-100.0" endY="436.3333740234375" layoutX="493.0" layoutY="231.0" startX="-100.00003051757812" startY="-148.33334350585938" />
-      <TextField fx:id="txt_estudiante" layoutX="35.0" layoutY="78.0" prefHeight="25.0" prefWidth="209.0" promptText="nombre del Estudiante" />
-      <TextField fx:id="txt_tutor" layoutX="35.0" layoutY="430.0" prefHeight="25.0" prefWidth="202.0" promptText="nombre del Tutor" />
-      <Button fx:id="btn_searchEstudiante" layoutX="256.0" layoutY="78.0" mnemonicParsing="false" onAction="#searchEstudianteByNombre" text="Buscar" />
-      <Button fx:id="btn_searchTutorByNombre" layoutX="256.0" layoutY="430.0" mnemonicParsing="false" onAction="#searchTutorByNombre" text="Buscar" />
+      <TextField fx:id="txt_estudiante" layoutX="35.0" layoutY="78.0" prefHeight="25.0" prefWidth="329.0" promptText="nombre del Estudiante | nombre del Tutor" />
+      <TextField fx:id="txt_tutor" layoutX="35.0" layoutY="430.0" prefHeight="25.0" prefWidth="329.0" promptText="nombre del Tutor " />
       <Label layoutX="35.0" layoutY="379.0" text="Tutores">
          <font>
             <Font name="System Bold" size="18.0" />
@@ -45,20 +43,20 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_infoEstudiante" layoutX="444.0" layoutY="103.0" prefHeight="17.0" prefWidth="175.0" text="Información del estudiante" visible="false">
+      <Label fx:id="lbl_infoEstudiante" layoutX="459.0" layoutY="94.0" prefHeight="17.0" prefWidth="175.0" text="Selección de Estudiantes">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_infoTutor" layoutX="458.0" layoutY="384.0" prefHeight="17.0" prefWidth="151.0" text="Información del tutor" visible="false">
+      <Label fx:id="lbl_infoTutor" layoutX="471.0" layoutY="384.0" prefHeight="17.0" prefWidth="151.0" text="Tutor Seleccionado">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_estudianteName" layoutX="506.0" layoutY="145.0" text="Label" textFill="#5da844" visible="false" />
-      <Label fx:id="lbl_programa" layoutX="506.0" layoutY="211.0" text="Label" textFill="#5da844" visible="false" />
-      <Label fx:id="lbl_nombreTutor" layoutX="506.0" layoutY="443.0" text="Label" textFill="#5da844" visible="false" />
-      <Label fx:id="lbl_numeroEstudiantes" layoutX="506.0" layoutY="486.0" text="Label" textFill="#5da844" visible="false" />
-      <Label fx:id="lbl_matricula" layoutX="506.0" layoutY="261.0" text="Label" textFill="#5da844" visible="false" />
+      <Label fx:id="lbl_estudianteName" layoutX="506.0" layoutY="145.0" text="Label" textFill="#5da844" />
+      <Label fx:id="lbl_programa" layoutX="506.0" layoutY="211.0" text="Label" textFill="#5da844" />
+      <Label fx:id="lbl_nombreTutor" layoutX="506.0" layoutY="443.0" text="Label" textFill="#5da844" />
+      <Label fx:id="lbl_numeroEstudiantes" layoutX="506.0" layoutY="486.0" text="Label" textFill="#5da844" />
+      <Label fx:id="lbl_matricula" layoutX="506.0" layoutY="261.0" text="Label" textFill="#5da844" />
    </children>
 </AnchorPane>
