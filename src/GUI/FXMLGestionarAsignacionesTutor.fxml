@@ -14,6 +14,7 @@
    <children>
       <TableView fx:id="tblEstudiantes" layoutX="35.0" layoutY="117.0" prefHeight="187.0" prefWidth="337.0">
         <columns>
+            <TableColumn fx:id="clm_combobox" prefWidth="119.99996948242188" text="Seleccionar" />
           <TableColumn fx:id="clm_estudiantes" prefWidth="119.99996948242188" text="Estudiante" />
           <TableColumn fx:id="clm_currentTutor" prefWidth="216.00002034505206" text="Tutor Actual" />
         </columns>

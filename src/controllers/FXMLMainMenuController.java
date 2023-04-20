@@ -51,10 +51,13 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuCreateTutorialReport(ActionEvent event) {
+        WindowManager.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLReporteTutoriaAcademica.fxml", "Llenar Reporte de Tutorías Académicas");
     }
 
     @FXML
     private void menuReadTutorialReport(ActionEvent event) {
+        WindowManager.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLReportesTutoriasAcademicas.fxml", "Reportes de Tutorías Académicas");        
+        //Navigator.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLConsultarReporteTutoriaAcademica.fxml", "Consultar Reporte de Tutorías Académicas");                
     }
 
     @FXML
@@ -111,6 +114,7 @@ public class FXMLMainMenuController implements Initializable {
         );
     }
 
+    @FXML
     private void menuRegistrarTutorAction(ActionEvent event) {
         WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
@@ -128,7 +132,6 @@ public class FXMLMainMenuController implements Initializable {
         );
     }
 
-    @FXML
     private void menuGestionarProblematicas(ActionEvent event) {
         WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
@@ -137,12 +140,20 @@ public class FXMLMainMenuController implements Initializable {
         );
     }
 
-    @FXML
     private void menuConsultarProblematica(ActionEvent event) {
           WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLConsultarProblematicasAcademicas.fxml",
                 "Consultar Problemáticas"
+        );
+    }
+
+    @FXML
+    private void menuAsignaciones(ActionEvent event) {
+          WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLGestionarAsignacionesTutor.fxml",
+                "Gestionar Asiganciones"
         );
     }
     

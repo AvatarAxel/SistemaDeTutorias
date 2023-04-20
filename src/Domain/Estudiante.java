@@ -4,6 +4,8 @@
  */
 package Domain;
 
+import javafx.scene.control.CheckBox;
+
 /**
  *
  * @author michikato
@@ -12,9 +14,18 @@ public class Estudiante {
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
+    private String correoElectronicoInstitucional;
     private String Matricula;
+    private boolean esAsistente;
+    private boolean enRiesgo;
+    private CheckBox checkBoxEsAsistente;
+    private CheckBox checkBoxEnRiesgo;
+    private CheckBox checkBoxEnSeleccion;
+
 
     public Estudiante() {
+        this.checkBoxEsAsistente = new CheckBox();
+        this.checkBoxEnRiesgo = new CheckBox();
     }
 
     public Estudiante(String nombre, String apellidoPaterno, String apellidoMaterno, String Matricula) {
@@ -35,7 +46,11 @@ public class Estudiante {
     public String getApellidoMaterno() {
         return apellidoMaterno;
     }
-    
+
+    public String getCorreoElectronicoInstitucional() {
+        return correoElectronicoInstitucional;
+    }
+
     public String getMatricula() {
         return Matricula;
     }
@@ -55,7 +70,52 @@ public class Estudiante {
         this.apellidoMaterno = apellidoMaterno;
     }
 
+    public void setCorreoElectronicoInstitucional(String correoElectronicoInstitucional) {
+        this.correoElectronicoInstitucional = correoElectronicoInstitucional;
+    }
+
     public void setMatricula(String Matricula) {
         this.Matricula = Matricula;
     }
+    
+        public boolean esAsistente() {
+        return esAsistente;
+    }
+
+    public void setEsAsistente(boolean esAsistente) {
+        this.esAsistente = esAsistente;
+    }
+
+    public boolean enRiesgo() {
+        return enRiesgo;
+    }
+
+    public void setEnRiesgo(boolean enRiesgo) {
+        this.enRiesgo = enRiesgo;
+    }
+
+    public CheckBox getCheckBoxEsAsistente() {
+        return checkBoxEsAsistente;
+    }
+
+    public void setCheckBoxEsAsistente(CheckBox checkBoxEsAsistente) {
+        this.checkBoxEsAsistente = checkBoxEsAsistente;
+    }
+
+    public CheckBox getCheckBoxEnRiesgo() {
+        return checkBoxEnRiesgo;
+    }
+
+    public void setCheckBoxEnRiesgo(CheckBox checkBoxEnRiesgo) {
+        this.checkBoxEnRiesgo = checkBoxEnRiesgo;
+    }
+
+    public CheckBox getCheckBoxEnSeleccion() {
+        return checkBoxEnSeleccion;
+    }
+
+    public void setCheckBoxEnSeleccion(CheckBox checkBoxEnSelection) {
+        this.checkBoxEnSeleccion = checkBoxEnSelection;
+    }
+    
 }

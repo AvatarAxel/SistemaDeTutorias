@@ -34,12 +34,6 @@
                         <MenuItem mnemonicParsing="false" onAction="#menuUpdateSolution" text="Editar Solución" />
                      </items>
                   </Menu>
-                  <Menu mnemonicParsing="false" text="Gestión">
-                    <items>
-                      <MenuItem mnemonicParsing="false" onAction="#menuGestionarProblematicas" text="Gestionar Problemáticas" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuConsultarProblematica" text="Consultar Problemáticas" />
-                    </items>
-                  </Menu>
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Oferta Academica">
@@ -52,7 +46,7 @@
             <Menu mnemonicParsing="false" text="Registros">
               <items>
                   <MenuItem mnemonicParsing="false" onAction="#menuRegistrarEstudiantesAction" text="Registrar Estudiantes" />
-                  <MenuItem mnemonicParsing="false" onAction="#menuRegistrarEstudiantesAction" text="Registrar Estudiantes" />
+                <MenuItem mnemonicParsing="false" onAction="#menuRegistrarTutorAction" text="Registrar Tutor Academico" />
               </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Ayuda">
@@ -60,14 +54,9 @@
               <MenuItem mnemonicParsing="false" text="About" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="About" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Gestión de Asignaciones">
+            <Menu mnemonicParsing="false" text="Asignaciones">
               <items>
-                <MenuItem mnemonicParsing="false" text="Asignar Tutor a estudiante" />
+                <MenuItem mnemonicParsing="false" onAction="#menuAsignaciones" text="Gestión de Asignaciones" />
               </items>
             </Menu>
         </menus>
