@@ -1,6 +1,8 @@
 
 package Domain;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Vale
@@ -8,29 +10,26 @@ package Domain;
 public class Usuario {
     
     int numeroPersonal;
-    String nombre; 
-    String apellidoPaterno;
-    String apellidoMaterno; 
-    String programaEducativo;
+    private String nombre; 
+    private String apellidoPaterno;
+    private String apellidoMaterno; 
+    private String programaEducativo;
+    private ArrayList<Rol> roles;
+    private String correo;
 
-    public String getProgramaEducativo() {
-        return programaEducativo;
+    public Usuario() {
     }
 
-    public void setProgramaEducativo(String programaEducativo) {
+    public Usuario(int numeroPersonal, String nombre, String apellidoPaterno, String apellidoMaterno, String programaEducativo, ArrayList<Rol> roles, String correo) {
+        this.numeroPersonal = numeroPersonal;
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
         this.programaEducativo = programaEducativo;
+        this.roles = roles;
+        this.correo = correo;
     }
 
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-    String rol;
-    String correo;
- 
     public int getNumeroPersonal() {
         return numeroPersonal;
     }
@@ -63,6 +62,22 @@ public class Usuario {
         this.apellidoMaterno = apellidoMaterno;
     }
 
+    public String getProgramaEducativo() {
+        return programaEducativo;
+    }
+
+    public void setProgramaEducativo(String programaEducativo) {
+        this.programaEducativo = programaEducativo;
+    }
+
+    public ArrayList<Rol> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(ArrayList<Rol> roles) {
+        this.roles = roles;
+    }
+
     public String getCorreo() {
         return correo;
     }
@@ -70,7 +85,7 @@ public class Usuario {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
-
+ 
     @Override
     public String toString() {
         return nombre + " " + apellidoPaterno + " " + apellidoMaterno;
