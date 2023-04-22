@@ -32,10 +32,10 @@ public class WindowManager {
         currentStage.close();
     }
     
-    public static void NavigateToFloatingWindow(Window window, Object obj, String... arguments){
+    /*public static void NavigateToFloatingWindow(Window window, Object obj, String... arguments){
         WindowManager navigator = new WindowManager();
         navigator.showFloatingWindow(window, obj, arguments[0], arguments[1], arguments[2]);
-    }
+    }*/
     //<-- Private Methods -->
     private void goToWindow(Window window, String windowPath, String windowTitle){
         try{
@@ -49,7 +49,7 @@ public class WindowManager {
         }
     }
     
-    private void showFloatingWindow(Window window, Object obj, String... arguments){
+    /*private void showFloatingWindow(Window window, Object obj, String... arguments){
         
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource(arguments[0]));//Ventana
@@ -89,6 +89,6 @@ public class WindowManager {
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(WindowManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    }*/
     
 }
