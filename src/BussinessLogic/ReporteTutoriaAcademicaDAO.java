@@ -4,7 +4,6 @@
  */
 package BussinessLogic;
 
-import Domain.Estudiante;
 import Domain.ReporteTutoriaAcademica;
 import Domain.Usuario;
 import dataaccess.DataBaseConnection;
@@ -13,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javafx.scene.control.Alert;
 /**
  *
  * @author Propietario
