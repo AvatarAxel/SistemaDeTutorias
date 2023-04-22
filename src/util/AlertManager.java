@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package util;
 
 import java.util.Optional;
@@ -115,6 +112,14 @@ public class AlertManager {
         stageWarning.getIcons().add(new Image("images/icon.png"));
         alertWarning.setTitle("Advertencia");
         alertWarning.setHeaderText("Usuario o Contraseña incorrecta");
+        alertWarning.setContentText("Por favor, revise nuevamente");
+        alertWarning.showAndWait();
+    }
+    
+     public void showAlertEmptySelectionTutor() {
+        stageWarning.getIcons().add(new Image("images/icon.png"));
+        alertWarning.setTitle("Advertencia");
+        alertWarning.setHeaderText("Al menos selecciona un tutor y un estudiante");
         alertWarning.setContentText("Por favor, revise nuevamente");
         alertWarning.showAndWait();
     }
