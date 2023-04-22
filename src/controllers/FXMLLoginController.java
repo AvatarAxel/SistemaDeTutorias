@@ -70,37 +70,36 @@ public class FXMLLoginController implements Initializable {
         return isValid;
     }
 
-    private void doLogin(String username, String password) {
-        try {
-            //Conexión con la base de datos para iniciar sesión
-            UserDAO userDAO = new UserDAO();
-            Usuario usuarioLogin = userDAO.getUserDB(password, username);
-            usuarioLogin.setRoles(userDAO.getUserRoles(password, username));
+    private void doLogin(String username, String password) throws SQLException {
+        UserDAO userDAO = new UserDAO();
+        Usuario usuarioLogin = userDAO.getUserDB(username, password);
+        usuarioLogin.setRoles(userDAO.getUserRoles(usuarioLogin.getNumeroPersonal()));
 
-            User.setCurrentUser(new User());
+        User.setCurrentUser(new User());
 
-            User.getCurrentUser().setNombre(usuarioLogin.getNombre());
-            User.getCurrentUser().setApellidoPaterno(usuarioLogin.getApellidoPaterno());
-            User.getCurrentUser().setApellidoMaterno(usuarioLogin.getApellidoMaterno());
-            User.getCurrentUser().setCorreo(usuarioLogin.getCorreo());
-            User.getCurrentUser().setProgramaEducativo(usuarioLogin.getProgramaEducativo());
-            User.getCurrentUser().setRoles(usuarioLogin.getRoles());
+        User.getCurrentUser().setNombre(usuarioLogin.getNombre());
+        User.getCurrentUser().setApellidoPaterno(usuarioLogin.getApellidoPaterno());
+        User.getCurrentUser().setApellidoMaterno(usuarioLogin.getApellidoMaterno());
+        User.getCurrentUser().setCorreo(usuarioLogin.getCorreo());
+        User.getCurrentUser().setProgramaEducativo(usuarioLogin.getProgramaEducativo());
+        User.getCurrentUser().setRoles(usuarioLogin.getRoles());
 
-            if (User.getCurrentUser() == null) {//Reemplazar el true por el resultado de la consulta
-                WindowManager.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
-            } else {
-                AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(FXMLLoginController.class.getName()).log(Level.SEVERE, null, ex);
+        if (User.getCurrentUser() != null) {
+            WindowManager.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+        } else {
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
+
     }
 
     @FXML
     private void clicLogin(ActionEvent event) {
         if (AreFieldsValid()) {
-           // doLogin(tfEmail.getText(), pfPassword.getText());
-           WindowManager.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+            try {
+                doLogin(tfEmail.getText(), pfPassword.getText());
+            } catch (SQLException ex) {
+                Logger.getLogger(FXMLLoginController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }
