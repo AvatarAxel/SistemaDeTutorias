@@ -1,4 +1,3 @@
-
 package controllers;
 
 import BussinessLogic.EstudianteDAO;
@@ -19,7 +18,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable; 
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -47,7 +46,7 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
     @FXML
     private TableView<TutorAcademico> tbl_tutores;
     @FXML
-    private TableColumn  clm_estudiantesAcargo;
+    private TableColumn clm_estudiantesAcargo;
     @FXML
     private Button btn_asignar;
     @FXML
@@ -70,7 +69,7 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
     private TableColumn<?, ?> clm_currentTutor;
     @FXML
     private Label lbl_matricula;
-    
+
     ObservableList<Estudiante> estudiantesObservableList = FXCollections.observableArrayList();
     ObservableList<TutorAcademico> tutoresObservableList = FXCollections.observableArrayList();
     private final ListChangeListener<TutorAcademico> selectedTutor = new ListChangeListener<TutorAcademico>() {
@@ -79,7 +78,7 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
             TutorAcademico item = new TutorAcademico();
             item = getTablaTutor();
             if (item != null) {
-               JOptionPane.showMessageDialog(null, item.getNumeroDePersonal());
+                JOptionPane.showMessageDialog(null, item.getNumeroDePersonal());
 
             } else {
 
@@ -97,60 +96,59 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
         initializeTableEstudiantes();
         initializeTableTutores();
         this.initializeQuerys();
-    }    
-    
-    
+    }
+
     private void initializeTableEstudiantes() {
 
         clm_estudiantes.setCellValueFactory(new PropertyValueFactory<Estudiante, String>("nombreCompleto"));
         clm_combobox.setCellValueFactory(new PropertyValueFactory<Estudiante, String>("CheckBoxEnSeleccion"));
-   
+
     }
-    
+
     private void initializeTableTutores() {
 
         clm_tutor.setCellValueFactory(new PropertyValueFactory<TutorAcademico, String>("nombreCompleto"));
         final ObservableList<TutorAcademico> problematicaReportes = tbl_tutores.getSelectionModel().getSelectedItems();
         problematicaReportes.addListener(selectedTutor);
-       // clm_estudiantesAcargo.
-   
+        // clm_estudiantesAcargo.
+
     }
 
     private void loadDataTableEstudiantes(ArrayList<Estudiante> estudiantes) {
 
-            if (!estudiantes.isEmpty()) {
-                for (Estudiante estudiante : estudiantes) {
-                    estudiantesObservableList.add(estudiante);
-                }
-            } else {
-                //alerts.showAlertNotProblematicasFound();
-
+        if (!estudiantes.isEmpty()) {
+            for (Estudiante estudiante : estudiantes) {
+                estudiantesObservableList.add(estudiante);
             }
+        } else {
+            //alerts.showAlertNotProblematicasFound();
+
+        }
         tblEstudiantes.setItems(estudiantesObservableList);
 
     }
-    
-      private void loadDataTableTutores(ArrayList<TutorAcademico> tutores) {
 
-            if (!tutores.isEmpty()) {
-                for (TutorAcademico tutor : tutores) {
-                    tutoresObservableList.add(tutor);
-                }
-            } else {
-               // alerts.showAlertNotProblematicasFound();
+    private void loadDataTableTutores(ArrayList<TutorAcademico> tutores) {
 
+        if (!tutores.isEmpty()) {
+            for (TutorAcademico tutor : tutores) {
+                tutoresObservableList.add(tutor);
             }
+        } else {
+            // alerts.showAlertNotProblematicasFound();
+
+        }
         tbl_tutores.setItems(tutoresObservableList);
 
     }
-    
-     private void initializeQuerys() {
+
+    private void initializeQuerys() {
         EstudianteDAO estudianteDAO = new EstudianteDAO();
 
         TutorAcademicoDAO tutorDAO = new TutorAcademicoDAO();
-        
-        ArrayList<Estudiante> estudiantes= new  ArrayList<Estudiante>();
-        ArrayList<TutorAcademico> tutores= new  ArrayList<TutorAcademico>();
+
+        ArrayList<Estudiante> estudiantes = new ArrayList<Estudiante>();
+        ArrayList<TutorAcademico> tutores = new ArrayList<TutorAcademico>();
 
         try {
             estudiantes = estudianteDAO.getEstudiantesByPrograma("14203");
@@ -158,7 +156,7 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
             loadDataTableEstudiantes(estudiantes);
             loadDataTableTutores(tutores);
         } catch (SQLException ex) {
-           
+
             alerts.showAlertErrorConexionDB();
 
         }
@@ -167,41 +165,46 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
 
     @FXML
     private void updateAsignacion(ActionEvent event) {
-     EstudianteDAO estudiantedao= new EstudianteDAO();   
-     ObservableList<Estudiante> estudiantesSelected = getEstudiantesSelected();
-     
-     for(Estudiante estudiante:estudiantesSelected ){
-        String matricula=estudiante.getMatricula();
-         try {
-             estudiantedao.updateAsignacion(matricula, 39728);
-            
-         } catch (SQLException ex) {
-             ex.printStackTrace();
-         }
-     
-     }
-      alerts.showAlertSuccesfulUpdate();
+        EstudianteDAO estudiantedao = new EstudianteDAO();
+        ObservableList<Estudiante> estudiantesSelected = getEstudiantesSelected();
+        TutorAcademico tutor = getTablaTutor();
 
-        
-    }
-    
-    private ObservableList<Estudiante> getEstudiantesSelected(){
-    ObservableList<Estudiante> estudiantesSelected = FXCollections.observableArrayList();
-    
-    for(Estudiante estudiante:estudiantesObservableList){
-        if(estudiante.getCheckBoxEnSeleccion().isSelected()){
-          estudiantesSelected.add(estudiante);
-        
+        if (estudiantesSelected.isEmpty() && tutor != null) {
+            for (Estudiante estudiante : estudiantesSelected) {
+                String matricula = estudiante.getMatricula();
+                try {
+                    estudiantedao.updateAsignacion(matricula, 39728);
+
+                } catch (SQLException ex) {
+                    alerts.showAlertErrorConexionDB();
+                }
+
+            }
+            //cleanSelection(estudiatesSelected,tutor);
+            //updateTables();
+        }else{
+         alerts.showAlertEmptySelectionTutor();
         }
-    
+        alerts.showAlertSuccesfulUpdate();
+        
+
     }
+
+    private ObservableList<Estudiante> getEstudiantesSelected() {
+        ObservableList<Estudiante> estudiantesSelected = FXCollections.observableArrayList();
+
+        for (Estudiante estudiante : estudiantesObservableList) {
+            if (estudiante.getCheckBoxEnSeleccion().isSelected()) {
+                estudiantesSelected.add(estudiante);
+
+            }
+
+        }
         return estudiantesSelected;
 
     }
-    
-    
-    
-     public TutorAcademico getTablaTutor() {
+
+    public TutorAcademico getTablaTutor() {
         TutorAcademico tutorSeleccionado = null;
         if (tbl_tutores != null) {
             List<TutorAcademico> tabla = tbl_tutores.getSelectionModel().getSelectedItems();
@@ -212,9 +215,4 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
         return tutorSeleccionado;
     }
 
-      
-    
-    
-
-    
 }
