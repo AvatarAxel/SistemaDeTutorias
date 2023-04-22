@@ -110,6 +110,8 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
     private void initializeTableTutores() {
 
         clm_tutor.setCellValueFactory(new PropertyValueFactory<TutorAcademico, String>("nombreCompleto"));
+        final ObservableList<TutorAcademico> problematicaReportes = tbl_tutores.getSelectionModel().getSelectedItems();
+        problematicaReportes.addListener(selectedTutor);
        // clm_estudiantesAcargo.
    
     }
@@ -156,7 +158,7 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
             loadDataTableEstudiantes(estudiantes);
             loadDataTableTutores(tutores);
         } catch (SQLException ex) {
-            ex.printStackTrace();;
+           
             alerts.showAlertErrorConexionDB();
 
         }
