@@ -22,39 +22,43 @@ public class UserDAO implements IUserDAO {
         SHA_512 sha512 = new SHA_512();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = ("SELECT U.cuentauv, U.contrasena, U.Nombre, U.ApellidoPaterno, U.ApellidoMaterno, UR.IdRol FROM usuarios U "
-                + "inner join usuariosroles UR on UR.CuentaUV = U.cuentauv "
-                + "where U.cuentauv = ? and U.contrasena = ? ");
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, correo);
-        statement.setString(2, sha512.getSHA512(contrasena));
-        ResultSet resultSet = statement.executeQuery();
-        user.setApellidoMaterno(resultSet.getString(""));
-        user.setApellidoPaterno(resultSet.getString(""));
-        user.setCorreo(resultSet.getString(""));
-        user.setNombre(resultSet.getString(""));
-        user.setNumeroPersonal(resultSet.getInt(""));
-        user.setProgramaEducativo(resultSet.getString(""));
-        
-        dataBaseConnection.closeConection();
-        
+        if (connection != null) {
+            String query = ("SELECT DISTINCT U.correoElectronicoInstitucional, U.Nombre, U.ApellidoPaterno, U.ApellidoMaterno, UR.numeroDePersonal FROM usuarios U "
+                    + "INNER JOIN roles_usuarios UR ON UR.numeroDePersonal = U.numeroDePersonal "
+                    + "WHERE U.correoElectronicoInstitucional = ? AND U.contrasenia = ? ");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, correo);
+            statement.setString(2, sha512.getSHA512(contrasena));
+
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+            }
+            user.setApellidoMaterno(resultSet.getString("ApellidoMaterno"));
+            user.setApellidoPaterno(resultSet.getString("ApellidoPaterno"));
+            user.setCorreo(resultSet.getString("correoElectronicoInstitucional"));
+            user.setNombre(resultSet.getString("Nombre"));
+            user.setNumeroPersonal(resultSet.getInt("numeroDePersonal"));
+            dataBaseConnection.closeConection();
+        }
         return user;
     }
-    
-    public ArrayList<Rol> getUserRoles(String correo, String contrasena) throws SQLException {
+
+    public ArrayList<Rol> getUserRoles(int numeroDePersonal) throws SQLException {
         ArrayList<Rol> roles = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = ("SELECT UR.IdRol FROM usuarios U "
-                + "inner join usuariosroles UR on UR.CuentaUV = U.cuentauv ");
+        String query = ("SELECT DISTINCT UR.IdRol, R.nombre FROM usuarios U "
+                + "INNER JOIN roles_usuarios UR ON UR.numeroDePersonal = ? "
+                + "INNER JOIN roles R ON R.idRol = UR.idRol");
         PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, numeroDePersonal);
         ResultSet resultSet = statement.executeQuery();
-        while(resultSet.next()){
-            roles.add(new Rol(resultSet.getInt(""),resultSet.getString("")));
+        while (resultSet.next()) {
+            roles.add(new Rol(resultSet.getInt("IdRol"), resultSet.getString("nombre")));
         }
-        
+
         dataBaseConnection.closeConection();
-        
+
         return roles;
     }
 

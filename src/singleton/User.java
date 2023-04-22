@@ -76,5 +76,9 @@ public class User {
     public void setRoles(ArrayList<Rol> roles) {
         this.roles = roles;
     }
-        
+
+    @Override
+    public String toString() {
+        return "User{" + "nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", programaEducativo=" + programaEducativo + ", roles=" + roles + '}';
+    }
 }
