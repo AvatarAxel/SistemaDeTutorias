@@ -99,7 +99,8 @@ public class FXMLLoginController implements Initializable {
     @FXML
     private void clicLogin(ActionEvent event) {
         if (AreFieldsValid()) {
-            doLogin(tfEmail.getText(), pfPassword.getText());
+           // doLogin(tfEmail.getText(), pfPassword.getText());
+           WindowManager.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
         }
     }
 }
