@@ -21,6 +21,9 @@ public class Estudiante {
     private CheckBox checkBoxEsAsistente;
     private CheckBox checkBoxEnRiesgo;
     private CheckBox checkBoxEnSeleccion;
+    private String tutorName;
+
+   
 
 
     public Estudiante() {
@@ -117,5 +120,16 @@ public class Estudiante {
     public void setCheckBoxEnSeleccion(CheckBox checkBoxEnSelection) {
         this.checkBoxEnSeleccion = checkBoxEnSelection;
     }
+     public String getTutorName() {
+        return tutorName;
+    }
+
+    public void setTutorName(String tutorName) {
+        this.tutorName = tutorName;
+    }
+
+  
+    
+    
     
 }
