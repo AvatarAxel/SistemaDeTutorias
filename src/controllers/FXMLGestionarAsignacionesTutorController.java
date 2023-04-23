@@ -10,23 +10,33 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 import util.AlertManager;
 
@@ -90,7 +100,6 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
         clm_checkbox.setCellValueFactory(new PropertyValueFactory<Estudiante, String>("CheckBoxEnSeleccion"));
         clm_currentTutor.setCellValueFactory(new PropertyValueFactory<Estudiante, String>("TutorName"));
 
-
     }
 
     private void initializeTableTutores() {
@@ -144,8 +153,8 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
             if (!estudiantes.isEmpty() || !tutores.isEmpty()) {
                 loadDataTableEstudiantes(estudiantes);
                 loadDataTableTutores(tutores);
-            }else{
-             alerts.showAlertNotRegisterFound();
+            } else {
+                alerts.showAlertNotRegisterFound();
             }
         } catch (SQLException ex) {
 
@@ -162,19 +171,39 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
         TutorAcademico tutor = getTablaTutor();
 
         if (!estudiantesSelected.isEmpty() && tutor != null) {
-            for (Estudiante estudiante : estudiantesSelected) {
-                String matricula = estudiante.getMatricula();
-                try {
-                    estudiantedao.updateAsignacion(matricula, tutor.getNumeroDePersonal());
+            final Node source = (Node) event.getSource();
+            final Stage stage = (Stage) source.getScene().getWindow();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            Stage stageAlert = (Stage) alert.getDialogPane().getScene().getWindow();
+            stageAlert.getIcons().add(new Image("images/icon.png"));
 
-                } catch (SQLException ex) {
-                    alerts.showAlertErrorConexionDB();
+            alert.setTitle("Confirmación");
+            alert.setHeaderText(null);
+
+            alert.setContentText("¿Esta seguro de asignar?");
+            Optional<ButtonType> action = alert.showAndWait();
+
+            if (action.get() == ButtonType.OK) {
+                for (Estudiante estudiante : estudiantesSelected) {
+                    String matricula = estudiante.getMatricula();
+                    if (tutor.getNumeroEstudiantes() >= 30) {
+                        alerts.showAlertManyTutorados();
+                    }
+                    try {
+
+                        estudiantedao.updateAsignacion(matricula, tutor.getNumeroDePersonal());
+
+                    } catch (SQLException ex) {
+                        alerts.showAlertErrorConexionDB();
+                    }
+
                 }
-
+                updateTables();
+                alerts.showAlertSuccesfulUpdate();
+            } else if (action.get() == ButtonType.CANCEL) {
+                alert.close();
             }
-            updateTables();
-            alerts.showAlertSuccesfulUpdate();
-           
+
         } else {
             alerts.showAlertEmptySelectionTutor();
         }
@@ -211,6 +240,89 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
         tutoresObservableList.removeAll(tutoresObservableList);
         initializeQuerys();
 
+    }
+
+    private void filterTableTutor() {
+        FilteredList<TutorAcademico> filteredTutor = new FilteredList<>(tutoresObservableList, b -> true);
+        txt_tutor.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredTutor.setPredicate(tutor -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String inputText = newValue.toLowerCase();
+                if (tutor.getNombre().toLowerCase().indexOf(inputText) != -1) {
+                    return true;
+                } else if (tutor.getApellidoPaterno().toLowerCase().indexOf(inputText) != -1) {
+                    return true;
+
+                } else if (tutor.getApellidoMaterno().toLowerCase().indexOf(inputText) != -1) {
+                    return true;
+
+                } else {
+                    return false;
+                }
+            });
+        });
+        SortedList<TutorAcademico> sortedListTutor = new SortedList<>(filteredTutor);
+        sortedListTutor.comparatorProperty().bind(tbl_tutores.comparatorProperty());
+        tbl_tutores.setItems(sortedListTutor);
+    }
+
+    private void filterTableEstudiantes() {
+        FilteredList<Estudiante> filteredEstudiante = new FilteredList<>(estudiantesObservableList, b -> true);
+        txt_estudiante.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredEstudiante.setPredicate(estudiante -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String inputText = newValue.toLowerCase();
+                if (estudiante.getNombre().toLowerCase().indexOf(inputText) != -1) {
+                    return true;
+                } else if (estudiante.getApellidoPaterno().toLowerCase().indexOf(inputText) != -1) {
+                    return true;
+
+                } else if (estudiante.getApellidoMaterno().toLowerCase().indexOf(inputText) != -1) {
+                    return true;
+
+                } else {
+                    return false;
+                }
+            });
+        });
+        SortedList<Estudiante> sortedListEstudianter = new SortedList<>(filteredEstudiante);
+        sortedListEstudianter.comparatorProperty().bind(tblEstudiantes.comparatorProperty());
+        tblEstudiantes.setItems(sortedListEstudianter);
+    }
+
+    @FXML
+    private void validateLengthNombreTutor(KeyEvent event) {
+        filterTableTutor();
+        txt_tutor.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().length() <= 30) {
+                return change;
+            } else {
+                return null;
+            }
+        }));
+        if (txt_tutor.getText().length() > 30) {
+            txt_tutor.setText("");
+        }
+
+    }
+
+    @FXML
+    private void validateLengthNombresEstudiantes(KeyEvent event) {
+        filterTableEstudiantes();
+        txt_estudiante.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().length() <= 30) {
+                return change;
+            } else {
+                return null;
+            }
+        }));
+        if (txt_estudiante.getText().length() > 30) {
+            txt_estudiante.setText("");
+        }
     }
 
 }
