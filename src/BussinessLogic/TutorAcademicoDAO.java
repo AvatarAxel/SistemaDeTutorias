@@ -49,9 +49,12 @@ public class TutorAcademicoDAO {
         Connection connection = dataBaseConnection.getConnection();
 
         if (connection != null) {
-            String query = ("select u.* from usuarios u\n" +
+            String query = ("select u.numeroDePersonal,u.nombre,u.apellidoPaterno,u.apellidoMaterno ,COUNT(e.matricula) AS numeroestudiantes from usuarios u\n" +
                             "inner join roles_usuarios ru on ru.numeroDePersonal=u.numeroDePersonal\n" +
-                            "inner join roles r on r.idRol=ru.idRol");
+                            "inner join roles r on r.idRol=ru.idRol\n" +
+                            "left join estudiantes e on e.numeroDePersonal=u.numeroDePersonal\n" +
+                            "where r.idrol=3\n" +
+                            "group by u.numeroDePersonal;");
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
@@ -61,17 +64,21 @@ public class TutorAcademicoDAO {
                 String apellidoMaterno;
                 String apellidoPaterno;
                 int numeroDePersonal;
+                int numeroestudiantes;
 
                 do {
                     nombre = resultSet.getString("nombre");
                     apellidoMaterno = resultSet.getString("apellidoMaterno");
                     apellidoPaterno = resultSet.getString("apellidoPaterno");
                     numeroDePersonal = resultSet.getInt("numeroDePersonal");
+                    numeroestudiantes = resultSet.getInt("numeroestudiantes");
                     TutorAcademico tutor = new TutorAcademico();
                     tutor.setNombre(nombre);
                     tutor.setApellidoPaterno(apellidoPaterno);
                     tutor.setApellidoMaterno(apellidoMaterno);
                     tutor.setNumeroDePersonal(numeroDePersonal);
+                    tutor.setNumeroEstudiantes(numeroestudiantes);
+                    
                     tutores.add(tutor);
 
                 } while (resultSet.next());
