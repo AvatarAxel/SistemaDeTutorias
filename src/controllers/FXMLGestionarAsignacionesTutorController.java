@@ -54,21 +54,7 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
     @FXML
     private TextField txt_tutor;
     @FXML
-    private Label lbl_infoEstudiante;
-    @FXML
-    private Label lbl_infoTutor;
-    @FXML
-    private Label lbl_estudianteName;
-    @FXML
-    private Label lbl_programa;
-    @FXML
-    private Label lbl_nombreTutor;
-    @FXML
-    private Label lbl_numeroEstudiantes;
-    @FXML
-    private TableColumn<?, ?> clm_currentTutor;
-    @FXML
-    private Label lbl_matricula;
+    private TableColumn clm_currentTutor;
 
     ObservableList<Estudiante> estudiantesObservableList = FXCollections.observableArrayList();
     ObservableList<TutorAcademico> tutoresObservableList = FXCollections.observableArrayList();
@@ -78,7 +64,7 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
             TutorAcademico item = new TutorAcademico();
             item = getTablaTutor();
             if (item != null) {
-                JOptionPane.showMessageDialog(null, item.getNumeroDePersonal());
+                // JOptionPane.showMessageDialog(null, item.getNumeroDePersonal());
 
             } else {
 
@@ -89,7 +75,7 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
 
     private AlertManager alerts = new AlertManager();
     @FXML
-    private TableColumn clm_combobox;
+    private TableColumn clm_checkbox;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -101,16 +87,18 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
     private void initializeTableEstudiantes() {
 
         clm_estudiantes.setCellValueFactory(new PropertyValueFactory<Estudiante, String>("nombreCompleto"));
-        clm_combobox.setCellValueFactory(new PropertyValueFactory<Estudiante, String>("CheckBoxEnSeleccion"));
+        clm_checkbox.setCellValueFactory(new PropertyValueFactory<Estudiante, String>("CheckBoxEnSeleccion"));
+        clm_currentTutor.setCellValueFactory(new PropertyValueFactory<Estudiante, String>("TutorName"));
+
 
     }
 
     private void initializeTableTutores() {
 
         clm_tutor.setCellValueFactory(new PropertyValueFactory<TutorAcademico, String>("nombreCompleto"));
+        clm_estudiantesAcargo.setCellValueFactory(new PropertyValueFactory<TutorAcademico, String>("NumeroEstudiantes"));
         final ObservableList<TutorAcademico> problematicaReportes = tbl_tutores.getSelectionModel().getSelectedItems();
         problematicaReportes.addListener(selectedTutor);
-        // clm_estudiantesAcargo.
 
     }
 
@@ -153,8 +141,12 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
         try {
             estudiantes = estudianteDAO.getEstudiantesByPrograma("14203");
             tutores = tutorDAO.getAllTutores();
-            loadDataTableEstudiantes(estudiantes);
-            loadDataTableTutores(tutores);
+            if (!estudiantes.isEmpty() || !tutores.isEmpty()) {
+                loadDataTableEstudiantes(estudiantes);
+                loadDataTableTutores(tutores);
+            }else{
+             alerts.showAlertNotRegisterFound();
+            }
         } catch (SQLException ex) {
 
             alerts.showAlertErrorConexionDB();
@@ -169,24 +161,23 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
         ObservableList<Estudiante> estudiantesSelected = getEstudiantesSelected();
         TutorAcademico tutor = getTablaTutor();
 
-        if (estudiantesSelected.isEmpty() && tutor != null) {
+        if (!estudiantesSelected.isEmpty() && tutor != null) {
             for (Estudiante estudiante : estudiantesSelected) {
                 String matricula = estudiante.getMatricula();
                 try {
-                    estudiantedao.updateAsignacion(matricula, 39728);
+                    estudiantedao.updateAsignacion(matricula, tutor.getNumeroDePersonal());
 
                 } catch (SQLException ex) {
                     alerts.showAlertErrorConexionDB();
                 }
 
             }
-            //cleanSelection(estudiatesSelected,tutor);
-            //updateTables();
-        }else{
-         alerts.showAlertEmptySelectionTutor();
+            updateTables();
+            alerts.showAlertSuccesfulUpdate();
+           
+        } else {
+            alerts.showAlertEmptySelectionTutor();
         }
-        alerts.showAlertSuccesfulUpdate();
-        
 
     }
 
@@ -213,6 +204,13 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
             }
         }
         return tutorSeleccionado;
+    }
+
+    private void updateTables() {
+        estudiantesObservableList.removeAll(estudiantesObservableList);
+        tutoresObservableList.removeAll(tutoresObservableList);
+        initializeQuerys();
+
     }
 
 }
