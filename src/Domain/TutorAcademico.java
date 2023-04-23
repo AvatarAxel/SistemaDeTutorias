@@ -15,6 +15,7 @@ public class TutorAcademico {
     private String correoElectronicoInstitucional;
     private int numeroDePersonal;
     private String contraseña;
+    private int numeroEstudiantes;
 
     public TutorAcademico() {
     }
@@ -26,6 +27,14 @@ public class TutorAcademico {
         this.correoElectronicoInstitucional = correoElectronicoInstitucional;
         this.numeroDePersonal = numeroDePersonal;
         this.contraseña = contraseña;
+    }
+
+    public int getNumeroEstudiantes() {
+        return numeroEstudiantes;
+    }
+
+    public void setNumeroEstudiantes(int numeroEstudiantes) {
+        this.numeroEstudiantes = numeroEstudiantes;
     }
 
     public String getNombre() {
@@ -77,7 +86,9 @@ public class TutorAcademico {
     
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
-    }        
+    }       
+    
+    
     
     @Override
     public String toString() {
