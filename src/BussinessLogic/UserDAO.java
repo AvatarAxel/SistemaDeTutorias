@@ -32,12 +32,14 @@ public class UserDAO implements IUserDAO {
 
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
+                user.setApellidoMaterno(resultSet.getString("ApellidoMaterno"));
+                user.setApellidoPaterno(resultSet.getString("ApellidoPaterno"));
+                user.setCorreo(resultSet.getString("correoElectronicoInstitucional"));
+                user.setNombre(resultSet.getString("Nombre"));
+                user.setNumeroPersonal(resultSet.getInt("numeroDePersonal"));
+            }else{
+                user = null;
             }
-            user.setApellidoMaterno(resultSet.getString("ApellidoMaterno"));
-            user.setApellidoPaterno(resultSet.getString("ApellidoPaterno"));
-            user.setCorreo(resultSet.getString("correoElectronicoInstitucional"));
-            user.setNombre(resultSet.getString("Nombre"));
-            user.setNumeroPersonal(resultSet.getInt("numeroDePersonal"));
             dataBaseConnection.closeConection();
         }
         return user;
