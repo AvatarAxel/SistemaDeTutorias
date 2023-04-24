@@ -101,4 +101,43 @@ public class EstudianteDAO {
         connection.close();
         return allEstudiantes;
     }
+
+    public ArrayList<Estudiante> getAllEstudiantes() throws SQLException {
+        ArrayList<Estudiante> listEstudiantes = new ArrayList<>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if (connection != null) {
+            String query = "SELECT * FROM estudiantes WHERE esInscrito = 1";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultado = preparedStatement.executeQuery();
+            while (resultado.next()) {
+                Estudiante estudiante = new Estudiante();
+                estudiante.setMatricula(resultado.getString("matricula"));
+                estudiante.setNombre(resultado.getString("nombre"));
+                estudiante.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+                estudiante.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+                listEstudiantes.add(estudiante);
+            }
+            connection.close();
+        }
+        return listEstudiantes;
+    }
+    
+    public boolean deleteEstudiante(String matricula) throws SQLException{
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();        
+        if(connection!=null){
+            String query = ("UPDATE `sistema_tutorias`.`estudiantes` SET `esInscrito` = '0' WHERE (`matricula` = ?);");            
+          PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, matricula);
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }        
+        connection.close();
+        return result;
+    }    
+    
 }

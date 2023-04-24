@@ -88,6 +88,8 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
                     listProfesores.clear();
                     listProfesores.addAll(loadedListProfesores);
                     tableProfesor.setItems(listProfesores);
+                    Label noticeContentTable = new Label("Sin contenido...");
+                    tableProfesor.setPlaceholder(noticeContentTable);
                 } catch (SQLException e) {
                     AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
                 }

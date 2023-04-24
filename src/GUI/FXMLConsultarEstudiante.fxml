@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.web.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="428.0" prefWidth="890.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLConsultarEstudianteController">
+    <stylesheets>
+        <URL value="@/styles/globalStyles.css" />
+    </stylesheets>
+   <children>
+      <TextField fx:id="textFieldSearchEstudiantes" layoutX="152.0" layoutY="29.0" onKeyTyped="#validateLengthMatricula" prefHeight="29.0" prefWidth="707.0" promptText="Matricula / Nombre / Apellidos" />
+      <TableView fx:id="tableEstudiantes" layoutX="24.0" layoutY="84.0" onMouseClicked="#selectEstudiante" prefHeight="263.0" prefWidth="833.0">
+        <columns>
+          <TableColumn fx:id="columMatricula" prefWidth="172.0" text="Matricula" />
+          <TableColumn fx:id="columNombre" minWidth="0.0" prefWidth="179.0" text="Nombre" />
+            <TableColumn fx:id="columApellidoPaterno" prefWidth="285.0" text="Apellido Paterno" />
+            <TableColumn fx:id="columApellidoMaterno" prefWidth="196.0" text="Apellido Materno" />
+        </columns>
+      </TableView>
+      <Label layoutX="24.0" layoutY="34.0" prefHeight="19.0" prefWidth="117.0" text="Buscar estudiante:" />
+      <Button fx:id="buttonRegister" layoutX="455.0" layoutY="374.0" mnemonicParsing="false" onAction="#buttonActionRegister" prefHeight="29.0" prefWidth="82.0" text="Registrar" />
+      <Button fx:id="buttonEdit" layoutX="560.0" layoutY="374.0" mnemonicParsing="false" onAction="#buttonActionEdit" prefHeight="29.0" prefWidth="82.0" text="Editar" />
+      <Button fx:id="buttonDelete" layoutX="667.0" layoutY="375.0" mnemonicParsing="false" onAction="#buttonActionDelete" prefHeight="29.0" prefWidth="82.0" text="Eliminar" />
+      <Button fx:id="buttonExit" layoutX="775.0" layoutY="375.0" mnemonicParsing="false" onAction="#buttonActionExit" prefHeight="29.0" prefWidth="82.0" text="Salir" />
+   </children>
+</AnchorPane>
