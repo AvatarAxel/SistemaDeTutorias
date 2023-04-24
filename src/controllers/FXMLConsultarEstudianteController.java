@@ -6,6 +6,7 @@ package controllers;
 
 import BussinessLogic.EstudianteDAO;
 import Domain.Estudiante;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +20,10 @@ import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -30,6 +34,8 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import util.AlertManager;
 import util.WindowManager;
 
@@ -68,7 +74,7 @@ public class FXMLConsultarEstudianteController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configureTableColumns();
-        loadInformationEstudiantes();        
+        loadInformationEstudiantes();
         buttonDelete.setDisable(true);
         buttonEdit.setDisable(true);
     }
@@ -95,7 +101,7 @@ public class FXMLConsultarEstudianteController implements Initializable {
                     loadedListEstudiantes = estudianteDAO.getAllEstudiantes();
                     listEstudiantes.clear();
                     listEstudiantes.addAll(loadedListEstudiantes);
-                    tableEstudiantes.setItems(listEstudiantes);
+                    tableEstudiantes.setItems(listEstudiantes);                    
                     Label noticeContentTable = new Label("Sin contenido...");
                     tableEstudiantes.setPlaceholder(noticeContentTable);
                 } catch (SQLException e) {
@@ -133,10 +139,33 @@ public class FXMLConsultarEstudianteController implements Initializable {
 
     @FXML
     private void buttonActionRegister(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                buttonEdit.getScene().getWindow(),
+                "/GUI/FXMLRegistrarEstudiantes.fxml",
+                "Registrar Estudiantes"
+        );
     }
 
     @FXML
     private void buttonActionEdit(ActionEvent event) {
+        if (!tableEstudiantes.getSelectionModel().isEmpty()) {
+            Estudiante estudiante = tableEstudiantes.getSelectionModel().getSelectedItem();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXMLEditarEstudiante.fxml"));
+                Parent root = loader.load();
+                FXMLEditarEstudianteController controllerEditarEstudiante = loader.getController();
+                controllerEditarEstudiante.reciveEstudiante(estudiante);
+                Scene esceneEditarEstudiante = new Scene(root);
+                Stage escenarioEditarEstudiante = new Stage();
+                escenarioEditarEstudiante.setScene(esceneEditarEstudiante);
+                escenarioEditarEstudiante.initModality(Modality.APPLICATION_MODAL);
+                escenarioEditarEstudiante.show();
+                tableEstudiantes.getSelectionModel().clearSelection();  
+                textFieldSearchEstudiantes.clear();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     @FXML

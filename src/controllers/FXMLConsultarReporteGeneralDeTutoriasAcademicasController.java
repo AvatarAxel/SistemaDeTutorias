@@ -135,8 +135,7 @@ public class FXMLConsultarReporteGeneralDeTutoriasAcademicasController implement
             escenarioReporteGeneral.show();
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
-          
+        }          
     }    
 
     @FXML

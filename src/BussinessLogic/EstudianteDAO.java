@@ -140,4 +140,24 @@ public class EstudianteDAO {
         return result;
     }    
     
+    public boolean updateEstudiante(Estudiante estudiante) throws SQLException{
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();        
+        if(connection!=null){
+            String query = ("UPDATE `sistema_tutorias`.`estudiantes` SET `nombre` = ?, `apellidoPaterno` = ?, `apellidoMaterno` = ? WHERE (`matricula` = ?);");            
+          PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, estudiante.getNombre());
+            statement.setString(2, estudiante.getApellidoPaterno());
+            statement.setString(3, estudiante.getApellidoMaterno());
+            statement.setString(4, estudiante.getMatricula());
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }        
+        connection.close();
+        return result;
+    }       
+    
 }
