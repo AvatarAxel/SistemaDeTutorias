@@ -15,8 +15,8 @@
             <Image url="@../images/icon.png" />
          </image>
       </ImageView>
-      <TextField fx:id="tfEmail" layoutX="392.0" layoutY="115.0" stylesheets="@../styles/globalStyles.css" />
-      <PasswordField fx:id="pfPassword" layoutX="392.0" layoutY="205.0" />
+      <TextField fx:id="tfEmail" layoutX="392.0" layoutY="115.0" onKeyReleased="#validateInputsEmail" onKeyTyped="#validateLengthEmail" stylesheets="@../styles/globalStyles.css" />
+      <PasswordField fx:id="pfPassword" layoutX="392.0" layoutY="205.0" onKeyReleased="#validateInputPassword" onKeyTyped="#validateLenghtPassword" />
       <Label layoutX="280.0" layoutY="14.0" text="Inicio de Sesión">
          <font>
             <Font name="System Bold" size="35.0" />
