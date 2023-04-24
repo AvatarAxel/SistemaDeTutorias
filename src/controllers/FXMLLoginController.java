@@ -4,8 +4,13 @@
  */
 package controllers;
 
+import BussinessLogic.UserDAO;
+import Domain.Usuario;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.apache.commons.lang3.StringUtils;
+import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
 
@@ -35,47 +41,65 @@ public class FXMLLoginController implements Initializable {
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-   
-    public boolean AreFieldsValid(){
+    }
+
+    public boolean AreFieldsValid() {
         lbEmail.setText("");
         lbPassword.setText("");
-        
+
         boolean isValid = true;
         String MESSAGE = "Campo obligatorio";
-        
-        if(StringUtils.isBlank(tfEmail.getText())){
+
+        if (StringUtils.isBlank(tfEmail.getText())) {
             isValid = false;
             lbEmail.setText(MESSAGE);
         }
-        
-        if(StringUtils.isBlank(pfPassword.getText())){
+
+        if (StringUtils.isBlank(pfPassword.getText())) {
             isValid = false;
             lbPassword.setText(MESSAGE);
         }
-        
+
         return isValid;
     }
-    
-    private void doLogin(String username, String password){
-        //Conexión con la base de datos para iniciar sesión        
-        if(true){//Reemplazar el true por el resultado de la consulta
+
+    private void doLogin(String username, String password) throws SQLException {
+        UserDAO userDAO = new UserDAO();
+        Usuario usuarioLogin = userDAO.getUserDB(username, password);
+        usuarioLogin.setRoles(userDAO.getUserRoles(usuarioLogin.getNumeroPersonal()));
+
+        User.setCurrentUser(new User());
+
+        User.getCurrentUser().setNombre(usuarioLogin.getNombre());
+        User.getCurrentUser().setApellidoPaterno(usuarioLogin.getApellidoPaterno());
+        User.getCurrentUser().setApellidoMaterno(usuarioLogin.getApellidoMaterno());
+        User.getCurrentUser().setCorreo(usuarioLogin.getCorreo());
+        User.getCurrentUser().setProgramaEducativo(usuarioLogin.getProgramaEducativo());
+        User.getCurrentUser().setRoles(usuarioLogin.getRoles());
+
+        if (User.getCurrentUser() != null) {
             WindowManager.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
-        }else{
-            AlertManager.showAlert("Prueba", "Prueba " + username + " " + password, Alert.AlertType.INFORMATION);
+        } else {
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
+
     }
 
     @FXML
     private void clicLogin(ActionEvent event) {
-        if(AreFieldsValid()){
-            doLogin(tfEmail.getText(), pfPassword.getText());
+        if (AreFieldsValid()) {
+            try {
+                doLogin(tfEmail.getText(), pfPassword.getText());
+            } catch (SQLException ex) {
+                Logger.getLogger(FXMLLoginController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }
