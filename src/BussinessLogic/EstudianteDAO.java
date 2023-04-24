@@ -23,13 +23,14 @@ public class EstudianteDAO {
         Connection connection = dataBaseConnection.getConnection();
         
         if(connection!=null){
-            String query = ("INSERT INTO estudiantes (`matricula`, `nombre`, `apellidoPaterno`, `apellidoMaterno`, `clave`) VALUES (?, ?, ?, ?, ?);");            
+            String query = ("INSERT INTO estudiantes (`matricula`, `nombre`, `apellidoPaterno`, `apellidoMaterno`, `clave`, `esInscrito`) VALUES (?, ?, ?, ?, ?, ?);");            
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, estudiante.getMatricula());
             statement.setString(2, estudiante.getNombre());
             statement.setString(3, estudiante.getApellidoPaterno());
             statement.setString(4, estudiante.getApellidoMaterno());
             statement.setInt(5, clave);
+            statement.setInt(6, 1);
             int resultInsert = statement.executeUpdate();            
             if(resultInsert>0){
                 result = true;
