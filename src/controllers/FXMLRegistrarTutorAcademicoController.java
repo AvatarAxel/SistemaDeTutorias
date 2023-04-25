@@ -154,7 +154,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
             tutorAcademico.setNumeroDePersonal(profesor.getNumeroDePersonal());
             tutorAcademico.setContraseña(randomPassword);
             boolean resultRegister = tutorAcademicoDao.setTutorRegister(tutorAcademico);
-            boolean resultRolAssignment = userDao.setRolUserTutor(tutorAcademico.getNumeroDePersonal());
+            boolean resultRolAssignment = userDao.setRolUserTutor(tutorAcademico.getNumeroDePersonal(), "14203");
             boolean markRegistration = profesorDao.setTutorRegister(tutorAcademico.getNumeroDePersonal());
             if (resultRegister && resultRolAssignment && markRegistration) {
                 AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
@@ -162,6 +162,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
             }
         } catch (SQLException e) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
         buttonRegister.setDisable(true);
         tableProfesor.getSelectionModel().clearSelection();

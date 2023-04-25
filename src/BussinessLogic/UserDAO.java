@@ -89,15 +89,16 @@ public class UserDAO implements IUserDAO {
         return tutores;
     }
 
-    public boolean setRolUserTutor(int numeroDePersonal) throws SQLException {
+    public boolean setRolUserTutor(int numeroDePersonal, String clave) throws SQLException {
         boolean result = false;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
 
         if (connection != null) {
-            String query = ("INSERT INTO roles_usuarios (`numeroDePersonal`, `idRol`) VALUES (?, '3');");
+            String query = ("INSERT INTO roles_usuarios_programa_educativo (`numeroDePersonal`, `idRol`, `clave`) VALUES (?, '3', ?);");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, numeroDePersonal);
+            statement.setString(2, clave);
             int resultInsert = statement.executeUpdate();
             if (resultInsert > 0) {
                 result = true;
