@@ -76,7 +76,7 @@ public class FXMLLoginController implements Initializable {
 
     private void doLogin(String username, String password) throws SQLException {
         UserDAO userDAO = new UserDAO();
-        Usuario usuarioLogin = userDAO.getUserDB(username, password);
+        Usuario usuarioLogin = userDAO.getUser(username, password);
         if (usuarioLogin != null) {
             usuarioLogin.setRoles(userDAO.getUserRoles(usuarioLogin.getNumeroPersonal()));
             

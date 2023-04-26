@@ -57,5 +57,9 @@
           </Menu>
         </menus>
       </MenuBar>
+      <ComboBox fx:id="cbRol" layoutX="428.0" layoutY="58.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbProgramaEducativo" layoutX="428.0" layoutY="125.0" prefWidth="150.0" />
+      <Label layoutX="300.0" layoutY="62.0" text="Rol Actual" />
+      <Label layoutX="300.0" layoutY="129.0" text="Programa Educativo" />
    </children>
 </AnchorPane>
