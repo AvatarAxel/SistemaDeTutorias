@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -8,6 +9,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane id="AnchorPane" prefHeight="464.0" prefWidth="593.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLReportesTutoriasAcademicasController">
+    <stylesheets>
+        <URL value="@/styles/globalStyles.css" />
+    </stylesheets>
    <children>
       <Label fx:id="lbInstruccion1" layoutX="25.0" layoutY="15.0" text="Seleccione un Tutor Académico." />
       <Label layoutX="25.0" layoutY="49.0" text="Tutor Académico:" />
@@ -15,8 +19,8 @@
       <Label fx:id="lbInstruccion2" layoutX="25.0" layoutY="87.0" text="Seleccione una Reporte Tutoría Académica y dé clic en &quot;Consultar&quot;." />
       <TableView fx:id="tbReportesTutoriasAcademicas" layoutX="25.0" layoutY="110.0" prefHeight="295.0" prefWidth="542.0">
         <columns>
-          <TableColumn fx:id="ColumnTutoriaAcademica" prefWidth="305.5999641418457" text="Tutoría Académica" />
-          <TableColumn fx:id="ColumnPeriodoEscolar" prefWidth="234.4000244140625" text="Periodo Escolar" />
+          <TableColumn fx:id="ColumnPeriodoEscolar" prefWidth="269.5999641418457" text="Periodo Escolar" />
+          <TableColumn fx:id="ColumNumeroDeSesion" prefWidth="271.2000732421875" text="No. De Sesión" />
         </columns>
       </TableView>
       <Button layoutX="459.0" layoutY="419.0" mnemonicParsing="false" onAction="#clicButtonCancel" prefHeight="29.0" prefWidth="108.0" text="Cancelar" />
