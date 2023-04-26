@@ -12,6 +12,10 @@ public class Usuario {
     String apellidoPaterno;
     String apellidoMaterno; 
     String programaEducativo;
+    private int claveProgramaEducativo;
+    String rol;
+    String correo;
+    
 
     public String getProgramaEducativo() {
         return programaEducativo;
@@ -28,8 +32,7 @@ public class Usuario {
     public void setRol(String rol) {
         this.rol = rol;
     }
-    String rol;
-    String correo;
+
  
     public int getNumeroPersonal() {
         return numeroPersonal;
@@ -71,6 +74,15 @@ public class Usuario {
         this.correo = correo;
     }
 
+    public int getClaveProgramaEducativo() {
+        return claveProgramaEducativo;
+    }
+
+    public void setClaveProgramaEducativo(int claveProgramaEducativo) {
+        this.claveProgramaEducativo = claveProgramaEducativo;
+    }
+
+    
     @Override
     public String toString() {
         return nombre + " " + apellidoPaterno + " " + apellidoMaterno;

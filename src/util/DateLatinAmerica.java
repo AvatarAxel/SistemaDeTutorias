@@ -21,6 +21,15 @@ public class DateLatinAmerica {
         return month + " " + year;
     }
     
+    public static String DateWithDays(Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");       
+        String formattedDate = simpleDateFormat.format(date);
+        String day = formattedDate.substring(0, 2);
+        String month = new DateLatinAmerica().returnMonth(formattedDate.substring(3,5));
+        String year = formattedDate.substring(6,10);
+        return day + " " + month + " " + year;
+    }    
+    
     public String returnMonth(String month) {                        
         switch (month) {
             case "01":

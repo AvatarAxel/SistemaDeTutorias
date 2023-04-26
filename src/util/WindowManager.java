@@ -46,6 +46,7 @@ public class WindowManager {
             primaryStage.show();
         } catch (IOException e) {
             AlertManager.showAlert("Error", "No se puede cargar la ventana", Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
     }
     

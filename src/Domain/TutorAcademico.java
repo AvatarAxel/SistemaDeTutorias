@@ -15,6 +15,9 @@ public class TutorAcademico {
     private String correoElectronicoInstitucional;
     private int numeroDePersonal;
     private String contraseña;
+    private int claveProgramaEducativo;
+    private int idRol;
+    
 
     public TutorAcademico() {
     }
@@ -74,7 +77,25 @@ public class TutorAcademico {
     
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
-    }        
+    }
+
+    public int getClaveProgramaEducativo() {
+        return claveProgramaEducativo;
+    }
+
+    public void setClaveProgramaEducativo(int claveProgramaEducativo) {
+        this.claveProgramaEducativo = claveProgramaEducativo;
+    }
+
+    public int getIdRol() {
+        return idRol;
+    }
+
+    public void setIdRol(int idRol) {
+        this.idRol = idRol;
+    }
+    
+    
     
     @Override
     public String toString() {
