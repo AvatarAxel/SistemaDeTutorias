@@ -90,8 +90,8 @@ public class FXMLMainMenuController implements Initializable {
         } catch (SQLException sqle) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
-        loadComboBoxes();
-        selectedItem();
+        //loadComboBoxes();
+        //selectedItem();
     }
 
     private void loadMenu() {
