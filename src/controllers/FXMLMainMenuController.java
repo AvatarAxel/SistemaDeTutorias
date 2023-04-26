@@ -7,9 +7,22 @@ import Domain.ReporteDeTutoriaAcademica;
 import Domain.TutoriaAcademica;
 import Domain.Usuario;
 import java.io.IOException;
+import BussinessLogic.TutoriaAcademicaDAO;
+import Domain.ProblematicaAcademica;
+import Domain.ProgramaEducativo;
+import Domain.Rol;
+import Domain.TutoriaAcademica;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,10 +30,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import util.AlertManager;
+import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
 
@@ -31,12 +48,20 @@ import util.WindowManager;
  */
 public class FXMLMainMenuController implements Initializable {
 
+    ObservableList<Rol> rolesUnicos = FXCollections.observableArrayList();
+    ObservableList<ProgramaEducativo> programasUnicos = FXCollections.observableArrayList();
+
     @FXML
     private MenuBar mbMainMenu;
     @FXML
     private MenuItem miCreateGeneralReport;
     @FXML
     private MenuItem miCreateTutorialReport;
+    @FXML
+    private ComboBox<Rol> cbRol;
+    @FXML
+    private ComboBox<ProgramaEducativo> cbProgramaEducativo;
+
     
     private TutoriaAcademica tutoriaAcademica;
     private ReporteDeTutoriaAcademica reporteTutoriaAcademica;
@@ -46,17 +71,13 @@ public class FXMLMainMenuController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-            Usuario prueba = new Usuario();
-            //prueba.setNumeroPersonal(87305);   
-            prueba.setNumeroPersonal(10001);        
-            
+
         try{
             TutoriaAcademicaDAO tutoriaAcademicaDAO =  new TutoriaAcademicaDAO();
             tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica(); 
             if(tutoriaAcademica != null){
                 ReporteDeTutoriaAcademicaDAO reporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
-                reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(),prueba.getNumeroPersonal());               
+                reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(),User.getCurrentUser().getNumeroDePersonal());               
                 if(reporteTutoriaAcademica != null){
                     miCreateTutorialReport.setText("Editar");
                 }else{
@@ -69,6 +90,51 @@ public class FXMLMainMenuController implements Initializable {
         } catch (SQLException sqle) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
+        loadComboBoxes();
+        selectedItem();
+    }
+
+    private void loadMenu() {
+        ExecutorService executorService;
+        executorService = Executors.newFixedThreadPool(1);
+        Task loadInformationTutoriaAcademicaTask = new Task() {
+            @Override
+            protected Void call() throws Exception {
+                //TODO
+                return null;
+            }
+        };
+        executorService.submit(loadInformationTutoriaAcademicaTask);
+        executorService.shutdown();
+    }
+
+    private void loadComboBoxes() {
+        for (int i = 0; i < User.getCurrentUser().getRoles().size(); i++) {
+            Rol rolName = User.getCurrentUser().getRoles().get(i);
+            ProgramaEducativo programaName = User.getCurrentUser().getRoles().get(i).getProgramaEducativo();
+
+            if (!rolesUnicos.contains(rolName)) {
+                rolesUnicos.add(rolName);
+            }
+            if (!programasUnicos.contains(programaName)) {
+                programasUnicos.add(programaName);
+            }
+        }
+        cbRol.setItems(rolesUnicos);
+        cbProgramaEducativo.setItems(programasUnicos);
+
+    }
+
+    private void selectedItem() {
+        cbRol.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null) {
+                //System.out.println("SoluciónViejo: "+ listProblematicas.get(listProblematicas.indexOf(oldValue)).getSolucion().getDescripcion());
+            }
+            if (newValue != null) {
+                cbProgramaEducativo.getSelectionModel().select(newValue.getProgramaEducativo());
+                //System.out.println("SoluciónNuevo: "+newValue.getSolucion().getDescripcion());
+            }
+        });
     }
 
     @FXML
@@ -82,7 +148,7 @@ public class FXMLMainMenuController implements Initializable {
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLConsultarReporteGeneralDeTutoriasAcademicas.fxml",
                 "Reportes Generales de tutorias"
-        );        
+        );
     }
 
     @FXML
@@ -132,7 +198,7 @@ public class FXMLMainMenuController implements Initializable {
                 "Consultar Solución a Problematica Academica"
         );
     }
-    
+
     @FXML
     private void menuUpdateSolution(ActionEvent event) {
         WindowManager.NavigateToWindow(

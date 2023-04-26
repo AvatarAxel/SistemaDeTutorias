@@ -4,6 +4,8 @@
  */
 package Domain;
 
+import java.util.Objects;
+
 /**
  *
  * @author panther
@@ -11,6 +13,7 @@ package Domain;
 public class Rol {
     private int idRol;
     private String rolName;
+    private ProgramaEducativo programaEducativo;
 
     public Rol() {
     }
@@ -18,6 +21,12 @@ public class Rol {
     public Rol(int idRol, String rolName) {
         this.idRol = idRol;
         this.rolName = rolName;
+    }
+
+    public Rol(int idRol, String rolName, ProgramaEducativo programaEducativo) {
+        this.idRol = idRol;
+        this.rolName = rolName;
+        this.programaEducativo = programaEducativo;
     }
 
     public int getIdRol() {
@@ -35,5 +44,18 @@ public class Rol {
     public void setRolName(String rolName) {
         this.rolName = rolName;
     }
-    
+
+    public ProgramaEducativo getProgramaEducativo() {
+        return programaEducativo;
+    }
+
+    public void setProgramaEducativo(ProgramaEducativo programaEducativo) {
+        this.programaEducativo = programaEducativo;
+    }
+
+    @Override
+    public String toString() {
+        return rolName;
+    }
+
 }

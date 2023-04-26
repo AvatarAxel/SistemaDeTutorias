@@ -1,5 +1,6 @@
 package BussinessLogic;
 
+import Domain.ProgramaEducativo;
 import Domain.Rol;
 import Domain.Usuario;
 import dataaccess.DataBaseConnection;
@@ -17,27 +18,28 @@ import security.SHA_512;
 public class UserDAO implements IUserDAO {
 
     @Override
-    public Usuario getUserDB(String correo, String contrasena) throws SQLException {
+    public Usuario getUser(String correo, String contrasena) throws SQLException {
         Usuario user = new Usuario();
         SHA_512 sha512 = new SHA_512();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            String query = ("SELECT DISTINCT U.correoElectronicoInstitucional, U.Nombre, U.ApellidoPaterno, U.ApellidoMaterno, UR.numeroDePersonal FROM usuarios U "
-                    + "INNER JOIN roles_usuarios UR ON UR.numeroDePersonal = U.numeroDePersonal "
-                    + "WHERE U.correoElectronicoInstitucional = ? AND U.contrasenia = ? ");
+            String query = ("SELECT U.correoElectronicoInstitucional, U.Nombre, U.ApellidoPaterno, U.ApellidoMaterno, U.numeroDePersonal "
+                    + "FROM usuarios U "
+                    + "WHERE U.correoElectronicoInstitucional = ? "
+                    + "AND U.contrasenia = ?;");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, correo);
             statement.setString(2, sha512.getSHA512(contrasena));
 
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 user.setApellidoMaterno(resultSet.getString("ApellidoMaterno"));
                 user.setApellidoPaterno(resultSet.getString("ApellidoPaterno"));
-                user.setCorreo(resultSet.getString("correoElectronicoInstitucional"));
+                user.setCorreoElectronicoInstitucional(resultSet.getString("correoElectronicoInstitucional"));
                 user.setNombre(resultSet.getString("Nombre"));
-                user.setNumeroPersonal(resultSet.getInt("numeroDePersonal"));
-            }else{
+                user.setNumeroDePersonal(resultSet.getInt("numeroDePersonal"));
+            } else {
                 user = null;
             }
             dataBaseConnection.closeConection();
@@ -49,14 +51,20 @@ public class UserDAO implements IUserDAO {
         ArrayList<Rol> roles = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = ("SELECT DISTINCT UR.IdRol, R.nombre FROM usuarios U "
-                + "INNER JOIN roles_usuarios UR ON UR.numeroDePersonal = ? "
-                + "INNER JOIN roles R ON R.idRol = UR.idRol");
+        String query = ("SELECT DISTINCT UR.IdRol, R.nombre AS nombreRol, UR.clave, PE.nombre AS nombrePrograma FROM usuarios U "
+                + "INNER JOIN roles_usuarios_programa_educativo UR ON UR.numeroDePersonal = ? "
+                + "INNER JOIN programas_educativos PE ON PE.clave = UR.clave "
+                + "INNER JOIN roles R ON R.idRol = UR.idRol;");
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, numeroDePersonal);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
-            roles.add(new Rol(resultSet.getInt("IdRol"), resultSet.getString("nombre")));
+            Rol rolTmp = new Rol();
+            rolTmp.setIdRol(resultSet.getInt("IdRol"));
+            rolTmp.setRolName(resultSet.getString("nombreRol"));
+            rolTmp.setProgramaEducativo(new ProgramaEducativo(resultSet.getString("clave"), 
+                    resultSet.getString("nombrePrograma")));
+            roles.add(rolTmp);
         }
 
         dataBaseConnection.closeConection();
@@ -82,7 +90,7 @@ public class UserDAO implements IUserDAO {
                 usuario.setNombre(resultado.getString("nombre"));
                 usuario.setApellidoPaterno(resultado.getString("apellidoPaterno"));
                 usuario.setApellidoMaterno(resultado.getString("apellidoMaterno"));
-                usuario.setNumeroPersonal(resultado.getInt("numeroDePersonal"));
+                usuario.setNumeroDePersonal(resultado.getInt("numeroDePersonal"));
                 tutores.add(usuario);
             }
             connection.close();
