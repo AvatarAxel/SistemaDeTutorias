@@ -108,4 +108,30 @@ public class UserDAO implements IUserDAO {
         return result;
     }
 
+    public ArrayList<Usuario> getAllUsersByProgramaEducativo(int clave) throws SQLException {
+        ArrayList<Usuario> listUsuario = new ArrayList<>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if (connection != null) {
+            String query = "SELECT u.numeroDePersonal, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.esRegistrado\n"
+                    + "FROM usuarios u\n"
+                    + "INNER JOIN roles_usuarios_programa_educativo rup\n"
+                    + "ON u.numeroDePersonal = rup.numeroDePersonal\n"
+                    + "WHERE rup.clave = ? and u.esRegistrado = 1;";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, clave);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setNombre(resultSet.getString("nombre"));
+                usuario.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
+                usuario.setApellidoMaterno(resultSet.getString("apellidoMaterno"));
+                usuario.setNumeroPersonal(resultSet.getInt("numeroDePersonal"));
+                listUsuario.add(usuario);
+            }
+            connection.close();
+        }
+        return listUsuario;
+    }
+
 }

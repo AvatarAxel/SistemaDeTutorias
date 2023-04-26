@@ -99,11 +99,14 @@ public class FXMLConsultarEstudianteController implements Initializable {
                     ArrayList<Estudiante> loadedListEstudiantes = new ArrayList<>();
                     EstudianteDAO estudianteDAO = new EstudianteDAO();
                     loadedListEstudiantes = estudianteDAO.getAllEstudiantes();
-                    listEstudiantes.clear();
-                    listEstudiantes.addAll(loadedListEstudiantes);
-                    tableEstudiantes.setItems(listEstudiantes);                    
-                    Label noticeContentTable = new Label("Sin contenido...");
-                    tableEstudiantes.setPlaceholder(noticeContentTable);
+                    if (!loadedListEstudiantes.isEmpty()) {
+                        listEstudiantes.clear();
+                        listEstudiantes.addAll(loadedListEstudiantes);
+                        tableEstudiantes.setItems(listEstudiantes);
+                    } else {
+                        Label noticeContentTable = new Label("Sin contenido...");
+                        tableEstudiantes.setPlaceholder(noticeContentTable);
+                    }
                 } catch (SQLException e) {
                     AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
                 }
@@ -131,7 +134,8 @@ public class FXMLConsultarEstudianteController implements Initializable {
 
     @FXML
     private void selectEstudiante(MouseEvent event) {
-        if (!tableEstudiantes.getSelectionModel().isEmpty()) {
+        if (!tableEstudiantes.getSelectionModel().isEmpty() 
+                && tableEstudiantes.getSelectionModel().getSelectedItem() != null) {
             buttonEdit.setDisable(false);
             buttonDelete.setDisable(false);
         }
@@ -148,7 +152,7 @@ public class FXMLConsultarEstudianteController implements Initializable {
 
     @FXML
     private void buttonActionEdit(ActionEvent event) {
-        if (!tableEstudiantes.getSelectionModel().isEmpty()) {
+        if (!tableEstudiantes.getSelectionModel().isEmpty() && tableEstudiantes.getSelectionModel().getSelectedItem() != null) {
             Estudiante estudiante = tableEstudiantes.getSelectionModel().getSelectedItem();
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXMLEditarEstudiante.fxml"));

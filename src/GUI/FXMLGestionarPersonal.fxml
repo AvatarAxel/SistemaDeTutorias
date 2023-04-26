@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="662.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLGestionarPersonalController">
+    <stylesheets>
+        <URL value="@fxmlgestionarpersonal.css" />
+    </stylesheets>
+   <children>
+      <TableView fx:id="tablePersonal" layoutX="14.0" layoutY="87.0" onMouseClicked="#selectPersonal" prefHeight="228.0" prefWidth="609.0">
+        <columns>
+          <TableColumn fx:id="columNumeroDePersonal" prefWidth="149.0" text="No. de personal" />
+          <TableColumn fx:id="columNombre" prefWidth="106.0" text="Nombre" />
+            <TableColumn fx:id="columApellidoPaterno" prefWidth="164.0" text="Apellido Paterno" />
+            <TableColumn fx:id="columApellidoMaterno" prefWidth="189.0" text="Apellido Materno" />
+        </columns>
+      </TableView>
+      <Button fx:id="buttonDelete" layoutX="458.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonActionDelete" text="Eliminar" />
+      <Button fx:id="buttonEdit" layoutX="358.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonActionEdit" prefHeight="29.0" prefWidth="78.0" text="Editar" />
+      <Button layoutX="546.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonActionExit" prefHeight="29.0" prefWidth="78.0" text="Salir" />
+      <Button fx:id="buttonRegister" layoutX="261.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonActionRegister" prefHeight="29.0" prefWidth="78.0" text="Registrar" />
+      <TextField fx:id="textFieldSearchPersonal" layoutX="130.0" layoutY="36.0" onKeyTyped="#validateLengthInput" prefHeight="29.0" prefWidth="496.0" promptText="No. de personal / Nombre / Apellido Paterno / Apellido Materno" />
+      <Text layoutX="14.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Buscar personal:" wrappingWidth="111.46200561523438" />
+   </children>
+</AnchorPane>

@@ -214,7 +214,8 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
 
     @FXML
     private void selectProfesor(MouseEvent event) {
-        if(!tableProfesor.getSelectionModel().isEmpty()){            
+        if(!tableProfesor.getSelectionModel().isEmpty() 
+                && tableProfesor.getSelectionModel().getSelectedItem() != null){            
             buttonRegister.setDisable(false);
         }
     }
