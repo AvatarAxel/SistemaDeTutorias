@@ -1,5 +1,6 @@
 package BussinessLogic;
 
+import Domain.Rol;
 import Domain.Usuario;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
@@ -7,33 +8,66 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import security.SHA_512;
 
 /**
  *
  * @author Valea
  */
-public class UserDAO implements IUserDAO{
+public class UserDAO implements IUserDAO {
 
     @Override
     public Usuario getUserDB(String correo, String contrasena) throws SQLException {
-        Usuario user= new Usuario();
+        Usuario user = new Usuario();
+        SHA_512 sha512 = new SHA_512();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = ("SELECT U.cuentauv, U.contrasena, U.Nombre, U.ApellidoPaterno, U.ApellidoMaterno, UR.IdRol FROM usuarios U "
-                + "inner join usuariosroles UR on UR.CuentaUV = U.cuentauv "
-                + "where U.cuentauv = ? and U.contrasena = ? ");
-        PreparedStatement statement = connection.prepareStatement(query);
-        //statement.setString(1, cuentauv);
-       // statement.setString(2, sha512.getSHA512(contrasena));
-        ResultSet resultSet = statement.executeQuery();
-        
+        if (connection != null) {
+            String query = ("SELECT DISTINCT U.correoElectronicoInstitucional, U.Nombre, U.ApellidoPaterno, U.ApellidoMaterno, UR.numeroDePersonal FROM usuarios U "
+                    + "INNER JOIN roles_usuarios UR ON UR.numeroDePersonal = U.numeroDePersonal "
+                    + "WHERE U.correoElectronicoInstitucional = ? AND U.contrasenia = ? ");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, correo);
+            statement.setString(2, sha512.getSHA512(contrasena));
+
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                user.setApellidoMaterno(resultSet.getString("ApellidoMaterno"));
+                user.setApellidoPaterno(resultSet.getString("ApellidoPaterno"));
+                user.setCorreo(resultSet.getString("correoElectronicoInstitucional"));
+                user.setNombre(resultSet.getString("Nombre"));
+                user.setNumeroPersonal(resultSet.getInt("numeroDePersonal"));
+            }else{
+                user = null;
+            }
+            dataBaseConnection.closeConection();
+        }
         return user;
     }
 
+    public ArrayList<Rol> getUserRoles(int numeroDePersonal) throws SQLException {
+        ArrayList<Rol> roles = new ArrayList<>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = ("SELECT DISTINCT UR.IdRol, R.nombre FROM usuarios U "
+                + "INNER JOIN roles_usuarios UR ON UR.numeroDePersonal = ? "
+                + "INNER JOIN roles R ON R.idRol = UR.idRol");
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, numeroDePersonal);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            roles.add(new Rol(resultSet.getInt("IdRol"), resultSet.getString("nombre")));
+        }
+
+        dataBaseConnection.closeConection();
+
+        return roles;
+    }
+
     public static ArrayList<Usuario> getUsuarioTutoresporProgramaEducativo(int clave) throws SQLException {
-    ArrayList<Usuario> tutores = new ArrayList<>();
-    DataBaseConnection dataBaseConnection = new DataBaseConnection();
-    Connection connection = dataBaseConnection.getConnection();        
+        ArrayList<Usuario> tutores = new ArrayList<>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
             String consulta = "SELECT u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.numeroDePersonal FROM usuarios u\n" +
             "INNER JOIN roles_usuarios_programa_educativo rup ON rup.numeroDePersonal = u.numeroDePersonal\n" +
@@ -54,8 +88,8 @@ public class UserDAO implements IUserDAO{
             connection.close();
         }
         return tutores;
-    } 
-    
+    }
+
     public boolean setRolUserTutor(int numeroDePersonal) throws SQLException {
         boolean result = false;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -74,7 +108,4 @@ public class UserDAO implements IUserDAO{
         return result;
     }
 
-    
-    
-    
 }

@@ -4,6 +4,9 @@
  */
 package singleton;
 
+import Domain.Rol;
+import java.util.ArrayList;
+
 /**
  *
  * @author panther
@@ -14,7 +17,7 @@ public class User {
     private String apellidoMaterno;
     private String correo;
     private String programaEducativo;
-    private String rol;
+    private ArrayList<Rol> roles;
     
     private static User currentUser;
 
@@ -58,14 +61,6 @@ public class User {
         this.programaEducativo = programaEducativo;
     }
 
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-
     public static User getCurrentUser() {
         return currentUser;
     }
@@ -73,7 +68,17 @@ public class User {
     public static void setCurrentUser(User currentUser) {
         User.currentUser = currentUser;
     }
-    
-    
-    
+
+    public ArrayList<Rol> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(ArrayList<Rol> roles) {
+        this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", programaEducativo=" + programaEducativo + ", roles=" + roles + '}';
+    }
 }

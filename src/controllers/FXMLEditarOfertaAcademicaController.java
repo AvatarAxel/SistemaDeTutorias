@@ -93,13 +93,13 @@ public class FXMLEditarOfertaAcademicaController implements Initializable {
         if(selectedRow >= 0){
             experienciaEducativa = listExperienciasEducativas.get(selectedRow);
             //System.out.println("Error: "+experienciaEducativa.toString());
-            //navigateToExperienciaEducativaDetails();
-            WindowManager.NavigateToFloatingWindow(
+            navigateToExperienciaEducativaDetails();
+            /*WindowManager.NavigateToFloatingWindow(
                     tbExperienciasEducativas.getScene().getWindow(), 
                     experienciaEducativa,
                     "/GUI/FXMLEditarOfertaAcademicaDetalles.fxml",
                     "Titulo",
-                    "passExperienciaEducativa");
+                    "passExperienciaEducativa");*/
             loadTable();
         }else{
             AlertManager.showAlert("Experiencia Educativa no seleccionada",
