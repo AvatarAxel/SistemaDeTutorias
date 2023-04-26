@@ -4,6 +4,7 @@
  */
 package singleton;
 
+import Domain.ProgramaEducativo;
 import Domain.Rol;
 import java.util.ArrayList;
 
@@ -12,14 +13,30 @@ import java.util.ArrayList;
  * @author panther
  */
 public class User {
+    private int numeroDePersonal;
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String correo;
-    private String programaEducativo;
+    private ProgramaEducativo programaEducativo;
     private ArrayList<Rol> roles;
     
     private static User currentUser;
+
+    private User() {
+    }
+
+    public void initUser(){
+        currentUser = new User();
+    }
+    
+    public int getNumeroDePersonal() {
+        return numeroDePersonal;
+    }
+
+    public void setNumeroDePersonal(int numeroDePersonal) {
+        this.numeroDePersonal = numeroDePersonal;
+    }
 
     public String getNombre() {
         return nombre;
@@ -53,11 +70,11 @@ public class User {
         this.correo = correo;
     }
 
-    public String getProgramaEducativo() {
+    public ProgramaEducativo getProgramaEducativo() {
         return programaEducativo;
     }
 
-    public void setProgramaEducativo(String programaEducativo) {
+    public void setProgramaEducativo(ProgramaEducativo programaEducativo) {
         this.programaEducativo = programaEducativo;
     }
 

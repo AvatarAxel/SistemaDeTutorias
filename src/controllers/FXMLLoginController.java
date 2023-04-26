@@ -78,21 +78,22 @@ public class FXMLLoginController implements Initializable {
         UserDAO userDAO = new UserDAO();
         Usuario usuarioLogin = userDAO.getUser(username, password);
         if (usuarioLogin != null) {
-            usuarioLogin.setRoles(userDAO.getUserRoles(usuarioLogin.getNumeroPersonal()));
+            //usuarioLogin.setRoles(userDAO.getUserRoles(usuarioLogin.getNumeroDePersonal()));
             
-            User.setCurrentUser(new User());
+            User.getCurrentUser().initUser();
 
             User.getCurrentUser().setNombre(usuarioLogin.getNombre());
             User.getCurrentUser().setApellidoPaterno(usuarioLogin.getApellidoPaterno());
             User.getCurrentUser().setApellidoMaterno(usuarioLogin.getApellidoMaterno());
-            User.getCurrentUser().setCorreo(usuarioLogin.getCorreo());
-            User.getCurrentUser().setProgramaEducativo(usuarioLogin.getProgramaEducativo());
-            User.getCurrentUser().setRoles(usuarioLogin.getRoles());
-
+            User.getCurrentUser().setCorreo(usuarioLogin.getCorreoElectronicoInstitucional());
+            //User.getCurrentUser().setProgramaEducativo(usuarioLogin.getProgramaEducativo());
+            //User.getCurrentUser().setRoles(usuarioLogin.getRoles());
+            
             WindowManager.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
         } else {
             AlertManager.showAlert("Usuario no encontrado", "No se han encontrado coincidencias con las credenciales ingresadas", Alert.AlertType.WARNING);
         }
+        WindowManager.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }
 
     @FXML

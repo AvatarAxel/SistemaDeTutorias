@@ -36,9 +36,9 @@ public class UserDAO implements IUserDAO {
             if (resultSet.next()) {
                 user.setApellidoMaterno(resultSet.getString("ApellidoMaterno"));
                 user.setApellidoPaterno(resultSet.getString("ApellidoPaterno"));
-                user.setCorreo(resultSet.getString("correoElectronicoInstitucional"));
+                user.setCorreoElectronicoInstitucional(resultSet.getString("correoElectronicoInstitucional"));
                 user.setNombre(resultSet.getString("Nombre"));
-                user.setNumeroPersonal(resultSet.getInt("numeroDePersonal"));
+                user.setNumeroDePersonal(resultSet.getInt("numeroDePersonal"));
             } else {
                 user = null;
             }
@@ -90,7 +90,7 @@ public class UserDAO implements IUserDAO {
                 usuario.setNombre(resultado.getString("nombre"));
                 usuario.setApellidoPaterno(resultado.getString("apellidoPaterno"));
                 usuario.setApellidoMaterno(resultado.getString("apellidoMaterno"));
-                usuario.setNumeroPersonal(resultado.getInt("numeroDePersonal"));
+                usuario.setNumeroDePersonal(resultado.getInt("numeroDePersonal"));
                 tutores.add(usuario);
             }
             connection.close();

@@ -33,7 +33,7 @@ public class ReporteTutoriaAcademicaDAO {
                     "INNER JOIN programas_educativos p ON ta.clave = p.clave\n" +
                     "WHERE rta.numeroDePersonal = ? AND  p.clave = ?";
             PreparedStatement configurarConsulta = connection.prepareStatement(consulta);
-            configurarConsulta.setInt(1, tutorAcademico.getNumeroPersonal());
+            configurarConsulta.setInt(1, tutorAcademico.getNumeroDePersonal());
             configurarConsulta.setInt(2, PEClave);
             ResultSet resultado = configurarConsulta.executeQuery();
             while (resultado.next()) {

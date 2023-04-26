@@ -71,17 +71,13 @@ public class FXMLMainMenuController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-            Usuario prueba = new Usuario();
-            //prueba.setNumeroPersonal(87305);   
-            prueba.setNumeroPersonal(10001);        
-            
+
         try{
             TutoriaAcademicaDAO tutoriaAcademicaDAO =  new TutoriaAcademicaDAO();
             tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica(); 
             if(tutoriaAcademica != null){
                 ReporteDeTutoriaAcademicaDAO reporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
-                reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(),prueba.getNumeroPersonal());               
+                reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(),User.getCurrentUser().getNumeroDePersonal());               
                 if(reporteTutoriaAcademica != null){
                     miCreateTutorialReport.setText("Editar");
                 }else{

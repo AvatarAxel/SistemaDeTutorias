@@ -35,6 +35,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
 
@@ -114,7 +115,7 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
     private void loadReportesTutoriasAcademicasByTutorAcademico(Usuario usuario) {
         TutoriaAcademicaDAO tutoriaAcademicaDao = new TutoriaAcademicaDAO();
         try {
-            ArrayList<TutoriaAcademica> loadedTutoriasAcademicas = tutoriaAcademicaDao.getTutoriasAcademicasByTutorAcademico(usuario.getNumeroPersonal(),14203);
+            ArrayList<TutoriaAcademica> loadedTutoriasAcademicas = tutoriaAcademicaDao.getTutoriasAcademicasByTutorAcademico(User.getCurrentUser().getNumeroDePersonal(),Integer.parseInt(User.getCurrentUser().getProgramaEducativo().getClave()));
             if(loadedTutoriasAcademicas != null){
                 listTutoriasAcademicas.clear();
                 listTutoriasAcademicas.addAll(loadedTutoriasAcademicas);
