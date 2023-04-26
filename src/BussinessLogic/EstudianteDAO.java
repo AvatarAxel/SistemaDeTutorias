@@ -117,7 +117,10 @@ public class EstudianteDAO {
                        estudiante.setCheckBoxEnRiesgo(checkBox);
                    }
                    estudiantes.add(estudiante);
-               }           
+               }
+               if(estudiantes.size() == 0){
+                    estudiantes = null;               
+               }
             }else{
                 estudiantes = null;
             }

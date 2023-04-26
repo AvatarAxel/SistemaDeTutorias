@@ -250,7 +250,6 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
     
     public ArrayList<ProblematicaAcademica> getAllProblematicasByReporte(int idReporteTutoria) throws SQLException {
         ArrayList <ProblematicaAcademica> listProblematicaAcademica = new ArrayList<>();
-        listProblematicaAcademica = null;        
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
@@ -262,9 +261,7 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                     + "INNER JOIN profesores pr ON e.numeroDePersonal = pr.numeroDePersonal\n"
                     + "WHERE p.idReporteTutoria = ?;");
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, idReporteTutoria);
-            //statement.setInt(1, 1);
-            
+            statement.setInt(1, idReporteTutoria);            
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 ProblematicaAcademica  problematicaAcademica = new ProblematicaAcademica();
@@ -281,6 +278,9 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                 problematicaAcademica.setDescripcion(resultSet.getString("descripcion"));
                 problematicaAcademica.setNumeroDeEstudiantesAfectados(resultSet.getInt("numeroDeEstudiantesAfectados"));                
                 listProblematicaAcademica.add(problematicaAcademica);
+            }
+            if(listProblematicaAcademica.size() == 0){
+                listProblematicaAcademica = null;        
             }
         }
         connection.close();

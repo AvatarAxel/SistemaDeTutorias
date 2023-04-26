@@ -208,7 +208,7 @@ public class FXMLConsultarReporteTutoriaAcademicaController implements Initializ
     private void closeWindow() {
         Stage escenario = (Stage) lbProgramaEducativo.getScene().getWindow();
         escenario.close();
-        WindowManager.NavigateToWindow(lbProgramaEducativo.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");        
+        WindowManager.NavigateToWindow(lbProgramaEducativo.getScene().getWindow(), "/GUI/FXMLReportesTutoriasAcademicas.fxml", "Menú");        
     }
     
     @FXML
