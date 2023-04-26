@@ -7,6 +7,7 @@ package controllers;
 import BussinessLogic.ProfesorDAO;
 import BussinessLogic.UserDAO;
 import Domain.Profesor;
+import Domain.Rol;
 import Domain.Usuario;
 import java.net.URL;
 import java.sql.SQLException;
@@ -61,6 +62,10 @@ public class FXMLGestionarPersonalController implements Initializable {
     private Button buttonEdit;
     @FXML
     private Button buttonRegister;
+    @FXML
+    private TableColumn<?, ?> columRol;
+    Task loadInformationPersonalUsuarioTask;
+    Task loadInformationPersonalTask;
 
     /**
      * Initializes the controller class.
@@ -81,6 +86,7 @@ public class FXMLGestionarPersonalController implements Initializable {
         columNumeroDePersonal.setCellValueFactory(new PropertyValueFactory("numeroPersonal"));
         columApellidoPaterno.setCellValueFactory(new PropertyValueFactory("apellidoPaterno"));
         columApellidoMaterno.setCellValueFactory(new PropertyValueFactory("apellidoMaterno"));
+        columRol.setCellValueFactory(new PropertyValueFactory("roles"));
         listPersonal = FXCollections.observableArrayList();
     }
 
@@ -101,6 +107,9 @@ public class FXMLGestionarPersonalController implements Initializable {
                             usuario.setApellidoPaterno(loadedProfesor.get(i).getApellidoPaterno());
                             usuario.setApellidoMaterno(loadedProfesor.get(i).getApellidoMaterno());
                             usuario.setNumeroPersonal(loadedProfesor.get(i).getNumeroDePersonal());
+                            ArrayList<Rol> listRoles = new ArrayList<>();
+                            listRoles.add(new Rol(0, "Profesor"));
+                            usuario.setRoles(listRoles);
                             listUsuarios.add(usuario);
                         }
                         listPersonal.addAll(listUsuarios);
@@ -128,7 +137,13 @@ public class FXMLGestionarPersonalController implements Initializable {
                 UserDAO userDAO = new UserDAO();
                 try {
                     ArrayList<Usuario> loadedPersonal = userDAO.getAllUsersByProgramaEducativo(14203);
-                    if (!loadedPersonal.isEmpty()) {
+                    if (!loadedPersonal.isEmpty()) {  
+                        System.out.println("No esta vacio");
+                        for(int i = 0; i<loadedPersonal.size(); i++){
+                            int numeroDePersonal = loadedPersonal.get(i).getNumeroPersonal();
+                            loadedPersonal.get(i).setRoles(userDAO.getAllUserRolesByNumeroDePersonal(numeroDePersonal));
+                            System.out.println(numeroDePersonal);
+                        }
                         listPersonal.addAll(loadedPersonal);
                         tablePersonal.setItems(listPersonal);
                     } else {
@@ -144,7 +159,7 @@ public class FXMLGestionarPersonalController implements Initializable {
         executorService.submit(loadInformationPersonalUsuarioTask);
         executorService.shutdown();
     }
-
+    
     @FXML
     private void buttonActionDelete(ActionEvent event) {
     }
@@ -156,6 +171,8 @@ public class FXMLGestionarPersonalController implements Initializable {
     @FXML
     private void buttonActionExit(ActionEvent event) {
         WindowManager.NavigateToWindow(buttonDelete.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+        loadInformationPersonalUsuarioTask.cancel();
+        loadInformationPersonalUsuarioTask.cancel();
     }
 
     @FXML

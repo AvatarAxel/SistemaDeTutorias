@@ -134,4 +134,22 @@ public class UserDAO implements IUserDAO {
         return listUsuario;
     }
 
+    public ArrayList<Rol> getAllUserRolesByNumeroDePersonal(int numeroDePersonal) throws SQLException {
+        ArrayList<Rol> roles = new ArrayList<>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = ("SELECT r.idRol, r.nombre\n"
+                + "FROM roles r\n"
+                + "INNER JOIN roles_usuarios_programa_educativo ru ON r.idRol = ru.idRol\n"
+                + "WHERE ru.numeroDePersonal = ?");
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, numeroDePersonal);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            roles.add(new Rol(resultSet.getInt("IdRol"), resultSet.getString("nombre")));
+        }
+        dataBaseConnection.closeConection();
+        return roles;
+    }
+
 }

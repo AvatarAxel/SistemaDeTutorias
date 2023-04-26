@@ -36,4 +36,9 @@ public class Rol {
         this.rolName = rolName;
     }
     
+    @Override
+    public String toString() {        
+        return rolName+" ";
+    }    
+
 }
