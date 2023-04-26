@@ -18,6 +18,7 @@ public class TutorAcademico {
     private int claveProgramaEducativo;
     private int idRol;
     
+    private int numeroEstudiantes;
 
     public TutorAcademico() {
     }
@@ -29,6 +30,14 @@ public class TutorAcademico {
         this.correoElectronicoInstitucional = correoElectronicoInstitucional;
         this.numeroDePersonal = numeroDePersonal;
         this.contraseña = contraseña;
+    }
+
+    public int getNumeroEstudiantes() {
+        return numeroEstudiantes;
+    }
+
+    public void setNumeroEstudiantes(int numeroEstudiantes) {
+        this.numeroEstudiantes = numeroEstudiantes;
     }
 
     public String getNombre() {
@@ -55,6 +64,9 @@ public class TutorAcademico {
         return contraseña;
     }    
 
+   public String getNombreCompleto(){
+    return this.nombre +" " +this.apellidoPaterno+" "+this.apellidoMaterno;
+    }   
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }

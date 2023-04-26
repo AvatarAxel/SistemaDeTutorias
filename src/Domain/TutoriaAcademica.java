@@ -12,9 +12,9 @@ import java.sql.Date;
  */
 public class TutoriaAcademica {
     private int numeroDeSesion;
-    private Date fechaInicio;
-    private Date fechaFin;
-    private Date fechaCierreEntregaReporte;
+    private java.sql.Date fechaInicio;
+    private java.sql.Date fechaFin;
+    private java.sql.Date fechaCierreEntregaReporte;
     private int idTutoriaAcademica;
     private PeriodoEscolar periodoEscolar;
 

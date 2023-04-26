@@ -7,6 +7,7 @@ package BussinessLogic;
 import Domain.Profesor;
 import Domain.TutorAcademico;
 import Domain.Usuario;
+import Domain.TutoriaAcademica;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

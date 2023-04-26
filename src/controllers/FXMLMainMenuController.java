@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
+
 package controllers;
 
 import BussinessLogic.ReporteDeTutoriaAcademicaDAO;
@@ -76,6 +73,7 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuCreateGeneralReport(ActionEvent event) {
+        
     }
 
     @FXML
@@ -123,11 +121,11 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuReadProblematic(ActionEvent event) {
-        /*WindowManager.NavigateToWindow(
+        WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLConsultarProblematicasAcademicas.fxml",
                 "Consultar Solución Problematicas Academicas"
-        );*/
+        );
         WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLConsultarSolucionAProblematicaAcademica.fxml",
@@ -191,16 +189,6 @@ public class FXMLMainMenuController implements Initializable {
                 "/GUI/FXMLEditarOfertaAcademica.fxml",
                 "Editar Oferta Académica"
         );
-    }
-
-    @FXML
-    private void menuImportarEstudiantesAction(ActionEvent event) {
-        
-        WindowManager.NavigateToWindow(
-                mbMainMenu.getScene().getWindow(),
-                "/GUI/FXMLImportarEstudiantes.fxml",
-                "Importar Estudiantes"
-        );        
     }
     
 }
