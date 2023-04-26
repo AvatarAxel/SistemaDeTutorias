@@ -4,12 +4,19 @@
  */
 package controllers;
 
+import BussinessLogic.ReporteDeTutoriaAcademicaDAO;
+import BussinessLogic.TutoriaAcademicaDAO;
+import Domain.ReporteDeTutoriaAcademica;
+import Domain.TutoriaAcademica;
+import Domain.Usuario;
+import java.io.IOException;
 import BussinessLogic.TutoriaAcademicaDAO;
 import Domain.ProblematicaAcademica;
 import Domain.ProgramaEducativo;
 import Domain.Rol;
 import Domain.TutoriaAcademica;
 import java.net.URL;
+import java.sql.SQLException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -21,11 +28,18 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import util.AlertManager;
 import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
@@ -51,12 +65,38 @@ public class FXMLMainMenuController implements Initializable {
     @FXML
     private ComboBox<ProgramaEducativo> cbProgramaEducativo;
 
+    
+    private TutoriaAcademica tutoriaAcademica;
+    private ReporteDeTutoriaAcademica reporteTutoriaAcademica;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+            Usuario prueba = new Usuario();
+            //prueba.setNumeroPersonal(87305);   
+            prueba.setNumeroPersonal(10001);        
+            
+        try{
+            TutoriaAcademicaDAO tutoriaAcademicaDAO =  new TutoriaAcademicaDAO();
+            tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica(); 
+            if(tutoriaAcademica != null){
+                ReporteDeTutoriaAcademicaDAO reporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
+                reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(),prueba.getNumeroPersonal());               
+                if(reporteTutoriaAcademica != null){
+                    miCreateTutorialReport.setText("Editar");
+                }else{
+                    miCreateTutorialReport.setText("Crear");
+                }         
+            }else{
+                    miCreateTutorialReport.setText("Sin Actividades Pendientes");
+                    miCreateTutorialReport.setDisable(true);        
+            }              
+        } catch (SQLException sqle) {
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+        }
         loadComboBoxes();
         selectedItem();
     }
@@ -118,14 +158,37 @@ public class FXMLMainMenuController implements Initializable {
     }
 
     @FXML
-    private void menuCreateTutorialReport(ActionEvent event) {
-        WindowManager.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLReporteTutoriaAcademica.fxml", "Llenar Reporte de Tutorías Académicas");
+    private void menuCreateTutorialReport(ActionEvent event) throws SQLException  {
+        boolean editableType = false;
+        if(miCreateTutorialReport.getText() == "Editar"){
+            editableType= true;
+        }        
+        try {
+            Stage escenario = (Stage) mbMainMenu.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXMLReporteTutoriaAcademica.fxml"));
+            Parent root = loader.load();       
+            Scene esceneReporteGeneral = new Scene(root); 
+            escenario.setScene(esceneReporteGeneral);
+            escenario.setTitle(miCreateTutorialReport.getText()+" Reporte de Tutoría");
+            escenario.show();
+            /*WindowManager.NavigateToWindow(
+                    mbMainMenu.getScene().getWindow(),
+                    "/GUI/FXMLReporteTutoriaAcademica.fxml",
+                    miCreateTutorialReport.getText()+" Reporte de Tutoría"
+            );
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXMLReporteTutoriaAcademica.fxml"));
+            Parent root = loader.load();*/              
+            FXMLReporteTutoriaAcademicaController controllerReporteTutoriaAcademica = loader.getController();
+            controllerReporteTutoriaAcademica.configureScene(tutoriaAcademica,reporteTutoriaAcademica,editableType);            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }        
     }
 
     @FXML
     private void menuReadTutorialReport(ActionEvent event) {
-        WindowManager.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLReportesTutoriasAcademicas.fxml", "Reportes de Tutorías Académicas");
-        //Navigator.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLConsultarReporteTutoriaAcademica.fxml", "Consultar Reporte de Tutorías Académicas");                
+
+        WindowManager.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLReportesTutoriasAcademicas.fxml", "Reportes de Tutorías Académicas");                
     }
 
     @FXML
@@ -200,4 +263,14 @@ public class FXMLMainMenuController implements Initializable {
         );
     }
 
+    @FXML
+    private void menuImportarEstudiantesAction(ActionEvent event) {
+        
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLImportarEstudiantes.fxml",
+                "Importar Estudiantes"
+        );        
+    }
+    
 }

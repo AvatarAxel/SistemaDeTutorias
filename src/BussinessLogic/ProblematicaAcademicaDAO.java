@@ -196,7 +196,7 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
 
     @Override
     public ArrayList<ProblematicaAcademica> getProblematicasByPrograma(String clave) throws SQLException {
-          ArrayList<ProblematicaAcademica> problematicas = new ArrayList<ProblematicaAcademica>();
+        ArrayList<ProblematicaAcademica> problematicas = new ArrayList<ProblematicaAcademica>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         String query = "select pa.*, ee.nombre as experiencia, concat(p.nombre, \" \",p.apellidoPaterno, \" \",p.apellidoMaterno) as profesor, ta.fechaFin as fecha, ta.numeroDesesion as sesion from problematicas_academicas \n" +
@@ -252,7 +252,6 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
         ArrayList <ProblematicaAcademica> listProblematicaAcademica = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-
         if (connection != null) {
             String query = ("SELECT p.idProblematica, p.descripcion, p.numeroDeEstudiantesAfectados, \n"
                     + "    e.nrc, e.nombre as nombreExperiencia, \n"
@@ -262,7 +261,7 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                     + "INNER JOIN profesores pr ON e.numeroDePersonal = pr.numeroDePersonal\n"
                     + "WHERE p.idReporteTutoria = ?;");
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, idReporteTutoria);
+            statement.setInt(1, idReporteTutoria);            
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 ProblematicaAcademica  problematicaAcademica = new ProblematicaAcademica();
@@ -279,6 +278,9 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                 problematicaAcademica.setDescripcion(resultSet.getString("descripcion"));
                 problematicaAcademica.setNumeroDeEstudiantesAfectados(resultSet.getInt("numeroDeEstudiantesAfectados"));                
                 listProblematicaAcademica.add(problematicaAcademica);
+            }
+            if(listProblematicaAcademica.size() == 0){
+                listProblematicaAcademica = null;        
             }
         }
         connection.close();

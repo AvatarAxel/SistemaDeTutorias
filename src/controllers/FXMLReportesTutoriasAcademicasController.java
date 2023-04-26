@@ -4,11 +4,14 @@
  */
 package controllers;
 
-import BussinessLogic.ReporteTutoriaAcademicaDAO;
-import BussinessLogic.UserDAO;
-import Domain.Estudiante;
+import BussinessLogic.PeriodoEscolarDAO;
+import BussinessLogic.TutorAcademicoDAO;
+import BussinessLogic.TutoriaAcademicaDAO;
+import Domain.PeriodoEscolar;
 import Domain.ReporteTutoriaAcademica;
+import Domain.TutoriaAcademica;
 import Domain.Usuario;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,7 +23,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -47,64 +53,57 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
     @FXML
     private Label lbInstruccion2;
     @FXML
-    private TableView<ReporteTutoriaAcademica> tbReportesTutoriasAcademicas;
+    private TableView<TutoriaAcademica> tbReportesTutoriasAcademicas;
     @FXML
-    private TableColumn ColumnTutoriaAcademica;
+    private TableColumn ColumNumeroDeSesion;    
     @FXML
     private TableColumn ColumnPeriodoEscolar;
     @FXML
     private Button btConsult;
     
+    private ObservableList<TutoriaAcademica> listTutoriasAcademicas;        
     private ObservableList<Usuario> tutoresAcademicos;
     private ObservableList<ReporteTutoriaAcademica> listaReportesTutoriasAcademicas;
-    private Usuario tutorAcademico;
 
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        tutorAcademico = new Usuario();
-        tutorAcademico.setNombre("PRUEBA");
-        tutorAcademico.setProgramaEducativo("Ingenieria de Software");
-        //tutorAcademico.setNumeroPersonal(10001);
-        tutorAcademico.setNumeroPersonal(70881);   
+        configureTableColumns();        
         btConsult.disableProperty().bind(Bindings.isEmpty(tbReportesTutoriasAcademicas.getSelectionModel().getSelectedItems()));
         loadTutoresAcademicos();
-        configureColumnTable();
         selectTutorAcademico();
         
+    }
+
+    private void configureTableColumns() {
+        Label noticeLoadingTable = new Label("Seleccione un Tutor Académico");
+        tbReportesTutoriasAcademicas.setPlaceholder(noticeLoadingTable);     
+        ColumnPeriodoEscolar.setCellValueFactory(new PropertyValueFactory("FechasPeriodoEscolar"));
+        ColumNumeroDeSesion.setCellValueFactory(new PropertyValueFactory("numeroDeSesion"));
+        listTutoriasAcademicas = FXCollections.observableArrayList();
     }    
-    public void loadTutoresAcademicos() {
+    private void loadTutoresAcademicos() {
         //14203
-        UserDAO userDAO = new UserDAO();
+        TutorAcademicoDAO tutorAcademicoDAO = new TutorAcademicoDAO();
         try{
-            ArrayList<Usuario> resultadoConsulta = userDAO.getUsuarioTutoresporProgramaEducativo(14203);
+            ArrayList<Usuario> resultadoConsulta = tutorAcademicoDAO.getTutoresWithReportesbyProgramaEducativo(14203);
             tutoresAcademicos = FXCollections.observableArrayList();            
             tutoresAcademicos.addAll(resultadoConsulta);
-            tutoresAcademicos.add(tutorAcademico);
             cbTutorAcademico.setItems(tutoresAcademicos);        
         }catch(SQLException sqle){
-            AlertManager.showAlert("Error LOAD", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);        
-            AlertManager.showAlert("Error LOAD", sqle.toString(), Alert.AlertType.ERROR);        
-            
+            AlertManager.showAlert("Error LOAD", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);                    
         }
     }
-    
-    private void configureColumnTable() {
-        ColumnTutoriaAcademica.setCellValueFactory(new PropertyValueFactory("fechaInicio"+" - "+"fechaFin"));
-        ColumnPeriodoEscolar.setCellValueFactory(new PropertyValueFactory("fechaInicio"+" - "+"fechaFin"));
-        listaReportesTutoriasAcademicas = FXCollections.observableArrayList();
-    }    
-    
-    public void selectTutorAcademico() {
+    private void selectTutorAcademico() {
         cbTutorAcademico.valueProperty().addListener(new ChangeListener<Usuario>() {
             @Override
             public void changed(ObservableValue<? extends Usuario> observable, Usuario oldValue, Usuario newValue) {
                 try {
                     tbReportesTutoriasAcademicas.getItems().clear();
-                    loadReportesTutoriasAcademicasByTutorAcademico(tutorAcademico);
+                    Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
+                    tbReportesTutoriasAcademicas.setPlaceholder(noticeLoadingTable);                    
+                    loadReportesTutoriasAcademicasByTutorAcademico(newValue);
                 } catch (Exception e) {
                     System.out.println(e.getClass());
                 }
@@ -112,52 +111,77 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
         });
     }    
     
-    public void loadReportesTutoriasAcademicasByTutorAcademico(Usuario usuario) {
-        ReporteTutoriaAcademicaDAO reporteTutoriaAcademicaDAO = new ReporteTutoriaAcademicaDAO();
-        try{
-            //ArrayList<Usuario> resultadoConsulta = userDAO.getUsuarioTutoresporProgramaEducativo(14203);
-            ArrayList<ReporteTutoriaAcademica> resultadoConsulta = ReporteTutoriaAcademicaDAO.getReportesTutoriasAcademicasByTutorByProgramaEducativo(tutorAcademico,14203);
-            if(resultadoConsulta != null){
-                listaReportesTutoriasAcademicas.clear();
-                listaReportesTutoriasAcademicas.addAll(resultadoConsulta);
-                tbReportesTutoriasAcademicas.setItems(listaReportesTutoriasAcademicas);             
+    private void loadReportesTutoriasAcademicasByTutorAcademico(Usuario usuario) {
+        TutoriaAcademicaDAO tutoriaAcademicaDao = new TutoriaAcademicaDAO();
+        try {
+            ArrayList<TutoriaAcademica> loadedTutoriasAcademicas = tutoriaAcademicaDao.getTutoriasAcademicasByTutorAcademico(usuario.getNumeroPersonal(),14203);
+            if(loadedTutoriasAcademicas != null){
+                listTutoriasAcademicas.clear();
+                listTutoriasAcademicas.addAll(loadedTutoriasAcademicas);
+                loadInformationPeriodoEscolar();                        
+                tbReportesTutoriasAcademicas.setItems(listTutoriasAcademicas);               
             }else{
-            AlertManager.showAlert("LOAD", "NO hay reportes", Alert.AlertType.ERROR);                    
-            }      
-        }catch(SQLException sqle){
-            AlertManager.showAlert("Error LOAD", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);        
-            AlertManager.showAlert("Error LOAD", sqle.toString(), Alert.AlertType.ERROR);        
-            
+                AlertManager.showAlert("Error", "No hay reportes", Alert.AlertType.ERROR);                    
+            }    
+        } catch (SQLException sqle) {
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
-        /*ReporteTutoriaAcademicaDAO reporteTutoriaAcademicaDAO = new ReporteTutoriaAcademicaDAO();
-        ArrayList<ReporteTutoriaAcademica> resultadoConsulta = ReporteTutoriasAcademicasDAO.obtenerReportesTutoriasAcademicas(tutorAcademico);
-        if (resultadoConsulta != null) {
-            listaReportesTutoriasAcademicas.clear();
-            listaReportesTutoriasAcademicas.addAll(resultadoConsulta);
-            tableViewReportesTutoriasAcademicas.setItems(listaReportesTutoriasAcademicas);
-        } else {
-            Utilidades.mostrarAlerta("ERROR",
-                    "No hay conexión con la base de datos. \n\nPor favor, inténtelo más tarde.\n",
-                    Alert.AlertType.ERROR);
-        }*/
-    }    
-    
-    
-    @FXML
-    private void clicButtonCancel(ActionEvent event) {
-        closeWindow(); 
     }
+    private void loadInformationPeriodoEscolar() {
+        PeriodoEscolarDAO periodoEscolarDAO = new PeriodoEscolarDAO();        
+        try {
+            for(int i = 0; i<listTutoriasAcademicas.size(); i++){
+                PeriodoEscolar periodoEscolar = periodoEscolarDAO.getPeriodoEscolar(listTutoriasAcademicas.get(i).getIdTutoriaAcademica());
+                listTutoriasAcademicas.get(i).setPeriodoEscolar(periodoEscolar);                
+            }
+        } catch (SQLException sqle) {
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+        }
+    }      
+    
 
-    @FXML
-    private void clicButtonConsult(ActionEvent event) {
-        Stage escenario = (Stage) lbInstruccion1.getScene().getWindow();
-        escenario.close();        
-        WindowManager.NavigateToWindow(lbInstruccion1.getScene().getWindow(), "/GUI/FXMLConsultarReporteTutoriaAcademica.fxml", "Consultar Reporte de Tutorías Académicas");
-    }
-    
+    private void goingToReporteTutoriaAcademica(TutoriaAcademica tutoriaAcademica, Usuario tutorAcademico){
+        try {            
+            /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXMLConsultarReporteTutoriaAcademica.fxml"));
+            Parent root = loader.load();
+            FXMLConsultarReporteTutoriaAcademicaController controllerReporteTutoriaAcademica = loader.getController();
+            controllerReporteTutoriaAcademica.receiveTutoriaAcademicaAndTutor(tutoriaAcademica,tutorAcademico); 
+            Scene esceneReporteGeneral = new Scene(root); 
+            Stage escenarioReporteTutoriaAcademica = new Stage();
+            escenarioReporteTutoriaAcademica.setTitle("Reporte de Tutoría del "+tutoriaAcademica.getFechasTutoriaAcademica());
+            escenarioReporteTutoriaAcademica.setScene(esceneReporteGeneral);
+            escenarioReporteTutoriaAcademica.initModality(Modality.APPLICATION_MODAL);      
+            escenarioReporteTutoriaAcademica.show();*/
+            Stage escenario = (Stage) tbReportesTutoriasAcademicas.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXMLConsultarReporteTutoriaAcademica.fxml"));
+            Parent root = loader.load();       
+            Scene esceneReporteGeneral = new Scene(root); 
+            escenario.setScene(esceneReporteGeneral);
+            escenario.setTitle("Reporte de Tutoría del "+tutoriaAcademica.getFechasTutoriaAcademica());
+            escenario.show();  
+            FXMLConsultarReporteTutoriaAcademicaController controllerReporteTutoriaAcademica = loader.getController();
+            controllerReporteTutoriaAcademica.receiveTutoriaAcademicaAndTutor(tutoriaAcademica,tutorAcademico);             
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+          
+    }    
     private void closeWindow() {
         Stage escenario = (Stage) lbInstruccion1.getScene().getWindow();
         escenario.close();
         WindowManager.NavigateToWindow(lbInstruccion1.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }     
+    
+    @FXML
+    private void clicButtonConsult(ActionEvent event) {
+        int validateRowSelected = tbReportesTutoriasAcademicas.getSelectionModel().getSelectedIndex();
+        if (validateRowSelected != -1) {        
+            goingToReporteTutoriaAcademica(tbReportesTutoriasAcademicas.getSelectionModel().getSelectedItem(),cbTutorAcademico.getSelectionModel().getSelectedItem());            
+        }
+    }
+    @FXML
+    private void clicButtonCancel(ActionEvent event) {
+        closeWindow(); 
+    }
+    
 }
