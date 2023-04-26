@@ -5,12 +5,16 @@
 package BussinessLogic;
 
 import Domain.Estudiante;
+import Domain.ReporteDeTutoriaAcademica;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
+import util.AlertManager;
 
 /**
  *
@@ -61,7 +65,7 @@ public class EstudianteDAO {
         return result;
     }
     
-    public static ArrayList<Estudiante> obtenerEstudiantesPorTutorAcademico(int numeroPersonal) throws SQLException {
+    public ArrayList<Estudiante> obtenerEstudiantesPorTutorAcademico(int numeroPersonal) throws SQLException {
         ArrayList<Estudiante> estudiantes = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();        
@@ -81,6 +85,99 @@ public class EstudianteDAO {
             connection.close();
         }
         return estudiantes;
+    }
+    
+    public ArrayList<Estudiante> obtenerEstudiantesPorReporteTutoriaAcademica(int idReporteTutoria) throws SQLException{
+        ArrayList<Estudiante> estudiantes = new ArrayList<>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection(); 
+        if (connection != null) {
+            String query = "SELECT e.matricula, e.nombre, e.apellidoPaterno, e.apellidoMaterno, la.esAsistente, la.enRiesgo FROM estudiantes e\n" +
+            "INNER JOIN lista_de_asistencias la ON e.matricula = la.matricula\n" +
+            "WHERE la.idReporteTutoria = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, idReporteTutoria);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet != null){
+                while (resultSet.next()) {
+                   Estudiante estudiante = new Estudiante();
+                   estudiante.setMatricula(resultSet.getString("matricula"));
+                   estudiante.setNombre(resultSet.getString("nombre"));
+                   estudiante.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
+                   estudiante.setApellidoMaterno(resultSet.getString("apellidoMaterno"));
+                   estudiante.setEsAsistente(resultSet.getBoolean("esAsistente"));
+                   estudiante.setEnRiesgo(resultSet.getBoolean("enRiesgo"));
+                   if (estudiante.esAsistente()) {
+                       CheckBox checkBox = new CheckBox();
+                       checkBox.setSelected(true);
+                       estudiante.setCheckBoxEsAsistente(checkBox);
+                   }
+                   if (estudiante.enRiesgo()) {
+                       CheckBox checkBox = new CheckBox();
+                       checkBox.setSelected(true);
+                       estudiante.setCheckBoxEnRiesgo(checkBox);
+                   }
+                   estudiantes.add(estudiante);
+               }
+               if(estudiantes.size() == 0){
+                    estudiantes = null;               
+               }
+            }else{
+                estudiantes = null;
+            }
+
+            connection.close();        
+        } else {
+            estudiantes = null;            
+        }
+        return estudiantes;    
+    }
+    
+    public boolean assignToReporteDeTutoriaAcademica(Estudiante estudiante, int idReporteTutoria) throws SQLException{
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if(connection!=null){
+            String queryGet = "INSERT INTO lista_de_asistencias\n"
+                        + "(esAsistente, enRiesgo, idReporteTutoria, matricula)\n"
+                        + "VALUES (?, ?, ?, ?)";
+            PreparedStatement statementSet = connection.prepareStatement(queryGet);
+            statementSet.setInt(1, estudiante.esAsistente() ? 1 : 0);
+            statementSet.setInt(2, estudiante.enRiesgo() ? 1 : 0);
+            statementSet.setInt(3, idReporteTutoria);            
+            statementSet.setString(4, estudiante.getMatricula());
+            int resultInsert = statementSet.executeUpdate();
+            if(resultInsert>0){
+                result = true;
+            }            
+        }        
+        connection.close();
+        return result;
+    }    
+    
+    public boolean updateAttendanceList(Estudiante estudiante, int idReporteTutoria)throws SQLException{
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if(connection!=null){
+            String queryGet = "INSERT INTO lista_de_asistencias\n"
+                        + "(esAsistente, enRiesgo, idReporteTutoria, matricula)\n"
+                        + "VALUES (?, ?, ?, ?)";
+            
+            String querySet = "UPDATE lista_de_asistencias\n"
+                        + "SET esAsistente = ? , enRiesgo =? " + "WHERE idReporteTutoria = ? AND matricula= ?";             
+            PreparedStatement statementSet = connection.prepareStatement(querySet);
+            statementSet.setInt(1, estudiante.esAsistente() ? 1 : 0);
+            statementSet.setInt(2, estudiante.enRiesgo() ? 1 : 0);
+            statementSet.setInt(3, idReporteTutoria);
+            statementSet.setString(4, estudiante.getMatricula());
+            int resultInsert = statementSet.executeUpdate();
+            if(resultInsert>0){
+                result = true;
+            }            
+        }        
+        connection.close();
+        return result;    
     }
     
     public int getAllEstudiantesWithTutor(int clave) throws SQLException {

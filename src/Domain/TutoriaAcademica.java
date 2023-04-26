@@ -82,5 +82,11 @@ public class TutoriaAcademica {
                 + " - " + util.DateLatinAmerica.DateConvertToPeriod(periodoEscolar.getFechaFin());
         return fechasPeriodoEscolar;
     }
+    
+    public String getFechasTutoriaAcademica(){
+        String fechasTutoriaAcademica = util.DateLatinAmerica.DateWithDays(fechaInicio)
+                + " - " + util.DateLatinAmerica.DateWithDays(fechaFin);
+        return fechasTutoriaAcademica;
+    }    
 
 }

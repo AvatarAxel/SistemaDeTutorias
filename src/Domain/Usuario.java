@@ -10,12 +10,15 @@ import java.util.ArrayList;
 public class Usuario {
     
     int numeroPersonal;
-    private String nombre; 
-    private String apellidoPaterno;
-    private String apellidoMaterno; 
-    private String programaEducativo;
+    String nombre; 
+    String apellidoPaterno;
+    String apellidoMaterno; 
+    String programaEducativo;
+    private int claveProgramaEducativo;
     private ArrayList<Rol> roles;
-    private String correo;
+    String rol;
+    String correo;
+    
 
     public Usuario() {
     }
@@ -30,6 +33,14 @@ public class Usuario {
         this.correo = correo;
     }
 
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+    
     public int getNumeroPersonal() {
         return numeroPersonal;
     }
@@ -85,7 +96,17 @@ public class Usuario {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
- 
+
+    public int getClaveProgramaEducativo() {
+        return claveProgramaEducativo;
+    }
+
+    public void setClaveProgramaEducativo(int claveProgramaEducativo) {
+        this.claveProgramaEducativo = claveProgramaEducativo;
+    }
+
+    
+
     @Override
     public String toString() {
         return nombre + " " + apellidoPaterno + " " + apellidoMaterno;
