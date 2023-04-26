@@ -136,7 +136,7 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
     @Override
     public int insertProblematica(ProblematicaAcademica problematica) throws SQLException {
          DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        int filasActualizadas = 0;
+        int result = 0;
         Connection connection = dataBaseConnection.getConnection();
         String descripcion= problematica.getDescripcion();
         String titulo= problematica.getTitulo();
@@ -152,14 +152,14 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
             statement.setInt(4, idReporte);
             statement.setString(5, nrc);
 
-            filasActualizadas = statement.executeUpdate();
-        return filasActualizadas;
+            result = statement.executeUpdate();
+        return result;
     }
 
     @Override
     public int updatetProblematica(ProblematicaAcademica problematica) throws SQLException {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        int filasActualizadas = 0;
+        int result = 0;
         Connection connection = dataBaseConnection.getConnection();
         int idProblematica = problematica.getIdProblematica();
         String descripcion= problematica.getDescripcion();
@@ -175,25 +175,25 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
             statement.setString(4, nrc);
             statement.setInt(5, idProblematica);
 
-            filasActualizadas = statement.executeUpdate();
-        return filasActualizadas;
+            result = statement.executeUpdate();
+        return result;
  
     }
 
     @Override
     public int deleteProblematica(int idProblematicaAcademica) throws SQLException {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        int filasActualizadas = 0;
+        int result = 0;
         Connection connection = dataBaseConnection.getConnection();   
             String query;
             query = ("DELETE FROM `sistema_tutorias`.`problematicas_academicas` WHERE (`idProblematica` = ?);");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, idProblematicaAcademica);
             
-            filasActualizadas = statement.executeUpdate();
+            result = statement.executeUpdate();
 
         
-        return filasActualizadas;
+        return result;
 
     }
 
@@ -239,10 +239,13 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                 problematica.setNumeroDeEstudiantesAfectados(numeroAfectados);
                 problematica.setIdReporteTutoria(idReporteTutoria);
                 problematica.setNrc(nrc);
+                problematica.setExperienciaEducativa(new ExperienciaEducativa());
+
                 problematica.setExperienciaName(experiencia);
                 problematica.setProfesorName(profesor);
                 problematica.setFechaFin(fecha);
                 problematica.setSolucion(new SolucionAProblematica(0, ""));
+                
                 problematicas.add(problematica);
 
             } while (resultSet.next());

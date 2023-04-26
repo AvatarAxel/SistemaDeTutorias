@@ -6,6 +6,7 @@ package BussinessLogic;
 
 import Domain.Profesor;
 import Domain.TutorAcademico;
+import Domain.TutoriaAcademica;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,7 +51,7 @@ public class TutorAcademicoDAO {
 
         if (connection != null) {
             String query = ("select u.numeroDePersonal,u.nombre,u.apellidoPaterno,u.apellidoMaterno ,COUNT(e.matricula) AS numeroestudiantes from usuarios u\n" +
-                            "inner join roles_usuarios ru on ru.numeroDePersonal=u.numeroDePersonal\n" +
+                            "inner join roles_usuarios_programa_educativo ru on ru.numeroDePersonal=u.numeroDePersonal\n" +
                             "inner join roles r on r.idRol=ru.idRol\n" +
                             "left join estudiantes e on e.numeroDePersonal=u.numeroDePersonal\n" +
                             "where r.idrol=3\n" +
@@ -88,5 +89,7 @@ public class TutorAcademicoDAO {
 
         return tutores;
     }
+    
+  
 
 }
