@@ -20,6 +20,11 @@ public class Estudiante {
     private boolean enRiesgo;
     private CheckBox checkBoxEsAsistente;
     private CheckBox checkBoxEnRiesgo;
+    private CheckBox checkBoxEnSeleccion;
+    private String tutorName;
+
+   
+
 
     public Estudiante() {
         this.checkBoxEsAsistente = new CheckBox();
@@ -51,6 +56,9 @@ public class Estudiante {
 
     public String getMatricula() {
         return Matricula;
+    }
+    public String getNombreCompleto(){
+    return this.nombre +" " +this.apellidoPaterno+" "+this.apellidoMaterno;
     }
 
     public void setNombre(String nombre) {
@@ -104,4 +112,24 @@ public class Estudiante {
     public void setCheckBoxEnRiesgo(CheckBox checkBoxEnRiesgo) {
         this.checkBoxEnRiesgo = checkBoxEnRiesgo;
     }
+
+    public CheckBox getCheckBoxEnSeleccion() {
+        return checkBoxEnSeleccion;
+    }
+
+    public void setCheckBoxEnSeleccion(CheckBox checkBoxEnSelection) {
+        this.checkBoxEnSeleccion = checkBoxEnSelection;
+    }
+     public String getTutorName() {
+        return tutorName;
+    }
+
+    public void setTutorName(String tutorName) {
+        this.tutorName = tutorName;
+    }
+
+  
+    
+    
+    
 }

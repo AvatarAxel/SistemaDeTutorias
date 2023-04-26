@@ -55,6 +55,22 @@
               <MenuItem mnemonicParsing="false" text="About" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Asignaciones">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#menuAsignaciones" text="Gestión de Asignaciones" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Gestión Problematicas">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#menuGestionarProblematicas" text="Gestión de Problematicas" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuConsultarProblematicas" text="Consultar Problematicas" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Fechas">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#menuRegistrarFechas" text="Registrar Fechas" />
+               </items>
+            </Menu>
         </menus>
       </MenuBar>
       <ComboBox fx:id="cbRol" layoutX="428.0" layoutY="58.0" prefWidth="150.0" />

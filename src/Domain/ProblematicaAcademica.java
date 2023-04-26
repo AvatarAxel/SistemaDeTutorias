@@ -118,7 +118,9 @@ public class ProblematicaAcademica {
     public int getNumeroDeEstudiantesAfectados() {
         return numeroDeEstudiantesAfectados;
     }
-
+   public String getProfesorName() {
+       return this.profesor.getNombre();
+    }
     public void setNumeroDeEstudiantesAfectados(int numeroDeEstudiantesAfectados) {
         this.numeroDeEstudiantesAfectados = numeroDeEstudiantesAfectados;
     }
@@ -145,6 +147,13 @@ public class ProblematicaAcademica {
 
     public void setProfesor(Profesor profesor) {
         this.profesor = profesor;
+    }
+    
+    public void setExperienciaName(String experienciaName) {
+        this.experienciaEducativa.setNombre(experienciaName);
+    }
+     public void setProfesorName(String profesorName) {
+        this.profesor.setNombre(profesorName);
     }
 
     public ExperienciaEducativa getExperienciaEducativa() {
@@ -173,6 +182,11 @@ public class ProblematicaAcademica {
     public String getExperienciaEducativaAndNRC(){
         return experienciaEducativa.getNombre()+" "+experienciaEducativa.getNrc();
     }
+    
+     public String getExperienciaEducativaName(){
+        return experienciaEducativa.getNombre();
+    }
+    
     
     @Override
     public int hashCode() {
