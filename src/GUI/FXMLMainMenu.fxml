@@ -5,7 +5,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="403.0" prefWidth="671.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
    <children>
       <MenuBar fx:id="mbMainMenu" prefHeight="25.0" prefWidth="600.0">
         <menus>
@@ -46,6 +46,7 @@
             <Menu mnemonicParsing="false" text="Registros">
               <items>
                   <MenuItem mnemonicParsing="false" onAction="#menuRegistrarEstudiantesAction" text="Registrar Estudiantes" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuImportarEstudiantesAction" text="Importar Estudiantes" />
                 <MenuItem mnemonicParsing="false" onAction="#menuRegistrarTutorAction" text="Registrar Tutor Academico" />
               </items>
             </Menu>

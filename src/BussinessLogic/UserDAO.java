@@ -32,12 +32,14 @@ public class UserDAO implements IUserDAO {
 
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
+                user.setApellidoMaterno(resultSet.getString("ApellidoMaterno"));
+                user.setApellidoPaterno(resultSet.getString("ApellidoPaterno"));
+                user.setCorreo(resultSet.getString("correoElectronicoInstitucional"));
+                user.setNombre(resultSet.getString("Nombre"));
+                user.setNumeroPersonal(resultSet.getInt("numeroDePersonal"));
+            }else{
+                user = null;
             }
-            user.setApellidoMaterno(resultSet.getString("ApellidoMaterno"));
-            user.setApellidoPaterno(resultSet.getString("ApellidoPaterno"));
-            user.setCorreo(resultSet.getString("correoElectronicoInstitucional"));
-            user.setNombre(resultSet.getString("Nombre"));
-            user.setNumeroPersonal(resultSet.getInt("numeroDePersonal"));
             dataBaseConnection.closeConection();
         }
         return user;
@@ -67,12 +69,11 @@ public class UserDAO implements IUserDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            String consulta = "SELECT u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.numeroDePersonal FROM usuarios u\n"
-                    + "INNER JOIN programas_educativos_usuarios pu ON u.numeroDePersonal = pu.numeroDePersonal\n"
-                    + "INNER JOIN programas_educativos p ON p.clave = pu.clave\n"
-                    + "INNER JOIN roles_usuarios ru ON u.numeroDePersonal = ru.numeroDePersonal\n"
-                    + "INNER JOIN roles r ON r.idRol = ru.idRol\n"
-                    + "WHERE r.idRol= 3 AND p.clave =?";
+            String consulta = "SELECT u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.numeroDePersonal FROM usuarios u\n" +
+            "INNER JOIN roles_usuarios_programa_educativo rup ON rup.numeroDePersonal = u.numeroDePersonal\n" +
+            "INNER JOIN programas_educativos p ON p.clave = rup.clave\n" +
+            "INNER JOIN reportes_de_tutorias_academicas rta ON rta.numeroDePersonal = rup.numeroDePersonal\n" +
+            "WHERE rup.idRol= 3 AND rup.clave =?";
             PreparedStatement configurarConsulta = connection.prepareStatement(consulta);
             configurarConsulta.setInt(1, clave);
             ResultSet resultado = configurarConsulta.executeQuery();
