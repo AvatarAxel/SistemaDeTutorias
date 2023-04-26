@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
+
 package controllers;
 
 import java.net.URL;
@@ -62,11 +59,11 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuReadProblematic(ActionEvent event) {
-        /*WindowManager.NavigateToWindow(
+        WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLConsultarProblematicasAcademicas.fxml",
                 "Consultar Solución Problematicas Academicas"
-        );*/
+        );
         WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLConsultarSolucionAProblematicaAcademica.fxml",
@@ -132,6 +129,7 @@ public class FXMLMainMenuController implements Initializable {
         );
     }
 
+    @FXML
     private void menuGestionarProblematicas(ActionEvent event) {
         WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
@@ -141,11 +139,7 @@ public class FXMLMainMenuController implements Initializable {
     }
 
     private void menuConsultarProblematica(ActionEvent event) {
-          WindowManager.NavigateToWindow(
-                mbMainMenu.getScene().getWindow(),
-                "/GUI/FXMLConsultarProblematicasAcademicas.fxml",
-                "Consultar Problemáticas"
-        );
+       
     }
 
     @FXML
@@ -154,6 +148,25 @@ public class FXMLMainMenuController implements Initializable {
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLGestionarAsignacionesTutor.fxml",
                 "Gestionar Asiganciones"
+        );
+    }
+
+    @FXML
+    private void menuConsultarProblematicas(ActionEvent event) {
+           WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLConsultarProblematicasAcademicas.fxml",
+                "Consultar Problemáticas"
+        );
+    }
+
+    @FXML
+    private void menuRegistrarFechas(ActionEvent event) {
+        
+         WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLRegistrarFechasTutorias.fxml",
+                "Gestionar Problemáticas"
         );
     }
     
