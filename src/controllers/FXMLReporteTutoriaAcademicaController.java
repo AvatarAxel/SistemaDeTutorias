@@ -108,7 +108,7 @@ import javafx.stage.Modality;
     public void configureScene(TutoriaAcademica tutoriaAcademicaRecived, ReporteDeTutoriaAcademica reporteTutoriaAcademicaRecived, boolean editableType ) throws SQLException {
         editableTypeReport = editableType;
         tutoriaAcademica = tutoriaAcademicaRecived;
-        ableTocrate
+        //ableTocrate
         try {
             if(editableType){
                 btProblematicaAcademica.setText("Editar problemática académica");
@@ -268,7 +268,7 @@ import javafx.stage.Modality;
     private void saveChanges()throws SQLException {
         try {
             ReporteDeTutoriaAcademicaDAO ReporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
-            if(ReporteDeTutoriaAcademicaDao.updateReporteDeTutorias(tfComentarioGeneral.getText(),tutoriaAcademica.getIdTutoriaAcademica() , tutorAcademico.getNumeroPersonal())){            
+            if(ReporteDeTutoriaAcademicaDao.updateReporteDeTutorias(tfComentarioGeneral.getText(),tutoriaAcademica.getIdTutoriaAcademica() ,User.getCurrentUser().getNumeroDePersonal())){            
                     AlertManager.showTemporalAlert("AVISO", "La información se registró correctamente en el sistema", 2);
             }             
         } catch (SQLException sqle) {
@@ -288,28 +288,20 @@ import javafx.stage.Modality;
           try {
          FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("/GUI/FXMLGestionarProblematicas.fxml"));
-
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
             stage.setTitle("Gestión de Problemáticas");
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
-            
-          
             FXMLGestionarProblematicasController controlador = (FXMLGestionarProblematicasController) fxmlLoader.getController();
             controlador.receiveParameters(reporteTutoriaAcademica.getIdReporteTutoria());
-
-              
-
+            stage.show();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
     @FXML
     private void clicButtonsRegister(ActionEvent event) throws SQLException {
-        //tfNumEstudiantesAsistentes.setText(String.valueOf(countNumEstudiantesAsistentes()));
-        //tfNumEstudiantesEnRiesgo.setText(String.valueOf(countEstudiantesEnRiesgo()));
-
         Optional<ButtonType> answer = AlertManager.showAlert("AVISO",
                 "Una vez enviado el Reporte de Tutorías solo lo podrá modificar antes de la fecha límite de la entrega. \n\n¿Desea continuar?", Alert.AlertType.CONFIRMATION);
         if (answer.get() == ButtonType.OK) {

@@ -81,7 +81,6 @@ public class FXMLMainMenuController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        loadMenu();
         loadComboBoxes();
         selectedItem();
         menuAsignaciones.setVisible(false);
@@ -97,22 +96,19 @@ public class FXMLMainMenuController implements Initializable {
     }
 
     private void loadMenu() {
-        System.out.println(User.getCurrentUser().toString()+" "
-                +User.getCurrentUser().getRol().getRolName()+""
-                +User.getCurrentUser().getNumeroDePersonal());
         try {
             TutoriaAcademicaDAO tutoriaAcademicaDAO = new TutoriaAcademicaDAO();
-            tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica();
+            tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
             if (tutoriaAcademica != null) {
                 ReporteDeTutoriaAcademicaDAO reporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
                 reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(), User.getCurrentUser().getNumeroDePersonal());
                 if (reporteTutoriaAcademica != null) {
                     miCreateTutorialReport.setText("Editar");
+                    miCreateTutorialReport.setDisable(false);
                 } else {
                     miCreateTutorialReport.setText("Crear");
+                    miCreateTutorialReport.setDisable(false);                    
                 }
-                System.out.println(" IDTUTORIA "+tutoriaAcademica.getIdTutoriaAcademica());
-                System.out.println(" IDREPORTETUTORIA "+reporteTutoriaAcademica.getIdReporteTutoria());
             } else {
                 miCreateTutorialReport.setText("Sin Actividades Pendientes");
                 miCreateTutorialReport.setDisable(true);
@@ -195,6 +191,9 @@ public class FXMLMainMenuController implements Initializable {
                         cbRol.getSelectionModel().getSelectedItem().getRolName(),
                         cbProgramaEducativo.getSelectionModel().getSelectedItem()));
                 grantView();
+                if(cbRol.getSelectionModel().getSelectedItem().getRolName().equals("Tutor")){
+                    loadMenu();                
+                }
             }
         });
     }
