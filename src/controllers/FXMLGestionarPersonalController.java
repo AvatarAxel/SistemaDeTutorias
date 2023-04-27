@@ -64,8 +64,6 @@ public class FXMLGestionarPersonalController implements Initializable {
     private Button buttonRegister;
     @FXML
     private TableColumn<?, ?> columRol;
-    Task loadInformationPersonalUsuarioTask;
-    Task loadInformationPersonalTask;
 
     /**
      * Initializes the controller class.
@@ -75,7 +73,6 @@ public class FXMLGestionarPersonalController implements Initializable {
         configureTableColumns();
         buttonDelete.setDisable(true);
         buttonEdit.setDisable(true);
-        loadInformationPersonalProfesores();
         loadInformationPersonalUsuarios();
     }
 
@@ -137,9 +134,8 @@ public class FXMLGestionarPersonalController implements Initializable {
                 UserDAO userDAO = new UserDAO();
                 try {
                     ArrayList<Usuario> loadedPersonal = userDAO.getAllUsersByProgramaEducativo(14203);
-                    if (!loadedPersonal.isEmpty()) {  
-                        System.out.println("No esta vacio");
-                        for(int i = 0; i<loadedPersonal.size(); i++){
+                    if (!loadedPersonal.isEmpty()) {
+                        for (int i = 0; i < loadedPersonal.size(); i++) {
                             int numeroDePersonal = loadedPersonal.get(i).getNumeroPersonal();
                             loadedPersonal.get(i).setRoles(userDAO.getAllUserRolesByNumeroDePersonal(numeroDePersonal));
                             System.out.println(numeroDePersonal);
@@ -159,7 +155,7 @@ public class FXMLGestionarPersonalController implements Initializable {
         executorService.submit(loadInformationPersonalUsuarioTask);
         executorService.shutdown();
     }
-    
+
     @FXML
     private void buttonActionDelete(ActionEvent event) {
     }
@@ -171,8 +167,6 @@ public class FXMLGestionarPersonalController implements Initializable {
     @FXML
     private void buttonActionExit(ActionEvent event) {
         WindowManager.NavigateToWindow(buttonDelete.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
-        loadInformationPersonalUsuarioTask.cancel();
-        loadInformationPersonalUsuarioTask.cancel();
     }
 
     @FXML

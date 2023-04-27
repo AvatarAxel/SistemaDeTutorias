@@ -114,7 +114,7 @@ public class UserDAO implements IUserDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            String query = "SELECT u.numeroDePersonal, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.esRegistrado\n"
+            String query = "SELECT DISTINCT u.numeroDePersonal, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.esRegistrado\n"
                     + "FROM usuarios u\n"
                     + "INNER JOIN roles_usuarios_programa_educativo rup\n"
                     + "ON u.numeroDePersonal = rup.numeroDePersonal\n"
