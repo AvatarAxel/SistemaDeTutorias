@@ -115,7 +115,7 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
     private void loadReportesTutoriasAcademicasByTutorAcademico(Usuario usuario) {
         TutoriaAcademicaDAO tutoriaAcademicaDao = new TutoriaAcademicaDAO();
         try {
-            ArrayList<TutoriaAcademica> loadedTutoriasAcademicas = tutoriaAcademicaDao.getTutoriasAcademicasByTutorAcademico(User.getCurrentUser().getNumeroDePersonal(),Integer.parseInt(User.getCurrentUser().getProgramaEducativo().getClave()));
+            ArrayList<TutoriaAcademica> loadedTutoriasAcademicas = tutoriaAcademicaDao.getTutoriasAcademicasByTutorAcademico(User.getCurrentUser().getNumeroDePersonal(),Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()));
             if(loadedTutoriasAcademicas != null){
                 listTutoriasAcademicas.clear();
                 listTutoriasAcademicas.addAll(loadedTutoriasAcademicas);

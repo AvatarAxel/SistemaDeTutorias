@@ -143,7 +143,7 @@ import util.WindowManager;
         try {
             tfFechaTutoria.setText(tutoriaAcademica.getFechasTutoriaAcademica());            
             tfNumeroSesionTutoria.setText(String.valueOf(tutoriaAcademica.getNumeroDeSesion()));
-            lbProgramaEducativo.setText(User.getCurrentUser().getProgramaEducativo().getNombre());
+            lbProgramaEducativo.setText(User.getCurrentUser().getRol().getProgramaEducativo().getNombre());
             tfPeriodoEscolar.setText(tutoriaAcademica.getFechasPeriodoEscolar());
             ReporteDeTutoriaAcademica loadedReporteDeTutoriaAcademica = ReporteDeTutoriaAcademicaDao.getReporteDeTutoriaByTutor(tutoriaAcademica.getIdTutoriaAcademica(),User.getCurrentUser().getNumeroDePersonal());
             reporteTutoriaAcademica = loadedReporteDeTutoriaAcademica;                
