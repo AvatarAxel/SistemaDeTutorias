@@ -103,10 +103,10 @@ public class FXMLGestionarPersonalController implements Initializable {
                             usuario.setNombre(loadedProfesor.get(i).getNombre());
                             usuario.setApellidoPaterno(loadedProfesor.get(i).getApellidoPaterno());
                             usuario.setApellidoMaterno(loadedProfesor.get(i).getApellidoMaterno());
-                            usuario.setNumeroPersonal(loadedProfesor.get(i).getNumeroDePersonal());
+                            usuario.setNumeroDePersonal(loadedProfesor.get(i).getNumeroDePersonal());
                             ArrayList<Rol> listRoles = new ArrayList<>();
                             listRoles.add(new Rol(0, "Profesor"));
-                            usuario.setRoles(listRoles);
+                            //usuario.setRoles(listRoles);
                             listUsuarios.add(usuario);
                         }
                         listPersonal.addAll(listUsuarios);
@@ -136,8 +136,8 @@ public class FXMLGestionarPersonalController implements Initializable {
                     ArrayList<Usuario> loadedPersonal = userDAO.getAllUsersByProgramaEducativo(14203);
                     if (!loadedPersonal.isEmpty()) {
                         for (int i = 0; i < loadedPersonal.size(); i++) {
-                            int numeroDePersonal = loadedPersonal.get(i).getNumeroPersonal();
-                            loadedPersonal.get(i).setRoles(userDAO.getAllUserRolesByNumeroDePersonal(numeroDePersonal));
+                            int numeroDePersonal = loadedPersonal.get(i).getNumeroDePersonal();
+                            //loadedPersonal.get(i).setRoles(userDAO.getAllUserRolesByNumeroDePersonal(numeroDePersonal));
                             System.out.println(numeroDePersonal);
                         }
                         listPersonal.addAll(loadedPersonal);
@@ -186,7 +186,7 @@ public class FXMLGestionarPersonalController implements Initializable {
                     return true;
                 } else if (Usuario.getApellidoPaterno().toLowerCase().indexOf(inputText) != -1) {
                     return true;
-                } else if (String.valueOf(Usuario.getNumeroPersonal()).indexOf(inputText) != -1) {
+                } else if (String.valueOf(Usuario.getNumeroDePersonal()).indexOf(inputText) != -1) {
                     return true;
                 } else if (Usuario.getApellidoMaterno().toLowerCase().indexOf(inputText) != -1) {
                     return true;

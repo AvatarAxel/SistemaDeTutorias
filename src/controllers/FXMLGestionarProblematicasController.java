@@ -6,6 +6,7 @@ import BussinessLogic.ProblematicaAcademicaDAO;
 import BussinessLogic.ProfesorDAO;
 import Domain.ExperienciaEducativa;
 import Domain.ProblematicaAcademica;
+import Domain.Profesor;
 import Domain.SolucionAProblematica;
 import java.net.URL;
 import java.sql.SQLException;
@@ -359,8 +360,10 @@ public class FXMLGestionarProblematicasController implements Initializable {
         descripcion = txt_descrip.getText();
 
         ProblematicaAcademica problematica = new ProblematicaAcademica();
-        problematica.setExperienciaE(experiencia);
-        problematica.setNombreProfesor(profesor);
+        problematica.setExperienciaEducativa(new ExperienciaEducativa());
+        problematica.setProfesor(new Profesor());
+        problematica.setExperienciaName(experiencia);
+        problematica.setProfesorName(profesor);
         problematica.setNumeroDeEstudiantesAfectados(reportados);
         problematica.setTitulo(titulo);
         problematica.setDescripcion(descripcion);
@@ -378,7 +381,7 @@ public class FXMLGestionarProblematicasController implements Initializable {
         btn_Update.setVisible(true);
         btn_add.setVisible(false);
 
-        String experiencia = currentProblematica.getExperienciaE();
+        String experiencia = currentProblematica.getExperienciaEducativaName();
         autoSelectExperiencia(experiencia, currentProblematica.getNrc());
 
         int reportados = currentProblematica.getNumeroDeEstudiantesAfectados();
@@ -421,8 +424,8 @@ public class FXMLGestionarProblematicasController implements Initializable {
 
     private void initializeTable() {
 
-        clm_Experiencia.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("ExperienciaE"));
-        clm_Profesor.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("Profesor"));
+        clm_Experiencia.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("experienciaEducativaName"));
+        clm_Profesor.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("profesorName"));
         clm_Hd.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("titulo"));
         clm_IdProblematica.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("idProblematica"));
         clm_numReportes.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("numeroDeEstudiantesAfectados"));
