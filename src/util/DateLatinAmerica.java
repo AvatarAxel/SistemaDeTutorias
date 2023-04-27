@@ -6,6 +6,7 @@ package util;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 
 /**
  *
@@ -13,52 +14,38 @@ import java.text.SimpleDateFormat;
  */
 public class DateLatinAmerica {
 
+    static final HashMap<String, String> MONTH = new HashMap<String, String>() {
+        {
+            put("01", "Enero");
+            put("02", "Febrero");
+            put("03", "Marzo");
+            put("04", "Abril");
+            put("05", "Mayo");
+            put("06", "Junio");
+            put("07", "Julio");
+            put("08", "Agosto");
+            put("09", "Septiembre");
+            put("10", "Octubre");
+            put("11", "Noviembre");
+            put("12", "Diciembre");
+        }
+    };
+
     public static String DateConvertToPeriod(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");       
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = simpleDateFormat.format(date);
-        String month = new DateLatinAmerica().returnMonth(formattedDate.substring(3,5));
-        String year = formattedDate.substring(6,10);
+        String month = MONTH.get(formattedDate.substring(3, 5));
+        String year = formattedDate.substring(6, 10);
         return month + " " + year;
     }
-    
+
     public static String DateWithDays(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");       
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = simpleDateFormat.format(date);
         String day = formattedDate.substring(0, 2);
-        String month = new DateLatinAmerica().returnMonth(formattedDate.substring(3,5));
-        String year = formattedDate.substring(6,10);
+        String month = MONTH.get(formattedDate.substring(3, 5));
+        String year = formattedDate.substring(6, 10);
         return day + " " + month + " " + year;
-    }    
-    
-    public String returnMonth(String month) {                        
-        switch (month) {
-            case "01":
-                return "enero";
-            case "02":
-                return "febrero";
-            case "03":
-                return "marzo";
-            case "04":
-                return "abril";
-            case "05":
-                return "mayo";
-            case "06":
-                return "junio";
-            case "07":
-                return "julio";
-            case "08":
-                return "agosto";
-            case "09":
-                return "septiembre";
-            case "10":
-                return "octubre";
-            case "11":
-                return "noviembre";
-            case "12":
-                return "diciembre";
-            default:
-                return "Carne";
-        }
     }
 
 }

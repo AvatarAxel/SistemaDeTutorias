@@ -22,10 +22,10 @@
             <TableColumn fx:id="columRol" prefWidth="474.0" text="Rol" />
         </columns>
       </TableView>
-      <Button fx:id="buttonDelete" layoutX="629.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonActionDelete" text="Eliminar" />
-      <Button fx:id="buttonEdit" layoutX="524.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonActionEdit" prefHeight="29.0" prefWidth="78.0" text="Editar" />
-      <Button layoutX="715.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonActionExit" prefHeight="29.0" prefWidth="78.0" text="Salir" />
-      <Button fx:id="buttonRegister" layoutX="422.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonActionRegister" prefHeight="29.0" prefWidth="78.0" text="Registrar" />
+      <Button fx:id="buttonDelete" layoutX="923.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonActionDelete" text="Eliminar" />
+      <Button fx:id="buttonEdit" layoutX="820.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonActionEdit" prefHeight="29.0" prefWidth="78.0" text="Editar" />
+      <Button layoutX="1018.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonActionExit" prefHeight="29.0" prefWidth="78.0" text="Salir" />
+      <Button fx:id="buttonRegister" layoutX="714.0" layoutY="342.0" mnemonicParsing="false" onAction="#buttonActionRegister" prefHeight="29.0" prefWidth="78.0" text="Registrar" />
       <TextField fx:id="textFieldSearchPersonal" layoutX="130.0" layoutY="36.0" onKeyTyped="#validateLengthInput" prefHeight="29.0" prefWidth="966.0" promptText="No. de personal / Nombre / Apellido Paterno / Apellido Materno" />
       <Text layoutX="14.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Buscar personal:" wrappingWidth="111.46200561523438" />
    </children>
