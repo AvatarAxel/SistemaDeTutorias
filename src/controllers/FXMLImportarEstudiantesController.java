@@ -120,7 +120,7 @@ public class FXMLImportarEstudiantesController implements Initializable {
         EstudianteDAO estudianteDAO = new EstudianteDAO();
         try {
             for (int i = 0; i < listedEstudiantes.size(); i++) {
-                if(!estudianteDAO.setEstudianteRegister(listedEstudiantes.get(i),Integer.parseInt(User.getCurrentUser().getProgramaEducativo().getClave()))){
+                if(!estudianteDAO.setEstudianteRegister(listedEstudiantes.get(i),Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()))){
                     AlertManager.showTemporalAlert("Error", "¡Dato duplicado!", 2);
                 }                 
             }
