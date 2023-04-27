@@ -75,7 +75,9 @@ public class FXMLLoginController implements Initializable {
     }
 
     private void doLogin(String username, String password) throws SQLException {
-        UserDAO userDAO = new UserDAO();
+            WindowManager.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+        
+        /*UserDAO userDAO = new UserDAO();
         Usuario usuarioLogin = userDAO.getUserDB(username, password);
         if (usuarioLogin != null) {
             usuarioLogin.setRoles(userDAO.getUserRoles(usuarioLogin.getNumeroPersonal()));
@@ -92,7 +94,7 @@ public class FXMLLoginController implements Initializable {
             WindowManager.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
         } else {
             AlertManager.showAlert("Usuario no encontrado", "No se han encontrado coincidencias con las credenciales ingresadas", Alert.AlertType.WARNING);
-        }
+        }*/
     }
 
     @FXML
