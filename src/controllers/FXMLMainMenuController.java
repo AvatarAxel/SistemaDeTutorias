@@ -97,6 +97,9 @@ public class FXMLMainMenuController implements Initializable {
     }
 
     private void loadMenu() {
+        System.out.println(User.getCurrentUser().toString()+" "
+                +User.getCurrentUser().getRol().getRolName()+""
+                +User.getCurrentUser().getNumeroDePersonal());
         try {
             TutoriaAcademicaDAO tutoriaAcademicaDAO = new TutoriaAcademicaDAO();
             tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica();
@@ -108,11 +111,14 @@ public class FXMLMainMenuController implements Initializable {
                 } else {
                     miCreateTutorialReport.setText("Crear");
                 }
+                System.out.println(" IDTUTORIA "+tutoriaAcademica.getIdTutoriaAcademica());
+                System.out.println(" IDREPORTETUTORIA "+reporteTutoriaAcademica.getIdReporteTutoria());
             } else {
                 miCreateTutorialReport.setText("Sin Actividades Pendientes");
                 miCreateTutorialReport.setDisable(true);
             }
         } catch (SQLException sqle) {
+            sqle.printStackTrace();
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
@@ -239,6 +245,7 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuCreateGeneralReport(ActionEvent event) {
+          
     }
 
     @FXML

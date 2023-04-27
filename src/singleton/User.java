@@ -25,6 +25,7 @@ public class User {
     private static User currentUser;
 
     private User() {
+        this.rol = new Rol();
     }
     
     public static User getCurrentUser() {
@@ -89,9 +90,11 @@ public class User {
     public void setRoles(ArrayList<Rol> roles) {
         this.roles = roles;
     }
-    
+
     @Override
     public String toString() {
-        return "User{" + "nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", roles=" + roles + '}';
+        return "User{" + "numeroDePersonal=" + numeroDePersonal + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", rol=" + rol + ", roles=" + roles + '}';
     }
+    
+    
 }

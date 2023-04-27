@@ -36,11 +36,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+
+
 /**
  * FXML Controller class
  *
@@ -279,19 +285,25 @@ import util.WindowManager;
     
     @FXML
     private void clicButtonProblematicaAcademica(ActionEvent event) {
-        try{
-            Stage escenario = (Stage) tbEstudiantes.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXMLGestionarProblematicas.fxml"));
-            Parent root = loader.load();       
-            Scene esceneProblematicasAcademicas = new Scene(root); 
-            escenario.setScene(esceneProblematicasAcademicas);
-            escenario.setTitle("Gestion de Problemáticas Académicas");
-            escenario.show();  
-            FXMLGestionarProblematicasController controllerProblematicaAcademica = loader.getController();
-            //controllerProblematicaAcademica.configureScene(reporteTutoriaAcademica.getIdReporteTutoria());                
+          try {
+         FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/GUI/FXMLGestionarProblematicas.fxml"));
+
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Gestión de Problemáticas");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            
+          
+            FXMLGestionarProblematicasController controlador = (FXMLGestionarProblematicasController) fxmlLoader.getController();
+            controlador.receiveParameters(reporteTutoriaAcademica.getIdReporteTutoria());
+
+              
+
         } catch (IOException ex) {
             ex.printStackTrace();
-        }    
+        }
     }
     @FXML
     private void clicButtonsRegister(ActionEvent event) throws SQLException {
