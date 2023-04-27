@@ -88,6 +88,8 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
                     listProfesores.clear();
                     listProfesores.addAll(loadedListProfesores);
                     tableProfesor.setItems(listProfesores);
+                    Label noticeContentTable = new Label("Sin contenido...");
+                    tableProfesor.setPlaceholder(noticeContentTable);
                 } catch (SQLException e) {
                     AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
                 }
@@ -152,7 +154,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
             tutorAcademico.setNumeroDePersonal(profesor.getNumeroDePersonal());
             tutorAcademico.setContraseña(randomPassword);
             boolean resultRegister = tutorAcademicoDao.setTutorRegister(tutorAcademico);
-            boolean resultRolAssignment = userDao.setRolUserTutor(tutorAcademico.getNumeroDePersonal());
+            boolean resultRolAssignment = userDao.setRolUserTutor(tutorAcademico.getNumeroDePersonal(), "14203");
             boolean markRegistration = profesorDao.setTutorRegister(tutorAcademico.getNumeroDePersonal());
             if (resultRegister && resultRolAssignment && markRegistration) {
                 AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
@@ -160,6 +162,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
             }
         } catch (SQLException e) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
         buttonRegister.setDisable(true);
         tableProfesor.getSelectionModel().clearSelection();
@@ -211,7 +214,8 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
 
     @FXML
     private void selectProfesor(MouseEvent event) {
-        if(!tableProfesor.getSelectionModel().isEmpty()){            
+        if(!tableProfesor.getSelectionModel().isEmpty() 
+                && tableProfesor.getSelectionModel().getSelectedItem() != null){            
             buttonRegister.setDisable(false);
         }
     }

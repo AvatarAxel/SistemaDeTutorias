@@ -1,18 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package controllers;
 
 import BussinessLogic.ReporteDeTutoriaAcademicaDAO;
-import BussinessLogic.TutoriaAcademicaDAO;
 import Domain.ReporteDeTutoriaAcademica;
-import Domain.TutoriaAcademica;
-import Domain.Usuario;
 import java.io.IOException;
+import BussinessLogic.TutoriaAcademicaDAO;
+import Domain.ProgramaEducativo;
+import Domain.Rol;
+import Domain.TutoriaAcademica;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,10 +24,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
 
@@ -34,43 +40,200 @@ import util.WindowManager;
  */
 public class FXMLMainMenuController implements Initializable {
 
+    private ObservableList<Rol> rolesUnicos = FXCollections.observableArrayList();
+    private ObservableList<ProgramaEducativo> programasUnicos = FXCollections.observableArrayList();
+    private TutoriaAcademica tutoriaAcademica;
+    private ReporteDeTutoriaAcademica reporteTutoriaAcademica;
+
     @FXML
     private MenuBar mbMainMenu;
     @FXML
     private MenuItem miCreateGeneralReport;
     @FXML
     private MenuItem miCreateTutorialReport;
-    
-    private TutoriaAcademica tutoriaAcademica;
-    private ReporteDeTutoriaAcademica reporteTutoriaAcademica;
+    @FXML
+    private ComboBox<Rol> cbRol;
+    @FXML
+    private ComboBox<ProgramaEducativo> cbProgramaEducativo;
+    @FXML
+    private Menu menuReporteGeneral;
+    @FXML
+    private Menu menuReporteTutorial;
+    @FXML
+    private Menu menuSolucionProblematicas;
+    @FXML
+    private Menu menuOfertaAcademica;
+    @FXML
+    private Menu menuRegistros;
+    @FXML
+    private Menu menuAsignaciones;
+    @FXML
+    private Menu menuProblematicas;
+    @FXML
+    private Menu menuFechas;
+    @FXML
+    private Menu menuHelp;
+    @FXML
+    private Menu menuReportes;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-            Usuario prueba = new Usuario();
-            //prueba.setNumeroPersonal(87305);   
-            prueba.setNumeroPersonal(10001);        
-            
-        try{
-            TutoriaAcademicaDAO tutoriaAcademicaDAO =  new TutoriaAcademicaDAO();
-            tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica(); 
-            if(tutoriaAcademica != null){
+        loadMenu();
+        loadComboBoxes();
+        selectedItem();
+        menuAsignaciones.setVisible(false);
+        menuFechas.setVisible(false);
+        menuHelp.setVisible(false);
+        menuOfertaAcademica.setVisible(false);
+        menuProblematicas.setVisible(false);
+        menuRegistros.setVisible(false);
+        menuReportes.setVisible(false);
+        menuReporteGeneral.setVisible(false);
+        menuReporteTutorial.setVisible(false);
+        menuSolucionProblematicas.setVisible(false);
+    }
+
+    private void loadMenu() {
+        try {
+            TutoriaAcademicaDAO tutoriaAcademicaDAO = new TutoriaAcademicaDAO();
+            tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica();
+            if (tutoriaAcademica != null) {
                 ReporteDeTutoriaAcademicaDAO reporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
-                reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(),prueba.getNumeroPersonal());               
-                if(reporteTutoriaAcademica != null){
+                reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(), User.getCurrentUser().getNumeroDePersonal());
+                if (reporteTutoriaAcademica != null) {
                     miCreateTutorialReport.setText("Editar");
-                }else{
+                } else {
                     miCreateTutorialReport.setText("Crear");
-                }         
-            }else{
-                    miCreateTutorialReport.setText("Sin Actividades Pendientes");
-                    miCreateTutorialReport.setDisable(true);        
-            }              
+                }
+            } else {
+                miCreateTutorialReport.setText("Sin Actividades Pendientes");
+                miCreateTutorialReport.setDisable(true);
+            }
         } catch (SQLException sqle) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+        }
+    }
+
+    private void loadComboBoxes() {
+        if (cbRol.getSelectionModel().getSelectedIndex() < 0) {
+            cbProgramaEducativo.setDisable(true);
+        }
+
+        List<Rol> roles = User.getCurrentUser().getRoles();
+
+        for (int i = 0; i < roles.size(); i++) {
+            Rol rol = roles.get(i);
+            String rolName = rol.getRolName();
+
+            ProgramaEducativo programa = rol.getProgramaEducativo();//User.getCurrentUser().getRoles().get(i).getProgramaEducativo();
+            String programaName = rol.getProgramaEducativo().getNombre();
+
+            if (!rolesUnicos.contains(rol)) {
+                rolesUnicos.add(rol);
+                if (!programasUnicos.contains(rol.getProgramaEducativo())) {
+                    programasUnicos.add(programa);
+                }
+            }
+
+        }
+
+        HashSet<String> uniqueNames = new HashSet<String>();
+        ArrayList<Rol> newList = new ArrayList<>();
+
+        for (Rol obj : rolesUnicos) {
+            if (!uniqueNames.contains(obj.getRolName())) {
+                uniqueNames.add(obj.getRolName());
+                newList.add(obj);
+            }
+        }
+
+        rolesUnicos.clear();
+        rolesUnicos.addAll(newList);
+
+        cbRol.setItems(rolesUnicos);
+        cbProgramaEducativo.setItems(programasUnicos);
+
+    }
+
+    private void selectedItem() {
+        cbRol.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null) {
+            }
+            if (newValue != null) {
+                programasUnicos.clear();
+                for (Rol r : User.getCurrentUser().getRoles()) {
+                    if (r.getIdRol() == newValue.getIdRol()) {
+                        programasUnicos.add(r.getProgramaEducativo());
+                    }
+                }
+                cbProgramaEducativo.setItems(programasUnicos);
+                cbProgramaEducativo.getSelectionModel().select(newValue.getProgramaEducativo());
+
+                cbProgramaEducativo.setDisable(false);
+
+                User.getCurrentUser().setRol(new Rol(newValue.getIdRol(),
+                        newValue.getRolName(),
+                        cbProgramaEducativo.getSelectionModel().getSelectedItem()));
+                grantView();
+            }
+
+        });
+        cbProgramaEducativo.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null) {
+            }
+            if (newValue != null) {
+                User.getCurrentUser().setRol(new Rol(cbRol.getSelectionModel().getSelectedItem().getIdRol(),
+                        cbRol.getSelectionModel().getSelectedItem().getRolName(),
+                        cbProgramaEducativo.getSelectionModel().getSelectedItem()));
+                grantView();
+            }
+        });
+    }
+
+    private void grantView() {
+        //TODO
+        switch (User.getCurrentUser().getRol().getIdRol()) {
+            case 1:
+                menuAsignaciones.setVisible(true);
+                menuFechas.setVisible(true);
+                menuHelp.setVisible(true);
+                menuOfertaAcademica.setVisible(true);
+                menuProblematicas.setVisible(true);
+                menuRegistros.setVisible(true);
+                menuReportes.setVisible(false);
+                menuReporteGeneral.setVisible(true);
+                menuReporteTutorial.setVisible(true);
+                menuSolucionProblematicas.setVisible(true);
+                break;
+            case 2:
+                menuAsignaciones.setVisible(false);
+                menuFechas.setVisible(false);
+                menuHelp.setVisible(true);
+                menuOfertaAcademica.setVisible(false);
+                menuProblematicas.setVisible(false);
+                menuRegistros.setVisible(false);
+                menuReportes.setVisible(false);
+                menuReporteGeneral.setVisible(false);
+                menuReporteTutorial.setVisible(false);
+                menuSolucionProblematicas.setVisible(false);
+                break;
+            case 3:
+                menuAsignaciones.setVisible(false);
+                menuFechas.setVisible(false);
+                menuHelp.setVisible(true);
+                menuOfertaAcademica.setVisible(false);
+                menuProblematicas.setVisible(false);
+                menuRegistros.setVisible(false);
+                menuReportes.setVisible(true);
+                menuReporteGeneral.setVisible(false);
+                menuReporteTutorial.setVisible(true);
+                menuSolucionProblematicas.setVisible(false);
+                break;
+            default:
+                break;
         }
     }
 
@@ -84,22 +247,22 @@ public class FXMLMainMenuController implements Initializable {
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLConsultarReporteGeneralDeTutoriasAcademicas.fxml",
                 "Reportes Generales de tutorias"
-        );        
+        );
     }
 
     @FXML
-    private void menuCreateTutorialReport(ActionEvent event) throws SQLException  {
+    private void menuCreateTutorialReport(ActionEvent event) throws SQLException {
         boolean editableType = false;
-        if(miCreateTutorialReport.getText() == "Editar"){
-            editableType= true;
-        }        
+        if (miCreateTutorialReport.getText() == "Editar") {
+            editableType = true;
+        }
         try {
             Stage escenario = (Stage) mbMainMenu.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXMLReporteTutoriaAcademica.fxml"));
-            Parent root = loader.load();       
-            Scene esceneReporteGeneral = new Scene(root); 
+            Parent root = loader.load();
+            Scene esceneReporteGeneral = new Scene(root);
             escenario.setScene(esceneReporteGeneral);
-            escenario.setTitle(miCreateTutorialReport.getText()+" Reporte de Tutoría");
+            escenario.setTitle(miCreateTutorialReport.getText() + " Reporte de Tutoría");
             escenario.show();
             /*WindowManager.NavigateToWindow(
                     mbMainMenu.getScene().getWindow(),
@@ -107,34 +270,34 @@ public class FXMLMainMenuController implements Initializable {
                     miCreateTutorialReport.getText()+" Reporte de Tutoría"
             );
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXMLReporteTutoriaAcademica.fxml"));
-            Parent root = loader.load();*/              
+            Parent root = loader.load();*/
             FXMLReporteTutoriaAcademicaController controllerReporteTutoriaAcademica = loader.getController();
-            controllerReporteTutoriaAcademica.configureScene(tutoriaAcademica,reporteTutoriaAcademica,editableType);            
+            controllerReporteTutoriaAcademica.configureScene(tutoriaAcademica, reporteTutoriaAcademica, editableType);
         } catch (IOException ex) {
             ex.printStackTrace();
-        }        
+        }
     }
 
     @FXML
     private void menuReadTutorialReport(ActionEvent event) {
 
-        WindowManager.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLReportesTutoriasAcademicas.fxml", "Reportes de Tutorías Académicas");                
+        WindowManager.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLReportesTutoriasAcademicas.fxml", "Reportes de Tutorías Académicas");
     }
 
     @FXML
     private void menuReadProblematic(ActionEvent event) {
-        /*WindowManager.NavigateToWindow(
+        WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLConsultarProblematicasAcademicas.fxml",
                 "Consultar Solución Problematicas Academicas"
-        );*/
+        );
         WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLConsultarSolucionAProblematicaAcademica.fxml",
                 "Consultar Solución a Problematica Academica"
         );
     }
-    
+
     @FXML
     private void menuUpdateSolution(ActionEvent event) {
         WindowManager.NavigateToWindow(
@@ -195,12 +358,22 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuImportarEstudiantesAction(ActionEvent event) {
-        
-        WindowManager.NavigateToWindow(
-                mbMainMenu.getScene().getWindow(),
-                "/GUI/FXMLImportarEstudiantes.fxml",
-                "Importar Estudiantes"
-        );        
     }
-    
+
+    @FXML
+    private void menuAsignaciones(ActionEvent event) {
+    }
+
+    @FXML
+    private void menuGestionarProblematicas(ActionEvent event) {
+    }
+
+    @FXML
+    private void menuConsultarProblematicas(ActionEvent event) {
+    }
+
+    @FXML
+    private void menuRegistrarFechas(ActionEvent event) {
+    }
+
 }

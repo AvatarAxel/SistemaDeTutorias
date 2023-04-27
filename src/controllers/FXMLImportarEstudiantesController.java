@@ -29,6 +29,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
+import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
 
@@ -53,15 +54,15 @@ public class FXMLImportarEstudiantesController implements Initializable {
     private Button btSave;    
 
     private ObservableList<Estudiante> listEstudiantes;
-    private Usuario tutorAcademico;
+    //private Usuario tutorAcademico;
 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tutorAcademico = new Usuario();
+        /*tutorAcademico = new Usuario();
         tutorAcademico.setProgramaEducativo("Ingenieria de Software");
         tutorAcademico.setNumeroPersonal(10001);
-        tutorAcademico.setClaveProgramaEducativo(14203);        
+        tutorAcademico.setClaveProgramaEducativo(14203);*/  
         configureTableEstudiantes();
     }    
 
@@ -119,7 +120,7 @@ public class FXMLImportarEstudiantesController implements Initializable {
         EstudianteDAO estudianteDAO = new EstudianteDAO();
         try {
             for (int i = 0; i < listedEstudiantes.size(); i++) {
-                if(!estudianteDAO.setEstudianteRegister(listedEstudiantes.get(i),tutorAcademico.getClaveProgramaEducativo())){
+                if(!estudianteDAO.setEstudianteRegister(listedEstudiantes.get(i),Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()))){
                     AlertManager.showTemporalAlert("Error", "¡Dato duplicado!", 2);
                 }                 
             }

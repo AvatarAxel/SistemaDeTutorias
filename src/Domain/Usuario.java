@@ -7,108 +7,44 @@ import java.util.ArrayList;
  *
  * @author Vale
  */
-public class Usuario {
-    
-    int numeroPersonal;
-    String nombre; 
-    String apellidoPaterno;
-    String apellidoMaterno; 
-    String programaEducativo;
-    private int claveProgramaEducativo;
-    private ArrayList<Rol> roles;
-    String rol;
-    String correo;
-    
+public class Usuario extends Personal{
+
+    private int idRol;
+    private String contraseña;
+    private ProgramaEducativo programaEducativo;
 
     public Usuario() {
-    }
+    }   
 
-    public Usuario(int numeroPersonal, String nombre, String apellidoPaterno, String apellidoMaterno, String programaEducativo, ArrayList<Rol> roles, String correo) {
-        this.numeroPersonal = numeroPersonal;
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
+    public Usuario(int idRol, String contraseña, ProgramaEducativo programaEducativo, int numeroDePersonal, String nombre, String apellidoPaterno, String apellidoMaterno, String correoElectronicoInstitucional) {
+        super(numeroDePersonal, nombre, apellidoPaterno, apellidoMaterno, correoElectronicoInstitucional);
+        this.idRol = idRol;
+        this.contraseña = contraseña;
         this.programaEducativo = programaEducativo;
-        this.roles = roles;
-        this.correo = correo;
     }
 
-    public String getRol() {
-        return rol;
+    public int getIdRol() {
+        return idRol;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-    
-    public int getNumeroPersonal() {
-        return numeroPersonal;
+    public void setIdRol(int idRol) {
+        this.idRol = idRol;
     }
 
-    public void setNumeroPersonal(int numeroPersonal) {
-        this.numeroPersonal = numeroPersonal;
+    public String getContraseña() {
+        return contraseña;
     }
 
-    public String getNombre() {
-        return nombre;
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellidoPaterno() {
-        return apellidoPaterno;
-    }
-
-    public void setApellidoPaterno(String apellidoPaterno) {
-        this.apellidoPaterno = apellidoPaterno;
-    }
-
-    public String getApellidoMaterno() {
-        return apellidoMaterno;
-    }
-
-    public void setApellidoMaterno(String apellidoMaterno) {
-        this.apellidoMaterno = apellidoMaterno;
-    }
-
-    public String getProgramaEducativo() {
+    public ProgramaEducativo getProgramaEducativo() {
         return programaEducativo;
     }
 
-    public void setProgramaEducativo(String programaEducativo) {
+    public void setProgramaEducativo(ProgramaEducativo programaEducativo) {
         this.programaEducativo = programaEducativo;
     }
-
-    public ArrayList<Rol> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(ArrayList<Rol> roles) {
-        this.roles = roles;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public int getClaveProgramaEducativo() {
-        return claveProgramaEducativo;
-    }
-
-    public void setClaveProgramaEducativo(int claveProgramaEducativo) {
-        this.claveProgramaEducativo = claveProgramaEducativo;
-    }
-
     
-
-    @Override
-    public String toString() {
-        return nombre + " " + apellidoPaterno + " " + apellidoMaterno;
-    }    
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="443.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLEditarPersonalController">
+    <stylesheets>
+        <URL value="@/styles/globalStyles.css" />
+    </stylesheets>
+   <children>
+      <Button fx:id="buttonSave" layoutX="386.0" layoutY="399.0" mnemonicParsing="false" onAction="#buttonSave" text="Guardar" />
+      <TextField fx:id="textNombre" layoutX="14.0" layoutY="71.0" onKeyReleased="#validateInputsNombre" onKeyTyped="#validateLengthNombre" prefHeight="29.0" prefWidth="245.0" promptText="Eje. Alexander" />
+      <TextField fx:id="textApellidoPaterno" layoutX="309.0" layoutY="71.0" onKeyReleased="#validateInputsApellidoPaterno" onKeyTyped="#validateLengthApellidoPaterno" prefHeight="29.0" prefWidth="245.0" promptText="Eje. Mendiola" />
+      <TextField fx:id="textApellidoMaterno" layoutX="14.0" layoutY="165.0" onKeyReleased="#validateInputsApellidoMaterno" onKeyTyped="#validateLengthApellidoMaterno" prefHeight="29.0" prefWidth="245.0" promptText="Eje. Ruiz" />
+      <TextField fx:id="textNumeroPersonal" layoutX="309.0" layoutY="165.0" onKeyReleased="#validateInputsNumeroPersonal" onKeyTyped="#validateLengthNumeroPersonal" prefHeight="29.0" prefWidth="245.0" promptText="Eje. 13245" />
+      <Button layoutX="482.0" layoutY="399.0" mnemonicParsing="false" onAction="#buttonCancel" text="Cancelar" />
+      <Label fx:id="labelInvalidateNombre" layoutX="14.0" layoutY="107.0" prefHeight="19.0" prefWidth="245.0" textFill="#d30c20" />
+      <Label fx:id="labelInvalidateApellidoPaterno" layoutX="309.0" layoutY="107.0" prefHeight="19.0" prefWidth="245.0" textFill="#d30c20" />
+      <Label fx:id="labelInvalidateApellidoMaterno" layoutX="14.0" layoutY="204.0" prefHeight="19.0" prefWidth="245.0" textFill="#d30c20" />
+      <Label fx:id="labelInvalidateMatricula" layoutX="309.0" layoutY="204.0" prefHeight="19.0" prefWidth="245.0" textFill="#d30c20" />
+      <Label layoutX="14.0" layoutY="46.0" prefHeight="19.0" prefWidth="97.0" text="Nombre(s)" />
+      <Label layoutX="309.0" layoutY="46.0" prefHeight="19.0" prefWidth="127.0" text="Apellido Paterno" />
+      <Label layoutX="14.0" layoutY="138.0" prefHeight="19.0" prefWidth="127.0" text="Apellido Materno" />
+      <Label layoutX="309.0" layoutY="138.0" prefHeight="19.0" prefWidth="137.0" text="Numero de personal" />
+      <Label layoutX="14.0" layoutY="223.0" prefHeight="19.0" prefWidth="127.0" text="Correo Electronico" />
+      <TextField fx:id="textCorreoElectronico" layoutX="14.0" layoutY="253.0" onKeyReleased="#validateInputsApellidoMaterno" onKeyTyped="#validateLengthApellidoMaterno" prefHeight="29.0" prefWidth="245.0" promptText="Ej. serena@uv.mx" />
+      <CheckBox fx:id="checkBoxTutor" layoutX="336.0" layoutY="233.0" mnemonicParsing="false" text="Tutor Academico" />
+      <CheckBox fx:id="checkBoxJefeDeCarrera" layoutX="336.0" layoutY="273.0" mnemonicParsing="false" text="Jefe de carrera" />
+      <CheckBox fx:id="checkBoxCordinador" layoutX="336.0" layoutY="316.0" mnemonicParsing="false" text="Cordinador de tutoria" />
+      <Label fx:id="labelInvalidateCorreo" layoutX="14.0" layoutY="297.0" prefHeight="19.0" prefWidth="245.0" textFill="#d30c20" />
+   </children>
+</AnchorPane>

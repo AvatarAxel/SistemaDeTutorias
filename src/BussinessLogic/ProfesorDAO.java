@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package BussinessLogic;
 
 import Domain.ExperienciaEducativa;
@@ -91,7 +88,6 @@ public class ProfesorDAO implements IProfesorDAO {
         String query="select CONCAT(p.nombre,' ', p.apellidoPaterno,' ', p.apellidoMaterno) as profesorname, ee.nrc, ee.nombre from profesores p inner join experiencias_educativas ee on \n" +
         "p.numeroDePersonal=ee.numeroDePersonal" ;
         PreparedStatement statement = connection.prepareStatement(query);
-        //statement.setString(1, experienciaName);
         ResultSet resultSet=statement.executeQuery();
         if (resultSet.next()){
             String profesorName;

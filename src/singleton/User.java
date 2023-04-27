@@ -4,6 +4,7 @@
  */
 package singleton;
 
+import Domain.ProgramaEducativo;
 import Domain.Rol;
 import java.util.ArrayList;
 
@@ -12,14 +13,34 @@ import java.util.ArrayList;
  * @author panther
  */
 public class User {
+    private int numeroDePersonal;
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String correo;
-    private String programaEducativo;
+    //private ProgramaEducativo programaEducativo;
+    private Rol rol;
     private ArrayList<Rol> roles;
     
     private static User currentUser;
+
+    private User() {
+    }
+    
+    public static User getCurrentUser() {
+        if (currentUser == null) {
+            currentUser = new User();
+        }
+        return currentUser;
+    }
+
+    public int getNumeroDePersonal() {
+        return numeroDePersonal;
+    }
+
+    public void setNumeroDePersonal(int numeroDePersonal) {
+        this.numeroDePersonal = numeroDePersonal;
+    }
 
     public String getNombre() {
         return nombre;
@@ -53,20 +74,12 @@ public class User {
         this.correo = correo;
     }
 
-    public String getProgramaEducativo() {
-        return programaEducativo;
+    public Rol getRol() {
+        return rol;
     }
 
-    public void setProgramaEducativo(String programaEducativo) {
-        this.programaEducativo = programaEducativo;
-    }
-
-    public static User getCurrentUser() {
-        return currentUser;
-    }
-
-    public static void setCurrentUser(User currentUser) {
-        User.currentUser = currentUser;
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
     public ArrayList<Rol> getRoles() {
@@ -76,9 +89,9 @@ public class User {
     public void setRoles(ArrayList<Rol> roles) {
         this.roles = roles;
     }
-
+    
     @Override
     public String toString() {
-        return "User{" + "nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", programaEducativo=" + programaEducativo + ", roles=" + roles + '}';
+        return "User{" + "nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", roles=" + roles + '}';
     }
 }

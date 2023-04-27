@@ -38,6 +38,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
 /**
@@ -76,7 +77,7 @@ import util.WindowManager;
     @FXML
     private Button btProblematicaAcademica;
     
-    private Usuario tutorAcademico;
+    //private Usuario tutorAcademico;
     private ReporteDeTutoriaAcademica reporteTutoriaAcademica;
     private TutoriaAcademica tutoriaAcademica;
     
@@ -90,10 +91,10 @@ import util.WindowManager;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tutorAcademico = new Usuario();
+        /*tutorAcademico = new Usuario();
         tutorAcademico.setProgramaEducativo("Ingenieria de Software");
         tutorAcademico.setNumeroPersonal(10001);
-        tutorAcademico.setClaveProgramaEducativo(14203);
+        tutorAcademico.setClaveProgramaEducativo(14203);*/
         configureTableEstudiantes();        
         loadPlaceHolder();
         btProblematicaAcademica.setText("");
@@ -108,7 +109,7 @@ import util.WindowManager;
             }else{
                 btProblematicaAcademica.setText("Agregar problemática académica");                
                 ReporteDeTutoriaAcademicaDAO ReporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
-                if(!ReporteDeTutoriaAcademicaDao.setReporteDeTutorias(tfComentarioGeneral.getText(),tutoriaAcademica.getIdTutoriaAcademica() , tutorAcademico.getNumeroPersonal())){            
+                if(!ReporteDeTutoriaAcademicaDao.setReporteDeTutorias(tfComentarioGeneral.getText(),tutoriaAcademica.getIdTutoriaAcademica() , User.getCurrentUser().getNumeroDePersonal())){            
                     AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
                 }        
             }
@@ -149,9 +150,9 @@ import util.WindowManager;
         try {
             tfFechaTutoria.setText(tutoriaAcademica.getFechasTutoriaAcademica());            
             tfNumeroSesionTutoria.setText(String.valueOf(tutoriaAcademica.getNumeroDeSesion()));
-            lbProgramaEducativo.setText(tutorAcademico.getProgramaEducativo());
+            lbProgramaEducativo.setText(User.getCurrentUser().getRol().getProgramaEducativo().getNombre());
             tfPeriodoEscolar.setText(tutoriaAcademica.getFechasPeriodoEscolar());
-            ReporteDeTutoriaAcademica loadedReporteDeTutoriaAcademica = ReporteDeTutoriaAcademicaDao.getReporteDeTutoriaByTutor(tutoriaAcademica.getIdTutoriaAcademica(),tutorAcademico.getNumeroPersonal());
+            ReporteDeTutoriaAcademica loadedReporteDeTutoriaAcademica = ReporteDeTutoriaAcademicaDao.getReporteDeTutoriaByTutor(tutoriaAcademica.getIdTutoriaAcademica(),User.getCurrentUser().getNumeroDePersonal());
             reporteTutoriaAcademica = loadedReporteDeTutoriaAcademica;                
             tfComentarioGeneral.setText(reporteTutoriaAcademica.getComentariosGenerales());
         } catch (SQLException sqle) {
@@ -165,7 +166,7 @@ import util.WindowManager;
             if(editableType){
                 listEstudiantesRecived = estudianteDAO.obtenerEstudiantesPorReporteTutoriaAcademica(reporteTutoriaAcademica.getIdReporteTutoria());             
             }else{
-                listEstudiantesRecived = estudianteDAO.obtenerEstudiantesPorTutorAcademico(tutorAcademico.getNumeroPersonal());          
+                listEstudiantesRecived = estudianteDAO.obtenerEstudiantesPorTutorAcademico(User.getCurrentUser().getNumeroDePersonal());          
             }
             if(listEstudiantesRecived !=null){
                 listEstudiantes.clear();                    

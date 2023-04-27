@@ -100,6 +100,8 @@ public class FXMLConsultarReporteGeneralDeTutoriasAcademicasController implement
                     listTutoriasAcademicas.addAll(loadedTutoriasAcademicas);
                     loadInformationPeriodoEscolar();
                     tableTutoriasAcademicas.setItems(listTutoriasAcademicas);
+                    Label noticeContent = new Label("Sin contenido...");
+                    tableTutoriasAcademicas.setPlaceholder(noticeContent);
                 } catch (SQLException sqle) {
                     AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
                 }
@@ -131,17 +133,17 @@ public class FXMLConsultarReporteGeneralDeTutoriasAcademicasController implement
             Scene esceneReporteGeneral = new Scene(root); 
             Stage escenarioReporteGeneral = new Stage();
             escenarioReporteGeneral.setScene(esceneReporteGeneral);
-            escenarioReporteGeneral.initModality(Modality.APPLICATION_MODAL);      
+            escenarioReporteGeneral.initModality(Modality.APPLICATION_MODAL);     
             escenarioReporteGeneral.show();
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
-          
+        }          
     }    
 
     @FXML
     private void selectPeriodo(MouseEvent event) {
-        if (!tableTutoriasAcademicas.getSelectionModel().isEmpty()) {
+        if (!tableTutoriasAcademicas.getSelectionModel().isEmpty() 
+                && tableTutoriasAcademicas.getSelectionModel().getSelectedItem() != null) {
             buttonConsultar.setDisable(false);
         }
     }

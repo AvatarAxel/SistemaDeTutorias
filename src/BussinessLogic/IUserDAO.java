@@ -4,8 +4,10 @@
  */
 package BussinessLogic;
 
+import Domain.Rol;
 import Domain.Usuario;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,6 +15,8 @@ import java.sql.SQLException;
  */
 public interface IUserDAO {
     
-    public Usuario getUserDB(String correo, String contrasena) throws SQLException;
+    public Usuario getUser(String correo, String contrasena) throws SQLException;
+    
+    public ArrayList<Rol> getUserRoles(int numeroDePersonal) throws SQLException;
     
 }

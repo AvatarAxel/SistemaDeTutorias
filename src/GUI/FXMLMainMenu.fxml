@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
    <children>
       <MenuBar fx:id="mbMainMenu" prefHeight="25.0" prefWidth="600.0">
         <menus>
-          <Menu mnemonicParsing="false" text="Reportes">
+          <Menu fx:id="menuReportes" mnemonicParsing="false" text="Reportes">
             <items>
-                  <Menu mnemonicParsing="false" text="Reporte General">
+                  <Menu fx:id="menuReporteGeneral" mnemonicParsing="false" text="Reporte General">
                      <items>
                     <MenuItem fx:id="miCreateGeneralReport" mnemonicParsing="false" onAction="#menuCreateGeneralReport" text="Crear" />
                         <MenuItem mnemonicParsing="false" onAction="#menuReadGeneralReport" text="Consultar" />
                      </items>
                   </Menu>
-                  <Menu mnemonicParsing="false" text="Reporte Tutorias">
+                  <Menu fx:id="menuReporteTutorial" mnemonicParsing="false" text="Reporte Tutorias">
                      <items>
                         <MenuItem fx:id="miCreateTutorialReport" mnemonicParsing="false" onAction="#menuCreateTutorialReport" text="Crear" />
                         <MenuItem mnemonicParsing="false" onAction="#menuReadTutorialReport" text="Consultar" />
@@ -25,37 +28,53 @@
                   </Menu>
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Problematicas">
+          <Menu fx:id="menuSolucionProblematicas" mnemonicParsing="false" text="Solución a Problematicas">
             <items>
-                  <Menu mnemonicParsing="false" text="Solucionar">
-                     <items>
-                    <MenuItem mnemonicParsing="false" onAction="#menuReadProblematic" text="Consultar Solución" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuSolutionProblematic" text="Registrar Solución" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuUpdateSolution" text="Editar Solución" />
-                     </items>
-                  </Menu>
+              <MenuItem mnemonicParsing="false" onAction="#menuReadProblematic" text="Consultar Solución" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuSolutionProblematic" text="Registrar Solución" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuUpdateSolution" text="Editar Solución" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="Oferta Academica">
+            <Menu fx:id="menuOfertaAcademica" mnemonicParsing="false" text="Oferta Academica">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#menuUploadOffer" text="Registrar" />
                   <MenuItem mnemonicParsing="false" onAction="#menuReadOffer" text="Consultar" />
                   <MenuItem mnemonicParsing="false" onAction="#menuUpdateOffer" text="Editar" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Registros">
+            <Menu fx:id="menuRegistros" mnemonicParsing="false" text="Registros">
               <items>
                   <MenuItem mnemonicParsing="false" onAction="#menuRegistrarEstudiantesAction" text="Registrar Estudiantes" />
                   <MenuItem mnemonicParsing="false" onAction="#menuImportarEstudiantesAction" text="Importar Estudiantes" />
                 <MenuItem mnemonicParsing="false" onAction="#menuRegistrarTutorAction" text="Registrar Tutor Academico" />
               </items>
             </Menu>
-          <Menu mnemonicParsing="false" text="Ayuda">
+            <Menu fx:id="menuAsignaciones" mnemonicParsing="false" text="Asignaciones">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#menuAsignaciones" text="Gestión de Asignaciones" />
+              </items>
+            </Menu>
+            <Menu fx:id="menuProblematicas" mnemonicParsing="false" text="Gestión Problematicas">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#menuGestionarProblematicas" text="Gestión de Problematicas" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuConsultarProblematicas" text="Consultar Problematicas" />
+               </items>
+            </Menu>
+            <Menu fx:id="menuFechas" mnemonicParsing="false" text="Fechas">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#menuRegistrarFechas" text="Registrar Fechas" />
+               </items>
+            </Menu>
+          <Menu fx:id="menuHelp" mnemonicParsing="false" text="Ayuda">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
+      <ComboBox fx:id="cbRol" layoutX="428.0" layoutY="58.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbProgramaEducativo" layoutX="428.0" layoutY="125.0" prefWidth="150.0" />
+      <Label layoutX="300.0" layoutY="62.0" text="Rol Actual" />
+      <Label layoutX="300.0" layoutY="129.0" text="Programa Educativo" />
    </children>
 </AnchorPane>
