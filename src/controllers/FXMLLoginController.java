@@ -5,9 +5,14 @@
 package controllers;
 
 import BussinessLogic.UserDAO;
+import Domain.Coordinador;
+import Domain.JefeDeCarrera;
+import Domain.Rol;
+import Domain.TutorAcademico;
 import Domain.Usuario;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,7 +38,7 @@ import util.WindowManager;
  * @author panther
  */
 public class FXMLLoginController implements Initializable {
-    
+
     @FXML
     private TextField tfEmail;
     @FXML
@@ -76,24 +81,27 @@ public class FXMLLoginController implements Initializable {
 
     private void doLogin(String username, String password) throws SQLException {
         UserDAO userDAO = new UserDAO();
+        
         Usuario usuarioLogin = userDAO.getUser(username, password);
+        
         if (usuarioLogin != null) {
-            //usuarioLogin.setRoles(userDAO.getUserRoles(usuarioLogin.getNumeroDePersonal()));
-            
-            User.getCurrentUser().initUser();
+
+            ArrayList<Rol> roles = userDAO.getUserRoles(usuarioLogin.getNumeroDePersonal());
 
             User.getCurrentUser().setNombre(usuarioLogin.getNombre());
             User.getCurrentUser().setApellidoPaterno(usuarioLogin.getApellidoPaterno());
             User.getCurrentUser().setApellidoMaterno(usuarioLogin.getApellidoMaterno());
             User.getCurrentUser().setCorreo(usuarioLogin.getCorreoElectronicoInstitucional());
-            //User.getCurrentUser().setProgramaEducativo(usuarioLogin.getProgramaEducativo());
-            //User.getCurrentUser().setRoles(usuarioLogin.getRoles());
+            User.getCurrentUser().setRoles(roles);
             
+            
+            
+
             WindowManager.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
         } else {
             AlertManager.showAlert("Usuario no encontrado", "No se han encontrado coincidencias con las credenciales ingresadas", Alert.AlertType.WARNING);
         }
-        WindowManager.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+        //WindowManager.NavigateToWindow(tfEmail.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }
 
     @FXML

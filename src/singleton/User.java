@@ -18,18 +18,22 @@ public class User {
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String correo;
-    private ProgramaEducativo programaEducativo;
+    //private ProgramaEducativo programaEducativo;
+    private Rol rol;
     private ArrayList<Rol> roles;
     
     private static User currentUser;
 
     private User() {
     }
-
-    public void initUser(){
-        currentUser = new User();
-    }
     
+    public static User getCurrentUser() {
+        if (currentUser == null) {
+            currentUser = new User();
+        }
+        return currentUser;
+    }
+
     public int getNumeroDePersonal() {
         return numeroDePersonal;
     }
@@ -70,20 +74,12 @@ public class User {
         this.correo = correo;
     }
 
-    public ProgramaEducativo getProgramaEducativo() {
-        return programaEducativo;
+    public Rol getRol() {
+        return rol;
     }
 
-    public void setProgramaEducativo(ProgramaEducativo programaEducativo) {
-        this.programaEducativo = programaEducativo;
-    }
-
-    public static User getCurrentUser() {
-        return currentUser;
-    }
-
-    public static void setCurrentUser(User currentUser) {
-        User.currentUser = currentUser;
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
     public ArrayList<Rol> getRoles() {
@@ -93,9 +89,9 @@ public class User {
     public void setRoles(ArrayList<Rol> roles) {
         this.roles = roles;
     }
-
+    
     @Override
     public String toString() {
-        return "User{" + "nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", programaEducativo=" + programaEducativo + ", roles=" + roles + '}';
+        return "User{" + "nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", roles=" + roles + '}';
     }
 }
