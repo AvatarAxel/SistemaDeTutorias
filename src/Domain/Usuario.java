@@ -2,6 +2,7 @@
 package Domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -12,11 +13,12 @@ public class Usuario extends Personal{
     private int idRol;
     private String contraseña;
     private ProgramaEducativo programaEducativo;
+    private List<Rol> listRoles;
 
     public Usuario() {
     }   
 
-    public Usuario(int idRol, String contraseña, ProgramaEducativo programaEducativo, int numeroDePersonal, String nombre, String apellidoPaterno, String apellidoMaterno, String correoElectronicoInstitucional) {
+    public Usuario(int idRol, String contraseña, ProgramaEducativo programaEducativo, int numeroDePersonal, String nombre, String apellidoPaterno, String apellidoMaterno, String correoElectronicoInstitucional, List<Rol> listRoles) {
         super(numeroDePersonal, nombre, apellidoPaterno, apellidoMaterno, correoElectronicoInstitucional);
         this.idRol = idRol;
         this.contraseña = contraseña;
@@ -45,6 +47,14 @@ public class Usuario extends Personal{
 
     public void setProgramaEducativo(ProgramaEducativo programaEducativo) {
         this.programaEducativo = programaEducativo;
+    }
+
+    public List<Rol> getListRoles() {
+        return listRoles;
+    }
+
+    public void setListRoles(List<Rol> listRoles) {
+        this.listRoles = listRoles;
     }
     
 }

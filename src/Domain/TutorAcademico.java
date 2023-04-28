@@ -4,6 +4,8 @@
  */
 package Domain;
 
+import java.util.List;
+
 /**
  *
  * @author michikato
@@ -19,8 +21,8 @@ public class TutorAcademico extends Usuario{
         this.numeroEstudiantes = numeroEstudiantes;
     }
 
-    public TutorAcademico(int numeroEstudiantes, int idRol, String contraseña, ProgramaEducativo programaEducativo, int numeroDePersonal, String nombre, String apellidoPaterno, String apellidoMaterno, String correoElectronicoInstitucional) {
-        super(idRol, contraseña, programaEducativo, numeroDePersonal, nombre, apellidoPaterno, apellidoMaterno, correoElectronicoInstitucional);
+    public TutorAcademico(int numeroEstudiantes, int idRol, String contraseña, ProgramaEducativo programaEducativo, int numeroDePersonal, String nombre, String apellidoPaterno, String apellidoMaterno, String correoElectronicoInstitucional, List<Rol> listRoles) {
+        super(idRol, contraseña, programaEducativo, numeroDePersonal, nombre, apellidoPaterno, apellidoMaterno, correoElectronicoInstitucional, listRoles);
         this.numeroEstudiantes = numeroEstudiantes;
     }
 

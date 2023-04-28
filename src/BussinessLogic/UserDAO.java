@@ -122,7 +122,7 @@ public class UserDAO implements IUserDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            String query = "SELECT DISTINCT u.numeroDePersonal, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.esRegistrado\n"
+            String query = "SELECT DISTINCT u.numeroDePersonal, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.esRegistrado, u.correoElectronicoInstitucional\n"
                     + "FROM usuarios u\n"
                     + "INNER JOIN roles_usuarios_programa_educativo rup\n"
                     + "ON u.numeroDePersonal = rup.numeroDePersonal\n"
@@ -136,6 +136,7 @@ public class UserDAO implements IUserDAO {
                 usuario.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
                 usuario.setApellidoMaterno(resultSet.getString("apellidoMaterno"));
                 usuario.setNumeroDePersonal(resultSet.getInt("numeroDePersonal"));
+                usuario.setCorreoElectronicoInstitucional(resultSet.getString("correoElectronicoInstitucional"));
                 listUsuario.add(usuario);
             }
             connection.close();
@@ -143,16 +144,17 @@ public class UserDAO implements IUserDAO {
         return listUsuario;
     }
 
-    public ArrayList<Rol> getAllUserRolesByNumeroDePersonal(int numeroDePersonal) throws SQLException {
+    public ArrayList<Rol> getAllUserRolesByNumeroDePersonal(int numeroDePersonal, int clave) throws SQLException {
         ArrayList<Rol> roles = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         String query = ("SELECT r.idRol, r.nombre\n"
                 + "FROM roles r\n"
                 + "INNER JOIN roles_usuarios_programa_educativo ru ON r.idRol = ru.idRol\n"
-                + "WHERE ru.numeroDePersonal = ?");
+                + "WHERE ru.numeroDePersonal = ? and ru.clave = ?;");
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, numeroDePersonal);
+        statement.setInt(2, clave);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             roles.add(new Rol(resultSet.getInt("IdRol"), resultSet.getString("nombre")));

@@ -4,6 +4,8 @@
  */
 package Domain;
 
+import java.util.List;
+
 /**
  *
  * @author Panther
@@ -13,8 +15,8 @@ public class JefeDeCarrera extends Usuario{
     public JefeDeCarrera() {
     }
 
-    public JefeDeCarrera(int idRol, String contraseña, ProgramaEducativo programaEducativo, int numeroDePersonal, String nombre, String apellidoPaterno, String apellidoMaterno, String correoElectronicoInstitucional) {
-        super(idRol, contraseña, programaEducativo, numeroDePersonal, nombre, apellidoPaterno, apellidoMaterno, correoElectronicoInstitucional);
+    public JefeDeCarrera(int idRol, String contraseña, ProgramaEducativo programaEducativo, int numeroDePersonal, String nombre, String apellidoPaterno, String apellidoMaterno, String correoElectronicoInstitucional, List<Rol> listRoles) {
+        super(idRol, contraseña, programaEducativo, numeroDePersonal, nombre, apellidoPaterno, apellidoMaterno, correoElectronicoInstitucional, listRoles);
     }
 
 }

@@ -157,7 +157,7 @@ public class FXMLReporteGeneralController implements Initializable {
             }
         };
         executorService.submit(configureSceneTask);
-        executorService.shutdown();
+        executorService.shutdown();        
     }
 
     private void closeWindow() {
