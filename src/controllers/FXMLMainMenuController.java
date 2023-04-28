@@ -270,13 +270,6 @@ public class FXMLMainMenuController implements Initializable {
             escenario.setScene(esceneReporteGeneral);
             escenario.setTitle(miCreateTutorialReport.getText() + " Reporte de Tutoría");
             escenario.show();
-            /*WindowManager.NavigateToWindow(
-                    mbMainMenu.getScene().getWindow(),
-                    "/GUI/FXMLReporteTutoriaAcademica.fxml",
-                    miCreateTutorialReport.getText()+" Reporte de Tutoría"
-            );
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXMLReporteTutoriaAcademica.fxml"));
-            Parent root = loader.load();*/
             FXMLReporteTutoriaAcademicaController controllerReporteTutoriaAcademica = loader.getController();
             controllerReporteTutoriaAcademica.configureScene(tutoriaAcademica, reporteTutoriaAcademica, editableType);
         } catch (IOException ex) {
@@ -364,6 +357,11 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuImportarEstudiantesAction(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLImportarEstudiantes.fxml",
+                "Importar Estudiantes"
+        );        
     }
 
     @FXML

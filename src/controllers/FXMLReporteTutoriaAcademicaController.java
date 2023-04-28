@@ -315,7 +315,7 @@ import javafx.stage.Modality;
         Optional<ButtonType> answer;
         if(editableTypeReport){
             answer = AlertManager.showAlert("AVISO",
-                    "NO se guardaran los cambios. \n\n¿Desea continuar?", Alert.AlertType.CONFIRMATION);
+                    "NO se guardarán los cambios. \n\n¿Desea continuar?", Alert.AlertType.CONFIRMATION);
         }else{
             answer = AlertManager.showAlert("AVISO",
                     "¿Desea Salir?", Alert.AlertType.CONFIRMATION);            

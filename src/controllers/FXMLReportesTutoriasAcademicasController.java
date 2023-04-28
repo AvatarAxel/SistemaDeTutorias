@@ -88,7 +88,7 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
         //14203
         TutorAcademicoDAO tutorAcademicoDAO = new TutorAcademicoDAO();
         try{
-            ArrayList<Usuario> resultadoConsulta = tutorAcademicoDAO.getTutoresWithReportesbyProgramaEducativo(14203);
+            ArrayList<Usuario> resultadoConsulta = tutorAcademicoDAO.getTutoresWithReportesbyProgramaEducativo(Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()));
             tutoresAcademicos = FXCollections.observableArrayList();            
             tutoresAcademicos.addAll(resultadoConsulta);
             cbTutorAcademico.setItems(tutoresAcademicos);        
@@ -143,16 +143,6 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
 
     private void goingToReporteTutoriaAcademica(TutoriaAcademica tutoriaAcademica, Usuario tutorAcademico){
         try {            
-            /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXMLConsultarReporteTutoriaAcademica.fxml"));
-            Parent root = loader.load();
-            FXMLConsultarReporteTutoriaAcademicaController controllerReporteTutoriaAcademica = loader.getController();
-            controllerReporteTutoriaAcademica.receiveTutoriaAcademicaAndTutor(tutoriaAcademica,tutorAcademico); 
-            Scene esceneReporteGeneral = new Scene(root); 
-            Stage escenarioReporteTutoriaAcademica = new Stage();
-            escenarioReporteTutoriaAcademica.setTitle("Reporte de Tutoría del "+tutoriaAcademica.getFechasTutoriaAcademica());
-            escenarioReporteTutoriaAcademica.setScene(esceneReporteGeneral);
-            escenarioReporteTutoriaAcademica.initModality(Modality.APPLICATION_MODAL);      
-            escenarioReporteTutoriaAcademica.show();*/
             Stage escenario = (Stage) tbReportesTutoriasAcademicas.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXMLConsultarReporteTutoriaAcademica.fxml"));
             Parent root = loader.load();       
