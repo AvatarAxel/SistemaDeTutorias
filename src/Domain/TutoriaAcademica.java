@@ -89,4 +89,9 @@ public class TutoriaAcademica {
         return fechasTutoriaAcademica;
     }    
 
+    public String getFechaLimiteTutoriaAcademica(){
+        String fechasTutoriaAcademica = util.DateLatinAmerica.DateWithDays(fechaCierreEntregaReporte);
+        return fechasTutoriaAcademica;
+    }     
+    
 }

@@ -128,7 +128,8 @@ import javafx.stage.Modality;
     
     private void loadPlaceHolder(){
         tfComentarioGeneral.setText("Cargando datos...");              
-        tfFechaTutoria.setText("Cargando datos...");            
+        tfFechaTutoria.setText("Cargando datos..."); 
+        tfFechaLimiteEntrega.setText("Cargando datos..."); 
         tfNumeroSesionTutoria.setText("0");
         lbProgramaEducativo.setText("Cargando datos...");
         tfPeriodoEscolar.setText("Cargando datos...");
@@ -154,7 +155,8 @@ import javafx.stage.Modality;
     private void configureValuesReporteDeTutoria(){
         ReporteDeTutoriaAcademicaDAO ReporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
         try {
-            tfFechaTutoria.setText(tutoriaAcademica.getFechasTutoriaAcademica());            
+            tfFechaTutoria.setText(tutoriaAcademica.getFechasTutoriaAcademica());
+            tfFechaLimiteEntrega.setText(tutoriaAcademica.getFechaLimiteTutoriaAcademica());
             tfNumeroSesionTutoria.setText(String.valueOf(tutoriaAcademica.getNumeroDeSesion()));
             lbProgramaEducativo.setText(User.getCurrentUser().getRol().getProgramaEducativo().getNombre());
             tfPeriodoEscolar.setText(tutoriaAcademica.getFechasPeriodoEscolar());

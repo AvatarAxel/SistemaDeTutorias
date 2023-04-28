@@ -26,12 +26,12 @@
       <Label layoutX="23.0" layoutY="65.0" text="Periodo Escolar:" />
       <Label layoutX="23.0" layoutY="105.0" text="Fecha de Tutoría:" />
       <Label layoutX="23.0" layoutY="140.0" text="Número de Sesión de Tutoría:" />
-      <Label layoutX="359.0" layoutY="140.0" text="Fecha Límite de Entrega:" />
+      <Label layoutX="291.0" layoutY="139.0" text="Fecha Límite de Entrega:" />
       <Label fx:id="lbProgramaEducativo" layoutX="197.0" layoutY="19.0" prefHeight="27.0" prefWidth="317.0" text="Programa Educativo">
          <font>
             <Font name="System Italic" size="18.0" />
          </font></Label>
-      <TextField fx:id="tfFechaLimiteEntrega" editable="false" layoutX="530.0" layoutY="137.0" prefHeight="26.0" prefWidth="98.0" />
+      <TextField fx:id="tfFechaLimiteEntrega" editable="false" layoutX="479.0" layoutY="137.0" prefHeight="26.0" prefWidth="149.0" />
       <TableView fx:id="tbEstudiantes" layoutX="14.0" layoutY="171.0" prefHeight="166.0" prefWidth="616.0">
         <columns>
           <TableColumn fx:id="columnMatricula" editable="false" prefWidth="85.6000394821167" style="-fx-alignment: CENTER-LEFT;" text="Matrícula" />
