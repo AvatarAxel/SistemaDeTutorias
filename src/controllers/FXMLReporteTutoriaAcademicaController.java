@@ -103,20 +103,23 @@ import javafx.stage.Modality;
         tutorAcademico.setClaveProgramaEducativo(14203);*/
         configureTableEstudiantes();        
         loadPlaceHolder();
+        btProblematicaAcademica.setText("");
     }    
     public void configureScene(TutoriaAcademica tutoriaAcademicaRecived, ReporteDeTutoriaAcademica reporteTutoriaAcademicaRecived, boolean editableType ) throws SQLException {
         editableTypeReport = editableType;
         tutoriaAcademica = tutoriaAcademicaRecived;
+        //ableTocrate
         try {
             if(editableType){
                 btProblematicaAcademica.setText("Editar problemática académica");
             }else{
+                btProblematicaAcademica.setText("Agregar problemática académica");                
                 ReporteDeTutoriaAcademicaDAO ReporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
                 if(!ReporteDeTutoriaAcademicaDao.setReporteDeTutorias(tfComentarioGeneral.getText(),tutoriaAcademica.getIdTutoriaAcademica() , User.getCurrentUser().getNumeroDePersonal())){            
                     AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
                 }        
             }
-            configureValuesReporteDeTutoria(editableType);
+            configureValuesReporteDeTutoria();
             loadEstudiantes(editableType);
         } catch (SQLException sqle) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
@@ -125,7 +128,8 @@ import javafx.stage.Modality;
     
     private void loadPlaceHolder(){
         tfComentarioGeneral.setText("Cargando datos...");              
-        tfFechaTutoria.setText("Cargando datos...");            
+        tfFechaTutoria.setText("Cargando datos..."); 
+        tfFechaLimiteEntrega.setText("Cargando datos..."); 
         tfNumeroSesionTutoria.setText("0");
         lbProgramaEducativo.setText("Cargando datos...");
         tfPeriodoEscolar.setText("Cargando datos...");
@@ -148,10 +152,11 @@ import javafx.stage.Modality;
         columnEsAsistente.setCellValueFactory(new PropertyValueFactory<Estudiante, Boolean>("checkBoxEsAsistente"));
         columnEnRiesgo.setCellValueFactory(new PropertyValueFactory<Estudiante, Boolean>("checkBoxEnRiesgo"));
     }    
-    private void configureValuesReporteDeTutoria(boolean editableType){
+    private void configureValuesReporteDeTutoria(){
         ReporteDeTutoriaAcademicaDAO ReporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
         try {
-            tfFechaTutoria.setText(tutoriaAcademica.getFechasTutoriaAcademica());            
+            tfFechaTutoria.setText(tutoriaAcademica.getFechasTutoriaAcademica());
+            tfFechaLimiteEntrega.setText(tutoriaAcademica.getFechaLimiteTutoriaAcademica());
             tfNumeroSesionTutoria.setText(String.valueOf(tutoriaAcademica.getNumeroDeSesion()));
             lbProgramaEducativo.setText(User.getCurrentUser().getRol().getProgramaEducativo().getNombre());
             tfPeriodoEscolar.setText(tutoriaAcademica.getFechasPeriodoEscolar());
@@ -246,13 +251,13 @@ import javafx.stage.Modality;
             if(editableTypeReport){
                 for (int i = 0; i < listEstudiantes.size(); i++) {
                     if(!estudianteDAO.updateAttendanceList(listEstudiantes.get(i), reporteTutoriaAcademica.getIdReporteTutoria())){
-                        AlertManager.showAlert("Error", "editableTypeReport", Alert.AlertType.ERROR);        
+                        AlertManager.showAlert("Error", "Ocurrio un problema al guradar la información.", Alert.AlertType.ERROR);        
                     }
                 }        
             }else{
                 for (int i = 0; i < listEstudiantes.size(); i++) {
                     if(!estudianteDAO.assignToReporteDeTutoriaAcademica(listEstudiantes.get(i), reporteTutoriaAcademica.getIdReporteTutoria())){
-                        AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);        
+                        AlertManager.showAlert("Error", "Ocurrio un problema al guradar la información.", Alert.AlertType.ERROR);        
                     }
                 }                                
             }            
@@ -265,8 +270,8 @@ import javafx.stage.Modality;
     private void saveChanges()throws SQLException {
         try {
             ReporteDeTutoriaAcademicaDAO ReporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
-            if(ReporteDeTutoriaAcademicaDao.updateReporteDeTutorias(tfComentarioGeneral.getText(),tutoriaAcademica.getIdTutoriaAcademica() , User.getCurrentUser().getNumeroDePersonal())){            
-                    AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
+            if(ReporteDeTutoriaAcademicaDao.updateReporteDeTutorias(tfComentarioGeneral.getText(),tutoriaAcademica.getIdTutoriaAcademica() ,User.getCurrentUser().getNumeroDePersonal())){            
+                    AlertManager.showTemporalAlert("AVISO", "La información se registró correctamente en el sistema", 2);
             }             
         } catch (SQLException sqle) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
@@ -285,30 +290,22 @@ import javafx.stage.Modality;
           try {
          FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("/GUI/FXMLGestionarProblematicas.fxml"));
-
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
             stage.setTitle("Gestión de Problemáticas");
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
-            
-          
             FXMLGestionarProblematicasController controlador = (FXMLGestionarProblematicasController) fxmlLoader.getController();
             controlador.receiveParameters(reporteTutoriaAcademica.getIdReporteTutoria());
-
-              
-
+            stage.show();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
     @FXML
     private void clicButtonsRegister(ActionEvent event) throws SQLException {
-        tfNumEstudiantesAsistentes.setText(String.valueOf(countNumEstudiantesAsistentes()));
-        tfNumEstudiantesEnRiesgo.setText(String.valueOf(countEstudiantesEnRiesgo()));
-
         Optional<ButtonType> answer = AlertManager.showAlert("AVISO",
-                "Se guardaran los cambios. \n\n¿Desea continuar?", Alert.AlertType.CONFIRMATION);
+                "Una vez enviado el Reporte de Tutorías solo lo podrá modificar antes de la fecha límite de la entrega. \n\n¿Desea continuar?", Alert.AlertType.CONFIRMATION);
         if (answer.get() == ButtonType.OK) {
             assignEstudiantes();
             saveChanges();
@@ -317,15 +314,17 @@ import javafx.stage.Modality;
     }    
     @FXML
     private void clicButtonCancel(ActionEvent event) {
+        Optional<ButtonType> answer;
         if(editableTypeReport){
-            Optional<ButtonType> answer = AlertManager.showAlert("AVISO",
-                    "NO se guardaran los cambios. \n\n¿Desea continuar?", Alert.AlertType.CONFIRMATION);
-            if (answer.get() == ButtonType.OK) {
-                editableTypeReport = false;                
-                closeWindow();
-            }        
+            answer = AlertManager.showAlert("AVISO",
+                    "NO se guardarán los cambios. \n\n¿Desea continuar?", Alert.AlertType.CONFIRMATION);
         }else{
-                closeWindow();            
+            answer = AlertManager.showAlert("AVISO",
+                    "¿Desea Salir?", Alert.AlertType.CONFIRMATION);            
+        } 
+        if (answer.get() == ButtonType.OK) {
+            editableTypeReport = false;                
+            closeWindow();
         }        
     }    
       

@@ -68,9 +68,8 @@ public class TutoriaAcademicaDAO {
         return listTutoriasAcademicas;
     }
     
-    public TutoriaAcademica getCurrentlyTutoriaAcademica()throws SQLException  {
+    public TutoriaAcademica getCurrentlyTutoriaAcademica(String claveProgramaEducativo)throws SQLException  {
         TutoriaAcademica tutoriaAcademica = new TutoriaAcademica();
-        //tutoriaAcademica = null;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
@@ -83,15 +82,20 @@ public class TutoriaAcademicaDAO {
                 periodoEscolar.setIdPeriodoEscolar(resultPeriodoEscolar.getInt("idPeriodoEscolar"));
                 periodoEscolar.setFechaInicio(resultPeriodoEscolar.getDate("fechaInicio"));
                 periodoEscolar.setFechaFin(resultPeriodoEscolar.getDate("fechaFin"));
-                String queryTutoriaAcademica = "SELECT * FROM tutorias_academicas ta\n" +
-                        "WHERE (NOW() BETWEEN ta.fechaInicio AND ta.fechaFin);";
+                String queryTutoriaAcademica = "SELECT idTutoriaAcademica, numeroDeSesion, fechaInicio, fechaFin,"
+                    + "clave, idPeriodoEscolar, DATE_ADD(fechaFin, INTERVAL 7 DAY) AS fechaLimite\n" +
+                    "FROM tutorias_academicas\n" +
+                    "WHERE NOW() BETWEEN fechaInicio AND DATE_ADD(fechaFin, INTERVAL 7 DAY)\n" +
+                    "AND clave = ?;";
                 PreparedStatement statementTutoriaAcademica = connection.prepareStatement(queryTutoriaAcademica);
+                statementTutoriaAcademica.setString(1,claveProgramaEducativo );
                 ResultSet resultTutoriaAcademica = statementTutoriaAcademica.executeQuery();
                 if(resultTutoriaAcademica.next()){
                     tutoriaAcademica.setIdTutoriaAcademica(resultTutoriaAcademica.getInt("idTutoriaAcademica"));
                     tutoriaAcademica.setNumeroDeSesion(resultTutoriaAcademica.getInt("numeroDeSesion"));
                     tutoriaAcademica.setFechaInicio(resultTutoriaAcademica.getDate("fechaInicio"));
-                    tutoriaAcademica.setFechaFin(resultTutoriaAcademica.getDate("fechaFin"));  
+                    tutoriaAcademica.setFechaFin(resultTutoriaAcademica.getDate("fechaFin"));
+                    tutoriaAcademica.setFechaCierreEntregaReporte(resultTutoriaAcademica.getDate("fechaLimite"));
                     tutoriaAcademica.setPeriodoEscolar(periodoEscolar);
                 }else{
                     tutoriaAcademica = null;                
