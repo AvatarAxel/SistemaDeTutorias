@@ -163,4 +163,25 @@ public class UserDAO implements IUserDAO {
         return roles;
     }
 
+    public boolean updateUsuario(Usuario usuario) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if (connection != null) {
+            String query = ("UPDATE `sistema_tutorias`.`usuarios` SET `nombre` = ?, `apellidoPaterno` = ?, `apellidoMaterno` = ?, `correoElectronicoInstitucional` = ? WHERE (`numeroDePersonal` = ?);");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, usuario.getNombre());
+            statement.setString(2, usuario.getApellidoPaterno());
+            statement.setString(3, usuario.getApellidoMaterno());
+            statement.setString(4, usuario.getCorreoElectronicoInstitucional());
+            statement.setInt(5, usuario.getNumeroDePersonal());
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }
+
 }

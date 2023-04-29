@@ -7,15 +7,18 @@ package controllers;
 import BussinessLogic.ProfesorDAO;
 import BussinessLogic.UserDAO;
 import Domain.Estudiante;
+import Domain.Personal;
 import Domain.Profesor;
 import Domain.Rol;
 import Domain.Usuario;
+import DomainGraphicInterface.PersonalUser;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Pattern;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,7 +50,7 @@ import util.WindowManager;
 public class FXMLGestionarPersonalController implements Initializable {
 
     @FXML
-    private TableView<Usuario> tablePersonal;
+    private TableView<PersonalUser> tablePersonal;
     @FXML
     private TableColumn<?, ?> columNumeroDePersonal;
     @FXML
@@ -58,7 +61,7 @@ public class FXMLGestionarPersonalController implements Initializable {
     private TableColumn<?, ?> columApellidoMaterno;
     @FXML
     private TextField textFieldSearchPersonal;
-    private ObservableList<Usuario> listPersonal;
+    private ObservableList<PersonalUser> listPersonal;
     @FXML
     private Button buttonDelete;
     @FXML
@@ -87,6 +90,11 @@ public class FXMLGestionarPersonalController implements Initializable {
     private Label labelInvalidateApellidoMaterno;
     @FXML
     private Label labelInvalidateCorreo;
+    @FXML
+    private CheckBox checkBoxTutor;
+    private boolean[] validationTextFields = {true, true, true, true, true};
+    private Pattern validateCharacter = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$");
+    private Pattern validateCharacterEmail = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
 
     /**
      * Initializes the controller class.
@@ -94,11 +102,19 @@ public class FXMLGestionarPersonalController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configureTableColumns();
-        textFieldSearchPersonal.setDisable(true);
+        configureScene();
+    }
+
+    private void configureScene() {
+        disableCheckbox();
         buttonDelete.setDisable(true);
         buttonSave.setDisable(true);
-        checkBoxCoordinador.setDisable(true);
-        checkBoxJefe.setDisable(true);
+        textFieldSearchPersonal.setDisable(true);
+        textApellidoPaterno.setDisable(true);
+        textApellidoMaterno.setDisable(true);
+        textCorreo.setDisable(true);
+        textNombre.setDisable(true);
+        buttonRegister.setVisible(false);
         loadInformationPersonalUsuarios();
         loadInformationPersonalProfesores();
     }
@@ -110,7 +126,7 @@ public class FXMLGestionarPersonalController implements Initializable {
         columNumeroDePersonal.setCellValueFactory(new PropertyValueFactory("numeroDePersonal"));
         columApellidoPaterno.setCellValueFactory(new PropertyValueFactory("apellidoPaterno"));
         columApellidoMaterno.setCellValueFactory(new PropertyValueFactory("apellidoMaterno"));
-        columRol.setCellValueFactory(new PropertyValueFactory("listRoles"));
+        columRol.setCellValueFactory(new PropertyValueFactory("rol"));
         listPersonal = FXCollections.observableArrayList();
     }
 
@@ -123,19 +139,21 @@ public class FXMLGestionarPersonalController implements Initializable {
                 ProfesorDAO profesorDAO = new ProfesorDAO();
                 try {
                     ArrayList<Profesor> loadedProfesor = profesorDAO.getProfesoresUnregistered();
-                    ArrayList<Usuario> listUsuarios = new ArrayList<>();
+                    ArrayList<PersonalUser> listUsuarios = new ArrayList<>();                                
                     if (!loadedProfesor.isEmpty()) {
                         for (int i = 0; i < loadedProfesor.size(); i++) {
-                            Usuario usuario = new Usuario();
+                            Personal usuario = new Profesor();
                             usuario.setNombre(loadedProfesor.get(i).getNombre());
                             usuario.setApellidoPaterno(loadedProfesor.get(i).getApellidoPaterno());
                             usuario.setApellidoMaterno(loadedProfesor.get(i).getApellidoMaterno());
                             usuario.setNumeroDePersonal(loadedProfesor.get(i).getNumeroDePersonal());
-                            usuario.setCorreoElectronicoInstitucional(loadedProfesor.get(i).getCorreoElectronicoInstitucional());
+                            usuario.setCorreoElectronicoInstitucional(loadedProfesor.get(i).getCorreoElectronicoInstitucional());                            
+                            PersonalUser personalUser = new PersonalUser();
                             ArrayList<Rol> listRoles = new ArrayList<>();
                             listRoles.add(new Rol(0, "Profesor"));
-                            usuario.setListRoles(listRoles);
-                            listUsuarios.add(usuario);
+                            personalUser.setRol(listRoles);
+                            personalUser.setPersonal(usuario);                                                        
+                            listUsuarios.add(personalUser);
                         }
                         listPersonal.addAll(listUsuarios);
                         tablePersonal.setItems(listPersonal);
@@ -162,12 +180,14 @@ public class FXMLGestionarPersonalController implements Initializable {
             protected Void call() throws Exception {
                 UserDAO userDAO = new UserDAO();
                 try {
-                    ArrayList<Usuario> loadedPersonal = userDAO.getAllUsersByProgramaEducativo(14203);
+                    ArrayList<Usuario> loadedPersonal = userDAO.getAllUsersByProgramaEducativo(14203);                   
                     if (!loadedPersonal.isEmpty()) {
                         for (int i = 0; i < loadedPersonal.size(); i++) {
+                            PersonalUser personalUser = new PersonalUser();
+                            personalUser.setPersonal(loadedPersonal.get(i));
                             int numeroDePersonal = loadedPersonal.get(i).getNumeroDePersonal();                            
-                            loadedPersonal.get(i).setListRoles(userDAO.getAllUserRolesByNumeroDePersonal(numeroDePersonal, 14203));
-                            tablePersonal.getItems().add(loadedPersonal.get(i));
+                            personalUser.setRol(userDAO.getAllUserRolesByNumeroDePersonal(numeroDePersonal, 14203));
+                            tablePersonal.getItems().add(personalUser);
                         }
                         textFieldSearchPersonal.setDisable(false);
                     }
@@ -187,11 +207,9 @@ public class FXMLGestionarPersonalController implements Initializable {
 
     @FXML
     private void buttonActionDelete(ActionEvent event) {
+        
     }
 
-    @FXML
-    private void buttonActionEdit(ActionEvent event) {
-    }
 
     @FXML
     private void buttonActionExit(ActionEvent event) {
@@ -204,7 +222,7 @@ public class FXMLGestionarPersonalController implements Initializable {
     }
 
     private void filterTable() {
-        FilteredList<Usuario> filteredPersonal = new FilteredList<>(listPersonal, b -> true);
+        FilteredList<PersonalUser> filteredPersonal = new FilteredList<>(listPersonal, b -> true);
         textFieldSearchPersonal.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredPersonal.setPredicate(Usuario -> {
                 if (newValue == null || newValue.isEmpty()) {
@@ -224,7 +242,7 @@ public class FXMLGestionarPersonalController implements Initializable {
                 }
             });
         });
-        SortedList<Usuario> sortedListPersonal = new SortedList<>(filteredPersonal);
+        SortedList<PersonalUser> sortedListPersonal = new SortedList<>(filteredPersonal);
         sortedListPersonal.comparatorProperty().bind(tablePersonal.comparatorProperty());
         tablePersonal.setItems(sortedListPersonal);
     }
@@ -246,24 +264,50 @@ public class FXMLGestionarPersonalController implements Initializable {
 
     @FXML
     private void selectPersonal(MouseEvent event) {
+        disableCheckbox();
+        uncheckBox();
         if (!tablePersonal.getSelectionModel().isEmpty() && tablePersonal.getSelectionModel().getSelectedItem() != null) {
             buttonDelete.setDisable(false);
             buttonSave.setDisable(false);
+            textApellidoPaterno.setDisable(false);
+            textApellidoMaterno.setDisable(false);
+            textCorreo.setDisable(false);
+            textNombre.setDisable(false);
             textNombre.setText(tablePersonal.getSelectionModel().getSelectedItem().getNombre());
             textApellidoPaterno.setText(tablePersonal.getSelectionModel().getSelectedItem().getApellidoPaterno());
             textApellidoMaterno.setText(tablePersonal.getSelectionModel().getSelectedItem().getApellidoMaterno());
             textCorreo.setText(tablePersonal.getSelectionModel().getSelectedItem().getCorreoElectronicoInstitucional());
-            if (tablePersonal.getSelectionModel().getSelectedItem().getListRoles().get(0).getRolName().equals("Profesor")) {
-                checkBoxCoordinador.setDisable(true);
-                checkBoxJefe.setDisable(true);
-            } else {
-                checkBoxCoordinador.setDisable(false);
-                checkBoxJefe.setDisable(false);
-//TODO                
+            if (!tablePersonal.getSelectionModel().getSelectedItem().getRol().get(0).getRolName().equals("Profesor")) {
+                loadCheckBox(tablePersonal.getSelectionModel().getSelectedItem());
             }
         }
     }
 
+    private void loadCheckBox(PersonalUser usuario) {
+        checkBoxTutor.setDisable(false);
+        checkBoxJefe.setDisable(false);
+        checkBoxCoordinador.setDisable(false);
+        uncheckBox();
+        for (int i = 0; i < usuario.getRol().size(); i++) {
+            String rol = usuario.getRol().get(i).getRolName();
+            System.out.println(rol);
+            switch (rol) {
+                case "Jefe de Carrera":
+                    checkBoxJefe.setSelected(true);
+                    break;
+                case "Coordinador":
+                    checkBoxCoordinador.setSelected(true);
+                    break;
+                case "Tutor":
+                    checkBoxTutor.setSelected(true);
+                    break;
+                default:
+                    uncheckBox();
+                    break;
+            }
+        }
+    }
+    
     @FXML
     private void validateInputsNombre(KeyEvent event) {
     }
@@ -302,6 +346,45 @@ public class FXMLGestionarPersonalController implements Initializable {
 
     @FXML
     private void checkBoxJefeAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void checkBoxTutorAction(ActionEvent event) {
+    }
+
+    private void disableCheckbox() {
+        checkBoxTutor.setDisable(true);
+        checkBoxJefe.setDisable(true);
+        checkBoxCoordinador.setDisable(true);
+    }
+
+    private void uncheckBox() {
+        checkBoxTutor.setSelected(false);
+        checkBoxJefe.setSelected(false);
+        checkBoxCoordinador.setSelected(false);
+    }
+
+    @FXML
+    private void buttonActionSave(ActionEvent event) {
+        Profesor profesor = new Profesor();
+        profesor.setNombre(textNombre.getText());
+        profesor.setApellidoPaterno(textApellidoPaterno.getText());
+        profesor.setApellidoMaterno(textApellidoMaterno.getText());
+        profesor.setCorreoElectronicoInstitucional(textCorreo.getText());
+        try {
+            boolean resultUpdateProfesor = new ProfesorDAO().updateProfesor(profesor);
+            if (!tablePersonal.getSelectionModel().getSelectedItem().getRol().get(0).equals("Profesor")) {
+                Usuario usuaurio = new Usuario();
+                usuaurio.setNombre(textNombre.getText());
+                usuaurio.setApellidoPaterno(textApellidoPaterno.getText());
+                usuaurio.setApellidoMaterno(textApellidoMaterno.getText());
+                usuaurio.setCorreoElectronicoInstitucional(textCorreo.getText());
+                boolean resultUpdateUsuario = new UserDAO().updateUsuario(usuaurio);                
+            }                        
+        } catch (SQLException e) {
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
     }
 
 }
