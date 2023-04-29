@@ -1,5 +1,6 @@
 package controllers;
 
+import BussinessLogic.PeriodoEscolarDAO;
 import BussinessLogic.TutoriaAcademicaDAO;
 import Domain.PeriodoEscolar;
 import Domain.TutoriaAcademica;
@@ -16,6 +17,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javax.swing.JOptionPane;
 import singleton.User;
 import util.AlertManager;
 
@@ -35,13 +38,31 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
     @FXML
     private Button btn_save;
     private AlertManager alerts = new AlertManager();
+    @FXML
+    private Label lbl_periodo;
+    
+    int IdPeriodoEscolar;
+    
+    
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
+        try {
+            PeriodoEscolarDAO PeriodoEscolarDAO = new PeriodoEscolarDAO();
+            PeriodoEscolar periodoEscolar=PeriodoEscolarDAO.getCurrentPeriodoEscolar();
+            IdPeriodoEscolar = periodoEscolar.getIdPeriodoEscolar();
+            //JOptionPane.showMessageDialog(null, periodoEscolar.getIdPeriodoEscolar() );
+            lbl_periodo.setText(periodoEscolar.getFechasPeridoEscolar());
+            
+
+        } catch (SQLException ex) {
+            alerts.showAlertErrorConexionDB();
+        }
+       
     }
 
     @FXML
@@ -86,17 +107,36 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
 
     private int getNumeroSesionActual() {
         int numeroSesionActual = 0;
+        TutoriaAcademicaDAO tutoriaDAO = new TutoriaAcademicaDAO();
+        try {
+            numeroSesionActual= tutoriaDAO.getNumeroSesion(IdPeriodoEscolar,User.getCurrentUser().getRol().getProgramaEducativo().getClave() );
+        } catch (SQLException ex) {
+            alerts.showAlertErrorConexionDB();
+        }
+        
 
         return numeroSesionActual;
 
     }
     
-    private int validateData(){
-    int result=0;
-    
-    return result;
+    private void loadcmbSesiones(){
+    int numeroSesionActual = this.getNumeroSesionActual();
     
     
+    }
+
+    private int validateData() {
+        int result = 0;
+        java.sql.Date startDate = java.sql.Date.valueOf(datepicker_startDate.getValue());
+        java.sql.Date endDate = java.sql.Date.valueOf(datepicker_enddate.getValue());
+
+        if (startDate.after(endDate) && !startDate.equals(endDate)) {
+            
+
+        }
+
+        return result;
+
     }
 
 }
