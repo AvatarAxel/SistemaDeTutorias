@@ -31,20 +31,22 @@ import util.WindowManager;
  */
 public class FXMLEditarOfertaAcademicaDetallesController implements Initializable {
 
+    private ExperienciaEducativa experienciaEducativa;
+    private ObservableList<ProgramaEducativo> listProgramasEducativos = FXCollections.observableArrayList();
+    private ObservableList<String> listModalidad = FXCollections.observableArrayList();
+    private ObservableList<String> listSeccion = FXCollections.observableArrayList();
+    
     @FXML
     private TextField tfNrc;
     @FXML
     private TextField tfNombre;
     @FXML
-    private TextField tfModalidad;
-    @FXML
-    private TextField tfSeccion;
-    @FXML
     private ComboBox<ProgramaEducativo> cbProgramaEducativo;
     
-    private ExperienciaEducativa experienciaEducativa;
-    
-    private ObservableList<ProgramaEducativo> listProgramasEducativos = FXCollections.observableArrayList();;
+    @FXML
+    private ComboBox<String> cbModalidad;
+    @FXML
+    private ComboBox<String> cbSeccion;
     
     /**
      * Initializes the controller class.
@@ -59,8 +61,22 @@ public class FXMLEditarOfertaAcademicaDetallesController implements Initializabl
         tfNrc.setEditable(false);
         tfNombre.setText(experienciaEducativa.getNombre());
         cbProgramaEducativo.setItems(listProgramasEducativos);
-        tfModalidad.setText(experienciaEducativa.getModalidad());
-        tfSeccion.setText(experienciaEducativa.getSeccion());
+        
+        listModalidad.add("Virtual");
+        listModalidad.add("Presencial");
+        listModalidad.add("Hibrida");
+        
+        cbModalidad.setItems(listModalidad);
+        cbModalidad.getSelectionModel().select(experienciaEducativa.getModalidad());
+        //.setText(experienciaEducativa.getModalidad());
+        
+        listSeccion.add("1");
+        listSeccion.add("2");
+        listSeccion.add("3");
+        
+        cbSeccion.setItems(listSeccion);
+        //.setText(experienciaEducativa.getSeccion());
+        cbSeccion.getSelectionModel().select(experienciaEducativa.getSeccion());
     }
     
     public void passExperienciaEducativa(ExperienciaEducativa experienciaEducativa) {
@@ -83,7 +99,7 @@ public class FXMLEditarOfertaAcademicaDetallesController implements Initializabl
 
     @FXML
     private void clicCancel(ActionEvent event) {
-        WindowManager.closeWindow(tfModalidad.getScene().getWindow());
+        WindowManager.closeWindow(tfNrc.getScene().getWindow());
     }
 
     @FXML
@@ -94,17 +110,15 @@ public class FXMLEditarOfertaAcademicaDetallesController implements Initializabl
         experienciaEducativa.setNombre(tfNombre.getText());
         experienciaEducativa.setProgramaEducativo(cbProgramaEducativo.getSelectionModel().getSelectedItem().getNombre());
         experienciaEducativa.setClave(cbProgramaEducativo.getSelectionModel().getSelectedItem().getClave());
-        experienciaEducativa.setModalidad(tfModalidad.getText());
-        experienciaEducativa.setSeccion(tfSeccion.getText());
+        experienciaEducativa.setModalidad(cbModalidad.getSelectionModel().getSelectedItem());
+        experienciaEducativa.setSeccion(cbSeccion.getSelectionModel().getSelectedItem());
         
-        System.out.println("Programa Educativo: " + experienciaEducativa.getProgramaEducativo()+ " Clave: " + experienciaEducativa.getClave());
         try{
             experienciaEducativaDAO.updateAcademicOffer(experienciaEducativa);
         }catch(SQLException sqle){
-            sqle.printStackTrace();
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
-        WindowManager.closeWindow(tfModalidad.getScene().getWindow());
+        WindowManager.closeWindow(tfNrc.getScene().getWindow());
     }
     
 }

@@ -132,5 +132,26 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
     public ExperienciaEducativa consultExperiencias() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    @Override
+    public boolean existNrc(String nrc) throws SQLException {
+        boolean result = false;
+        
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if(connection != null){
+            String query = ("SELECT EXISTS(SELECT nrc FROM sistema_tutorias.experiencias_educativas WHERE nrc = ?) AS existeNrc");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, nrc);
+            ResultSet resultSet = statement.executeQuery();
+            
+            result = (resultSet.getInt("existeNrc") == 1);
+            
+            connection.close();
+        }
+        
+        return result;
+    }
     
 }

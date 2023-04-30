@@ -10,10 +10,8 @@ import Domain.TutoriaAcademica;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,12 +37,12 @@ import util.WindowManager;
  * @author Panther
  */
 public class FXMLMainMenuController implements Initializable {
-
+    
     private ObservableList<Rol> rolesUnicos = FXCollections.observableArrayList();
     private ObservableList<ProgramaEducativo> programasUnicos = FXCollections.observableArrayList();
     private TutoriaAcademica tutoriaAcademica;
     private ReporteDeTutoriaAcademica reporteTutoriaAcademica;
-
+    
     @FXML
     private MenuBar mbMainMenu;
     @FXML
@@ -75,14 +73,14 @@ public class FXMLMainMenuController implements Initializable {
     private Menu menuHelp;
     @FXML
     private Menu menuReportes;
+    @FXML
+    private Menu menuExperiencias;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        loadComboBoxes();
-        selectedItem();
         menuAsignaciones.setVisible(false);
         menuFechas.setVisible(false);
         menuHelp.setVisible(false);
@@ -93,8 +91,10 @@ public class FXMLMainMenuController implements Initializable {
         menuReporteGeneral.setVisible(false);
         menuReporteTutorial.setVisible(false);
         menuSolucionProblematicas.setVisible(false);
+        loadComboBoxes();
+        selectedItem();
     }
-
+    
     private void loadMenu() {
         try {
             TutoriaAcademicaDAO tutoriaAcademicaDAO = new TutoriaAcademicaDAO();
@@ -118,48 +118,58 @@ public class FXMLMainMenuController implements Initializable {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
-
+    
     private void loadComboBoxes() {
         if (cbRol.getSelectionModel().getSelectedIndex() < 0) {
             cbProgramaEducativo.setDisable(true);
         }
-
+        
         List<Rol> roles = User.getCurrentUser().getRoles();
-
+        
         for (int i = 0; i < roles.size(); i++) {
             Rol rol = roles.get(i);
-            String rolName = rol.getRolName();
-
-            ProgramaEducativo programa = rol.getProgramaEducativo();//User.getCurrentUser().getRoles().get(i).getProgramaEducativo();
-            String programaName = rol.getProgramaEducativo().getNombre();
-
+            
+            ProgramaEducativo programa = rol.getProgramaEducativo();
+            
             if (!rolesUnicos.contains(rol)) {
                 rolesUnicos.add(rol);
                 if (!programasUnicos.contains(rol.getProgramaEducativo())) {
                     programasUnicos.add(programa);
                 }
             }
-
+            
         }
-
+        
         HashSet<String> uniqueNames = new HashSet<String>();
         ArrayList<Rol> newList = new ArrayList<>();
-
+        
         for (Rol obj : rolesUnicos) {
             if (!uniqueNames.contains(obj.getRolName())) {
                 uniqueNames.add(obj.getRolName());
                 newList.add(obj);
             }
         }
-
+        
         rolesUnicos.clear();
         rolesUnicos.addAll(newList);
-
+        
         cbRol.setItems(rolesUnicos);
         cbProgramaEducativo.setItems(programasUnicos);
-
+        
+        if (User.getCurrentUser().getRol().getIdRol() != 0) {
+            Rol rolAux = null;
+            for(Rol r : rolesUnicos){
+                if(r.getRolName().equals(User.getCurrentUser().getRol().getRolName())){
+                    rolAux = r;
+                }
+            }
+            cbRol.getSelectionModel().select(rolAux);
+            cbProgramaEducativo.getSelectionModel().select(User.getCurrentUser().getRol().getProgramaEducativo());
+            cbProgramaEducativo.setDisable(false);
+        }
+        grantView();
     }
-
+    
     private void selectedItem() {
         cbRol.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
@@ -173,15 +183,15 @@ public class FXMLMainMenuController implements Initializable {
                 }
                 cbProgramaEducativo.setItems(programasUnicos);
                 cbProgramaEducativo.getSelectionModel().select(newValue.getProgramaEducativo());
-
+                
                 cbProgramaEducativo.setDisable(false);
-
+                
                 User.getCurrentUser().setRol(new Rol(newValue.getIdRol(),
                         newValue.getRolName(),
                         cbProgramaEducativo.getSelectionModel().getSelectedItem()));
                 grantView();
             }
-
+            
         });
         cbProgramaEducativo.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
@@ -191,13 +201,13 @@ public class FXMLMainMenuController implements Initializable {
                         cbRol.getSelectionModel().getSelectedItem().getRolName(),
                         cbProgramaEducativo.getSelectionModel().getSelectedItem()));
                 grantView();
-                if(cbRol.getSelectionModel().getSelectedItem().getRolName().equals("Tutor")){
-                    loadMenu();                
+                if (cbRol.getSelectionModel().getSelectedItem().getRolName().equals("Tutor")) {
+                    loadMenu();                    
                 }
             }
         });
     }
-
+    
     private void grantView() {
         //TODO
         switch (User.getCurrentUser().getRol().getIdRol()) {
@@ -208,7 +218,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuOfertaAcademica.setVisible(true);
                 menuProblematicas.setVisible(true);
                 menuRegistros.setVisible(true);
-                menuReportes.setVisible(false);
+                menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(true);
                 menuReporteTutorial.setVisible(true);
                 menuSolucionProblematicas.setVisible(true);
@@ -241,12 +251,12 @@ public class FXMLMainMenuController implements Initializable {
                 break;
         }
     }
-
+    
     @FXML
     private void menuCreateGeneralReport(ActionEvent event) {
-          
+        
     }
-
+    
     @FXML
     private void menuReadGeneralReport(ActionEvent event) {
         WindowManager.NavigateToWindow(
@@ -255,7 +265,7 @@ public class FXMLMainMenuController implements Initializable {
                 "Reportes Generales de tutorias"
         );
     }
-
+    
     @FXML
     private void menuCreateTutorialReport(ActionEvent event) throws SQLException {
         boolean editableType = false;
@@ -276,13 +286,13 @@ public class FXMLMainMenuController implements Initializable {
             ex.printStackTrace();
         }
     }
-
+    
     @FXML
     private void menuReadTutorialReport(ActionEvent event) {
-
+        
         WindowManager.NavigateToWindow(mbMainMenu.getScene().getWindow(), "/GUI/FXMLReportesTutoriasAcademicas.fxml", "Reportes de Tutorías Académicas");
     }
-
+    
     @FXML
     private void menuReadProblematic(ActionEvent event) {
         WindowManager.NavigateToWindow(
@@ -296,7 +306,7 @@ public class FXMLMainMenuController implements Initializable {
                 "Consultar Solución a Problematica Academica"
         );
     }
-
+    
     @FXML
     private void menuUpdateSolution(ActionEvent event) {
         WindowManager.NavigateToWindow(
@@ -305,7 +315,7 @@ public class FXMLMainMenuController implements Initializable {
                 "Modificar Solución a Problematica Academica"
         );
     }
-
+    
     @FXML
     private void menuSolutionProblematic(ActionEvent event) {
         WindowManager.NavigateToWindow(
@@ -314,7 +324,7 @@ public class FXMLMainMenuController implements Initializable {
                 "Registrar Solución a Problematica Academica"
         );
     }
-
+    
     @FXML
     private void menuUploadOffer(ActionEvent event) {
         WindowManager.NavigateToWindow(
@@ -323,11 +333,11 @@ public class FXMLMainMenuController implements Initializable {
                 "Registrar Oferta Académica"
         );
     }
-
+    
     @FXML
     private void menuReadOffer(ActionEvent event) {
     }
-
+    
     @FXML
     private void menuRegistrarEstudiantesAction(ActionEvent event) {
         WindowManager.NavigateToWindow(
@@ -336,7 +346,7 @@ public class FXMLMainMenuController implements Initializable {
                 "Registrar Estudiantes"
         );
     }
-
+    
     @FXML
     private void menuRegistrarTutorAction(ActionEvent event) {
         WindowManager.NavigateToWindow(
@@ -345,7 +355,7 @@ public class FXMLMainMenuController implements Initializable {
                 "Registrar Tutor"
         );
     }
-
+    
     @FXML
     private void menuUpdateOffer(ActionEvent event) {
         WindowManager.NavigateToWindow(
@@ -354,30 +364,42 @@ public class FXMLMainMenuController implements Initializable {
                 "Editar Oferta Académica"
         );
     }
-
+    
     @FXML
     private void menuImportarEstudiantesAction(ActionEvent event) {
         WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLImportarEstudiantes.fxml",
                 "Importar Estudiantes"
-        );        
+        );
     }
-
+    
     @FXML
     private void menuAsignaciones(ActionEvent event) {
     }
-
+    
     @FXML
     private void menuGestionarProblematicas(ActionEvent event) {
     }
-
+    
     @FXML
     private void menuConsultarProblematicas(ActionEvent event) {
     }
-
+    
     @FXML
     private void menuRegistrarFechas(ActionEvent event) {
     }
-
+    
+    @FXML
+    private void menuUpdateFechas(ActionEvent event) {
+    }
+    
+    @FXML
+    private void menuInsertExperiencia(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLRegistrarExperienciaEducativa.fxml",
+                "Registrar Experiencia Educativa"
+        );
+    }
 }

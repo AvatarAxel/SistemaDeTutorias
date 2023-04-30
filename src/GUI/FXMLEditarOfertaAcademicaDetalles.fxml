@@ -19,10 +19,10 @@
       <Label layoutX="41.0" layoutY="265.0" text="Seccion" />
       <TextField fx:id="tfNrc" layoutX="198.0" layoutY="46.0" />
       <TextField fx:id="tfNombre" layoutX="198.0" layoutY="103.0" />
-      <TextField fx:id="tfModalidad" layoutX="198.0" layoutY="207.0" />
-      <TextField fx:id="tfSeccion" layoutX="198.0" layoutY="261.0" />
       <Button layoutX="295.0" layoutY="325.0" mnemonicParsing="false" onAction="#clicCancel" text="Cancelar" />
       <Button layoutX="221.0" layoutY="325.0" mnemonicParsing="false" onAction="#clicSave" text="Aceptar" />
       <ComboBox fx:id="cbProgramaEducativo" layoutX="198.0" layoutY="154.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbModalidad" layoutX="198.0" layoutY="207.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbSeccion" layoutX="198.0" layoutY="261.0" prefWidth="150.0" />
    </children>
 </AnchorPane>
