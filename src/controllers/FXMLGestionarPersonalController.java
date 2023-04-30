@@ -9,6 +9,7 @@ import BussinessLogic.UserDAO;
 import Domain.Estudiante;
 import Domain.Personal;
 import Domain.Profesor;
+import Domain.ProgramaEducativo;
 import Domain.Rol;
 import Domain.Usuario;
 import DomainGraphicInterface.PersonalUser;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -61,7 +63,6 @@ public class FXMLGestionarPersonalController implements Initializable {
     private TableColumn<?, ?> columApellidoMaterno;
     @FXML
     private TextField textFieldSearchPersonal;
-    private ObservableList<PersonalUser> listPersonal;
     @FXML
     private Button buttonDelete;
     @FXML
@@ -92,6 +93,7 @@ public class FXMLGestionarPersonalController implements Initializable {
     private Label labelInvalidateCorreo;
     @FXML
     private CheckBox checkBoxTutor;
+    private ObservableList<PersonalUser> listPersonal;
     private boolean[] validationTextFields = {true, true, true, true, true};
     private Pattern validateCharacter = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$");
     private Pattern validateCharacterEmail = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
@@ -138,8 +140,8 @@ public class FXMLGestionarPersonalController implements Initializable {
             protected Void call() throws Exception {
                 ProfesorDAO profesorDAO = new ProfesorDAO();
                 try {
-                    ArrayList<Profesor> loadedProfesor = profesorDAO.getProfesoresUnregistered();
-                    ArrayList<PersonalUser> listUsuarios = new ArrayList<>();                                
+                    ArrayList<Profesor> loadedProfesor = profesorDAO.getProfesoresNoUser();
+                    ArrayList<PersonalUser> listUsuarios = new ArrayList<>();
                     if (!loadedProfesor.isEmpty()) {
                         for (int i = 0; i < loadedProfesor.size(); i++) {
                             Personal usuario = new Profesor();
@@ -147,12 +149,12 @@ public class FXMLGestionarPersonalController implements Initializable {
                             usuario.setApellidoPaterno(loadedProfesor.get(i).getApellidoPaterno());
                             usuario.setApellidoMaterno(loadedProfesor.get(i).getApellidoMaterno());
                             usuario.setNumeroDePersonal(loadedProfesor.get(i).getNumeroDePersonal());
-                            usuario.setCorreoElectronicoInstitucional(loadedProfesor.get(i).getCorreoElectronicoInstitucional());                            
+                            usuario.setCorreoElectronicoInstitucional(loadedProfesor.get(i).getCorreoElectronicoInstitucional());
                             PersonalUser personalUser = new PersonalUser();
                             ArrayList<Rol> listRoles = new ArrayList<>();
                             listRoles.add(new Rol(0, "Profesor"));
                             personalUser.setRol(listRoles);
-                            personalUser.setPersonal(usuario);                                                        
+                            personalUser.setPersonal(usuario);
                             listUsuarios.add(personalUser);
                         }
                         listPersonal.addAll(listUsuarios);
@@ -180,12 +182,12 @@ public class FXMLGestionarPersonalController implements Initializable {
             protected Void call() throws Exception {
                 UserDAO userDAO = new UserDAO();
                 try {
-                    ArrayList<Usuario> loadedPersonal = userDAO.getAllUsersByProgramaEducativo(14203);                   
+                    ArrayList<Usuario> loadedPersonal = userDAO.getAllUsersByProgramaEducativo(14203);
                     if (!loadedPersonal.isEmpty()) {
                         for (int i = 0; i < loadedPersonal.size(); i++) {
                             PersonalUser personalUser = new PersonalUser();
                             personalUser.setPersonal(loadedPersonal.get(i));
-                            int numeroDePersonal = loadedPersonal.get(i).getNumeroDePersonal();                            
+                            int numeroDePersonal = loadedPersonal.get(i).getNumeroDePersonal();
                             personalUser.setRol(userDAO.getAllUserRolesByNumeroDePersonal(numeroDePersonal, 14203));
                             tablePersonal.getItems().add(personalUser);
                         }
@@ -207,9 +209,8 @@ public class FXMLGestionarPersonalController implements Initializable {
 
     @FXML
     private void buttonActionDelete(ActionEvent event) {
-        
+        //TODO
     }
-
 
     @FXML
     private void buttonActionExit(ActionEvent event) {
@@ -264,6 +265,7 @@ public class FXMLGestionarPersonalController implements Initializable {
 
     @FXML
     private void selectPersonal(MouseEvent event) {
+        clearFields();
         disableCheckbox();
         uncheckBox();
         if (!tablePersonal.getSelectionModel().isEmpty() && tablePersonal.getSelectionModel().getSelectedItem() != null) {
@@ -290,7 +292,6 @@ public class FXMLGestionarPersonalController implements Initializable {
         uncheckBox();
         for (int i = 0; i < usuario.getRol().size(); i++) {
             String rol = usuario.getRol().get(i).getRolName();
-            System.out.println(rol);
             switch (rol) {
                 case "Jefe de Carrera":
                     checkBoxJefe.setSelected(true);
@@ -307,49 +308,113 @@ public class FXMLGestionarPersonalController implements Initializable {
             }
         }
     }
-    
+
     @FXML
     private void validateInputsNombre(KeyEvent event) {
+        Matcher matcher = validateCharacter.matcher(textNombre.getText());
+        if (!matcher.matches()) {
+            labelInvalidateNombre.setText("Datos invalidos");
+            validationTextFields[0] = false;
+        } else {
+            labelInvalidateNombre.setText("");
+            validationTextFields[0] = true;
+        }
+        enableButton();
     }
 
     @FXML
     private void validateLengthNombre(KeyEvent event) {
+        textNombre.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().length() <= 30) {
+                return change;
+            } else {
+                return null;
+            }
+        }));
+        if (textNombre.getText().length() > 30) {
+            textNombre.clear();
+        }
     }
 
     @FXML
     private void validateInputsApellidoPaterno(KeyEvent event) {
+        Matcher matcher = validateCharacter.matcher(textApellidoPaterno.getText());
+        if (!matcher.matches()) {
+            labelInvalidateApellidoPaterno.setText("Datos invalidos");
+            validationTextFields[1] = false;
+        } else {
+            labelInvalidateApellidoPaterno.setText("");
+            validationTextFields[1] = true;
+        }
+        enableButton();
     }
 
     @FXML
     private void validateLengthApellidoPaterno(KeyEvent event) {
+        textApellidoPaterno.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().length() <= 20) {
+                return change;
+            } else {
+                return null;
+            }
+        }));
+        if (textApellidoPaterno.getText().length() > 20) {
+            textApellidoPaterno.clear();
+        }
     }
 
     @FXML
     private void validateInputsApellidoMaterno(KeyEvent event) {
+        Matcher matcher = validateCharacter.matcher(textApellidoMaterno.getText());
+        if (!matcher.matches()) {
+            labelInvalidateApellidoMaterno.setText("Datos invalidos");
+            validationTextFields[2] = false;
+        } else {
+            labelInvalidateApellidoMaterno.setText("");
+            validationTextFields[2] = true;
+        }
+        enableButton();
     }
 
     @FXML
     private void validateLengthApellidoMaterno(KeyEvent event) {
+        textApellidoMaterno.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().length() <= 20) {
+                return change;
+            } else {
+                return null;
+            }
+        }));
+        if (textApellidoMaterno.getText().length() > 20) {
+            textApellidoMaterno.setText("");
+        }
     }
 
     @FXML
     private void validateInputsCorreo(KeyEvent event) {
+        Matcher matcher = validateCharacterEmail.matcher(textCorreo.getText());
+        if (!matcher.matches()) {
+            labelInvalidateCorreo.setText("Datos invalidos");
+            validationTextFields[3] = false;
+        } else {
+            labelInvalidateCorreo.setText("");
+            validationTextFields[3] = true;
+        }
+        enableButton();
     }
 
     @FXML
     private void validateLengthCorreo(KeyEvent event) {
-    }
-
-    @FXML
-    private void checkBoxCoordinadorAction(ActionEvent event) {
-    }
-
-    @FXML
-    private void checkBoxJefeAction(ActionEvent event) {
-    }
-
-    @FXML
-    private void checkBoxTutorAction(ActionEvent event) {
+        textCorreo.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().length() <= 35) {
+                return change;
+            } else {
+                return null;
+            }
+        }));
+        if (textCorreo.getText().length() > 35) {
+            textCorreo.setText("");
+        }
     }
 
     private void disableCheckbox() {
@@ -371,20 +436,131 @@ public class FXMLGestionarPersonalController implements Initializable {
         profesor.setApellidoPaterno(textApellidoPaterno.getText());
         profesor.setApellidoMaterno(textApellidoMaterno.getText());
         profesor.setCorreoElectronicoInstitucional(textCorreo.getText());
+        profesor.setNumeroDePersonal(tablePersonal.getSelectionModel().getSelectedItem().getNumeroDePersonal());
         try {
+            boolean resultUpdateUsuario = false;
             boolean resultUpdateProfesor = new ProfesorDAO().updateProfesor(profesor);
             if (!tablePersonal.getSelectionModel().getSelectedItem().getRol().get(0).equals("Profesor")) {
-                Usuario usuaurio = new Usuario();
-                usuaurio.setNombre(textNombre.getText());
-                usuaurio.setApellidoPaterno(textApellidoPaterno.getText());
-                usuaurio.setApellidoMaterno(textApellidoMaterno.getText());
-                usuaurio.setCorreoElectronicoInstitucional(textCorreo.getText());
-                boolean resultUpdateUsuario = new UserDAO().updateUsuario(usuaurio);                
-            }                        
+                Usuario usuario = new Usuario();
+                usuario.setNombre(textNombre.getText());
+                usuario.setApellidoPaterno(textApellidoPaterno.getText());
+                usuario.setApellidoMaterno(textApellidoMaterno.getText());
+                usuario.setCorreoElectronicoInstitucional(textCorreo.getText());
+                usuario.setNumeroDePersonal(tablePersonal.getSelectionModel().getSelectedItem().getNumeroDePersonal());
+                resultUpdateUsuario = new UserDAO().updateUsuario(usuario);
+                deleteRoles(tablePersonal.getSelectionModel().getSelectedItem());
+                saveRoles(tablePersonal.getSelectionModel().getSelectedItem());
+            }
+            if (resultUpdateProfesor || resultUpdateUsuario) {
+                AlertManager.showTemporalAlert(" ", "Acción realizada con éxito", 2);
+                updateTable(profesor);
+            }
+            clearFields();
+            textFieldSearchPersonal.clear();
         } catch (SQLException e) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
             e.printStackTrace();
         }
+    }
+
+    public void updateTable(Personal personal) {
+        tablePersonal.getSelectionModel().getSelectedItem().setNombre(textNombre.getText());
+        tablePersonal.getSelectionModel().getSelectedItem().setApellidoPaterno(textApellidoPaterno.getText());
+        tablePersonal.getSelectionModel().getSelectedItem().setApellidoMaterno(textApellidoMaterno.getText());
+        tablePersonal.getSelectionModel().getSelectedItem().setCorreoElectronicoInstitucional(textCorreo.getText());
+    }
+
+    private void deleteRoles(PersonalUser usuario) {
+        try {
+            for (int i = 0; i < usuario.getRol().size(); i++) {
+                Rol rol = usuario.getRol().get(i);
+                switch (rol.getRolName()) {
+                    case "Jefe de Carrera":
+                        if (!checkBoxJefe.isSelected()) {
+                            new UserDAO().deleteRol(usuario.getNumeroDePersonal(), rol);
+                            usuario.getRol().remove(rol);
+                        }
+                        break;
+                    case "Coordinador":
+                        if (!checkBoxCoordinador.isSelected()) {
+                            new UserDAO().deleteRol(usuario.getNumeroDePersonal(), rol);
+                            usuario.getRol().remove(rol);
+                        }
+                        break;
+                    case "Tutor":
+                        if (!checkBoxTutor.isSelected()) {
+                            new UserDAO().deleteRol(usuario.getNumeroDePersonal(), rol);
+                            usuario.getRol().remove(rol);
+                        }
+                        break;
+                    default:
+                        uncheckBox();
+                        break;
+                }
+            }
+        } catch (SQLException e) {
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+    }
+
+    private void saveRoles(PersonalUser usuario) {
+        try {
+            ArrayList<String> rolesString = new ArrayList<>();
+            Rol rol = new Rol();
+            rol.setProgramaEducativo(new ProgramaEducativo("14203", ""));
+            for (int i = 0; i < usuario.getRol().size(); i++) {
+                rolesString.add(usuario.getRol().get(i).getRolName());
+            }
+            if (checkBoxJefe.isSelected()) {
+                if (!rolesString.contains("Jefe de Carrera")) {
+                    rol.setIdRol(1);
+                    rol.setRolName("Jefe de Carrera");
+                    new UserDAO().registerRol(usuario.getNumeroDePersonal(), rol);
+                    usuario.getRol().add(rol);
+                }
+            }
+            if (checkBoxCoordinador.isSelected()) {
+                if (!rolesString.contains("Coordinador")) {
+                    rol.setIdRol(2);
+                    rol.setRolName("Coordinador");
+                    new UserDAO().registerRol(usuario.getNumeroDePersonal(), rol);
+                    usuario.getRol().add(rol);
+                }
+            }
+            if (checkBoxTutor.isSelected()) {
+                if (!rolesString.contains("Tutor")) {
+                    rol.setIdRol(3);
+                    rol.setRolName("Tutor");
+                    new UserDAO().registerRol(usuario.getNumeroDePersonal(), rol);
+                    usuario.getRol().add(rol);
+                }
+            }
+        } catch (SQLException e) {
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+    }
+
+    private void enableButton() {
+        if (!validationTextFields[0] || !validationTextFields[1] || !validationTextFields[2] || !validationTextFields[3]) {
+            buttonSave.setDisable(true);
+        } else {
+            buttonSave.setDisable(false);
+        }
+    }
+
+    private void clearFields() {
+        textNombre.clear();
+        textApellidoPaterno.clear();
+        textApellidoMaterno.clear();
+        textCorreo.clear();
+        labelInvalidateNombre.setText("");
+        labelInvalidateApellidoPaterno.setText("");
+        labelInvalidateApellidoMaterno.setText("");
+        labelInvalidateCorreo.setText("");
+        buttonSave.setDisable(true);
+        uncheckBox();
     }
 
 }

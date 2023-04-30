@@ -32,8 +32,8 @@
       <TextField fx:id="textApellidoPaterno" layoutX="358.0" layoutY="371.0" onKeyReleased="#validateInputsApellidoPaterno" onKeyTyped="#validateLengthApellidoPaterno" prefHeight="29.0" prefWidth="295.0" />
       <TextField fx:id="textApellidoMaterno" layoutX="14.0" layoutY="452.0" onKeyReleased="#validateInputsApellidoMaterno" onKeyTyped="#validateLengthApellidoMaterno" prefHeight="29.0" prefWidth="295.0" />
       <TextField fx:id="textCorreo" layoutX="358.0" layoutY="452.0" onKeyReleased="#validateInputsCorreo" onKeyTyped="#validateLengthCorreo" prefHeight="29.0" prefWidth="295.0" />
-      <CheckBox fx:id="checkBoxCoordinador" layoutX="737.0" layoutY="457.0" mnemonicParsing="false" onAction="#checkBoxCoordinadorAction" text="Coordinador" />
-      <CheckBox fx:id="checkBoxJefe" layoutX="737.0" layoutY="417.0" mnemonicParsing="false" onAction="#checkBoxJefeAction" text="Jefe de carrera" />
+      <CheckBox fx:id="checkBoxCoordinador" layoutX="737.0" layoutY="457.0" mnemonicParsing="false" text="Coordinador" />
+      <CheckBox fx:id="checkBoxJefe" layoutX="737.0" layoutY="417.0" mnemonicParsing="false" text="Jefe de carrera" />
       <Label fx:id="labelInvalidateNombre" layoutX="14.0" layoutY="407.0" prefHeight="19.0" prefWidth="295.0" textFill="#bf0a0a" />
       <Label fx:id="labelInvalidateApellidoPaterno" layoutX="358.0" layoutY="407.0" prefHeight="19.0" prefWidth="295.0" textFill="#bf0a0a" />
       <Label fx:id="labelInvalidateApellidoMaterno" layoutX="14.0" layoutY="491.0" prefHeight="19.0" prefWidth="295.0" textFill="#bf0a0a" />
@@ -42,6 +42,6 @@
       <Label layoutX="358.0" layoutY="346.0" prefHeight="19.0" prefWidth="127.0" text="Apellido Paterno" />
       <Label layoutX="14.0" layoutY="427.0" prefHeight="19.0" prefWidth="127.0" text="Apellido Materno" />
       <Label layoutX="358.0" layoutY="427.0" prefHeight="19.0" prefWidth="203.0" text="Correo electronico" />
-      <CheckBox fx:id="checkBoxTutor" layoutX="737.0" layoutY="376.0" mnemonicParsing="false" onAction="#checkBoxTutorAction" text="Tutor" />
+      <CheckBox fx:id="checkBoxTutor" layoutX="737.0" layoutY="376.0" mnemonicParsing="false" text="Tutor" />
    </children>
 </AnchorPane>

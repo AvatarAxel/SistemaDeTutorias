@@ -183,5 +183,45 @@ public class UserDAO implements IUserDAO {
         connection.close();
         return result;
     }
+    
+    public boolean deleteRol(int numeroDePersonal, Rol rol) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String query = ("DELETE FROM roles_usuarios_programa_educativo WHERE numeroDePersonal = ? AND idRol = ? AND clave = ?;");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, numeroDePersonal);
+            statement.setInt(2, rol.getIdRol());
+            statement.setString(3, rol.getProgramaEducativo().getClave());            
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }    
+    
+    public boolean registerRol(int numeroDePersonal, Rol rol) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String query = ("INSERT INTO roles_usuarios_programa_educativo (numeroDePersonal, clave, idRol) VALUES (?, ?, ?);");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, numeroDePersonal);                                               
+            statement.setString(2, rol.getProgramaEducativo().getClave());  
+            statement.setInt(3, rol.getIdRol());
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }        
 
 }

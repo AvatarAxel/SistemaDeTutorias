@@ -39,12 +39,12 @@ public class ProfesorDAO implements IProfesorDAO {
         return profesor;
     }
 
-    public ArrayList<Profesor> getProfesoresUnregistered() throws SQLException {
+    public ArrayList<Profesor> getProfesoresNoUser() throws SQLException {
         ArrayList<Profesor> listProfesores = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            String query = ("SELECT * FROM profesores WHERE esRegistrado = 0");
+            String query = ("SELECT * FROM profesores WHERE esRegistrado = 1 and esUsuario = 0");
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -61,13 +61,13 @@ public class ProfesorDAO implements IProfesorDAO {
         return listProfesores;
     }
 
-    public boolean setTutorRegister(int numeroDePersonal) throws SQLException {
+    public boolean setTutorUser(int numeroDePersonal) throws SQLException {
         boolean result = false;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
 
         if (connection != null) {
-            String query = ("UPDATE `profesores` SET `esRegistrado` = '1' WHERE (`numeroDePersonal` = ?);");
+            String query = ("UPDATE `profesores` SET `esUsuario` = '1' WHERE (`numeroDePersonal` = ?);");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, numeroDePersonal);
             int resultInsert = statement.executeUpdate();
@@ -105,13 +105,13 @@ public class ProfesorDAO implements IProfesorDAO {
         return profesoresNames;    
     }
     
-    public Profesor getProfesorUnregistered(int numeroDePersonal) throws SQLException {
+    public Profesor getProfesorNoUser(int numeroDePersonal) throws SQLException {
         Profesor profesor = new Profesor();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
 
         if (connection != null) {
-            String query = ("SELECT * FROM profesores WHERE numeroDePersonal = ? and esRegistrado = 0");
+            String query = ("SELECT * FROM profesores WHERE numeroDePersonal = ? and esRegistrado = 1 and esUsuario = 0");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, numeroDePersonal);
             ResultSet resultSet = statement.executeQuery();
@@ -132,7 +132,7 @@ public class ProfesorDAO implements IProfesorDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            String query = ("UPDATE `sistema_tutorias`.`profesor` SET `nombre` = ?, `apellidoPaterno` = ?, `apellidoMaterno` = ?, `correoElectronicoInstitucional` = ? WHERE (`numeroDePersonal` = ?);");
+            String query = ("UPDATE `sistema_tutorias`.`profesores` SET `nombre` = ?, `apellidoPaterno` = ?, `apellidoMaterno` = ?, `correoElectronicoInstitucional` = ? WHERE (`numeroDePersonal` = ?);");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, profesor.getNombre());
             statement.setString(2, profesor.getApellidoPaterno());

@@ -84,7 +84,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
                 try {
                     ArrayList<Profesor> loadedListProfesores = new ArrayList<>();
                     ProfesorDAO profesorDao = new ProfesorDAO();
-                    loadedListProfesores = profesorDao.getProfesoresUnregistered();
+                    loadedListProfesores = profesorDao.getProfesoresNoUser();
                     listProfesores.clear();
                     listProfesores.addAll(loadedListProfesores);
                     tableProfesor.setItems(listProfesores);
@@ -155,7 +155,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
             tutorAcademico.setContraseña(randomPassword);
             boolean resultRegister = tutorAcademicoDao.setTutorRegister(tutorAcademico);
             boolean resultRolAssignment = userDao.setRolUserTutor(tutorAcademico.getNumeroDePersonal(), "14203");
-            boolean markRegistration = profesorDao.setTutorRegister(tutorAcademico.getNumeroDePersonal());
+            boolean markRegistration = profesorDao.setTutorUser(tutorAcademico.getNumeroDePersonal());
             if (resultRegister && resultRolAssignment && markRegistration) {
                 AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
                 notifyTheNewUser(tutorAcademico.getCorreoElectronicoInstitucional(), randomPassword);                                                                
