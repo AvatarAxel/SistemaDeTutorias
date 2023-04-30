@@ -41,34 +41,34 @@ public class TutoriaAcademicaDAO {
         connection.close();
         return listTutoriasAcademicas;
     }
-    
+
     public ArrayList<TutoriaAcademica> getTutoriasAcademicasByTutorAcademico(int numeroPersonal, int clave) throws SQLException {
-        ArrayList <TutoriaAcademica> listTutoriasAcademicas = new ArrayList<>();
+        ArrayList<TutoriaAcademica> listTutoriasAcademicas = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
 
         if (connection != null) {
-            String query = ("SELECT * FROM tutorias_academicas ta\n" +
-            "INNER JOIN reportes_de_tutorias_academicas rta ON rta.idTutoriaAcademica = ta.idTutoriaAcademica\n" +
-            "WHERE rta.numeroDePersonal = ? AND ta.clave = ?;");            
+            String query = ("SELECT * FROM tutorias_academicas ta\n"
+                    + "INNER JOIN reportes_de_tutorias_academicas rta ON rta.idTutoriaAcademica = ta.idTutoriaAcademica\n"
+                    + "WHERE rta.numeroDePersonal = ? AND ta.clave = ?;");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, numeroPersonal);
-            statement.setInt(2, clave);            
+            statement.setInt(2, clave);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                TutoriaAcademica  tutoriaAcademica = new TutoriaAcademica();                
+                TutoriaAcademica tutoriaAcademica = new TutoriaAcademica();
                 tutoriaAcademica.setIdTutoriaAcademica(resultSet.getInt("idTutoriaAcademica"));
                 tutoriaAcademica.setNumeroDeSesion(resultSet.getInt("numeroDeSesion"));
                 tutoriaAcademica.setFechaInicio(resultSet.getDate("fechaInicio"));
-                tutoriaAcademica.setFechaFin(resultSet.getDate("fechaFin"));                
+                tutoriaAcademica.setFechaFin(resultSet.getDate("fechaFin"));
                 listTutoriasAcademicas.add(tutoriaAcademica);
             }
         }
         connection.close();
         return listTutoriasAcademicas;
     }
-    
-    public TutoriaAcademica getCurrentlyTutoriaAcademica(String claveProgramaEducativo)throws SQLException  {
+
+    public TutoriaAcademica getCurrentlyTutoriaAcademica(String claveProgramaEducativo) throws SQLException {
         TutoriaAcademica tutoriaAcademica = new TutoriaAcademica();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
@@ -83,31 +83,70 @@ public class TutoriaAcademicaDAO {
                 periodoEscolar.setFechaInicio(resultPeriodoEscolar.getDate("fechaInicio"));
                 periodoEscolar.setFechaFin(resultPeriodoEscolar.getDate("fechaFin"));
                 String queryTutoriaAcademica = "SELECT idTutoriaAcademica, numeroDeSesion, fechaInicio, fechaFin,"
-                    + "clave, idPeriodoEscolar, DATE_ADD(fechaFin, INTERVAL 7 DAY) AS fechaLimite\n" +
-                    "FROM tutorias_academicas\n" +
-                    "WHERE NOW() BETWEEN fechaInicio AND DATE_ADD(fechaFin, INTERVAL 7 DAY)\n" +
-                    "AND clave = ?;";
+                        + "clave, idPeriodoEscolar, DATE_ADD(fechaFin, INTERVAL 7 DAY) AS fechaLimite\n"
+                        + "FROM tutorias_academicas\n"
+                        + "WHERE NOW() BETWEEN fechaInicio AND DATE_ADD(fechaFin, INTERVAL 7 DAY)\n"
+                        + "AND clave = ?;";
                 PreparedStatement statementTutoriaAcademica = connection.prepareStatement(queryTutoriaAcademica);
-                statementTutoriaAcademica.setString(1,claveProgramaEducativo );
+                statementTutoriaAcademica.setString(1, claveProgramaEducativo);
                 ResultSet resultTutoriaAcademica = statementTutoriaAcademica.executeQuery();
-                if(resultTutoriaAcademica.next()){
+                if (resultTutoriaAcademica.next()) {
                     tutoriaAcademica.setIdTutoriaAcademica(resultTutoriaAcademica.getInt("idTutoriaAcademica"));
                     tutoriaAcademica.setNumeroDeSesion(resultTutoriaAcademica.getInt("numeroDeSesion"));
                     tutoriaAcademica.setFechaInicio(resultTutoriaAcademica.getDate("fechaInicio"));
                     tutoriaAcademica.setFechaFin(resultTutoriaAcademica.getDate("fechaFin"));
                     tutoriaAcademica.setFechaCierreEntregaReporte(resultTutoriaAcademica.getDate("fechaLimite"));
                     tutoriaAcademica.setPeriodoEscolar(periodoEscolar);
-                }else{
-                    tutoriaAcademica = null;                
+                } else {
+                    tutoriaAcademica = null;
                 }
-            }else{
-                tutoriaAcademica = null;            
+            } else {
+                tutoriaAcademica = null;
             }
             connection.close();
         }
         return tutoriaAcademica;
-    }    
-    
+    }
+
+    public TutoriaAcademica getCurrentTutoriaAcademica(String claveProgramaEducativo) throws SQLException {
+        TutoriaAcademica tutoriaAcademica = new TutoriaAcademica();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if (connection != null) {
+            String query = "SELECT * FROM periodos_escolares pe "
+                    + "where"
+                    + " pe.idPeriodoEscolar=(Select MAX(pe.idPeriodoEscolar) from periodos_escolares);";
+            PreparedStatement statementPeriodoEscolar = connection.prepareStatement(query);
+            ResultSet resultPeriodoEscolar = statementPeriodoEscolar.executeQuery();
+            if (resultPeriodoEscolar.next()) {
+                PeriodoEscolar periodoEscolar = new PeriodoEscolar();
+                periodoEscolar.setIdPeriodoEscolar(resultPeriodoEscolar.getInt("idPeriodoEscolar"));
+                periodoEscolar.setFechaInicio(resultPeriodoEscolar.getDate("fechaInicio"));
+                periodoEscolar.setFechaFin(resultPeriodoEscolar.getDate("fechaFin"));
+                String queryTutoriaAcademica = "select * from tutorias_academicas where idtutoriaacademica =(select max(idtutoriaacademica) "
+                        + "from tutorias_academicas where clave=?) AND clave=?;";
+                PreparedStatement statementTutoriaAcademica = connection.prepareStatement(queryTutoriaAcademica);
+                statementTutoriaAcademica.setString(1, claveProgramaEducativo);
+                statementTutoriaAcademica.setString(2, claveProgramaEducativo);
+
+                ResultSet resultTutoriaAcademica = statementTutoriaAcademica.executeQuery();
+                if (resultTutoriaAcademica.next()) {
+                    tutoriaAcademica.setIdTutoriaAcademica(resultTutoriaAcademica.getInt("idTutoriaAcademica"));
+                    tutoriaAcademica.setNumeroDeSesion(resultTutoriaAcademica.getInt("numeroDeSesion"));
+                    tutoriaAcademica.setFechaInicio(resultTutoriaAcademica.getDate("fechaInicio"));
+                    tutoriaAcademica.setFechaFin(resultTutoriaAcademica.getDate("fechaFin"));
+                    //tutoriaAcademica.setFechaCierreEntregaReporte(resultTutoriaAcademica.getDate("fechaLimite"));
+                    tutoriaAcademica.setPeriodoEscolar(periodoEscolar);
+                } else {
+                    tutoriaAcademica = null;
+                }
+            } else {
+                tutoriaAcademica = null;
+            }
+            connection.close();
+        }
+        return tutoriaAcademica;
+    }
 
     public int addTutoriaAcademica(TutoriaAcademica tutoria) throws SQLException {
         int result = 0;
@@ -151,7 +190,6 @@ public class TutoriaAcademicaDAO {
             statement.setInt(1, idPeriodoEscolar);
             statement.setString(2, clave);
             numeroSesion = statement.executeUpdate();
-
 
         }
 

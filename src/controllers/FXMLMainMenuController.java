@@ -393,10 +393,16 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuAsignaciones(ActionEvent event) {
+          WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLGestionarAsignacionesTutor.fxml",
+                "Gestionar Asignaciones"
+        );
     }
 
     @FXML
     private void menuGestionarProblematicas(ActionEvent event) {
+        
     }
 
     @FXML
@@ -405,6 +411,11 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuRegistrarFechas(ActionEvent event) {
+         WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLRegistrarFechasTutorias.fxml",
+                "Registrar Fechas"
+        );
     }
 
     @FXML

@@ -40,4 +40,26 @@ public class PeriodoEscolarDAO {
         connection.close();
         return periodoEscolar;
     }
+
+    public PeriodoEscolar getCurrentPeriodoEscolar() throws SQLException {
+        PeriodoEscolar periodoEscolar = new PeriodoEscolar();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String query = ("SELECT * FROM periodos_escolares pe "
+                    + "where"
+                    + " pe.idPeriodoEscolar=(Select MAX(pe.idPeriodoEscolar) from periodos_escolares);");
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                periodoEscolar.setIdPeriodoEscolar(resultSet.getInt("idPeriodoEscolar"));
+                periodoEscolar.setFechaInicio(resultSet.getDate("fechaInicio"));
+                periodoEscolar.setFechaFin(resultSet.getDate("fechaFin"));
+            }
+        }
+        connection.close();
+        return periodoEscolar;
+    }
+
 }
