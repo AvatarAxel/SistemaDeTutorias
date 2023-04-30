@@ -7,17 +7,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="371.0" prefWidth="387.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLEditarOfertaAcademicaDetallesController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="400.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLRegistrarExperienciaEducativaController">
     <stylesheets>
         <URL value="@/styles/globalStyles.css" />
     </stylesheets>
-   <children>
+    <children>
       <Label layoutX="44.0" layoutY="50.0" text="NRC" />
       <Label layoutX="40.0" layoutY="107.0" text="Nombre" />
       <Label layoutX="38.0" layoutY="158.0" text="Programa Educativo" />
       <Label layoutX="39.0" layoutY="211.0" text="Modalidad" />
       <Label layoutX="41.0" layoutY="265.0" text="Seccion" />
-      <TextField fx:id="tfNrc" layoutX="198.0" layoutY="46.0" />
+      <TextField fx:id="tfNrc" layoutX="198.0" layoutY="46.0" onKeyReleased="#validateInputNRC" />
       <TextField fx:id="tfNombre" layoutX="198.0" layoutY="103.0" onKeyReleased="#validateInputNombre" />
       <Button layoutX="295.0" layoutY="325.0" mnemonicParsing="false" onAction="#clicCancel" text="Cancelar" />
       <Button layoutX="221.0" layoutY="325.0" mnemonicParsing="false" onAction="#clicSave" text="Aceptar" />
