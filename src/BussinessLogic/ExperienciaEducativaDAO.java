@@ -145,8 +145,9 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, nrc);
             ResultSet resultSet = statement.executeQuery();
-            
-            result = (resultSet.getInt("existeNrc") == 1);
+            if(resultSet.next()){
+                result = (resultSet.getBoolean("existeNrc"));
+            }
             
             connection.close();
         }
