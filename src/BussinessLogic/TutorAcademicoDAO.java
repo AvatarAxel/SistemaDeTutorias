@@ -103,5 +103,25 @@ public class TutorAcademicoDAO {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
+        public boolean updateProfesor(Profesor profesor) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if (connection != null) {
+            String query = ("UPDATE `sistema_tutorias`.`profesores` SET `nombre` = ?, `apellidoPaterno` = ?, `apellidoMaterno` = ?, `correoElectronicoInstitucional` = ? WHERE (`numeroDePersonal` = ?);");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, profesor.getNombre());
+            statement.setString(2, profesor.getApellidoPaterno());
+            statement.setString(3, profesor.getApellidoMaterno());
+            statement.setString(4, profesor.getCorreoElectronicoInstitucional());
+            statement.setInt(5, profesor.getNumeroDePersonal());
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }       
     
 }

@@ -148,4 +148,22 @@ public class ProfesorDAO implements IProfesorDAO {
         return result;
     }    
     
+    public boolean deleteProfesor(int numeroDePersonal, int esUsuario) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if (connection != null) {
+            String query = ("UPDATE `sistema_tutorias`.`profesores` SET `esRegistrado` = 0, `esUsuario` = ? WHERE (`numeroDePersonal` = ?);");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, esUsuario);
+            statement.setInt(2, numeroDePersonal);
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }        
+    
 }

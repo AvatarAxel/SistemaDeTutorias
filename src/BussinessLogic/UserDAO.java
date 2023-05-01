@@ -117,7 +117,7 @@ public class UserDAO implements IUserDAO {
         return result;
     }
 
-    public ArrayList<Usuario> getAllUsersByProgramaEducativo(int clave) throws SQLException {
+    public ArrayList<Usuario> getAllUsersByProgramaEducativo(String clave) throws SQLException {
         ArrayList<Usuario> listUsuario = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
@@ -128,7 +128,7 @@ public class UserDAO implements IUserDAO {
                     + "ON u.numeroDePersonal = rup.numeroDePersonal\n"
                     + "WHERE rup.clave = ? and u.esRegistrado = 1;";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, clave);
+            preparedStatement.setString(1, clave);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Usuario usuario = new Usuario();
@@ -144,7 +144,7 @@ public class UserDAO implements IUserDAO {
         return listUsuario;
     }
 
-    public ArrayList<Rol> getAllUserRolesByNumeroDePersonal(int numeroDePersonal, int clave) throws SQLException {
+    public ArrayList<Rol> getAllUserRolesByNumeroDePersonal(int numeroDePersonal, String clave) throws SQLException {
         ArrayList<Rol> roles = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
@@ -154,10 +154,12 @@ public class UserDAO implements IUserDAO {
                 + "WHERE ru.numeroDePersonal = ? and ru.clave = ?;");
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, numeroDePersonal);
-        statement.setInt(2, clave);
+        statement.setString(2, clave);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
-            roles.add(new Rol(resultSet.getInt("IdRol"), resultSet.getString("nombre")));
+            ProgramaEducativo programaEducativo = new ProgramaEducativo();
+            programaEducativo.setClave(clave);
+            roles.add(new Rol(resultSet.getInt("IdRol"), resultSet.getString("nombre"), programaEducativo));
         }
         dataBaseConnection.closeConection();
         return roles;
@@ -222,6 +224,23 @@ public class UserDAO implements IUserDAO {
         }
         connection.close();
         return result;
-    }        
+    }     
+    
+    public boolean deleteUsuario(int numeroDePersonal) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if (connection != null) {
+            String query = ("UPDATE `sistema_tutorias`.`usuarios` SET `esRegistrado` = 0 WHERE (`numeroDePersonal` = ?);");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, numeroDePersonal);
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }
 
 }

@@ -35,6 +35,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import security.SHA_512;
 import util.AlertManager;
 import util.Email;
 import util.WindowManager;
@@ -152,7 +153,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
             tutorAcademico.setApellidoMaterno(profesor.getApellidoMaterno());
             tutorAcademico.setCorreoElectronicoInstitucional(profesor.getCorreoElectronicoInstitucional());
             tutorAcademico.setNumeroDePersonal(profesor.getNumeroDePersonal());
-            tutorAcademico.setContraseña(randomPassword);
+            tutorAcademico.setContraseña(new SHA_512().getSHA512(randomPassword));
             boolean resultRegister = tutorAcademicoDao.setTutorRegister(tutorAcademico);
             boolean resultRolAssignment = userDao.setRolUserTutor(tutorAcademico.getNumeroDePersonal(), "14203");
             boolean markRegistration = profesorDao.setTutorUser(tutorAcademico.getNumeroDePersonal());

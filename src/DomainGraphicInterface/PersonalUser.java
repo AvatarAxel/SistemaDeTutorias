@@ -5,9 +5,7 @@
 package DomainGraphicInterface;
 
 import Domain.Personal;
-import Domain.Profesor;
 import Domain.Rol;
-import Domain.Usuario;
 import java.util.ArrayList;
 
 /**
@@ -16,16 +14,16 @@ import java.util.ArrayList;
  */
 public class PersonalUser {
     private Personal personal;    
-    private ArrayList<Rol> rol;
+    private ArrayList<Rol> roles;
 
     public PersonalUser() {
-        this.rol = new ArrayList<>();        
+        this.roles = new ArrayList<>();        
     }
         
 
     public PersonalUser(Personal personal, ArrayList<Rol> rol) {
         this.personal = personal;
-        this.rol = rol;
+        this.roles = rol;
     }
     
     public int getNumeroDePersonal() {
@@ -49,7 +47,7 @@ public class PersonalUser {
     }
 
     public void setApellidoPaterno(String apellidoPaterno) {
-        this.personal.setNombre(apellidoPaterno);
+        this.personal.setApellidoPaterno(apellidoPaterno);
     }
 
     public String getApellidoMaterno() {
@@ -76,12 +74,12 @@ public class PersonalUser {
         this.personal = personal;
     }
 
-    public ArrayList<Rol> getRol() {
-        return rol;
+    public ArrayList<Rol> getRoles() {
+        return roles;
     }
 
-    public void setRol(ArrayList<Rol> rol) {
-        this.rol = rol;
+    public void setRol(ArrayList<Rol> roles) {
+        this.roles = roles;
     }
         
 }
