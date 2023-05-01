@@ -91,6 +91,13 @@ public class AlertManager {
         alertInformation.setContentText("Aún no se han registrado datos para mostrar");
         alertInformation.showAndWait();
     }
+       public void showAlertRegisterCompletedSesiones() {
+        stageInformation.getIcons().add(new Image("images/icon.png"));
+        alertInformation.setTitle("Información");
+        alertInformation.setHeaderText("Registros");
+        alertInformation.setContentText("Ya ha registrado las 3 sesiones de tutoría en el periodo escolar");
+        alertInformation.showAndWait();
+    }
 
     public void showAlertEmptyFields() {
         stageWarning.getIcons().add(new Image("images/icon.png"));

@@ -16,6 +16,9 @@ public class Rol {
     private ProgramaEducativo programaEducativo;
 
     public Rol() {
+        this.idRol = 0;
+        this.rolName = "";
+        this.programaEducativo = new ProgramaEducativo();
     }
     
     public Rol(int idRol, String rolName) {

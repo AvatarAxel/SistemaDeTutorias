@@ -105,13 +105,24 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
         
         try {
             for (int i = 0; i < listedExperienciasEducativas.size(); i++) {
-                experienciaEducativaDAO.uploadAcademicOffer(listedExperienciasEducativas.get(i));
+                if(!experienciaEducativaDAO.existNrc(listedExperienciasEducativas.get(i).getNrc())){
+                    experienciaEducativaDAO.uploadAcademicOffer(listedExperienciasEducativas.get(i));
+                    tbExperiencias.getItems().remove(listedExperienciasEducativas.get(i));
+                    tbExperiencias.refresh();
+                }
+            }
+            if(!tbExperiencias.getItems().isEmpty()){
+                AlertManager.showAlert("Advertencia", "Se detectaron NRC repetidos, por lo tanto, esos registros fueron descartados, favor de cambiarlos", Alert.AlertType.WARNING);
+            }else{
+                WindowManager.NavigateToWindow(
+                        tbExperiencias.getScene().getWindow(),
+                        "/GUI/FXMLMainMenu.fxml",
+                        "Menú");
             }
         } catch (SQLException ex) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
         }
         
-        WindowManager.NavigateToWindow(tbExperiencias.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }
 
     @FXML

@@ -65,5 +65,8 @@ public abstract class Personal {
     public void setCorreoElectronicoInstitucional(String correoElectronicoInstitucional) {
         this.correoElectronicoInstitucional = correoElectronicoInstitucional;
     }
+    public String getNombreCompleto(){
+        return this.nombre + " " + this.apellidoPaterno + " "  + this.apellidoMaterno;
+    }
 
 }

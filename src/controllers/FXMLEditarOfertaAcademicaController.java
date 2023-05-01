@@ -134,6 +134,7 @@ public class FXMLEditarOfertaAcademicaController implements Initializable {
     private void clicExperienciaEducativa(MouseEvent event) {
         if(event.getClickCount() == 2){
             selectedValue();
+            loadTable();
         }
     }
     
