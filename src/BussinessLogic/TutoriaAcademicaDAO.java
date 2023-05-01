@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import singleton.User;
 
 /**
  *
@@ -214,8 +213,8 @@ public class TutoriaAcademicaDAO implements ITutoriaAcademicaDAO {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, idPeriodo);
             statement.setInt(2, Integer.parseInt(clave));
-           
-            ResultSet resultSet = statement.executeQuery();     
+
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 TutoriaAcademica tutoriaAcademica = new TutoriaAcademica();
                 tutoriaAcademica.setIdTutoriaAcademica(resultSet.getInt("idTutoriaAcademica"));
@@ -232,5 +231,24 @@ public class TutoriaAcademicaDAO implements ITutoriaAcademicaDAO {
             dataBaseConnection.closeConection();
         }
         return tutoriasAcademicas;
+    }
+
+    @Override
+    public boolean updateFechasTutoriaAcademica(TutoriaAcademica tutoriaAcademica) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if (connection != null) {
+            String query = "UPDATE tutorias_academicas "
+                    + "SET fechaInicio = ?, fechaFin = ? WHERE idTutoriaAcademica = ?;";
+            PreparedStatement statementSet = connection.prepareStatement(query);
+            statementSet.setDate(1, tutoriaAcademica.getFechaInicio());
+            statementSet.setDate(2, tutoriaAcademica.getFechaFin());
+            statementSet.setInt(3, tutoriaAcademica.getIdTutoriaAcademica());
+            int filasAfectadas = statementSet.executeUpdate();
+            result = (filasAfectadas == 1);
+        }
+        dataBaseConnection.closeConection();
+        return result;
     }
 }
