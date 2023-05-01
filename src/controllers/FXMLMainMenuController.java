@@ -204,7 +204,7 @@ public class FXMLMainMenuController implements Initializable {
         switch (User.getCurrentUser().getRol().getIdRol()) {
             case 1:
                 menuAsignaciones.setVisible(true);
-                menuFechas.setVisible(false);
+                menuFechas.setVisible(true);
                 menuHelp.setVisible(true);
                 menuOfertaAcademica.setVisible(true);
                 menuProblematicas.setVisible(true);
@@ -411,7 +411,7 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuRegistrarFechas(ActionEvent event) {
-         WindowManager.NavigateToWindow(
+        WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLRegistrarFechasTutorias.fxml",
                 "Registrar Fechas"
@@ -420,6 +420,11 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuUpdateFechas(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLEditarFechasTutorias.fxml",
+                "Registrar Fechas"
+        );
     }
 
     @FXML
