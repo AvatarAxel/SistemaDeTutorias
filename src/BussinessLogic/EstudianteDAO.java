@@ -62,14 +62,15 @@ public class EstudianteDAO {
         return result;
     }
     
-    public ArrayList<Estudiante> obtenerEstudiantesPorTutorAcademico(int numeroPersonal) throws SQLException {
+    public ArrayList<Estudiante> getEstudiantesPorTutorAcademicoAndProgramaEducativo(int numeroPersonal, int clave) throws SQLException {
         ArrayList<Estudiante> estudiantes = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            String consulta = "SELECT * FROM estudiantes WHERE numeroDePersonal = ?";
+            String consulta = "SELECT * FROM estudiantes WHERE numeroDePersonal = ? AND clave = ?;";
             PreparedStatement configurarConsulta = connection.prepareStatement(consulta);
             configurarConsulta.setInt(1, numeroPersonal);
+            configurarConsulta.setInt(2, clave);            
             ResultSet resultado = configurarConsulta.executeQuery();
             while (resultado.next()) {
                 Estudiante estudiante = new Estudiante();
@@ -157,10 +158,6 @@ public class EstudianteDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if(connection!=null){
-            String queryGet = "INSERT INTO lista_de_asistencias\n"
-                        + "(esAsistente, enRiesgo, idReporteTutoria, matricula)\n"
-                        + "VALUES (?, ?, ?, ?)";
-            
             String querySet = "UPDATE lista_de_asistencias\n"
                         + "SET esAsistente = ? , enRiesgo =? " + "WHERE idReporteTutoria = ? AND matricula= ?";             
             PreparedStatement statementSet = connection.prepareStatement(querySet);
