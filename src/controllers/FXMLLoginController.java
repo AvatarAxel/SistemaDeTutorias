@@ -88,6 +88,7 @@ public class FXMLLoginController implements Initializable {
 
             ArrayList<Rol> roles = userDAO.getUserRoles(usuarioLogin.getNumeroDePersonal());
 
+            User.getCurrentUser().setNumeroDePersonal(usuarioLogin.getNumeroDePersonal());
             User.getCurrentUser().setNombre(usuarioLogin.getNombre());
             User.getCurrentUser().setApellidoPaterno(usuarioLogin.getApellidoPaterno());
             User.getCurrentUser().setApellidoMaterno(usuarioLogin.getApellidoMaterno());

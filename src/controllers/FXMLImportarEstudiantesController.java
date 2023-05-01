@@ -27,6 +27,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import singleton.User;
@@ -52,18 +53,16 @@ public class FXMLImportarEstudiantesController implements Initializable {
     private TableColumn columnApeliidoMaterno;
     @FXML
     private Button btSave;    
+    @FXML
+    private TextField tfProgramaEducativo;    
 
     private ObservableList<Estudiante> listEstudiantes;
-    //private Usuario tutorAcademico;
 
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        /*tutorAcademico = new Usuario();
-        tutorAcademico.setProgramaEducativo("Ingenieria de Software");
-        tutorAcademico.setNumeroPersonal(10001);
-        tutorAcademico.setClaveProgramaEducativo(14203);*/  
+    public void initialize(URL url, ResourceBundle rb) {  
         configureTableEstudiantes();
+        tfProgramaEducativo.setText(User.getCurrentUser().getRol().getProgramaEducativo().getNombre());
     }    
 
     

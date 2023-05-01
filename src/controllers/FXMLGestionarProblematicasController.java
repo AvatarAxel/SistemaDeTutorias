@@ -100,7 +100,7 @@ public class FXMLGestionarProblematicasController implements Initializable {
     ArrayList<ExperienciaEducativa> nombresProfesoresNrc = new ArrayList<ExperienciaEducativa>();
     ArrayList<String> nombreExperiencias = new ArrayList<String>();
     ObservableList<ProblematicaAcademica> problematicaAcademicaObservableList = FXCollections.observableArrayList();
-    int idReporteTutoria = 2;
+    int idReporteTutoria = 0;
 
     private final ListChangeListener<ProblematicaAcademica> selectedProblematica = new ListChangeListener<ProblematicaAcademica>() {
         @Override
@@ -129,14 +129,14 @@ public class FXMLGestionarProblematicasController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        this.initializeTable();
+     /*   this.initializeTable();
         final ObservableList<ProblematicaAcademica> problematicaReportes = tblProblematicas.getSelectionModel().getSelectedItems();
         problematicaReportes.addListener(selectedProblematica);
         initializeQuerys();
         disableFields();
         btn_add.setVisible(false);
         btn_Delete.setVisible(false);
-        btn_Update.setVisible(false);
+        btn_Update.setVisible(false); */
 
     }
 
@@ -519,6 +519,20 @@ public class FXMLGestionarProblematicasController implements Initializable {
         btn_add.setVisible(true);
         valueFactory.setValue(0);
         spn_numReportados.setValueFactory(valueFactory);
+    }
+
+    void receiveParameters(int idReporteTutoria) {
+        this.idReporteTutoria=idReporteTutoria;
+        this.initializeTable();
+        final ObservableList<ProblematicaAcademica> problematicaReportes = tblProblematicas.getSelectionModel().getSelectedItems();
+        problematicaReportes.addListener(selectedProblematica);
+        initializeQuerys();
+        disableFields();
+        btn_add.setVisible(false);
+        btn_Delete.setVisible(false);
+        btn_Update.setVisible(false);
+
+        
     }
 
 }
