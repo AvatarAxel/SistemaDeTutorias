@@ -83,12 +83,10 @@ import javafx.stage.Modality;
     @FXML
     private Button btProblematicaAcademica;
     
-    //private Usuario tutorAcademico;
     private ReporteDeTutoriaAcademica reporteTutoriaAcademica;
     private TutoriaAcademica tutoriaAcademica;
     
 
-    //private TutoriaAcademica tutoriaAcademica;
     private ArrayList<ProblematicaAcademica> problematicasAcademicas;
     private String comentarioGeneral;
     private ObservableList<Estudiante> listEstudiantes;
@@ -97,10 +95,6 @@ import javafx.stage.Modality;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /*tutorAcademico = new Usuario();
-        tutorAcademico.setProgramaEducativo("Ingenieria de Software");
-        tutorAcademico.setNumeroPersonal(10001);
-        tutorAcademico.setClaveProgramaEducativo(14203);*/
         configureTableEstudiantes();        
         loadPlaceHolder();
         btProblematicaAcademica.setText("");
@@ -108,10 +102,10 @@ import javafx.stage.Modality;
     public void configureScene(TutoriaAcademica tutoriaAcademicaRecived, ReporteDeTutoriaAcademica reporteTutoriaAcademicaRecived, boolean editableType ) throws SQLException {
         editableTypeReport = editableType;
         tutoriaAcademica = tutoriaAcademicaRecived;
-        //ableTocrate
         try {
             if(editableType){
                 btProblematicaAcademica.setText("Editar problemática académica");
+                tfComentarioGeneral.setText("Cargando datos...");              
             }else{
                 btProblematicaAcademica.setText("Agregar problemática académica");                
                 ReporteDeTutoriaAcademicaDAO ReporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
@@ -127,7 +121,6 @@ import javafx.stage.Modality;
     }
     
     private void loadPlaceHolder(){
-        tfComentarioGeneral.setText("Cargando datos...");              
         tfFechaTutoria.setText("Cargando datos..."); 
         tfFechaLimiteEntrega.setText("Cargando datos..."); 
         tfNumeroSesionTutoria.setText("0");
@@ -161,8 +154,13 @@ import javafx.stage.Modality;
             lbProgramaEducativo.setText(User.getCurrentUser().getRol().getProgramaEducativo().getNombre());
             tfPeriodoEscolar.setText(tutoriaAcademica.getFechasPeriodoEscolar());
             ReporteDeTutoriaAcademica loadedReporteDeTutoriaAcademica = ReporteDeTutoriaAcademicaDao.getReporteDeTutoriaByTutor(tutoriaAcademica.getIdTutoriaAcademica(),User.getCurrentUser().getNumeroDePersonal());
-            reporteTutoriaAcademica = loadedReporteDeTutoriaAcademica;                
-            tfComentarioGeneral.setText(reporteTutoriaAcademica.getComentariosGenerales());
+            reporteTutoriaAcademica = loadedReporteDeTutoriaAcademica;
+            if(reporteTutoriaAcademica.getComentariosGenerales().equals("")){
+                tfComentarioGeneral.setText("");
+                tfComentarioGeneral.setPromptText("Ingrese un comentario general (Opcional)");
+            }else{
+                tfComentarioGeneral.setText(reporteTutoriaAcademica.getComentariosGenerales());            
+            }
         } catch (SQLException sqle) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }    
@@ -174,7 +172,7 @@ import javafx.stage.Modality;
             if(editableType){
                 listEstudiantesRecived = estudianteDAO.obtenerEstudiantesPorReporteTutoriaAcademica(reporteTutoriaAcademica.getIdReporteTutoria());             
             }else{
-                listEstudiantesRecived = estudianteDAO.obtenerEstudiantesPorTutorAcademico(User.getCurrentUser().getNumeroDePersonal());          
+                listEstudiantesRecived = estudianteDAO.getEstudiantesPorTutorAcademicoAndProgramaEducativo(User.getCurrentUser().getNumeroDePersonal(), Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()));          
             }
             if(listEstudiantesRecived !=null){
                 listEstudiantes.clear();                    
@@ -246,6 +244,8 @@ import javafx.stage.Modality;
         return numEstudiantesEnRiesgo;
     }        
     private void assignEstudiantes() throws SQLException{
+        countNumEstudiantesAsistentes();        
+        countEstudiantesEnRiesgo();
         EstudianteDAO estudianteDAO =  new EstudianteDAO();
         try{
             if(editableTypeReport){
