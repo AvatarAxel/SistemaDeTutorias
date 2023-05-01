@@ -380,6 +380,11 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuConsultarProblematicas(ActionEvent event) {
+          WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLConsultarProblematicasAcademicasController",
+                "Consultar Problemáticas    "
+        );
     }
 
     @FXML

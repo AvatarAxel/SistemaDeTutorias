@@ -23,7 +23,6 @@
             <TableColumn fx:id="clm_numReportes" prefWidth="167.99998982747394" text="numReportes" />
         </columns>
       </TableView>
-      <Button fx:id="btn_ModifyE" layoutX="249.0" layoutY="291.0" mnemonicParsing="false" onAction="#modifyEnviromentOn" prefHeight="25.0" prefWidth="59.0" text="Editar" />
       <Button fx:id="btn_Delete" layoutX="61.0" layoutY="739.0" mnemonicParsing="false" onAction="#deleteProblematica" prefHeight="25.0" prefWidth="78.0" text="Eliminar" visible="false" />
       <Button fx:id="btn_Update" layoutX="499.0" layoutY="739.0" mnemonicParsing="false" onAction="#updateProblematica" prefHeight="20.0" prefWidth="73.0" text="Actualizar" visible="false" />
       <Label layoutX="117.0" layoutY="35.0" text="Gestión de Problemáticas Académicas">
@@ -61,8 +60,8 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Spinner fx:id="spn_numReportados" layoutX="442.0" layoutY="401.0" prefHeight="25.0" prefWidth="133.0" />
-      <Button fx:id="btn_more" layoutX="339.0" layoutY="289.0" mnemonicParsing="false" onAction="#clearFields" prefHeight="25.0" prefWidth="52.0" text="+">
+      <Spinner fx:id="spn_numReportados" layoutX="475.0" layoutY="401.0" prefHeight="25.0" prefWidth="73.0" />
+      <Button fx:id="btn_more" layoutX="298.0" layoutY="291.0" mnemonicParsing="false" onAction="#clearFields" prefHeight="25.0" prefWidth="52.0" text="+">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

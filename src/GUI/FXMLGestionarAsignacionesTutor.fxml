@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -44,5 +45,7 @@
          </font>
       </Label>
       <Button fx:id="closeWindow" layoutX="566.0" layoutY="36.0" mnemonicParsing="false" text="Cerrar" />
+      <CheckBox fx:id="cmb_WithTutor" layoutX="393.0" layoutY="84.0" mnemonicParsing="false" onAction="#filterTableWitthTutor" text="Con Tutor" />
+      <CheckBox fx:id="cmb_WithoutTutor" layoutX="497.0" layoutY="84.0" mnemonicParsing="false" onAction="#filterTableWithoutTutor" text="Sin Tutor" />
    </children>
 </AnchorPane>

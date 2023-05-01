@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -64,10 +65,13 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
     private TextField txt_tutor;
     @FXML
     private TableColumn clm_currentTutor;
-
+    ArrayList<Estudiante> estudiantes = new ArrayList<Estudiante>();
+    ArrayList<TutorAcademico> tutores = new ArrayList<TutorAcademico>();
     ObservableList<Estudiante> estudiantesObservableList = FXCollections.observableArrayList();
     ObservableList<TutorAcademico> tutoresObservableList = FXCollections.observableArrayList();
+
     private final ListChangeListener<TutorAcademico> selectedTutor = new ListChangeListener<TutorAcademico>() {
+
         @Override
         public void onChanged(ListChangeListener.Change<? extends TutorAcademico> c) {
             TutorAcademico item = new TutorAcademico();
@@ -85,6 +89,12 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
     private AlertManager alerts = new AlertManager();
     @FXML
     private TableColumn clm_checkbox;
+    @FXML
+    private Button closeWindow;
+    @FXML
+    private CheckBox cmb_WithTutor;
+    @FXML
+    private CheckBox cmb_WithoutTutor;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -110,7 +120,7 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
 
     }
 
-    private void loadDataTableEstudiantes(ArrayList<Estudiante> estudiantes) {
+    private void loadDataTableEstudiantes() {
 
         if (!estudiantes.isEmpty()) {
             for (Estudiante estudiante : estudiantes) {
@@ -124,7 +134,7 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
 
     }
 
-    private void loadDataTableTutores(ArrayList<TutorAcademico> tutores) {
+    private void loadDataTableTutores() {
 
         if (!tutores.isEmpty()) {
             for (TutorAcademico tutor : tutores) {
@@ -138,29 +148,77 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
 
     }
 
+    private ObservableList<Estudiante> searchEstudiantesWithTutores() {
+        ObservableList<Estudiante> estudiantesWithTutor = FXCollections.observableArrayList();
+        if (!estudiantes.isEmpty()) {
+            for (Estudiante estudiante : estudiantes) {
+                if (estudiante.getTutorName() != null) {
+                    estudiantesWithTutor.add(estudiante);
+                }
+            }
+        }
+        tblEstudiantes.setItems(estudiantesWithTutor);
+
+        return estudiantesWithTutor;
+    }
+
+    private ObservableList<Estudiante> searchEstudiantesWithoutTutores() {
+        ObservableList<Estudiante> estudiantesWithoutTutor = FXCollections.observableArrayList();
+        if (!estudiantes.isEmpty()) {
+            for (Estudiante estudiante : estudiantes) {
+                if (estudiante.getTutorName() == null) {
+                    estudiantesWithoutTutor.add(estudiante);
+                }
+            }
+        }
+        tblEstudiantes.setItems(estudiantesWithoutTutor);
+
+        return estudiantesWithoutTutor;
+    }
+
     private void initializeQuerys() {
         EstudianteDAO estudianteDAO = new EstudianteDAO();
 
         TutorAcademicoDAO tutorDAO = new TutorAcademicoDAO();
 
-        ArrayList<Estudiante> estudiantes = new ArrayList<Estudiante>();
-        ArrayList<TutorAcademico> tutores = new ArrayList<TutorAcademico>();
-
         try {
             estudiantes = estudianteDAO.getEstudiantesByPrograma("14203");
             tutores = tutorDAO.getAllTutores();
             if (!estudiantes.isEmpty() || !tutores.isEmpty()) {
-                loadDataTableEstudiantes(estudiantes);
-                loadDataTableTutores(tutores);
+                loadDataTableEstudiantes();
+                loadDataTableTutores();
             } else {
                 alerts.showAlertNotRegisterFound();
-                
+
             }
         } catch (SQLException ex) {
 
             alerts.showAlertErrorConexionDB();
             ex.printStackTrace();
 
+        }
+
+    }
+
+    private void updateQuerys() {
+        EstudianteDAO estudianteDAO = new EstudianteDAO();
+
+        TutorAcademicoDAO tutorDAO = new TutorAcademicoDAO();
+        try {
+            estudiantes = estudianteDAO.getEstudiantesByPrograma("14203");
+            tutores = tutorDAO.getAllTutores();
+            if (cmb_WithTutor.isSelected()) {
+                this.searchEstudiantesWithTutores();
+            } else if (cmb_WithoutTutor.isSelected()) {
+                this.searchEstudiantesWithoutTutores();
+
+            } else {
+                this.loadDataTableEstudiantes();
+            }
+            this.loadDataTableTutores();
+
+        } catch (SQLException ex) {
+            alerts.showAlertErrorConexionDB();
         }
 
     }
@@ -239,7 +297,7 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
     private void updateTables() {
         estudiantesObservableList.removeAll(estudiantesObservableList);
         tutoresObservableList.removeAll(tutoresObservableList);
-        initializeQuerys();
+        updateQuerys();
 
     }
 
@@ -323,6 +381,42 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
         }));
         if (txt_estudiante.getText().length() > 30) {
             txt_estudiante.setText("");
+        }
+    }
+
+    @FXML
+    private void filterTableWitthTutor(ActionEvent event) {
+        searchEstudiantesWithTutores();
+
+
+        /*  cmb_WithTutor.selectedProperty().addListener(
+        (ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
+         if (new_val){
+          cmb_WithoutTutor.setDisable(true);
+
+         }
+      }); */
+        if (cmb_WithTutor.isSelected()) {
+            cmb_WithoutTutor.setDisable(true);
+
+        } else {
+            this.loadDataTableEstudiantes();
+            cmb_WithoutTutor.setDisable(false);
+
+        }
+
+    }
+
+    @FXML
+    private void filterTableWithoutTutor(ActionEvent event) {
+        searchEstudiantesWithoutTutores();
+        if (cmb_WithoutTutor.isSelected()) {
+            cmb_WithTutor.setDisable(true);
+
+        } else {
+            this.loadDataTableEstudiantes();
+            cmb_WithTutor.setDisable(false);
+
         }
     }
 
