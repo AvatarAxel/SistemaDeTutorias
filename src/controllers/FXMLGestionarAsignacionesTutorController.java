@@ -39,6 +39,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 import util.AlertManager;
+import singleton.User;
+
 
 /**
  * FXML Controller class
@@ -182,7 +184,7 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
         TutorAcademicoDAO tutorDAO = new TutorAcademicoDAO();
 
         try {
-            estudiantes = estudianteDAO.getEstudiantesByPrograma("14203");
+            estudiantes = estudianteDAO.getEstudiantesByPrograma(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
             tutores = tutorDAO.getAllTutores();
             if (!estudiantes.isEmpty() || !tutores.isEmpty()) {
                 loadDataTableEstudiantes();
@@ -205,7 +207,7 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
 
         TutorAcademicoDAO tutorDAO = new TutorAcademicoDAO();
         try {
-            estudiantes = estudianteDAO.getEstudiantesByPrograma("14203");
+            estudiantes = estudianteDAO.getEstudiantesByPrograma(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
             tutores = tutorDAO.getAllTutores();
             if (cmb_WithTutor.isSelected()) {
                 this.searchEstudiantesWithTutores();
