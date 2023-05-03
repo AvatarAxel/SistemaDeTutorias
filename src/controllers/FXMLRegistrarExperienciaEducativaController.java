@@ -10,6 +10,7 @@ import Domain.ExperienciaEducativa;
 import Domain.ProgramaEducativo;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,75 +32,70 @@ import util.WindowManager;
  *
  * @author Panther
  */
-public class FXMLEditarOfertaAcademicaDetallesController implements Initializable {
+public class FXMLRegistrarExperienciaEducativaController implements Initializable {
 
     private ExperienciaEducativa experienciaEducativa;
     private ObservableList<ProgramaEducativo> listProgramasEducativos = FXCollections.observableArrayList();
     private ObservableList<String> listModalidad = FXCollections.observableArrayList();
     private ObservableList<String> listSeccion = FXCollections.observableArrayList();
-    
+
     @FXML
     private TextField tfNrc;
     @FXML
     private TextField tfNombre;
     @FXML
     private ComboBox<ProgramaEducativo> cbProgramaEducativo;
-    
     @FXML
     private ComboBox<String> cbModalidad;
     @FXML
     private ComboBox<String> cbSeccion;
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        loadComboBox();
+        validateLengthNRC();
         validateLengthNombre();
-    }    
-
-    private void loadFields(){
-        tfNrc.setText(experienciaEducativa.getNrc());
-        tfNrc.setEditable(false);
-        tfNombre.setText(experienciaEducativa.getNombre());
-        cbProgramaEducativo.setItems(listProgramasEducativos);
-        
-        listModalidad.add("Virtual");
-        listModalidad.add("Presencial");
-        listModalidad.add("Hibrida");
-        
-        cbModalidad.setItems(listModalidad);
-        cbModalidad.getSelectionModel().select(experienciaEducativa.getModalidad());
-        //.setText(experienciaEducativa.getModalidad());
-        
-        listSeccion.add("1");
-        listSeccion.add("2");
-        listSeccion.add("3");
-        
-        cbSeccion.setItems(listSeccion);
-        //.setText(experienciaEducativa.getSeccion());
-        cbSeccion.getSelectionModel().select(experienciaEducativa.getSeccion());
     }
-    
-    public void passExperienciaEducativa(ExperienciaEducativa experienciaEducativa) {
-        this.experienciaEducativa = experienciaEducativa;
-        
+
+    private void loadComboBox() {
         try {
+            ArrayList<ProgramaEducativo> programasEducativos = new ArrayList<>();
+
             ProgramaEducativoDAO programaEducativoDAO = new ProgramaEducativoDAO();
-            listProgramasEducativos.addAll(programaEducativoDAO.getProgramasEducativos());
-            cbProgramaEducativo.getSelectionModel().select(
-                    new ProgramaEducativo(
-                            experienciaEducativa.getClave(),
-                            experienciaEducativa.getProgramaEducativo()
-                    )
-            );
-            loadFields();
+            programasEducativos = programaEducativoDAO.getProgramasEducativos();
+            listProgramasEducativos.addAll(programasEducativos);
+            cbProgramaEducativo.setItems(listProgramasEducativos);
+
+            listModalidad.add("Virtual");
+            listModalidad.add("Presencial");
+            listModalidad.add("Hibrida");
+
+            cbModalidad.setItems(listModalidad);
+
+            listSeccion.add("1");
+            listSeccion.add("2");
+            listSeccion.add("3");
+
+            cbSeccion.setItems(listSeccion);
+
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLEditarOfertaAcademicaDetallesController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FXMLRegistrarExperienciaEducativaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    private void validateLengthNRC() {
+        tfNrc.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 5) {
+                tfNrc.setText(oldValue);
+            }
+        });
+        
+    }
+    
     private void validateLengthNombre() {
         tfNombre.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > 50) {
@@ -111,27 +107,50 @@ public class FXMLEditarOfertaAcademicaDetallesController implements Initializabl
     
     @FXML
     private void clicCancel(ActionEvent event) {
-        WindowManager.closeWindow(tfNrc.getScene().getWindow());
+        WindowManager.NavigateToWindow(cbProgramaEducativo.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }
 
     @FXML
     private void clicSave(ActionEvent event) {
-        ExperienciaEducativaDAO experienciaEducativaDAO = new ExperienciaEducativaDAO();
-        
-        experienciaEducativa.setNrc(tfNrc.getText());
+        experienciaEducativa = new ExperienciaEducativa();
+
         experienciaEducativa.setNombre(tfNombre.getText());
-        experienciaEducativa.setProgramaEducativo(cbProgramaEducativo.getSelectionModel().getSelectedItem().getNombre());
+        experienciaEducativa.setNrc(tfNrc.getText());
         experienciaEducativa.setClave(cbProgramaEducativo.getSelectionModel().getSelectedItem().getClave());
         experienciaEducativa.setModalidad(cbModalidad.getSelectionModel().getSelectedItem());
         experienciaEducativa.setSeccion(cbSeccion.getSelectionModel().getSelectedItem());
-        
-        try{
-            experienciaEducativaDAO.updateAcademicOffer(experienciaEducativa);
-        }catch(SQLException sqle){
-            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+
+        ExperienciaEducativaDAO experienciaEducativaDAO = new ExperienciaEducativaDAO();
+
+        try {
+            if (!experienciaEducativaDAO.existNrc(tfNrc.getText())) {
+                if (experienciaEducativaDAO.uploadAcademicOffer(experienciaEducativa) == 1) {
+                    AlertManager.showAlert("Exito", "Registro realizado con éxito", Alert.AlertType.INFORMATION);
+                    tfNombre.setText("");
+                    tfNrc.setText("");
+                    cbProgramaEducativo.getSelectionModel().select(-1);
+                    cbModalidad.getSelectionModel().select(-1);
+                    cbSeccion.getSelectionModel().select(-1);
+                }
+            } else {
+                AlertManager.showAlert("Advertencia", "El NRC ingresado ya se encuentra en el registro", Alert.AlertType.WARNING);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLRegistrarExperienciaEducativaController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        WindowManager.closeWindow(tfNrc.getScene().getWindow());
     }
+
+    @FXML
+    private void validateInputNRC(KeyEvent event) {
+        tfNrc.setTextFormatter(new TextFormatter<String>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*")) {
+                return change;
+            }
+            return null;
+        }));
+    }
+
 
     @FXML
     private void validateInputNombre(KeyEvent event) {

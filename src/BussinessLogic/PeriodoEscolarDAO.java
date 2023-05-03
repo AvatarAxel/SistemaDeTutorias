@@ -15,7 +15,7 @@ import java.sql.SQLException;
  *
  * @author michikato
  */
-public class PeriodoEscolarDAO {
+public class PeriodoEscolarDAO implements IPeriodoEscolarDAO {
 
     public PeriodoEscolar getPeriodoEscolar(int idTutoriaAcademica) throws SQLException {
         PeriodoEscolar periodoEscolar = new PeriodoEscolar();
@@ -53,6 +53,28 @@ public class PeriodoEscolarDAO {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
+                periodoEscolar.setIdPeriodoEscolar(resultSet.getInt("idPeriodoEscolar"));
+                periodoEscolar.setFechaInicio(resultSet.getDate("fechaInicio"));
+                periodoEscolar.setFechaFin(resultSet.getDate("fechaFin"));
+            }
+        }
+        connection.close();
+        return periodoEscolar;
+    }
+
+    @Override
+    public PeriodoEscolar getCurrentPeriodo() throws SQLException {
+        PeriodoEscolar periodoEscolar = new PeriodoEscolar();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String query = ("SELECT idPeriodoEscolar, fechaInicio, fechaFin FROM periodos_escolares\n"
+                    + "WHERE fechaFin = (SELECT MAX(fechaFin) FROM periodos_escolares) \n"
+                    + "AND fechaInicio <= NOW();");
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
                 periodoEscolar.setIdPeriodoEscolar(resultSet.getInt("idPeriodoEscolar"));
                 periodoEscolar.setFechaInicio(resultSet.getDate("fechaInicio"));
                 periodoEscolar.setFechaFin(resultSet.getDate("fechaFin"));

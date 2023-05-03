@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLEditarFechasTutoriasController">
+    <stylesheets>
+        <URL value="@/styles/globalStyles.css" />
+    </stylesheets>
+    <children>
+      <Label layoutX="176.0" layoutY="18.0" text="Editar Fechas de Tutoría">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font></Label>
+      <ComboBox fx:id="cbNumSesion" layoutX="225.0" layoutY="153.0" onAction="#enableDatePickers" prefWidth="150.0" />
+      <Label layoutX="252.0" layoutY="126.0" text="Número de Sesión" />
+      <DatePicker fx:id="dpStartDate" disable="true" editable="false" layoutX="73.0" layoutY="255.0" prefHeight="25.0" prefWidth="167.0" />
+      <DatePicker fx:id="dpEndDate" disable="true" editable="false" layoutX="343.0" layoutY="255.0" prefHeight="25.0" prefWidth="167.0" />
+      <Button layoutX="451.0" layoutY="360.0" mnemonicParsing="false" onAction="#clicSave" text="Guardar" />
+      <Label layoutX="121.0" layoutY="228.0" text="Fecha Inicial" />
+      <Label layoutX="392.0" layoutY="228.0" text="Fecha Final" />
+      <Label layoutX="238.0" layoutY="58.0" text="Periodo Escolar Actual :" />
+      <Label fx:id="lbPeriodo" layoutX="270.0" layoutY="75.0" textFill="#27aa10" />
+      <Button layoutX="524.0" layoutY="360.0" mnemonicParsing="false" onAction="#clicCancel" text="Cancelar" />
+   </children>
+</AnchorPane>
