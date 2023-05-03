@@ -33,6 +33,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.jws.soap.SOAPBinding;
+import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
 
@@ -63,7 +65,7 @@ public class FXMLConsultarReporteGeneralDeTutoriasAcademicasController implement
         buttonConsultar.setDisable(true);
         configureTableColumns();
         loadInformationTutoriaAcademica();
-        labelProgramaEducativo.setText("Ingenieria de Software");
+        labelProgramaEducativo.setText(User.getCurrentUser().getRol().getProgramaEducativo().getNombre());
     }
 
     @FXML
