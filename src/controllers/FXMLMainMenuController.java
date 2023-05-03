@@ -200,14 +200,13 @@ public class FXMLMainMenuController implements Initializable {
     }
 
     private void grantView() {
-        //TODO
         switch (User.getCurrentUser().getRol().getIdRol()) {
             case 1:
-                menuAsignaciones.setVisible(true);
-                menuFechas.setVisible(true);
-                menuHelp.setVisible(true);
-                menuOfertaAcademica.setVisible(true);
-                menuProblematicas.setVisible(true);
+                menuAsignaciones.setVisible(false);
+                menuFechas.setVisible(false);
+                menuHelp.setVisible(false);
+                menuOfertaAcademica.setVisible(false);
+                menuProblematicas.setVisible(false);
                 menuRegistros.setVisible(false);
                 menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(true);
@@ -216,30 +215,30 @@ public class FXMLMainMenuController implements Initializable {
                 menuExperiencias.setVisible(true);
                 break;
             case 2:
-                menuAsignaciones.setVisible(false);
-                menuFechas.setVisible(false);
+                menuAsignaciones.setVisible(true);
+                menuFechas.setVisible(true);
                 menuHelp.setVisible(true);
                 menuOfertaAcademica.setVisible(false);
                 menuProblematicas.setVisible(false);
-                menuRegistros.setVisible(false);
-                menuReportes.setVisible(false);
-                menuReporteGeneral.setVisible(false);
+                menuRegistros.setVisible(true);
+                menuReportes.setVisible(true);
+                menuReporteGeneral.setVisible(true);
                 menuReporteTutorial.setVisible(false);
-                menuSolucionProblematicas.setVisible(false);
-                menuExperiencias.setVisible(false);
+                menuSolucionProblematicas.setVisible(true);
+                menuExperiencias.setVisible(true);
                 break;
             case 3:
                 menuAsignaciones.setVisible(false);
                 menuFechas.setVisible(false);
                 menuHelp.setVisible(true);
-                menuOfertaAcademica.setVisible(false);
+                menuOfertaAcademica.setVisible(true);
                 menuProblematicas.setVisible(false);
                 menuRegistros.setVisible(false);
                 menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(false);
                 menuReporteTutorial.setVisible(true);
                 menuSolucionProblematicas.setVisible(false);
-                menuExperiencias.setVisible(true);
+                menuExperiencias.setVisible(false);
                 break;
             case 4:
                 menuAsignaciones.setVisible(true);
