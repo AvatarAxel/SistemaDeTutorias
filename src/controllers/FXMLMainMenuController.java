@@ -220,7 +220,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuFechas.setVisible(true);
                 menuHelp.setVisible(true);
                 menuOfertaAcademica.setVisible(false);
-                menuProblematicas.setVisible(false);
+                menuProblematicas.setVisible(true);
                 menuRegistros.setVisible(true);
                 menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(true);
@@ -233,7 +233,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuFechas.setVisible(false);
                 menuHelp.setVisible(true);
                 menuOfertaAcademica.setVisible(true);
-                menuProblematicas.setVisible(false);
+                menuProblematicas.setVisible(true);
                 menuRegistros.setVisible(false);
                 menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(false);
@@ -314,13 +314,8 @@ public class FXMLMainMenuController implements Initializable {
     private void menuReadProblematic(ActionEvent event) {
         WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
-                "/GUI/FXMLConsultarProblematicasAcademicas.fxml",
-                "Consultar  Problematicas Academicas"
-        );
-        WindowManager.NavigateToWindow(
-                mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLConsultarSolucionAProblematicaAcademica.fxml",
-                "Consultar Solución a Problematica Academica"
+                "Consultar  Problematicas Academicas"
         );
     }
 
@@ -409,8 +404,8 @@ public class FXMLMainMenuController implements Initializable {
     private void menuConsultarProblematicas(ActionEvent event) {
           WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
-                "/GUI/FXMLConsultarProblematicasAcademicasController",
-                "Consultar Problemáticas    "
+                "/GUI/FXMLConsultarProblematicasAcademicas.fxml",
+                "Consultar Problemáticas"
         );
     }
 

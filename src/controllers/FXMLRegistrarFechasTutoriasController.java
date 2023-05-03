@@ -59,7 +59,7 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
 
         try {
             PeriodoEscolarDAO PeriodoEscolarDAO = new PeriodoEscolarDAO();
-            periodoEscolar = PeriodoEscolarDAO.getCurrentPeriodoEscolar();
+            periodoEscolar = PeriodoEscolarDAO.getCurrentPeriodo();
 
             lbl_periodo.setText(periodoEscolar.getFechasPeridoEscolar());
             loadComboBoxSesiones();
