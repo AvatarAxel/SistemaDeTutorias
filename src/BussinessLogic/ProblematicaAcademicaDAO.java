@@ -233,6 +233,8 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                 fecha= resultSet.getDate("fecha").toLocalDate();
 
                 ProblematicaAcademica problematica = new ProblematicaAcademica();
+                Profesor profesorDomain = new Profesor();
+                ExperienciaEducativa experienciaEducativa = new ExperienciaEducativa();
                 problematica.setIdProblematica(idProblematica);
                 problematica.setDescripcion(descripcion);
                 problematica.setTitulo(titulo);
@@ -240,6 +242,8 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                 problematica.setIdReporteTutoria(idReporteTutoria);
                 problematica.setNrc(nrc);
                 problematica.setExperienciaEducativa(new ExperienciaEducativa());
+                
+                problematica.setProfesor(profesorDomain);
 
                 problematica.setExperienciaName(experiencia);
                 problematica.setProfesorName(profesor);

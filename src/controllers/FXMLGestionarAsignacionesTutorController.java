@@ -40,6 +40,7 @@ import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 import util.AlertManager;
 import singleton.User;
+import util.WindowManager;
 
 /**
  * FXML Controller class
@@ -93,11 +94,11 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
     @FXML
     private TableColumn clm_checkbox;
     @FXML
-    private Button closeWindow;
-    @FXML
     private CheckBox cmb_WithTutor;
     @FXML
     private CheckBox cmb_WithoutTutor;
+    @FXML
+    private Button close;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -336,10 +337,10 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
                 String inputText = newValue.toLowerCase();
                 if (tutor.getNombre().toLowerCase().contains(inputText)) {
                     return true;
-                } else if (tutor.getApellidoPaterno().toLowerCase().indexOf(inputText) != -1) {
+                } else if (tutor.getApellidoPaterno().toLowerCase().contains(inputText)) {
                     return true;
 
-                } else if (tutor.getApellidoMaterno().toLowerCase().indexOf(inputText) != -1) {
+                } else if (tutor.getApellidoMaterno().toLowerCase().contains(inputText)) {
                     return true;
 
                 } else {
@@ -353,7 +354,20 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
     }
 
     private void filterTableEstudiantes() {
-        FilteredList<Estudiante> filteredEstudiante = new FilteredList<>(estudiantesObservableList, b -> true);
+        FilteredList<Estudiante> filteredEstudiante;
+
+        if (cmb_WithTutor.isSelected()) {
+
+            filteredEstudiante = new FilteredList<>(estudiantesWithTutorObservableList, b -> true);
+
+        } else if (cmb_WithoutTutor.isSelected()) {
+            filteredEstudiante = new FilteredList<>(estudiantesWithoutTutorObservableList, b -> true);
+
+        } else {
+            filteredEstudiante = new FilteredList<>(estudiantesObservableList, b -> true);
+
+        }
+
         txt_estudiante.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredEstudiante.setPredicate(estudiante -> {
                 if (newValue == null || newValue.isEmpty()) {
@@ -435,6 +449,12 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
             cmb_WithTutor.setDisable(false);
 
         }
+    }
+
+    @FXML
+    private void closeWindow(ActionEvent event) {
+        WindowManager.NavigateToWindow(cmb_WithTutor.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+
     }
 
 }

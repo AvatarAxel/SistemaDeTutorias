@@ -59,7 +59,7 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
 
         try {
             PeriodoEscolarDAO PeriodoEscolarDAO = new PeriodoEscolarDAO();
-            periodoEscolar = PeriodoEscolarDAO.getCurrentPeriodoEscolar();
+            periodoEscolar = PeriodoEscolarDAO.getCurrentPeriodo();
 
             lbl_periodo.setText(periodoEscolar.getFechasPeridoEscolar());
             loadComboBoxSesiones();
@@ -203,9 +203,9 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
     @FXML
     private void closeWindow(ActionEvent event) {
           
-        Stage escenario = (Stage) lbl_periodo.getScene().getWindow();
-        escenario.close();
-        WindowManager.NavigateToWindow(lbl_periodo.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");        
+        
+        WindowManager.NavigateToWindow(lbl_periodo.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú"); 
+
     
     }
 
