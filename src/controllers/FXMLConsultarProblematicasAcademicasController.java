@@ -20,6 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -32,11 +33,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 import util.AlertManager;
+import singleton.User;
+import util.WindowManager;
+
 
 /**
  * FXML Controller class
@@ -105,7 +111,7 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
     private Button btn_searchByFecha;
     private AlertManager alerts = new AlertManager();
     ObservableList<ProblematicaAcademica> problematicaAcademicaObservableList = FXCollections.observableArrayList();
-    String clavePrograma = "14203";
+    String clavePrograma =User.getCurrentUser().getRol().getProgramaEducativo().getClave();
     @FXML
     private Button btn_closeWinodw;
 
@@ -217,8 +223,8 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
 
     private void initializeTable() {
 
-        clm_Experiencia.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("ExperienciaE"));
-        clm_Profesor.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("Profesor"));
+        clm_Experiencia.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("ExperienciaEducativaName"));
+        clm_Profesor.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("ProfesorName"));
         clm_Hd.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("titulo"));
         clm_IdProblematica.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("idProblematica"));
         clm_numReportes.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("numeroDeEstudiantesAfectados"));
@@ -264,23 +270,8 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
 
     @FXML
     private void closeWindow(ActionEvent event) {
-        final Node source = (Node) event.getSource();
-        final Stage stage = (Stage) source.getScene().getWindow();
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        Stage stageAlert = (Stage) alert.getDialogPane().getScene().getWindow();
-        stageAlert.getIcons().add(new Image("images/icon.png"));
+             WindowManager.NavigateToWindow(tblProblematicas.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
 
-        alert.setTitle("Confirmación");
-        alert.setHeaderText(null);
-
-        alert.setContentText("¿Esta seguro de cerrar esta ventana?");
-        Optional<ButtonType> action = alert.showAndWait();
-
-        if (action.get() == ButtonType.OK) {
-            stage.close();
-        } else if (action.get() == ButtonType.CANCEL) {
-            alert.close();
-        }
     }
 
     private void hideTable() {
@@ -372,5 +363,46 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
         lbl_fechaData.setText(fecha);
 
     }
+
+    @FXML
+    private void searchProblematicas(KeyEvent event) {
+        filterTableProblematica();
+         txt_Profesor.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().length() <= 30) {
+                return change;
+            } else {
+                return null;
+            }
+        }));
+        if (txt_Profesor.getText().length() > 30) {
+            txt_Profesor.setText("");
+        }
+        
+    }
+    
+     private void filterTableProblematica() {
+        FilteredList<ProblematicaAcademica> filteredProblematica = new FilteredList<>(problematicaAcademicaObservableList, b -> true);
+        txt_Profesor.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredProblematica.setPredicate(problematica -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String inputText = newValue.toLowerCase();
+                if (problematica.getTitulo().toLowerCase().contains(inputText)) {
+                    return true;
+                } else if (problematica.getExperienciaEducativaName().toLowerCase().contains(inputText)) {
+                    return true;
+
+               
+
+                } else {
+                    return false;
+                }
+            });
+        });
+        SortedList<ProblematicaAcademica> sortedListProblematica = new SortedList<>(filteredProblematica);
+        sortedListProblematica.comparatorProperty().bind(tblProblematicas.comparatorProperty());
+        tblProblematicas.setItems(sortedListProblematica);
+    } 
 
 }

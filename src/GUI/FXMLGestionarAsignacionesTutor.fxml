@@ -33,7 +33,7 @@
       </Button>
       <Line endX="337.3333435058594" layoutX="136.0" layoutY="352.0" startX="-100.0" strokeWidth="3.0" />
       <TextField fx:id="txt_estudiante" layoutX="35.0" layoutY="80.0" onKeyTyped="#validateLengthNombresEstudiantes" prefHeight="25.0" prefWidth="303.0" promptText="nombre del estudiante" />
-      <TextField fx:id="txt_tutor" layoutX="35.0" layoutY="430.0" onKeyTyped="#validateLengthNombreTutor" prefHeight="25.0" prefWidth="329.0" promptText="nombre del tutor " />
+      <TextField fx:id="txt_tutor" layoutX="35.0" layoutY="430.0" onKeyTyped="#validateLengthNombreTutor" prefHeight="25.0" prefWidth="329.0" promptText="nombre del Tutor " />
       <Label layoutX="35.0" layoutY="379.0" text="Tutores">
          <font>
             <Font name="System Bold" size="18.0" />
@@ -44,7 +44,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="closeWindow" layoutX="566.0" layoutY="36.0" mnemonicParsing="false" text="Cerrar" />
+      <Button fx:id="close" layoutX="566.0" layoutY="36.0" mnemonicParsing="false" onAction="#closeWindow" text="Cerrar" />
       <CheckBox fx:id="cmb_WithTutor" layoutX="393.0" layoutY="84.0" mnemonicParsing="false" onAction="#filterTableWitthTutor" text="Con Tutor" />
       <CheckBox fx:id="cmb_WithoutTutor" layoutX="497.0" layoutY="84.0" mnemonicParsing="false" onAction="#filterTableWithoutTutor" text="Sin Tutor" />
    </children>

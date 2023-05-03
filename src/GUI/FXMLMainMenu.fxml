@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
    <children>
       <MenuBar fx:id="mbMainMenu" prefHeight="25.0" prefWidth="600.0">
         <menus>
@@ -69,6 +68,7 @@
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#menuRegistrarFechas" text="Registrar Fechas" />
                   <MenuItem mnemonicParsing="false" onAction="#menuUpdateFechas" text="Editar Fechas" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuConsultarProbelmaticas" text="Consultar Problemáticas" />
                </items>
             </Menu>
           <Menu fx:id="menuHelp" mnemonicParsing="false" text="Ayuda">
