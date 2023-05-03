@@ -15,4 +15,6 @@ import java.util.ArrayList;
 public interface ITutoriaAcademicaDAO {
     
     public ArrayList<TutoriaAcademica> getTutoriasAcademicasByPeriodo(int idPeriodo, String clave)throws SQLException;
+    
+    public boolean updateFechasTutoriaAcademica(TutoriaAcademica tutoriaAcademica)throws SQLException;
 }
