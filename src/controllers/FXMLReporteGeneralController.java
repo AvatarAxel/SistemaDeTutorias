@@ -29,6 +29,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import singleton.User;
 import util.AlertManager;
 
 /**
@@ -118,6 +119,7 @@ public class FXMLReporteGeneralController implements Initializable {
         try {
             ProblematicaAcademicaDAO problematicaAcademicaDao = new ProblematicaAcademicaDAO();
             ArrayList<ProblematicaAcademica> listProblematicasRecived = new ArrayList<>();
+            listProblematicasAcademicas.clear();
             for (int i = 0; i < listReportesDeTutoria.size(); i++) {
                 listProblematicasRecived = problematicaAcademicaDao.getAllProblematicasByReporte(listReportesDeTutoria.get(i).getIdReporteTutoria());
                 if (!listProblematicasRecived.isEmpty()) {
@@ -143,7 +145,7 @@ public class FXMLReporteGeneralController implements Initializable {
             protected Void call() throws Exception {
                 labelFecha.setText(tutoriaAcademica.getFechaInicio() + " - " + tutoriaAcademica.getFechaFin());
                 labelNumeroSesion.setText(String.valueOf(tutoriaAcademica.getNumeroDeSesion()));
-                labelProgramaEducativo.setText("Ingenieria de software");
+                labelProgramaEducativo.setText((User.getCurrentUser().getRol().getProgramaEducativo().getNombre()));
                 labelPeriodo.setText(tutoriaAcademica.getFechasPeriodoEscolar());
                 loadInformationComentariosGenerales();
                 loadInformationProblematicas();

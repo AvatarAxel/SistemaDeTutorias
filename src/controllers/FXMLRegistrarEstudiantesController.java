@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyEvent;
+import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
 
@@ -189,7 +190,7 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
                 estudiante.setApellidoPaterno(textApellidoPaterno.getText());
                 estudiante.setApellidoMaterno(textApellidoMaterno.getText());
                 estudiante.setMatricula(textMatricula.getText().toLowerCase());                
-                if(estudianteDao.setEstudianteRegister(estudiante, 14203)){
+                if(estudianteDao.setEstudianteRegister(estudiante, Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()))){
                     AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
                 }                                
             } else {

@@ -8,9 +8,9 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
    <children>
-      <MenuBar fx:id="mbMainMenu" prefHeight="25.0" prefWidth="600.0">
+      <MenuBar fx:id="mbMainMenu" prefHeight="29.0" prefWidth="1042.0">
         <menus>
           <Menu fx:id="menuReportes" mnemonicParsing="false" text="Reportes">
             <items>
@@ -76,6 +76,11 @@
               <MenuItem mnemonicParsing="false" text="About" />
             </items>
           </Menu>
+            <Menu fx:id="menuEstudiantes" mnemonicParsing="false" text="Estudiantes">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#menuItemGestionarEstudiantesOnAction" text="Gestionar Estudiantes" />
+              </items>
+            </Menu>
         </menus>
       </MenuBar>
       <ComboBox fx:id="cbRol" layoutX="428.0" layoutY="58.0" prefWidth="150.0" />

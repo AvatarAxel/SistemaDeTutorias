@@ -75,6 +75,8 @@ public class FXMLMainMenuController implements Initializable {
     private Menu menuReportes;
     @FXML
     private Menu menuExperiencias;
+    @FXML
+    private Menu menuEstudiantes;
 
     /**
      * Initializes the controller class.
@@ -213,6 +215,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuReporteTutorial.setVisible(false);
                 menuSolucionProblematicas.setVisible(true);
                 menuExperiencias.setVisible(true);
+                menuEstudiantes.setVisible(false);
                 break;
             case 2:
                 menuAsignaciones.setVisible(true);
@@ -226,6 +229,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuReporteTutorial.setVisible(false);
                 menuSolucionProblematicas.setVisible(true);
                 menuExperiencias.setVisible(true);
+                menuEstudiantes.setVisible(true);
                 break;
             case 3:
                 menuAsignaciones.setVisible(false);
@@ -252,6 +256,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuReporteTutorial.setVisible(true);
                 menuSolucionProblematicas.setVisible(true);
                 menuExperiencias.setVisible(true);
+                menuEstudiantes.setVisible(true);
                 break;
             default:
                 menuAsignaciones.setVisible(false);
@@ -264,6 +269,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuReporteGeneral.setVisible(false);
                 menuReporteTutorial.setVisible(false);
                 menuSolucionProblematicas.setVisible(false);
+                menuEstudiantes.setVisible(false);
                 break;
         }
     }
@@ -437,6 +443,15 @@ public class FXMLMainMenuController implements Initializable {
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLRegistrarExperienciaEducativa.fxml",
                 "Registrar Experiencia Educativa"
+        );
+    }
+
+    @FXML
+    private void menuItemGestionarEstudiantesOnAction(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLConsultarEstudiante.fxml",
+                "Consular EStudiantes"
         );
     }
 }
