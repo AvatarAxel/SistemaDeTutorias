@@ -20,7 +20,7 @@ public class Estudiante {
     private boolean enRiesgo;
     private CheckBox checkBoxEsAsistente;
     private CheckBox checkBoxEnRiesgo;
-    private CheckBox checkBoxEnSeleccion; //
+    private CheckBox checkBoxEnSeleccion;
     private String tutorName;
 
    
@@ -127,9 +127,5 @@ public class Estudiante {
     public void setTutorName(String tutorName) {
         this.tutorName = tutorName;
     }
-
-  
-    
-    
     
 }

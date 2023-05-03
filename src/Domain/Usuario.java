@@ -2,6 +2,7 @@
 package Domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -46,5 +47,4 @@ public class Usuario extends Personal{
     public void setProgramaEducativo(ProgramaEducativo programaEducativo) {
         this.programaEducativo = programaEducativo;
     }
-    
 }

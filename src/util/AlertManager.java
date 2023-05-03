@@ -29,8 +29,8 @@ public class AlertManager {
     public static Optional<ButtonType> showAlert(String titulo, String mensaje, Alert.AlertType tipoAlerta) {
         Alert alerta = new Alert(tipoAlerta);
         alerta.setTitle(titulo);
-        alerta.setHeaderText(null);
-        alerta.setContentText(mensaje);
+        alerta.setHeaderText(null);        
+        alerta.setContentText(mensaje);        
         return alerta.showAndWait();
     }
 

@@ -68,7 +68,7 @@ public class FXMLEditarEstudianteController implements Initializable{
             estudiante.setNombre(textNombre.getText());            
             boolean result = new EstudianteDAO().updateEstudiante(estudiante);
             if (result) {
-                AlertManager.showTemporalAlert(" ", "Se actualizo con éxito", 2);
+                AlertManager.showTemporalAlert(" ", "Acción realizada con éxito", 2);
             }
         } catch (SQLException e) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
@@ -200,8 +200,7 @@ public class FXMLEditarEstudianteController implements Initializable{
     }
 
     private void enableButton() {
-        if (!validationTextFields[0] || !validationTextFields[1]
-                || !validationTextFields[2] || !validationTextFields[3]) {
+        if (!validationTextFields[0] || !validationTextFields[1] || !validationTextFields[2] || !validationTextFields[3]) {
             buttonRegister.setDisable(true);
         } else {
             buttonRegister.setDisable(false);

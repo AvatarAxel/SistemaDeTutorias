@@ -1,6 +1,8 @@
 
 package Domain;
 
+import java.util.List;
+
 /**
  *
  * @author michikato

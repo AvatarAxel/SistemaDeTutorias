@@ -120,7 +120,9 @@ public class FXMLReporteGeneralController implements Initializable {
             ArrayList<ProblematicaAcademica> listProblematicasRecived = new ArrayList<>();
             for (int i = 0; i < listReportesDeTutoria.size(); i++) {
                 listProblematicasRecived = problematicaAcademicaDao.getAllProblematicasByReporte(listReportesDeTutoria.get(i).getIdReporteTutoria());
-                listProblematicasAcademicas.addAll(listProblematicasRecived);
+                if (!listProblematicasRecived.isEmpty()) {
+                    listProblematicasAcademicas.addAll(listProblematicasRecived);
+                }
             }
             tableProblematicasTutorias.setItems(listProblematicasAcademicas);
         } catch (SQLException sqle) {
@@ -147,12 +149,15 @@ public class FXMLReporteGeneralController implements Initializable {
                 loadInformationProblematicas();
                 Platform.runLater(() -> {
                     loadInformationListaDeAsistencias();
+                    Label noticeLoadingTable = new Label("Sin contenido...");
+                    tableProblematicasTutorias.setPlaceholder(noticeLoadingTable);
+                    tableReportes.setPlaceholder(noticeLoadingTable);
                 });
                 return null;
             }
         };
         executorService.submit(configureSceneTask);
-        executorService.shutdown();
+        executorService.shutdown();        
     }
 
     private void closeWindow() {

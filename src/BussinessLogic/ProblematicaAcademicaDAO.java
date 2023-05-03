@@ -255,7 +255,7 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
     
     
     public ArrayList<ProblematicaAcademica> getAllProblematicasByReporte(int idReporteTutoria) throws SQLException {
-        ArrayList <ProblematicaAcademica> listProblematicaAcademica = new ArrayList<>();
+        ArrayList<ProblematicaAcademica> listProblematicaAcademica = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
@@ -267,11 +267,11 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                     + "INNER JOIN profesores pr ON e.numeroDePersonal = pr.numeroDePersonal\n"
                     + "WHERE p.idReporteTutoria = ?;");
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, idReporteTutoria);            
+            statement.setInt(1, idReporteTutoria);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                ProblematicaAcademica  problematicaAcademica = new ProblematicaAcademica();
-                Profesor profesor = new Profesor();                
+                ProblematicaAcademica problematicaAcademica = new ProblematicaAcademica();
+                Profesor profesor = new Profesor();
                 ExperienciaEducativa experienciaEducativa = new ExperienciaEducativa();
                 experienciaEducativa.setNombre(resultSet.getString("nombreExperiencia"));
                 experienciaEducativa.setNrc(resultSet.getString("nrc"));
@@ -280,20 +280,14 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                 profesor.setApellidoMaterno(resultSet.getString("apellidoMaterno"));
                 problematicaAcademica.setProfesor(profesor);
                 problematicaAcademica.setExperienciaEducativa(experienciaEducativa);
-                problematicaAcademica.setSolucion(new SolucionAProblematica(0,""));
+                problematicaAcademica.setSolucion(new SolucionAProblematica(0, ""));
                 problematicaAcademica.setDescripcion(resultSet.getString("descripcion"));
-                problematicaAcademica.setNumeroDeEstudiantesAfectados(resultSet.getInt("numeroDeEstudiantesAfectados"));                
+                problematicaAcademica.setNumeroDeEstudiantesAfectados(resultSet.getInt("numeroDeEstudiantesAfectados"));
                 listProblematicaAcademica.add(problematicaAcademica);
-            }
-            if(listProblematicaAcademica.size() == 0){
-                listProblematicaAcademica = null;        
             }
         }
         connection.close();
         return listProblematicaAcademica;
     }
- 
-
-
 
 }
