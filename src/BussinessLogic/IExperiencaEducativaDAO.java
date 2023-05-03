@@ -22,4 +22,5 @@ public interface IExperiencaEducativaDAO {
 
     public ArrayList<String> consultExperienciasName()throws SQLException;
     
+    public boolean existNrc(String nrc) throws SQLException;
 }

@@ -39,7 +39,12 @@
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#menuUploadOffer" text="Registrar" />
                   <MenuItem mnemonicParsing="false" onAction="#menuReadOffer" text="Consultar" />
-                  <MenuItem mnemonicParsing="false" onAction="#menuUpdateOffer" text="Editar" />
+                  <Menu fx:id="menuExperiencias" mnemonicParsing="false" text="Experiencias">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#menuInsertExperiencia" text="Registrar" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuUpdateOffer" text="Editar" />
+                    </items>
+                  </Menu>
                </items>
             </Menu>
             <Menu fx:id="menuRegistros" mnemonicParsing="false" text="Registros">
@@ -63,6 +68,7 @@
             <Menu fx:id="menuFechas" mnemonicParsing="false" text="Fechas">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#menuRegistrarFechas" text="Registrar Fechas" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuUpdateFechas" text="Editar Fechas" />
                </items>
             </Menu>
           <Menu fx:id="menuHelp" mnemonicParsing="false" text="Ayuda">

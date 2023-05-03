@@ -154,10 +154,12 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
                 loadDataTableTutores(tutores);
             } else {
                 alerts.showAlertNotRegisterFound();
+                
             }
         } catch (SQLException ex) {
 
             alerts.showAlertErrorConexionDB();
+            ex.printStackTrace();
 
         }
 

@@ -10,10 +10,8 @@ import Domain.TutoriaAcademica;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,24 +73,17 @@ public class FXMLMainMenuController implements Initializable {
     private Menu menuHelp;
     @FXML
     private Menu menuReportes;
+    @FXML
+    private Menu menuExperiencias;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        grantView();
         loadComboBoxes();
         selectedItem();
-        menuAsignaciones.setVisible(false);
-        menuFechas.setVisible(false);
-        menuHelp.setVisible(false);
-        menuOfertaAcademica.setVisible(false);
-        menuProblematicas.setVisible(false);
-        menuRegistros.setVisible(false);
-        menuReportes.setVisible(false);
-        menuReporteGeneral.setVisible(false);
-        menuReporteTutorial.setVisible(false);
-        menuSolucionProblematicas.setVisible(false);
     }
 
     private void loadMenu() {
@@ -107,7 +98,7 @@ public class FXMLMainMenuController implements Initializable {
                     miCreateTutorialReport.setDisable(false);
                 } else {
                     miCreateTutorialReport.setText("Crear");
-                    miCreateTutorialReport.setDisable(false);                    
+                    miCreateTutorialReport.setDisable(false);
                 }
             } else {
                 miCreateTutorialReport.setText("Sin Actividades Pendientes");
@@ -128,10 +119,8 @@ public class FXMLMainMenuController implements Initializable {
 
         for (int i = 0; i < roles.size(); i++) {
             Rol rol = roles.get(i);
-            String rolName = rol.getRolName();
 
-            ProgramaEducativo programa = rol.getProgramaEducativo();//User.getCurrentUser().getRoles().get(i).getProgramaEducativo();
-            String programaName = rol.getProgramaEducativo().getNombre();
+            ProgramaEducativo programa = rol.getProgramaEducativo();
 
             if (!rolesUnicos.contains(rol)) {
                 rolesUnicos.add(rol);
@@ -158,6 +147,18 @@ public class FXMLMainMenuController implements Initializable {
         cbRol.setItems(rolesUnicos);
         cbProgramaEducativo.setItems(programasUnicos);
 
+        if (User.getCurrentUser().getRol().getIdRol() != 0) {
+            Rol rolAux = null;
+            for (Rol r : rolesUnicos) {
+                if (r.getRolName().equals(User.getCurrentUser().getRol().getRolName())) {
+                    rolAux = r;
+                }
+            }
+            cbRol.getSelectionModel().select(rolAux);
+            cbProgramaEducativo.getSelectionModel().select(User.getCurrentUser().getRol().getProgramaEducativo());
+            cbProgramaEducativo.setDisable(false);
+        }
+        grantView();
     }
 
     private void selectedItem() {
@@ -191,8 +192,8 @@ public class FXMLMainMenuController implements Initializable {
                         cbRol.getSelectionModel().getSelectedItem().getRolName(),
                         cbProgramaEducativo.getSelectionModel().getSelectedItem()));
                 grantView();
-                if(cbRol.getSelectionModel().getSelectedItem().getRolName().equals("Tutor")){
-                    loadMenu();                
+                if (cbRol.getSelectionModel().getSelectedItem().getRolName().equals("Tutor")) {
+                    loadMenu();
                 }
             }
         });
@@ -207,11 +208,12 @@ public class FXMLMainMenuController implements Initializable {
                 menuHelp.setVisible(true);
                 menuOfertaAcademica.setVisible(true);
                 menuProblematicas.setVisible(true);
-                menuRegistros.setVisible(true);
-                menuReportes.setVisible(false);
+                menuRegistros.setVisible(false);
+                menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(true);
-                menuReporteTutorial.setVisible(true);
+                menuReporteTutorial.setVisible(false);
                 menuSolucionProblematicas.setVisible(true);
+                menuExperiencias.setVisible(true);
                 break;
             case 2:
                 menuAsignaciones.setVisible(false);
@@ -224,6 +226,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuReporteGeneral.setVisible(false);
                 menuReporteTutorial.setVisible(false);
                 menuSolucionProblematicas.setVisible(false);
+                menuExperiencias.setVisible(false);
                 break;
             case 3:
                 menuAsignaciones.setVisible(false);
@@ -236,15 +239,39 @@ public class FXMLMainMenuController implements Initializable {
                 menuReporteGeneral.setVisible(false);
                 menuReporteTutorial.setVisible(true);
                 menuSolucionProblematicas.setVisible(false);
+                menuExperiencias.setVisible(true);
+                break;
+            case 4:
+                menuAsignaciones.setVisible(true);
+                menuFechas.setVisible(true);
+                menuHelp.setVisible(true);
+                menuOfertaAcademica.setVisible(true);
+                menuProblematicas.setVisible(true);
+                menuRegistros.setVisible(true);
+                menuReportes.setVisible(true);
+                menuReporteGeneral.setVisible(true);
+                menuReporteTutorial.setVisible(true);
+                menuSolucionProblematicas.setVisible(true);
+                menuExperiencias.setVisible(true);
                 break;
             default:
+                menuAsignaciones.setVisible(false);
+                menuFechas.setVisible(false);
+                menuHelp.setVisible(false);
+                menuOfertaAcademica.setVisible(false);
+                menuProblematicas.setVisible(false);
+                menuRegistros.setVisible(false);
+                menuReportes.setVisible(false);
+                menuReporteGeneral.setVisible(false);
+                menuReporteTutorial.setVisible(false);
+                menuSolucionProblematicas.setVisible(false);
                 break;
         }
     }
 
     @FXML
     private void menuCreateGeneralReport(ActionEvent event) {
-          
+
     }
 
     @FXML
@@ -361,15 +388,21 @@ public class FXMLMainMenuController implements Initializable {
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLImportarEstudiantes.fxml",
                 "Importar Estudiantes"
-        );        
+        );
     }
 
     @FXML
     private void menuAsignaciones(ActionEvent event) {
+          WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLGestionarAsignacionesTutor.fxml",
+                "Gestionar Asignaciones"
+        );
     }
 
     @FXML
     private void menuGestionarProblematicas(ActionEvent event) {
+        
     }
 
     @FXML
@@ -378,6 +411,28 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuRegistrarFechas(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLRegistrarFechasTutorias.fxml",
+                "Registrar Fechas"
+        );
     }
 
+    @FXML
+    private void menuUpdateFechas(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLEditarFechasTutorias.fxml",
+                "Registrar Fechas"
+        );
+    }
+
+    @FXML
+    private void menuInsertExperiencia(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLRegistrarExperienciaEducativa.fxml",
+                "Registrar Experiencia Educativa"
+        );
+    }
 }

@@ -47,6 +47,7 @@ public class UserDAO implements IUserDAO {
         return user;
     }
 
+    @Override
     public ArrayList<Rol> getUserRoles(int numeroDePersonal) throws SQLException {
         ArrayList<Rol> roles = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
