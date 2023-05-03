@@ -82,8 +82,6 @@ public class FXMLGestionarProblematicasController implements Initializable {
     private Button btn_add;
     @FXML
     private TableColumn clm_numReportes;
-    @FXML
-    private Button btn_ModifyE;
 
     @FXML
     private ComboBox<String> cmb_EE;
@@ -262,7 +260,6 @@ public class FXMLGestionarProblematicasController implements Initializable {
 
     }
 
-    @FXML
     private void modifyEnviromentOn(ActionEvent event) {
         if (!tblProblematicas.getSelectionModel().isEmpty()) {
             btn_Update.setVisible(true);
