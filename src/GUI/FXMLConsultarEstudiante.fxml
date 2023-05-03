@@ -15,7 +15,7 @@
         <URL value="@/styles/globalStyles.css" />
     </stylesheets>
    <children>
-      <TextField fx:id="textFieldSearchEstudiantes" layoutX="152.0" layoutY="29.0" onKeyTyped="#validateLengthMatricula" prefHeight="29.0" prefWidth="707.0" promptText="Matricula / Nombre / Apellidos" />
+      <TextField fx:id="textFieldSearchEstudiantes" layoutX="152.0" layoutY="29.0" onKeyTyped="#validateLengthInput" prefHeight="29.0" prefWidth="707.0" promptText="Matricula / Nombre / Apellidos" />
       <TableView fx:id="tableEstudiantes" layoutX="24.0" layoutY="84.0" onMouseClicked="#selectEstudiante" prefHeight="263.0" prefWidth="833.0">
         <columns>
           <TableColumn fx:id="columMatricula" prefWidth="172.0" text="Matricula" />

@@ -203,13 +203,13 @@ public class EstudianteDAO {
         if (connection != null) {
             String query = "SELECT * FROM estudiantes WHERE esInscrito = 1";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet resultado = preparedStatement.executeQuery();
-            while (resultado.next()) {
+            ResultSet resultQuery = preparedStatement.executeQuery();
+            while (resultQuery.next()) {
                 Estudiante estudiante = new Estudiante();
-                estudiante.setMatricula(resultado.getString("matricula"));
-                estudiante.setNombre(resultado.getString("nombre"));
-                estudiante.setApellidoPaterno(resultado.getString("apellidoPaterno"));
-                estudiante.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+                estudiante.setMatricula(resultQuery.getString("matricula"));
+                estudiante.setNombre(resultQuery.getString("nombre"));
+                estudiante.setApellidoPaterno(resultQuery.getString("apellidoPaterno"));
+                estudiante.setApellidoMaterno(resultQuery.getString("apellidoMaterno"));
                 listEstudiantes.add(estudiante);
             }
             connection.close();

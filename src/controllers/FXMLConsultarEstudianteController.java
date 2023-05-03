@@ -118,8 +118,8 @@ public class FXMLConsultarEstudianteController implements Initializable {
     }
 
     @FXML
-    private void validateLengthMatricula(KeyEvent event) {
-        filterTable();
+    private void validateLengthInput(KeyEvent event) {
+        filterTable();        
         textFieldSearchEstudiantes.setTextFormatter(new TextFormatter<>(change -> {
             if (change.getControlNewText().length() <= 20) {
                 return change;
@@ -128,7 +128,7 @@ public class FXMLConsultarEstudianteController implements Initializable {
             }
         }));
         if (textFieldSearchEstudiantes.getText().length() > 20) {
-            textFieldSearchEstudiantes.setText("");
+            textFieldSearchEstudiantes.clear();
         }
     }
 
