@@ -41,7 +41,6 @@ import javax.swing.JOptionPane;
 import util.AlertManager;
 import singleton.User;
 
-
 /**
  * FXML Controller class
  *
@@ -70,6 +69,8 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
     ArrayList<Estudiante> estudiantes = new ArrayList<Estudiante>();
     ArrayList<TutorAcademico> tutores = new ArrayList<TutorAcademico>();
     ObservableList<Estudiante> estudiantesObservableList = FXCollections.observableArrayList();
+    ObservableList<Estudiante> estudiantesWithTutorObservableList = FXCollections.observableArrayList();
+    ObservableList<Estudiante> estudiantesWithoutTutorObservableList = FXCollections.observableArrayList();
     ObservableList<TutorAcademico> tutoresObservableList = FXCollections.observableArrayList();
 
     private final ListChangeListener<TutorAcademico> selectedTutor = new ListChangeListener<TutorAcademico>() {
@@ -151,31 +152,32 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
     }
 
     private ObservableList<Estudiante> searchEstudiantesWithTutores() {
-        ObservableList<Estudiante> estudiantesWithTutor = FXCollections.observableArrayList();
+        // estudiantesWithTutor = FXCollections.observableArrayList();
         if (!estudiantes.isEmpty()) {
             for (Estudiante estudiante : estudiantes) {
                 if (estudiante.getTutorName() != null) {
-                    estudiantesWithTutor.add(estudiante);
+                    estudiantesWithTutorObservableList.add(estudiante);
                 }
             }
         }
-        tblEstudiantes.setItems(estudiantesWithTutor);
+        estudiantesObservableList.removeAll(estudiantesObservableList);
+        tblEstudiantes.setItems(estudiantesWithTutorObservableList);
 
-        return estudiantesWithTutor;
+        return estudiantesWithTutorObservableList;
     }
 
     private ObservableList<Estudiante> searchEstudiantesWithoutTutores() {
-        ObservableList<Estudiante> estudiantesWithoutTutor = FXCollections.observableArrayList();
         if (!estudiantes.isEmpty()) {
             for (Estudiante estudiante : estudiantes) {
                 if (estudiante.getTutorName() == null) {
-                    estudiantesWithoutTutor.add(estudiante);
+                    estudiantesWithoutTutorObservableList.add(estudiante);
                 }
             }
         }
-        tblEstudiantes.setItems(estudiantesWithoutTutor);
+        estudiantesObservableList.removeAll(estudiantesObservableList);
+        tblEstudiantes.setItems(estudiantesWithoutTutorObservableList);
 
-        return estudiantesWithoutTutor;
+        return estudiantesWithoutTutorObservableList;
     }
 
     private void initializeQuerys() {
@@ -273,14 +275,35 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
 
     private ObservableList<Estudiante> getEstudiantesSelected() {
         ObservableList<Estudiante> estudiantesSelected = FXCollections.observableArrayList();
+        if (cmb_WithTutor.isSelected()) {
+            for (Estudiante estudiante : estudiantesWithTutorObservableList) {
+                if (estudiante.getCheckBoxEnSeleccion().isSelected()) {
+                    estudiantesSelected.add(estudiante);
 
-        for (Estudiante estudiante : estudiantesObservableList) {
-            if (estudiante.getCheckBoxEnSeleccion().isSelected()) {
-                estudiantesSelected.add(estudiante);
+                }
+
+            }
+
+        } else if (cmb_WithoutTutor.isSelected()) {
+            for (Estudiante estudiante : estudiantesWithoutTutorObservableList) {
+                if (estudiante.getCheckBoxEnSeleccion().isSelected()) {
+                    estudiantesSelected.add(estudiante);
+
+                }
+
+            }
+
+        } else {
+            for (Estudiante estudiante : estudiantesObservableList) {
+                if (estudiante.getCheckBoxEnSeleccion().isSelected()) {
+                    estudiantesSelected.add(estudiante);
+
+                }
 
             }
 
         }
+
         return estudiantesSelected;
 
     }
@@ -311,7 +334,7 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
                     return true;
                 }
                 String inputText = newValue.toLowerCase();
-                if (tutor.getNombre().toLowerCase().indexOf(inputText) != -1) {
+                if (tutor.getNombre().toLowerCase().contains(inputText)) {
                     return true;
                 } else if (tutor.getApellidoPaterno().toLowerCase().indexOf(inputText) != -1) {
                     return true;
@@ -337,12 +360,12 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
                     return true;
                 }
                 String inputText = newValue.toLowerCase();
-                if (estudiante.getNombre().toLowerCase().indexOf(inputText) != -1) {
+                if (estudiante.getNombreCompleto().toLowerCase().contains(inputText)) {
                     return true;
-                } else if (estudiante.getApellidoPaterno().toLowerCase().indexOf(inputText) != -1) {
+                } else if (estudiante.getApellidoPaterno().toLowerCase().contains(inputText)) {
                     return true;
 
-                } else if (estudiante.getApellidoMaterno().toLowerCase().indexOf(inputText) != -1) {
+                } else if (estudiante.getApellidoMaterno().toLowerCase().contains(inputText)) {
                     return true;
 
                 } else {
@@ -390,14 +413,6 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
     private void filterTableWitthTutor(ActionEvent event) {
         searchEstudiantesWithTutores();
 
-
-        /*  cmb_WithTutor.selectedProperty().addListener(
-        (ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
-         if (new_val){
-          cmb_WithoutTutor.setDisable(true);
-
-         }
-      }); */
         if (cmb_WithTutor.isSelected()) {
             cmb_WithoutTutor.setDisable(true);
 
