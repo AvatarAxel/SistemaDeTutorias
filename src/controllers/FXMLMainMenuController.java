@@ -86,30 +86,33 @@ public class FXMLMainMenuController implements Initializable {
         grantView();
         loadComboBoxes();
         selectedItem();
+        loadTutorAcademicoMenu();
     }
 
-    private void loadMenu() {
-        try {
-            TutoriaAcademicaDAO tutoriaAcademicaDAO = new TutoriaAcademicaDAO();
-            tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
-            if (tutoriaAcademica != null) {
-                ReporteDeTutoriaAcademicaDAO reporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
-                reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(), User.getCurrentUser().getNumeroDePersonal());
-                if (reporteTutoriaAcademica != null) {
-                    miCreateTutorialReport.setText("Editar");
-                    miCreateTutorialReport.setDisable(false);
-                } else {
-                    miCreateTutorialReport.setText("Crear");
-                    miCreateTutorialReport.setDisable(false);
-                }
-            } else {
-                miCreateTutorialReport.setText("Sin Actividades Pendientes");
-                miCreateTutorialReport.setDisable(true);
-            }
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
-        }
+    private void loadTutorAcademicoMenu() {
+        if(cbRol.getSelectionModel().getSelectedItem().getRolName().equals("Tutor")){
+            try {
+               TutoriaAcademicaDAO tutoriaAcademicaDAO = new TutoriaAcademicaDAO();
+               tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
+               if (tutoriaAcademica != null) {
+                   ReporteDeTutoriaAcademicaDAO reporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
+                   reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(), User.getCurrentUser().getNumeroDePersonal());
+                   if (reporteTutoriaAcademica != null) {
+                       miCreateTutorialReport.setText("Editar");
+                       miCreateTutorialReport.setDisable(false);
+                   } else {
+                       miCreateTutorialReport.setText("Crear");
+                       miCreateTutorialReport.setDisable(false);
+                   }
+               } else {
+                   miCreateTutorialReport.setText("Sin Actividades Pendientes");
+                   miCreateTutorialReport.setDisable(true);
+               }
+           } catch (SQLException sqle) {
+               sqle.printStackTrace();
+               AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+           }           
+        }        
     }
 
     private void loadComboBoxes() {
@@ -195,7 +198,7 @@ public class FXMLMainMenuController implements Initializable {
                         cbProgramaEducativo.getSelectionModel().getSelectedItem()));
                 grantView();
                 if (cbRol.getSelectionModel().getSelectedItem().getRolName().equals("Tutor")) {
-                    loadMenu();
+                    loadTutorAcademicoMenu();
                 }
             }
         });
