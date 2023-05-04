@@ -91,9 +91,13 @@ public class User {
         this.roles = roles;
     }
 
+    public String getNombreCompleto(){
+        return nombre + " " + apellidoPaterno + " " + apellidoMaterno;
+    }
+    
     @Override
     public String toString() {
-        return "User{" + "numeroDePersonal=" + numeroDePersonal + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", rol=" + rol + ", roles=" + roles + '}';
+        return nombre + " " + apellidoPaterno + " " + apellidoMaterno;    
     }
     
     
