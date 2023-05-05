@@ -47,4 +47,9 @@ public class Usuario extends Personal{
     public void setProgramaEducativo(ProgramaEducativo programaEducativo) {
         this.programaEducativo = programaEducativo;
     }
+
+    @Override
+    public String toString() {
+        return this.getNombre()+" "+this.getApellidoPaterno()+" "+this.getApellidoMaterno();
+    }    
 }

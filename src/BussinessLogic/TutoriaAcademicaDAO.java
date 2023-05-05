@@ -83,7 +83,7 @@ public class TutoriaAcademicaDAO implements ITutoriaAcademicaDAO {
                 periodoEscolar.setFechaInicio(resultPeriodoEscolar.getDate("fechaInicio"));
                 periodoEscolar.setFechaFin(resultPeriodoEscolar.getDate("fechaFin"));
                 String queryTutoriaAcademica = "SELECT idTutoriaAcademica, numeroDeSesion, fechaInicio, fechaFin,"
-                        + "clave, idPeriodoEscolar, DATE_ADD(fechaFin, INTERVAL 7 DAY) AS fechaLimite\n"
+                        + "clave, idPeriodoEscolar, DATE_ADD(fechaFin, INTERVAL 5 DAY) AS fechaLimite\n"
                         + "FROM tutorias_academicas\n"
                         + "WHERE NOW() BETWEEN fechaInicio AND DATE_ADD(fechaFin, INTERVAL 7 DAY)\n"
                         + "AND clave = ?;";
