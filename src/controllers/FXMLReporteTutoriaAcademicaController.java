@@ -5,12 +5,11 @@
 package controllers;
 
 import BussinessLogic.EstudianteDAO;
+import BussinessLogic.ProblematicaAcademicaDAO;
 import BussinessLogic.ReporteDeTutoriaAcademicaDAO;
 import Domain.Estudiante;
-import Domain.ProblematicaAcademica;
 import Domain.ReporteDeTutoriaAcademica;
 import Domain.TutoriaAcademica;
-import Domain.Usuario;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -25,8 +24,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -36,8 +33,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 import singleton.User;
 import util.AlertManager;
@@ -45,6 +40,7 @@ import util.WindowManager;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
+import util.ExceptionCodes;
 
 
 /**
@@ -86,9 +82,6 @@ import javafx.stage.Modality;
     private ReporteDeTutoriaAcademica reporteTutoriaAcademica;
     private TutoriaAcademica tutoriaAcademica;
     
-
-    private ArrayList<ProblematicaAcademica> problematicasAcademicas;
-    private String comentarioGeneral;
     private ObservableList<Estudiante> listEstudiantes;
     private boolean editableTypeReport;
     
@@ -110,13 +103,14 @@ import javafx.stage.Modality;
                 btProblematicaAcademica.setText("Agregar problemática académica");                
                 ReporteDeTutoriaAcademicaDAO ReporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
                 if(!ReporteDeTutoriaAcademicaDao.setReporteDeTutorias(tfComentarioGeneral.getText(),tutoriaAcademica.getIdTutoriaAcademica() , User.getCurrentUser().getNumeroDePersonal())){            
-                    AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+                    AlertManager.showAlert("Error", "No se pu", Alert.AlertType.ERROR);
                 }        
             }
             configureValuesReporteDeTutoria();
             loadEstudiantes(editableType);
         } catch (SQLException sqle) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+            sqle.printStackTrace();
         }           
     }
     
@@ -154,6 +148,8 @@ import javafx.stage.Modality;
             lbProgramaEducativo.setText(User.getCurrentUser().getRol().getProgramaEducativo().getNombre());
             tfPeriodoEscolar.setText(tutoriaAcademica.getFechasPeriodoEscolar());
             ReporteDeTutoriaAcademica loadedReporteDeTutoriaAcademica = ReporteDeTutoriaAcademicaDao.getReporteDeTutoriaByTutor(tutoriaAcademica.getIdTutoriaAcademica(),User.getCurrentUser().getNumeroDePersonal());
+                AlertManager.showAlert("Error", "TUTORIA ACADEMICA ID: " +tutoriaAcademica.getIdTutoriaAcademica(), Alert.AlertType.ERROR);        
+            
             reporteTutoriaAcademica = loadedReporteDeTutoriaAcademica;
             if(reporteTutoriaAcademica.getComentariosGenerales().equals("")){
                 tfComentarioGeneral.setText("");
@@ -163,13 +159,18 @@ import javafx.stage.Modality;
             }
         } catch (SQLException sqle) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+                        sqle.printStackTrace();
+
         }    
     }
     private void loadEstudiantes(boolean editableType) {
+                AlertManager.showAlert("Error", "TUTORIA ACADEMICA ID: " +tutoriaAcademica.getIdTutoriaAcademica(), Alert.AlertType.ERROR);        
+        
         EstudianteDAO estudianteDAO = new EstudianteDAO();
         ArrayList<Estudiante> listEstudiantesRecived =  new ArrayList<Estudiante>();
         try{
             if(editableType){
+                //AlertManager.showAlert("Error", "REPORTE ID: " +reporteTutoriaAcademica.getIdReporteTutoria(), Alert.AlertType.ERROR);        
                 listEstudiantesRecived = estudianteDAO.obtenerEstudiantesPorReporteTutoriaAcademica(reporteTutoriaAcademica.getIdReporteTutoria());             
             }else{
                 listEstudiantesRecived = estudianteDAO.getEstudiantesPorTutorAcademicoAndProgramaEducativo(User.getCurrentUser().getNumeroDePersonal(), Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()));          
@@ -188,6 +189,7 @@ import javafx.stage.Modality;
             }
             
         }catch(SQLException sqle){
+            sqle.printStackTrace();
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);        
         }
     }     
@@ -313,19 +315,35 @@ import javafx.stage.Modality;
         }
     }    
     @FXML
-    private void clicButtonCancel(ActionEvent event) {
-        Optional<ButtonType> answer;
-        if(editableTypeReport){
-            answer = AlertManager.showAlert("AVISO",
-                    "NO se guardarán los cambios. \n\n¿Desea continuar?", Alert.AlertType.CONFIRMATION);
-        }else{
-            answer = AlertManager.showAlert("AVISO",
-                    "¿Desea Salir?", Alert.AlertType.CONFIRMATION);            
-        } 
-        if (answer.get() == ButtonType.OK) {
-            editableTypeReport = false;                
-            closeWindow();
+    private void clicButtonCancel(ActionEvent event) throws SQLException {
+        try {
+            Optional<ButtonType> answer;
+            if(editableTypeReport){
+                answer = AlertManager.showAlert("AVISO",
+                        "NO se guardarán los cambios. \n\n¿Desea continuar?", Alert.AlertType.CONFIRMATION);
+            }else{
+                answer = AlertManager.showAlert("AVISO",
+                        "¿Desea Salir? \n\n No se guardará ningun cambio.", Alert.AlertType.CONFIRMATION);            
+            }
+            if(!editableTypeReport){
+                ReporteDeTutoriaAcademicaDAO reporteDeTutoriaAcademicoDAO = new ReporteDeTutoriaAcademicaDAO();
+                ProblematicaAcademicaDAO problematicaAcademicaDAO = new ProblematicaAcademicaDAO();
+                if(problematicaAcademicaDAO.deleteProblematicafromEspecificReporte(reporteTutoriaAcademica.getIdReporteTutoria()) != ExceptionCodes.SUCCESSFUL_OPERATION){            
+                    SQLException sqle =  new SQLException();
+                }
+                if(!reporteDeTutoriaAcademicoDAO.deleteReporteDeTutorias(reporteTutoriaAcademica.getIdReporteTutoria())){            
+                    SQLException sqle =  new SQLException();
+                }            
+            }
+            if (answer.get() == ButtonType.OK) {
+                editableTypeReport = false;                
+                closeWindow();
+            }    
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }        
     }    
-      
+    
 }
+

@@ -4,6 +4,7 @@ import Domain.ExperienciaEducativa;
 import Domain.ProblematicaAcademica;
 import Domain.Profesor;
 import Domain.SolucionAProblematica;
+import util.ExceptionCodes;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -195,6 +196,30 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
         
         return result;
 
+    }
+    
+    
+    public int deleteProblematicafromEspecificReporte(int idReporteTutoria) throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        boolean result = false;
+        int resultCode;
+        Connection connection = dataBaseConnection.getConnection();   
+        try{
+            String query;
+            query = ("DELETE FROM `sistema_tutorias`.`problematicas_academicas` WHERE (`idReporteTutoria` = ?);");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, idReporteTutoria);
+            
+            int resultInsert = statement.executeUpdate();            
+            if(resultInsert>=0){
+                resultCode = ExceptionCodes.SUCCESSFUL_OPERATION;
+            }else{
+                resultCode = ExceptionCodes.FAILED_OPERATION;
+            }        
+        }catch (SQLException sql){
+            resultCode = ExceptionCodes.CONNECTION_ERROR_DATABASE;
+        }    
+        return resultCode;
     }
 
     @Override
