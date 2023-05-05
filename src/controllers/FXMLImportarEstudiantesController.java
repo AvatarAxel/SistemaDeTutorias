@@ -6,7 +6,6 @@ package controllers;
 
 import BussinessLogic.EstudianteDAO;
 import Domain.Estudiante;
-import Domain.Usuario;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -53,16 +52,16 @@ public class FXMLImportarEstudiantesController implements Initializable {
     private TableColumn columnApeliidoMaterno;
     @FXML
     private Button btSave;    
-    @FXML
-    private TextField tfProgramaEducativo;    
 
     private ObservableList<Estudiante> listEstudiantes;
+    @FXML
+    private Label lbProgramaEducativo;
 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {  
         configureTableEstudiantes();
-        tfProgramaEducativo.setText(User.getCurrentUser().getRol().getProgramaEducativo().getNombre());
+        lbProgramaEducativo.setText(User.getCurrentUser().getRol().getProgramaEducativo().getNombre());
     }    
 
     
@@ -76,7 +75,8 @@ public class FXMLImportarEstudiantesController implements Initializable {
         listEstudiantes = FXCollections.observableArrayList();
     }    
     private void loadTable(File file) throws IOException{
-        ArrayList<Estudiante> loadedEstudiantes = new ArrayList<>();
+        ArrayList<Estudiante> loadedCleanEstudiantes = new ArrayList<>();
+        ArrayList<Estudiante> loadedRawEstudiantes = new ArrayList<>();        
         if (file != null) {
             Label noticeLoadingTable = new Label("Cargando Archivo...");
             tbEstudiantes.setPlaceholder(noticeLoadingTable); 
@@ -84,30 +84,35 @@ public class FXMLImportarEstudiantesController implements Initializable {
             EstudianteDAO estudianteDAO = new EstudianteDAO();
             String estudiante;
             boolean estudianteExists;
-            try{
                 while ((estudiante = bufferedReader.readLine()) != null) {
                     Estudiante loadedEstudiante =  new Estudiante();                
                     String[] atributes = estudiante.split(",");
                     loadedEstudiante.setMatricula(atributes[0]);
-                    estudianteExists = estudianteDAO.validateExistEstudiante(loadedEstudiante.getMatricula().toLowerCase());
-                    if (!estudianteExists) {
-                        loadedEstudiante.setNombre(atributes[1]);
-                        loadedEstudiante.setApellidoPaterno(atributes[2]);
-                        loadedEstudiante.setApellidoMaterno(atributes[3]);
-                        loadedEstudiantes.add(loadedEstudiante);                     
-                    } else {
-                        AlertManager.showTemporalAlert("Aviso", "Registro con la Matricula: "+loadedEstudiante.getMatricula()+" YA Existe!", 2);
-                    }                             
-                } 
-            }catch (SQLException ex) {
-                ex.printStackTrace();
-                AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
-            }            
+                    loadedEstudiante.setNombre(atributes[1]);
+                    loadedEstudiante.setApellidoPaterno(atributes[2]);
+                    loadedEstudiante.setApellidoMaterno(atributes[3]);
+                    loadedRawEstudiantes.add(loadedEstudiante);
+                }
+                loadedRawEstudiantes.remove(0);                                   
+                for (Estudiante e : loadedRawEstudiantes) {
+                    boolean existeMatricula = false;
+                    for (Estudiante s : loadedCleanEstudiantes) {
+                        if (s.getMatricula().equals(e.getMatricula())) {
+                            existeMatricula = true;
+                            break;
+                        }
+                    }
+                    if (!existeMatricula) {
+                        loadedCleanEstudiantes.add(e);
+                    }else{
+                        AlertManager.showTemporalAlert("Aviso", "¡En el Arhcivo ya se repite la matricula: " + e.getMatricula()+" !\nSe Conservara el pirmer elemento, pero se le a conseja que revise el documento que intenta subir.", 5);                        
+                    }
+                }                 
         }
-        loadedEstudiantes.remove(0);
+        loadedCleanEstudiantes.remove(0);
         btSave.setDisable(false);
         listEstudiantes.clear();
-        listEstudiantes.addAll(loadedEstudiantes);
+        listEstudiantes.addAll(loadedCleanEstudiantes);
         tbEstudiantes.setItems(listEstudiantes);
     }    
     
@@ -119,15 +124,22 @@ public class FXMLImportarEstudiantesController implements Initializable {
         EstudianteDAO estudianteDAO = new EstudianteDAO();
         try {
             for (int i = 0; i < listedEstudiantes.size(); i++) {
-                if(!estudianteDAO.setEstudianteRegister(listedEstudiantes.get(i),Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()))){
-                    AlertManager.showTemporalAlert("Error", "¡Dato duplicado!", 2);
-                }                 
+                if(!estudianteDAO.validateExistEstudiante(listedEstudiantes.get(i).getMatricula())){
+                    if(!estudianteDAO.setEstudianteRegister(listedEstudiantes.get(i),Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()))){
+                        AlertManager.showTemporalAlert("Aviso", "¡Dato duplicado en la base de datos!", 2);
+                    }                    
+                }else{
+                    AlertManager.showTemporalAlert("Aviso", "¡Registro con la Matricula: "+listedEstudiantes.get(i).getMatricula()+" YA Existe en el sistema!", 2);
+                }
+                if(listedEstudiantes.size()-1 == i){
+                    AlertManager.showTemporalAlert("Confirmacíon", "La información se registró correctamente en el sistema", 2);
+                    WindowManager.NavigateToWindow(tbEstudiantes.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");        
+                }
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
         }
-        WindowManager.NavigateToWindow(tbEstudiantes.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");        
     }
     @FXML
     private void clicUpload(ActionEvent event) {
