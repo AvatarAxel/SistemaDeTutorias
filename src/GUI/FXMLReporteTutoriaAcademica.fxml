@@ -19,7 +19,7 @@
       <TextField fx:id="tfPeriodoEscolar" editable="false" layoutX="176.0" layoutY="61.0" prefHeight="26.0" prefWidth="213.0" />
       <TextField fx:id="tfFechaTutoria" editable="false" layoutX="176.0" layoutY="100.0" prefHeight="26.0" prefWidth="206.0" />
       <TextField fx:id="tfNumeroSesionTutoria" editable="false" layoutX="231.0" layoutY="135.0" prefHeight="26.0" prefWidth="49.0" />
-      <TextArea fx:id="tfComentarioGeneral" layoutX="14.0" layoutY="400.0" prefHeight="192.0" prefWidth="616.0" promptText="Ingrese un comentario general (Opcional)">
+      <TextArea fx:id="tfComentarioGeneral" layoutX="14.0" layoutY="400.0" prefHeight="192.0" prefWidth="616.0" promptText="Ingrese un comentario general (Opcional)" wrapText="true">
          <font>
             <Font size="20.0" />
          </font></TextArea>

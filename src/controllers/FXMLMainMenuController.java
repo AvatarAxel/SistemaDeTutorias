@@ -46,9 +46,7 @@ public class FXMLMainMenuController implements Initializable {
     @FXML
     private MenuBar mbMainMenu;
     @FXML
-    private MenuItem miCreateGeneralReport;
-    @FXML
-    private MenuItem miCreateTutorialReport;
+    private MenuItem miCreateGeneralReport;  
     @FXML
     private ComboBox<Rol> cbRol;
     @FXML
@@ -57,6 +55,10 @@ public class FXMLMainMenuController implements Initializable {
     private Menu menuReporteGeneral;
     @FXML
     private Menu menuReporteTutorial;
+    @FXML
+    private MenuItem miCreateTutorialReport;
+    @FXML
+    private MenuItem miConsultTutorialReport;      
     @FXML
     private Menu menuSolucionProblematicas;
     @FXML
@@ -78,6 +80,7 @@ public class FXMLMainMenuController implements Initializable {
     @FXML
     private Menu menuEstudiantes;
 
+
     /**
      * Initializes the controller class.
      */
@@ -90,29 +93,31 @@ public class FXMLMainMenuController implements Initializable {
     }
 
     private void loadTutorAcademicoMenu() {
-        if(cbRol.getSelectionModel().getSelectedItem().getRolName().equals("Tutor")){
-            try {
-               TutoriaAcademicaDAO tutoriaAcademicaDAO = new TutoriaAcademicaDAO();
-               tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
-               if (tutoriaAcademica != null) {
-                   ReporteDeTutoriaAcademicaDAO reporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
-                   reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(), User.getCurrentUser().getNumeroDePersonal());
-                   if (reporteTutoriaAcademica != null) {
-                       miCreateTutorialReport.setText("Editar");
-                       miCreateTutorialReport.setDisable(false);
+        if (cbRol.getSelectionModel().getSelectedIndex() > -1) {
+            if(cbRol.getSelectionModel().getSelectedItem().getRolName().equals("Tutor")){
+                try {
+                   TutoriaAcademicaDAO tutoriaAcademicaDAO = new TutoriaAcademicaDAO();
+                   tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
+                   if (tutoriaAcademica != null) {
+                       ReporteDeTutoriaAcademicaDAO reporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
+                       reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(), User.getCurrentUser().getNumeroDePersonal());
+                       if (reporteTutoriaAcademica != null) {
+                           miCreateTutorialReport.setText("Editar");
+                           miCreateTutorialReport.setDisable(false);
+                       } else {
+                           miCreateTutorialReport.setText("Crear");
+                           miCreateTutorialReport.setDisable(false);
+                       }
                    } else {
-                       miCreateTutorialReport.setText("Crear");
-                       miCreateTutorialReport.setDisable(false);
+                       miCreateTutorialReport.setText("Sin Actividades Pendientes");
+                       miCreateTutorialReport.setDisable(true);
                    }
-               } else {
-                   miCreateTutorialReport.setText("Sin Actividades Pendientes");
-                   miCreateTutorialReport.setDisable(true);
-               }
-           } catch (SQLException sqle) {
-               sqle.printStackTrace();
-               AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
-           }           
-        }        
+               } catch (SQLException sqle) {
+                   sqle.printStackTrace();
+                   AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+               }           
+            }
+        }                
     }
 
     private void loadComboBoxes() {
@@ -206,7 +211,7 @@ public class FXMLMainMenuController implements Initializable {
 
     private void grantView() {
         switch (User.getCurrentUser().getRol().getIdRol()) {
-            case 1:
+            case 1: //Jefe de Carrera
                 menuAsignaciones.setVisible(false);
                 menuFechas.setVisible(false);
                 menuHelp.setVisible(false);
@@ -215,13 +220,20 @@ public class FXMLMainMenuController implements Initializable {
                 menuRegistros.setVisible(false);
                 menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(true);
-                menuReporteTutorial.setVisible(false);
+                
+                //MENU REPORTE TUTORIA
+                menuReporteTutorial.setVisible(true);
+                //CU03
+                miConsultTutorialReport.setVisible(true);
+                //CU02 Y CU04
+                miCreateTutorialReport.setVisible(false);
+                
                 menuSolucionProblematicas.setVisible(true);
                 menuExperiencias.setVisible(true);
                 menuEstudiantes.setVisible(false);
                 //menuReadProblematic.setVisible(true);
                 break;
-            case 2:
+            case 2: //Coordinador de Tutoria
                 menuAsignaciones.setVisible(true);
                 menuFechas.setVisible(true);
                 menuHelp.setVisible(true);
@@ -230,12 +242,19 @@ public class FXMLMainMenuController implements Initializable {
                 menuRegistros.setVisible(true);
                 menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(true);
-                menuReporteTutorial.setVisible(false);
+                
+                //MENU REPORTE TUTORIA
+                menuReporteTutorial.setVisible(true);
+                //CU03
+                miConsultTutorialReport.setVisible(true);
+                //CU02 Y CU04
+                miCreateTutorialReport.setVisible(false);
+                
                 menuSolucionProblematicas.setVisible(true);
                 menuExperiencias.setVisible(true);
                 menuEstudiantes.setVisible(true);
                 break;
-            case 3:
+            case 3: // Tutor Academico
                 menuAsignaciones.setVisible(false);
                 menuFechas.setVisible(false);
                 menuHelp.setVisible(true);
@@ -244,11 +263,19 @@ public class FXMLMainMenuController implements Initializable {
                 menuRegistros.setVisible(false);
                 menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(false);
+                
+                //MENU REPORTE TUTORIA
                 menuReporteTutorial.setVisible(true);
+                //CU03
+                miConsultTutorialReport.setVisible(false);
+                //CU02 Y CU04
+                miCreateTutorialReport.setVisible(true);
+                
                 menuSolucionProblematicas.setVisible(false);
                 menuExperiencias.setVisible(true);
+                
                 break;
-            case 4:
+            case 4: // Administrador
                 menuAsignaciones.setVisible(true);
                 menuFechas.setVisible(true);
                 menuHelp.setVisible(true);
@@ -257,7 +284,14 @@ public class FXMLMainMenuController implements Initializable {
                 menuRegistros.setVisible(true);
                 menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(true);
+                
+                //MENU REPORTE TUTORIA
                 menuReporteTutorial.setVisible(true);
+                //CU03
+                miConsultTutorialReport.setVisible(true);
+                //CU02 Y CU04
+                miCreateTutorialReport.setVisible(true);
+                
                 menuSolucionProblematicas.setVisible(true);
                 menuExperiencias.setVisible(true);
                 menuEstudiantes.setVisible(true);
@@ -294,9 +328,11 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuCreateTutorialReport(ActionEvent event) throws SQLException {
-        boolean editableType = false;
+        boolean editableType;
         if (miCreateTutorialReport.getText() == "Editar") {
             editableType = true;
+        }else {
+            editableType = false;
         }
         try {
             Stage escenario = (Stage) mbMainMenu.getScene().getWindow();

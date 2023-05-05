@@ -7,7 +7,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
    <children>
       <MenuBar fx:id="mbMainMenu" prefHeight="29.0" prefWidth="1042.0">
         <menus>
@@ -22,7 +22,7 @@
                   <Menu fx:id="menuReporteTutorial" mnemonicParsing="false" text="Reporte Tutorias">
                      <items>
                         <MenuItem fx:id="miCreateTutorialReport" mnemonicParsing="false" onAction="#menuCreateTutorialReport" text="Crear" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuReadTutorialReport" text="Consultar" />
+                        <MenuItem fx:id="miConsultTutorialReport" mnemonicParsing="false" onAction="#menuReadTutorialReport" text="Consultar" />
                      </items>
                   </Menu>
             </items>
@@ -85,7 +85,7 @@
       </MenuBar>
       <ComboBox fx:id="cbRol" layoutX="428.0" layoutY="58.0" prefWidth="150.0" />
       <ComboBox fx:id="cbProgramaEducativo" layoutX="428.0" layoutY="125.0" prefWidth="150.0" />
-      <Label layoutX="300.0" layoutY="62.0" text="Rol Actual" />
-      <Label layoutX="300.0" layoutY="129.0" text="Programa Educativo" />
+      <Label layoutX="234.0" layoutY="58.0" text="Rol Actual" />
+      <Label layoutX="234.0" layoutY="125.0" text="Programa Educativo" />
    </children>
 </AnchorPane>
