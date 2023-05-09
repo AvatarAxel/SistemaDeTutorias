@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
@@ -87,5 +90,6 @@
       <ComboBox fx:id="cbProgramaEducativo" layoutX="428.0" layoutY="125.0" prefWidth="150.0" />
       <Label layoutX="300.0" layoutY="62.0" text="Rol Actual" />
       <Label layoutX="300.0" layoutY="129.0" text="Programa Educativo" />
+      <Button layoutX="941.0" layoutY="361.0" mnemonicParsing="false" onAction="#clicLogout" text="Cerrar Sesión" />
    </children>
 </AnchorPane>
