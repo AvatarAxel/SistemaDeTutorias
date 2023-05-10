@@ -1,4 +1,3 @@
-
 package Domain;
 
 import java.sql.Date;
@@ -8,11 +7,12 @@ import java.sql.Date;
  * @author michikato
  */
 public class PeriodoEscolar {
-    private String clave ;
+
+    private String clave;
     private Date fechaInicio;
     private Date fechaFin;
-    private int idPeriodoEscolar;    
-    
+    private int idPeriodoEscolar;
+
     public PeriodoEscolar() {
     }
 
@@ -21,7 +21,7 @@ public class PeriodoEscolar {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.idPeriodoEscolar = idPeriodoEscolar;
-    }        
+    }
 
     public String getClave() {
         return clave;
@@ -54,11 +54,16 @@ public class PeriodoEscolar {
     public void setIdPeriodoEscolar(int idPeriodoEscolar) {
         this.idPeriodoEscolar = idPeriodoEscolar;
     }
-    
-        public String getFechasPeridoEscolar(){
+
+    public String getFechasPeridoEscolar() {
         String fechasTutoriaAcademica = util.DateLatinAmerica.DateWithDays(fechaInicio)
                 + " - " + util.DateLatinAmerica.DateWithDays(fechaFin);
         return fechasTutoriaAcademica;
     }
 
+    @Override
+    public String toString() {
+        return this.getFechasPeridoEscolar();
+    }
+    
 }

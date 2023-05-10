@@ -6,6 +6,7 @@ package BussinessLogic;
 
 import Domain.PeriodoEscolar;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,5 +15,7 @@ import java.sql.SQLException;
 public interface IPeriodoEscolarDAO {
     
     public PeriodoEscolar getCurrentPeriodo() throws SQLException;
+    
+    public ArrayList<PeriodoEscolar> getAllPeriodos() throws SQLException;
     
 }
