@@ -5,6 +5,7 @@
 package BussinessLogic;
 
 import Domain.ProblematicaAcademica;
+import DomainGraphicInterface.ProblematicaReporteTutoria;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -17,6 +18,8 @@ public interface IProblematicaAcademicaDAO {
     public ArrayList<ProblematicaAcademica> getProblematicasSinSolucion() throws SQLException;
     
     public ArrayList<ProblematicaAcademica> getProblematicas() throws SQLException;
+    
+    public ArrayList<ProblematicaReporteTutoria> getAllProblematicas() throws SQLException;
     
     public ArrayList<ProblematicaAcademica> getProblematicasByPrograma(String clave) throws SQLException;
     

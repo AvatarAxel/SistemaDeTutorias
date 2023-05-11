@@ -1,16 +1,18 @@
 package BussinessLogic;
 
 import Domain.ExperienciaEducativa;
+import Domain.PeriodoEscolar;
 import Domain.ProblematicaAcademica;
 import Domain.Profesor;
 import Domain.SolucionAProblematica;
+import Domain.TutoriaAcademica;
+import DomainGraphicInterface.ProblematicaReporteTutoria;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.time.LocalDate;
 //import java.util.Date;
 
@@ -80,9 +82,6 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
         return listProblematicasAcademicas;
     }
 
- 
-    
-
     @Override
     public ArrayList<ProblematicaAcademica> getProblematicasByReporte(int idReporte) throws SQLException {
         ArrayList<ProblematicaAcademica> problematicas = new ArrayList<ProblematicaAcademica>();
@@ -135,24 +134,24 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
 
     @Override
     public int insertProblematica(ProblematicaAcademica problematica) throws SQLException {
-         DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
         int result = 0;
         Connection connection = dataBaseConnection.getConnection();
-        String descripcion= problematica.getDescripcion();
-        String titulo= problematica.getTitulo();
+        String descripcion = problematica.getDescripcion();
+        String titulo = problematica.getTitulo();
         int numeroAfectados = problematica.getNumeroDeEstudiantesAfectados();
-        int idReporte= problematica.getIdReporteTutoria();
-        String nrc= problematica.getNrc();
+        int idReporte = problematica.getIdReporteTutoria();
+        String nrc = problematica.getNrc();
         String query;
-            query = ("INSERT INTO `sistema_tutorias`.`problematicas_academicas` (`descripcion`, `titulo`, `numeroDeEstudiantesAfectados`, `idReporteTutoria`, `nrc`) VALUES (?,?, ?, ?, ?);");
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, descripcion);
-            statement.setString(2, titulo);
-            statement.setInt(3, numeroAfectados);
-            statement.setInt(4, idReporte);
-            statement.setString(5, nrc);
+        query = ("INSERT INTO `sistema_tutorias`.`problematicas_academicas` (`descripcion`, `titulo`, `numeroDeEstudiantesAfectados`, `idReporteTutoria`, `nrc`) VALUES (?,?, ?, ?, ?);");
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, descripcion);
+        statement.setString(2, titulo);
+        statement.setInt(3, numeroAfectados);
+        statement.setInt(4, idReporte);
+        statement.setString(5, nrc);
 
-            result = statement.executeUpdate();
+        result = statement.executeUpdate();
         return result;
     }
 
@@ -162,37 +161,36 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
         int result = 0;
         Connection connection = dataBaseConnection.getConnection();
         int idProblematica = problematica.getIdProblematica();
-        String descripcion= problematica.getDescripcion();
-        String titulo= problematica.getTitulo();
+        String descripcion = problematica.getDescripcion();
+        String titulo = problematica.getTitulo();
         int numeroAfectados = problematica.getNumeroDeEstudiantesAfectados();
-        String nrc= problematica.getNrc();
+        String nrc = problematica.getNrc();
         String query;
-            query = ("UPDATE problematicas_academicas SET titulo = ?, descripcion = ?, numeroDeEstudiantesAfectados=?, nrc=? WHERE idProblematica=?;");
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, titulo);
-            statement.setString(2, descripcion);
-            statement.setInt(3, numeroAfectados);
-            statement.setString(4, nrc);
-            statement.setInt(5, idProblematica);
+        query = ("UPDATE problematicas_academicas SET titulo = ?, descripcion = ?, numeroDeEstudiantesAfectados=?, nrc=? WHERE idProblematica=?;");
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, titulo);
+        statement.setString(2, descripcion);
+        statement.setInt(3, numeroAfectados);
+        statement.setString(4, nrc);
+        statement.setInt(5, idProblematica);
 
-            result = statement.executeUpdate();
+        result = statement.executeUpdate();
         return result;
- 
+
     }
 
     @Override
     public int deleteProblematica(int idProblematicaAcademica) throws SQLException {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         int result = 0;
-        Connection connection = dataBaseConnection.getConnection();   
-            String query;
-            query = ("DELETE FROM `sistema_tutorias`.`problematicas_academicas` WHERE (`idProblematica` = ?);");
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, idProblematicaAcademica);
-            
-            result = statement.executeUpdate();
+        Connection connection = dataBaseConnection.getConnection();
+        String query;
+        query = ("DELETE FROM `sistema_tutorias`.`problematicas_academicas` WHERE (`idProblematica` = ?);");
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, idProblematicaAcademica);
 
-        
+        result = statement.executeUpdate();
+
         return result;
 
     }
@@ -202,12 +200,12 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
         ArrayList<ProblematicaAcademica> problematicas = new ArrayList<ProblematicaAcademica>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = "select pa.*, ee.nombre as experiencia, concat(p.nombre, \" \",p.apellidoPaterno, \" \",p.apellidoMaterno) as profesor, ta.fechaFin as fecha, ta.numeroDesesion as sesion from problematicas_academicas \n" +
-                        "pa inner join experiencias_educativas ee on pa.nrc=ee.nrc \n" +
-                        "inner join profesores p on ee.numeroDePersonal=p.numeroDePersonal \n" +
-                        "inner join reportes_de_tutorias_academicas rta on pa.idReporteTutoria = rta.idReporteTutoria\n" +
-                        "inner join tutorias_academicas ta on rta.idTutoriaAcademica=ta.idTutoriaAcademica\n" +
-                        "where ta.clave=?";
+        String query = "select pa.*, ee.nombre as experiencia, concat(p.nombre, \" \",p.apellidoPaterno, \" \",p.apellidoMaterno) as profesor, ta.fechaFin as fecha, ta.numeroDesesion as sesion from problematicas_academicas \n"
+                + "pa inner join experiencias_educativas ee on pa.nrc=ee.nrc \n"
+                + "inner join profesores p on ee.numeroDePersonal=p.numeroDePersonal \n"
+                + "inner join reportes_de_tutorias_academicas rta on pa.idReporteTutoria = rta.idReporteTutoria\n"
+                + "inner join tutorias_academicas ta on rta.idTutoriaAcademica=ta.idTutoriaAcademica\n"
+                + "where ta.clave=?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, clave);
         ResultSet resultSet = statement.executeQuery();
@@ -230,7 +228,7 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                 nrc = resultSet.getString("nrc");
                 experiencia = resultSet.getString("experiencia");
                 profesor = resultSet.getString("profesor");
-                fecha= resultSet.getDate("fecha").toLocalDate();
+                fecha = resultSet.getDate("fecha").toLocalDate();
 
                 ProblematicaAcademica problematica = new ProblematicaAcademica();
                 Profesor profesorDomain = new Profesor();
@@ -242,22 +240,21 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                 problematica.setIdReporteTutoria(idReporteTutoria);
                 problematica.setNrc(nrc);
                 problematica.setExperienciaEducativa(new ExperienciaEducativa());
-                
+
                 problematica.setProfesor(profesorDomain);
 
                 problematica.setExperienciaName(experiencia);
                 problematica.setProfesorName(profesor);
                 problematica.setFechaFin(fecha);
                 problematica.setSolucion(new SolucionAProblematica(0, ""));
-                
+
                 problematicas.add(problematica);
 
             } while (resultSet.next());
         }
         return problematicas;
     }
-    
-    
+
     public ArrayList<ProblematicaAcademica> getAllProblematicasByReporte(int idReporteTutoria) throws SQLException {
         ArrayList<ProblematicaAcademica> listProblematicaAcademica = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -294,4 +291,52 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
         return listProblematicaAcademica;
     }
 
+    @Override
+    public ArrayList<ProblematicaReporteTutoria> getAllProblematicas() throws SQLException {
+        ArrayList<ProblematicaReporteTutoria> listProblematicasAcademicas = new ArrayList<>();
+
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String consulta = "SELECT problematicas_academicas.idProblematica,\n"
+                    + "problematicas_academicas.descripcion,\n"
+                    + "titulo,numeroDeEstudiantesAfectados,\n"
+                    + "problematicas_academicas.idReporteTutoria,\n"
+                    + "soluciones_a_problematicas_academicas.idSolucion,\n"
+                    + "soluciones_a_problematicas_academicas.descripcion AS descripcion_solucion,\n"
+                    + "tutorias_academicas.idPeriodoEscolar\n"
+                    + "FROM problematicas_academicas \n"
+                    + "INNER JOIN soluciones_a_problematicas_academicas\n"
+                    + "ON problematicas_academicas.idProblematica = soluciones_a_problematicas_academicas.idProblematica\n"
+                    + "INNER JOIN reportes_de_tutorias_academicas\n"
+                    + "ON reportes_de_tutorias_academicas.idReporteTutoria = problematicas_academicas.idReporteTutoria\n"
+                    + "INNER JOIN tutorias_academicas\n"
+                    + "ON tutorias_academicas.idTutoriaAcademica = reportes_de_tutorias_academicas.idTutoriaAcademica;";
+            PreparedStatement statement = connection.prepareStatement(consulta);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                ProblematicaReporteTutoria problematicaAcademicaTemp = new ProblematicaReporteTutoria();
+                problematicaAcademicaTemp.getProblematica().setIdProblematica(resultSet.getInt("idProblematica"));
+                problematicaAcademicaTemp.getProblematica().setNumeroDeEstudiantesAfectados(resultSet.getInt("numeroDeEstudiantesAfectados"));
+                problematicaAcademicaTemp.getProblematica().setDescripcion(resultSet.getString("descripcion"));
+                problematicaAcademicaTemp.getProblematica().setIdReporteTutoria(resultSet.getInt("idReporteTutoria"));
+                problematicaAcademicaTemp.getProblematica().setSolucion(new SolucionAProblematica(
+                        resultSet.getInt("idSolucion"),
+                        resultSet.getString("descripcion_solucion")
+                ));
+                problematicaAcademicaTemp.setTutoria(new TutoriaAcademica(
+                        0, null, null, 0,
+                        new PeriodoEscolar(
+                                "", null, null,
+                                resultSet.getInt("idPeriodoEscolar")
+                        )
+                ));
+                listProblematicasAcademicas.add(problematicaAcademicaTemp);
+            }
+            connection.close();
+        }
+
+        return listProblematicasAcademicas;
+    }
 }
