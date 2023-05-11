@@ -155,16 +155,15 @@ public class TutoriaAcademicaDAO implements ITutoriaAcademicaDAO {
         Connection connection = dataBaseConnection.getConnection();
         String query;
         query = ("INSERT INTO `sistema_tutorias`.`tutorias_academicas` "
-                + "(`numeroDeSesion`, `fechaInicio`, `fechaFin`, `clave`, `idPeriodoEscolar`,`idTutoriaAcademica`) "
-                + "VALUES (?, ?, ?, ?, ?,?);");
+                + "(`numeroDeSesion`, `fechaInicio`, `fechaFin`, `clave`, `idPeriodoEscolar`) "
+                + "VALUES (?, ?, ?, ?, ?);");
         if (connection != null) {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, tutoria.getNumeroDeSesion());
             statement.setDate(2, tutoria.getFechaInicio());
             statement.setDate(3, tutoria.getFechaFin());
-            statement.setString(4, tutoria.getPeriodoEscolar().getClave());
+            statement.setString(4, "14203"); // se va a quitar
             statement.setInt(5, tutoria.getPeriodoEscolar().getIdPeriodoEscolar());
-            statement.setInt(6, 5);
 
             result = statement.executeUpdate();
         }

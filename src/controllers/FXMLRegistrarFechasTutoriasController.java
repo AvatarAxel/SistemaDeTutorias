@@ -1,4 +1,4 @@
-package controllers;
+ package controllers;
 
 import BussinessLogic.PeriodoEscolarDAO;
 import BussinessLogic.TutoriaAcademicaDAO;
@@ -78,13 +78,13 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
             java.sql.Date endDate = java.sql.Date.valueOf(datepicker_enddate.getValue());
             int numeroSesion = (int) cmb_numSesion.getValue();
             TutoriaAcademica tutoria = new TutoriaAcademica();
-            PeriodoEscolar periodo = new PeriodoEscolar();
+            //PeriodoEscolar periodo = new PeriodoEscolar();
             tutoria.setFechaInicio(startDate);
             tutoria.setFechaFin(endDate);
             tutoria.setNumeroDeSesion(numeroSesion);
-            periodo.setIdPeriodoEscolar(periodoEscolar.getIdPeriodoEscolar());
-            periodo.setClave(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
-            tutoria.setPeriodoEscolar(periodo);
+           // periodo.setIdPeriodoEscolar(periodoEscolar.getIdPeriodoEscolar());
+           // periodo.setClave(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
+            tutoria.setPeriodoEscolar(periodoEscolar);
             TutoriaAcademicaDAO tutoriadao = new TutoriaAcademicaDAO();
             try {
                 int result = tutoriadao.addTutoriaAcademica(tutoria);
@@ -106,8 +106,8 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
 
         TutoriaAcademicaDAO tutoriaDAO = new TutoriaAcademicaDAO();
         try {
-            tutoria = tutoriaDAO.getCurrentTutoriaAcademica(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
-            JOptionPane.showMessageDialog(null, tutoria.getNumeroDeSesion());
+            tutoria = tutoriaDAO.getCurrentlyTutoriaAcademica(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
+            //JOptionPane.showMessageDialog(null, tutoria.getNumeroDeSesion());
 
             if (tutoria != null) {
                 if (tutoria.getNumeroDeSesion() >= 3) {
@@ -198,6 +198,7 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
 
         datepicker_enddate.setDisable(true);
         cmb_numSesion.setDisable(true);
+        btn_save.setDisable(true);
     }
 
     @FXML
