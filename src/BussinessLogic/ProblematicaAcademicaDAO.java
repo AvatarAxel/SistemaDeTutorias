@@ -7,7 +7,7 @@ import Domain.Profesor;
 import Domain.SolucionAProblematica;
 import Domain.TutoriaAcademica;
 import DomainGraphicInterface.ProblematicaReporteTutoria;
-import dataaccess.DataBaseConnection;
+import dataaccess.DataBaseConnection;  
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -229,7 +229,7 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                 nrc = resultSet.getString("nrc");
                 experiencia = resultSet.getString("experiencia");
                 profesor = resultSet.getString("profesor");
-                fecha = resultSet.getDate("fechaTutoria").toString();
+                fecha = resultSet.getDate("fechaTutoria").toString() ;
 
                 ProblematicaAcademica problematica = new ProblematicaAcademica();
                 Profesor profesorDomain = new Profesor();
