@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
@@ -7,7 +8,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
    <children>
       <MenuBar fx:id="mbMainMenu" prefHeight="29.0" prefWidth="1042.0">
         <menus>
@@ -51,6 +53,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#menuRegistrarEstudiantesAction" text="Registrar Estudiantes" />
                   <MenuItem mnemonicParsing="false" onAction="#menuImportarEstudiantesAction" text="Importar Estudiantes" />
                 <MenuItem mnemonicParsing="false" onAction="#menuRegistrarTutorAction" text="Registrar Tutor Academico" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuRegistrarProfesorAction" text="Registrar Profesor" />
               </items>
             </Menu>
             <Menu fx:id="menuAsignaciones" mnemonicParsing="false" text="Asignaciones">
@@ -85,7 +88,8 @@
       </MenuBar>
       <ComboBox fx:id="cbRol" layoutX="428.0" layoutY="58.0" prefWidth="150.0" />
       <ComboBox fx:id="cbProgramaEducativo" layoutX="428.0" layoutY="125.0" prefWidth="150.0" />
-      <Label layoutX="234.0" layoutY="58.0" text="Rol Actual" />
-      <Label layoutX="234.0" layoutY="125.0" text="Programa Educativo" />
+      <Label layoutX="300.0" layoutY="62.0" text="Rol Actual" />
+      <Label layoutX="300.0" layoutY="129.0" text="Programa Educativo" />
+      <Button layoutX="941.0" layoutY="361.0" mnemonicParsing="false" onAction="#clicLogout" text="Cerrar Sesión" />
    </children>
 </AnchorPane>

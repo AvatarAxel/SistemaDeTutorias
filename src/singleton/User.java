@@ -4,7 +4,6 @@
  */
 package singleton;
 
-import Domain.ProgramaEducativo;
 import Domain.Rol;
 import java.util.ArrayList;
 
@@ -33,6 +32,10 @@ public class User {
             currentUser = new User();
         }
         return currentUser;
+    }
+    
+    public static void killCurrentUser(){
+        currentUser = null;
     }
 
     public int getNumeroDePersonal() {

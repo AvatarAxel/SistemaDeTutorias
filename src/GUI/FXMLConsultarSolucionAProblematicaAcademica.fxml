@@ -12,7 +12,7 @@
         <URL value="@/styles/globalStyles.css" />
     </stylesheets>
     <children>
-      <TableView fx:id="tbProblematicas" layoutX="8.0" layoutY="12.0" prefHeight="337.0" prefWidth="579.0">
+      <TableView fx:id="tbProblematicas" layoutX="8.0" layoutY="74.0" prefHeight="275.0" prefWidth="579.0">
         <columns>
           <TableColumn fx:id="colDescripcion" prefWidth="281.0" text="Descripción" />
             <TableColumn fx:id="colNumeroAlumnos" prefWidth="132.0" text="Número de Alumnos" />
@@ -20,5 +20,6 @@
         </columns>
       </TableView>
       <Button layoutX="530.0" layoutY="361.0" mnemonicParsing="false" onAction="#clicSalir" prefHeight="25.0" prefWidth="57.0" text="Salir" />
+      <ComboBox fx:id="cbPeriodo" layoutX="430.0" layoutY="31.0" prefWidth="150.0" />
    </children>
 </AnchorPane>
