@@ -7,7 +7,7 @@ package BussinessLogic;
 import Domain.Profesor;
 import Domain.TutorAcademico;
 import Domain.Usuario;
-import Domain.TutoriaAcademica;
+import Domain.ProgramaEducativo;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -76,7 +76,7 @@ public class TutorAcademicoDAO {
     DataBaseConnection dataBaseConnection = new DataBaseConnection();
     Connection connection = dataBaseConnection.getConnection();        
         if (connection != null) {
-            String consulta = "SELECT DISTINCT u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.numeroDePersonal\n" +
+            String consulta = "SELECT DISTINCT u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.numeroDePersonal, p.clave, p.nombre\n" +
                 "FROM usuarios u\n" +
                 "JOIN roles_usuarios_programa_educativo rupe ON u.numeroDePersonal = rupe.numeroDePersonal\n" +
                 "JOIN roles r ON rupe.idRol = r.idRol\n" +
@@ -88,10 +88,14 @@ public class TutorAcademicoDAO {
             ResultSet resultado = configurarConsulta.executeQuery();
             while (resultado.next()) {
                 Usuario usuario = new Usuario();
+                ProgramaEducativo pe = new ProgramaEducativo();
                 usuario.setNombre(resultado.getString("nombre"));
                 usuario.setApellidoPaterno(resultado.getString("apellidoPaterno"));
                 usuario.setApellidoMaterno(resultado.getString("apellidoMaterno"));
                 usuario.setNumeroDePersonal(resultado.getInt("numeroDePersonal"));
+                pe.setClave(resultado.getString("clave"));
+                pe.setNombre(resultado.getString("nombre"));
+                usuario.setProgramaEducativo(pe);
                 tutores.add(usuario);
             }
             connection.close();
