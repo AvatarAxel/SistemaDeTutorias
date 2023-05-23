@@ -115,7 +115,7 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
     private void loadReportesTutoriasAcademicasByTutorAcademico(Usuario usuario) {
         TutoriaAcademicaDAO tutoriaAcademicaDao = new TutoriaAcademicaDAO();
         try {
-            ArrayList<TutoriaAcademica> loadedTutoriasAcademicas = tutoriaAcademicaDao.getTutoriasAcademicasByTutorAcademico(usuario.getNumeroDePersonal(),Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()));
+            ArrayList<TutoriaAcademica> loadedTutoriasAcademicas = tutoriaAcademicaDao.getTutoriasAcademicasByTutorAcademico(usuario.getNumeroDePersonal(),usuario.getProgramaEducativo().getClave());
             if(loadedTutoriasAcademicas != null){
                 listTutoriasAcademicas.clear();
                 listTutoriasAcademicas.addAll(loadedTutoriasAcademicas);
@@ -125,7 +125,8 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
                 AlertManager.showAlert("Error", "No hay reportes", Alert.AlertType.ERROR);                    
             }    
         } catch (SQLException sqle) {
-            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+            System.out.println(sqle);
+            AlertManager.showAlert("Error", " loadReportesTutoriasAcademicasByTutorAcademico No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
     private void loadInformationPeriodoEscolar() {
@@ -136,7 +137,7 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
                 listTutoriasAcademicas.get(i).setPeriodoEscolar(periodoEscolar);                
             }
         } catch (SQLException sqle) {
-            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", " loadInformationPeriodoEscolar No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }      
     

@@ -102,7 +102,7 @@ import util.ExceptionCodes;
             }else{
                 btProblematicaAcademica.setText("Agregar problemática académica");                
                 ReporteDeTutoriaAcademicaDAO ReporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
-                if(!ReporteDeTutoriaAcademicaDao.setReporteDeTutorias(tfComentarioGeneral.getText(),tutoriaAcademica.getIdTutoriaAcademica() , User.getCurrentUser().getNumeroDePersonal())){            
+                if(!ReporteDeTutoriaAcademicaDao.setReporteDeTutorias(tfComentarioGeneral.getText(),tutoriaAcademica.getIdTutoriaAcademica() , User.getCurrentUser().getNumeroDePersonal(),User.getCurrentUser().getRol().getProgramaEducativo().getClave())){            
                     AlertManager.showAlert("Error", "No se pu", Alert.AlertType.ERROR);
                 }        
             }
@@ -147,8 +147,10 @@ import util.ExceptionCodes;
             tfNumeroSesionTutoria.setText(String.valueOf(tutoriaAcademica.getNumeroDeSesion()));
             lbProgramaEducativo.setText(User.getCurrentUser().getRol().getProgramaEducativo().getNombre());
             tfPeriodoEscolar.setText(tutoriaAcademica.getFechasPeriodoEscolar());
-            ReporteDeTutoriaAcademica loadedReporteDeTutoriaAcademica = ReporteDeTutoriaAcademicaDao.getReporteDeTutoriaByTutor(tutoriaAcademica.getIdTutoriaAcademica(),User.getCurrentUser().getNumeroDePersonal());
-                AlertManager.showAlert("Error", "TUTORIA ACADEMICA ID: " +tutoriaAcademica.getIdTutoriaAcademica(), Alert.AlertType.ERROR);        
+            ReporteDeTutoriaAcademica loadedReporteDeTutoriaAcademica = ReporteDeTutoriaAcademicaDao.getReporteDeTutoriaByTutor(tutoriaAcademica.getIdTutoriaAcademica(),User.getCurrentUser().getNumeroDePersonal(),User.getCurrentUser().getRol().getProgramaEducativo().getClave());
+                AlertManager.showAlert("PRUEBA", "TUTORIA ACADEMICA ID: " +tutoriaAcademica.getIdTutoriaAcademica(), Alert.AlertType.ERROR);        
+                AlertManager.showAlert("PRUEBA", "CLAVE: " +User.getCurrentUser().getRol().getProgramaEducativo().getClave(), Alert.AlertType.ERROR);        
+                AlertManager.showAlert("PRUEBA", "NUMPERSONAL: " +User.getCurrentUser().getNumeroDePersonal(), Alert.AlertType.ERROR);        
             
             reporteTutoriaAcademica = loadedReporteDeTutoriaAcademica;
             if(reporteTutoriaAcademica.getComentariosGenerales().equals("")){
@@ -272,7 +274,7 @@ import util.ExceptionCodes;
     private void saveChanges()throws SQLException {
         try {
             ReporteDeTutoriaAcademicaDAO ReporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
-            if(ReporteDeTutoriaAcademicaDao.updateReporteDeTutorias(tfComentarioGeneral.getText(),tutoriaAcademica.getIdTutoriaAcademica() ,User.getCurrentUser().getNumeroDePersonal())){            
+            if(ReporteDeTutoriaAcademicaDao.updateReporteDeTutorias(tfComentarioGeneral.getText(),tutoriaAcademica.getIdTutoriaAcademica() ,User.getCurrentUser().getNumeroDePersonal(),User.getCurrentUser().getRol().getProgramaEducativo().getClave())){            
                     AlertManager.showTemporalAlert("AVISO", "La información se registró correctamente en el sistema", 2);
             }             
         } catch (SQLException sqle) {

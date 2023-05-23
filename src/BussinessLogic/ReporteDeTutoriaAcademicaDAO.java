@@ -59,7 +59,7 @@ public class ReporteDeTutoriaAcademicaDAO {
         return listReporteDeTutoriaAcademica;
     }
 
-    public ReporteDeTutoriaAcademica getReporteDeTutoriaByTutor(int idTutoriaAcademica, int  numeroPersonal) throws SQLException {
+    public ReporteDeTutoriaAcademica getReporteDeTutoriaByTutor(int idTutoriaAcademica, int  numeroPersonal, String clave) throws SQLException {
         ReporteDeTutoriaAcademica reporteDeTutoriaAcademica = new ReporteDeTutoriaAcademica();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
@@ -76,10 +76,11 @@ public class ReporteDeTutoriaAcademicaDAO {
                     + "  reportes_de_tutorias_academicas r\n"
                     + "  INNER JOIN usuarios u ON r.numeroDePersonal = u.numeroDePersonal\n"
                     + "WHERE \n"
-                    + "  r.idTutoriaAcademica = ? AND r.numeroDePersonal=?;");
+                    + "  r.idTutoriaAcademica = ? AND r.numeroDePersonal=? AND r.clave=?;");
             PreparedStatement statement = connection.prepareStatement(queryGet);
             statement.setInt(1, idTutoriaAcademica);
             statement.setInt(2, numeroPersonal);
+            statement.setString(3, clave);            
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
                 TutorAcademico tutorAcademico = new TutorAcademico();
@@ -100,16 +101,17 @@ public class ReporteDeTutoriaAcademicaDAO {
         return reporteDeTutoriaAcademica;
     }
     
-    public ReporteDeTutoriaAcademica getCurrentlyReporteDeTutorias(int idTutoriaAcademica, int  numeroPersonal) throws SQLException{
+    public ReporteDeTutoriaAcademica getCurrentlyReporteDeTutorias(int idTutoriaAcademica, int  numeroPersonal, String clave) throws SQLException{
         ReporteDeTutoriaAcademica reporteDeTutoriaAcademica = new ReporteDeTutoriaAcademica();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
             String queryGet = ("SELECT * FROM reportes_de_tutorias_academicas\n" +
-                "WHERE idTutoriaAcademica = ? AND numeroDePersonal =?;");
+                "WHERE idTutoriaAcademica = ? AND numeroDePersonal =? AND clave=?;");
             PreparedStatement statement = connection.prepareStatement(queryGet);
             statement.setInt(1, idTutoriaAcademica);
             statement.setInt(2, numeroPersonal);
+            statement.setString(3, clave);            
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
                 TutorAcademico tutorAcademico = new TutorAcademico();
@@ -126,16 +128,17 @@ public class ReporteDeTutoriaAcademicaDAO {
         return reporteDeTutoriaAcademica;    
     }
     
-    public boolean setReporteDeTutorias(String comentarioGeneral, int idTutoriaAcademica, int numeroPersonal) throws SQLException{
+    public boolean setReporteDeTutorias(String comentarioGeneral, int idTutoriaAcademica, int numeroPersonal, String clave) throws SQLException{
         boolean result = false;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if(connection!=null){
-            String querySet = ("INSERT INTO reportes_de_tutorias_academicas (`comentariosGenerales`,`idTutoriaAcademica`, `numeroDePersonal`) VALUES (?, ?, ?);");            
+            String querySet = ("INSERT INTO reportes_de_tutorias_academicas (`comentariosGenerales`,`idTutoriaAcademica`, `numeroDePersonal`, `clave`) VALUES (?, ?, ?, ?);");            
             PreparedStatement statement = connection.prepareStatement(querySet);
             statement.setString(1, comentarioGeneral);
             statement.setInt(2, idTutoriaAcademica);
-            statement.setInt(3, numeroPersonal);            
+            statement.setInt(3, numeroPersonal);  
+            statement.setString(4, clave);                        
             int resultInsert = statement.executeUpdate();            
             if(resultInsert>0){
                 result = true;
@@ -145,17 +148,18 @@ public class ReporteDeTutoriaAcademicaDAO {
         return result;
     }
     
-    public boolean updateReporteDeTutorias(String comentarioGeneral, int idTutoriaAcademica, int numeroPersonal) throws SQLException {
+    public boolean updateReporteDeTutorias(String comentarioGeneral, int idTutoriaAcademica, int numeroPersonal, String clave) throws SQLException {
         boolean result = false;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if(connection!=null){
             String queryGet = "SELECT *\n" +
                     "FROM reportes_de_tutorias_academicas\n" +
-                    "WHERE idTutoriaAcademica = ? AND numeroDePersonal = ?";
+                    "WHERE idTutoriaAcademica = ? AND numeroDePersonal = ? AND clave= ?";
             PreparedStatement statementGet = connection.prepareStatement(queryGet);
             statementGet.setInt(1, idTutoriaAcademica);
             statementGet.setInt(2, numeroPersonal);
+            statementGet.setString(3, clave);
             ResultSet resultGet = statementGet.executeQuery();            
             if(resultGet.next()){
                 int idReporteTutoria = resultGet.getInt("idReporteTutoria");

@@ -97,10 +97,10 @@ public class FXMLMainMenuController implements Initializable {
             if(cbRol.getSelectionModel().getSelectedItem().getRolName().equals("Tutor")){
                 try {
                    TutoriaAcademicaDAO tutoriaAcademicaDAO = new TutoriaAcademicaDAO();
-                   tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
+                   tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica();
                    if (tutoriaAcademica != null) {
                        ReporteDeTutoriaAcademicaDAO reporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
-                       reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(), User.getCurrentUser().getNumeroDePersonal());
+                       reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(), User.getCurrentUser().getNumeroDePersonal(), User.getCurrentUser().getRol().getProgramaEducativo().getClave());
                        if (reporteTutoriaAcademica != null) {
                            miCreateTutorialReport.setText("Editar");
                            miCreateTutorialReport.setDisable(false);
@@ -111,6 +111,7 @@ public class FXMLMainMenuController implements Initializable {
                    } else {
                        miCreateTutorialReport.setText("Sin Actividades Pendientes");
                        miCreateTutorialReport.setDisable(true);
+                       
                    }
                } catch (SQLException sqle) {
                    sqle.printStackTrace();

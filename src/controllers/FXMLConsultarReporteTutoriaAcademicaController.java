@@ -156,7 +156,7 @@ public class FXMLConsultarReporteTutoriaAcademicaController implements Initializ
     private void configureValues(Usuario tutorAcademicoRecived) {
         ReporteDeTutoriaAcademicaDAO ReporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
         try {
-            ReporteDeTutoriaAcademica loadedReporteDeTutoriaAcademica = ReporteDeTutoriaAcademicaDao.getReporteDeTutoriaByTutor(tutoriaAcademica.getIdTutoriaAcademica(),tutorAcademicoRecived.getNumeroDePersonal());
+            ReporteDeTutoriaAcademica loadedReporteDeTutoriaAcademica = ReporteDeTutoriaAcademicaDao.getReporteDeTutoriaByTutor(tutoriaAcademica.getIdTutoriaAcademica(),tutorAcademicoRecived.getNumeroDePersonal(),tutorAcademicoRecived.getProgramaEducativo().getClave());
             reporteTutoriaAcademica = loadedReporteDeTutoriaAcademica;
             tfComentarioGeneral.setText(reporteTutoriaAcademica.getComentariosGenerales());
             tfFechaTutoria.setText(tutoriaAcademica.getFechasTutoriaAcademica());            
