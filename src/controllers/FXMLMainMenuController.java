@@ -466,6 +466,16 @@ public class FXMLMainMenuController implements Initializable {
     }
 
     @FXML
+    private void menuRegistrarProfesorAction(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLRegistrarProfesor.fxml",
+                "Registrar Profesor"
+        );
+
+    }
+
+    @FXML
     private void clicLogout(ActionEvent event) {
         WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
@@ -474,4 +484,5 @@ public class FXMLMainMenuController implements Initializable {
         );
         User.killCurrentUser();
     }
+
 }

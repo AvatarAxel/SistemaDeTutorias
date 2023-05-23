@@ -200,12 +200,13 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
         ArrayList<ProblematicaAcademica> problematicas = new ArrayList<ProblematicaAcademica>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = "select pa.*, ee.nombre as experiencia, concat(p.nombre, \" \",p.apellidoPaterno, \" \",p.apellidoMaterno) as profesor, ta.fechaFin as fecha, ta.numeroDesesion as sesion from problematicas_academicas \n"
+        String query = "select pa.*, ee.nombre as experiencia, concat(p.nombre, \" \",p.apellidoPaterno, \" \",p.apellidoMaterno) as profesor, ta.fechaFin as fechaTutoria, pe.fechaInicio, pe.fechaFin, pe.idPeriodoEscolar from problematicas_academicas \n"
                 + "pa inner join experiencias_educativas ee on pa.nrc=ee.nrc \n"
                 + "inner join profesores p on ee.numeroDePersonal=p.numeroDePersonal \n"
                 + "inner join reportes_de_tutorias_academicas rta on pa.idReporteTutoria = rta.idReporteTutoria\n"
                 + "inner join tutorias_academicas ta on rta.idTutoriaAcademica=ta.idTutoriaAcademica\n"
-                + "where ta.clave=?";
+                + "inner join periodos_escolares pe on pe.idPeriodoEscolar= ta.idPeriodoEscolar\n"
+                + "where rta.clave=?;";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, clave);
         ResultSet resultSet = statement.executeQuery();
@@ -218,7 +219,7 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
             String nrc;
             String experiencia;
             String profesor;
-            LocalDate fecha;
+            String  fecha;
             do {
                 idProblematica = resultSet.getInt("idProblematica");
                 descripcion = resultSet.getString("descripcion");
@@ -228,24 +229,32 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                 nrc = resultSet.getString("nrc");
                 experiencia = resultSet.getString("experiencia");
                 profesor = resultSet.getString("profesor");
-                fecha = resultSet.getDate("fecha").toLocalDate();
+                fecha = resultSet.getDate("fechaTutoria").toString();
 
                 ProblematicaAcademica problematica = new ProblematicaAcademica();
                 Profesor profesorDomain = new Profesor();
                 ExperienciaEducativa experienciaEducativa = new ExperienciaEducativa();
+                experienciaEducativa.setNombre(experiencia);
+                experienciaEducativa.setNrc(nrc);
+                PeriodoEscolar periodoEscolar = new PeriodoEscolar();
+                periodoEscolar.setIdPeriodoEscolar(resultSet.getInt("idPeriodoEscolar"));
+                periodoEscolar.setFechaInicio(resultSet.getDate("fechaInicio"));
+
+                periodoEscolar.setFechaInicio(resultSet.getDate("fechaFin"));
                 problematica.setIdProblematica(idProblematica);
                 problematica.setDescripcion(descripcion);
                 problematica.setTitulo(titulo);
                 problematica.setNumeroDeEstudiantesAfectados(numeroAfectados);
                 problematica.setIdReporteTutoria(idReporteTutoria);
                 problematica.setNrc(nrc);
-                problematica.setExperienciaEducativa(new ExperienciaEducativa());
+                problematica.setExperienciaEducativa(experienciaEducativa);
+                problematica.setPeriodoEscolar(periodoEscolar);
 
                 problematica.setProfesor(profesorDomain);
 
                 problematica.setExperienciaName(experiencia);
                 problematica.setProfesorName(profesor);
-                problematica.setFechaFin(fecha);
+                problematica.setFechaTutoria(fecha);
                 problematica.setSolucion(new SolucionAProblematica(0, ""));
 
                 problematicas.add(problematica);

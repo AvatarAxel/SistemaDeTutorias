@@ -60,6 +60,12 @@ public class PeriodoEscolar {
                 + " - " + util.DateLatinAmerica.DateWithDays(fechaFin);
         return fechasTutoriaAcademica;
     }
+    
+    public String getMonthsPeridoEscolar() {
+        String fechasTutoriaAcademica = util.DateLatinAmerica.DateWithMonths(fechaInicio)
+                + " - " + util.DateLatinAmerica.DateWithMonths(fechaFin);
+        return fechasTutoriaAcademica;
+    }
 
     @Override
     public String toString() {

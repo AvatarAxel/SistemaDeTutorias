@@ -1,4 +1,3 @@
-
 package BussinessLogic;
 
 import Domain.ExperienciaEducativa;
@@ -16,18 +15,66 @@ import java.util.ArrayList;
  */
 public class ProfesorDAO implements IProfesorDAO {
 
+    public boolean validateExistProfesor(int numeroPersonal) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String query = ("SELECT COUNT(*) FROM profesores p WHERE p.numeroDePersonal= ?");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, numeroPersonal);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            int resultQuery = resultSet.getInt(1);
+            if (resultQuery > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }
+
+    public boolean setProfesorRegister(Profesor profesor) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String query = ("INSERT INTO `sistema_tutorias`.`profesores` \n" +
+            "(`numeroDePersonal`, `nombre`, `apellidoPaterno`, `apellidoMaterno`, `correoElectronicoInstitucional`,"
+            + " `esRegistrado`, `esUsuario`) "
+            + " VALUES (?, ?, ?, ?, ?, ?,?);");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, profesor.getNumeroDePersonal());
+            statement.setString(2, profesor.getNombre());
+            statement.setString(3, profesor.getApellidoPaterno());
+            statement.setString(4, profesor.getApellidoMaterno());
+            statement.setString(5, profesor.getCorreoElectronicoInstitucional());
+
+            statement.setInt(6, 1);
+            statement.setInt(7, 0);
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }
+
     @Override
     public Profesor getProfesor(int numeroDePersonal) throws SQLException {
         Profesor profesor = new Profesor();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
 
-        if(connection != null){
+        if (connection != null) {
             String query = ("SELECT * FROM profesores WHERE numeroDePersonal = ?");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, numeroDePersonal);
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 profesor.setNumeroDePersonal(resultSet.getInt("numeroDePersonal"));
                 profesor.setNombre(resultSet.getString("nombre"));
                 profesor.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
@@ -79,32 +126,31 @@ public class ProfesorDAO implements IProfesorDAO {
         return result;
     }
 
-
     @Override
     public ArrayList<ExperienciaEducativa> consultProfesoresNames() throws SQLException {
-    ArrayList<ExperienciaEducativa> profesoresNames = new ArrayList<ExperienciaEducativa>();
+        ArrayList<ExperienciaEducativa> profesoresNames = new ArrayList<ExperienciaEducativa>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query="select CONCAT(p.nombre,' ', p.apellidoPaterno,' ', p.apellidoMaterno) as profesorname, ee.nrc, ee.nombre from profesores p inner join experiencias_educativas ee on \n" +
-        "p.numeroDePersonal=ee.numeroDePersonal" ;
+        String query = "select CONCAT(p.nombre,' ', p.apellidoPaterno,' ', p.apellidoMaterno) as profesorname, ee.nrc, ee.nombre from profesores p inner join experiencias_educativas ee on \n"
+                + "p.numeroDePersonal=ee.numeroDePersonal";
         PreparedStatement statement = connection.prepareStatement(query);
-        ResultSet resultSet=statement.executeQuery();
-        if (resultSet.next()){
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
             String profesorName;
             String nrc;
             String nombre;
-            do{
-            profesorName=resultSet.getString("profesorname");
-            nrc=resultSet.getString("nrc");
-            nombre=resultSet.getString("nombre");
-            ExperienciaEducativa experienciaProfesor= new ExperienciaEducativa(nrc,profesorName,nombre);
-            profesoresNames.add(experienciaProfesor);
-            
-            }while(resultSet.next());
-         }
-        return profesoresNames;    
+            do {
+                profesorName = resultSet.getString("profesorname");
+                nrc = resultSet.getString("nrc");
+                nombre = resultSet.getString("nombre");
+                ExperienciaEducativa experienciaProfesor = new ExperienciaEducativa(nrc, profesorName, nombre);
+                profesoresNames.add(experienciaProfesor);
+
+            } while (resultSet.next());
+        }
+        return profesoresNames;
     }
-    
+
     public Profesor getProfesorNoUser(int numeroDePersonal) throws SQLException {
         Profesor profesor = new Profesor();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -126,7 +172,7 @@ public class ProfesorDAO implements IProfesorDAO {
         connection.close();
         return profesor;
     }
-    
+
     public boolean updateProfesor(Profesor profesor) throws SQLException {
         boolean result = false;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -146,8 +192,8 @@ public class ProfesorDAO implements IProfesorDAO {
         }
         connection.close();
         return result;
-    }    
-    
+    }
+
     public boolean deleteProfesor(int numeroDePersonal, int esUsuario) throws SQLException {
         boolean result = false;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -164,6 +210,6 @@ public class ProfesorDAO implements IProfesorDAO {
         }
         connection.close();
         return result;
-    }        
-    
+    }
+
 }
