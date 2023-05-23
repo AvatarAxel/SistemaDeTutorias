@@ -38,7 +38,7 @@ public class TutoriaAcademicaDAO implements ITutoriaAcademicaDAO {
         return listTutoriasAcademicas;
     }
 
-    public ArrayList<TutoriaAcademica> getTutoriasAcademicasByTutorAcademico(int numeroPersonal, int clave) throws SQLException {
+    public ArrayList<TutoriaAcademica> getTutoriasAcademicasByTutorAcademico(int numeroPersonal, String clave) throws SQLException {
         ArrayList<TutoriaAcademica> listTutoriasAcademicas = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
@@ -46,10 +46,10 @@ public class TutoriaAcademicaDAO implements ITutoriaAcademicaDAO {
         if (connection != null) {
             String query = ("SELECT * FROM tutorias_academicas ta\n"
                     + "INNER JOIN reportes_de_tutorias_academicas rta ON rta.idTutoriaAcademica = ta.idTutoriaAcademica\n"
-                    + "WHERE rta.numeroDePersonal = ? AND ta.clave = ?;");
+                    + "WHERE rta.numeroDePersonal = ? AND rta.clave= ?;");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, numeroPersonal);
-            statement.setInt(2, clave);
+            statement.setString(2, clave);            
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 TutoriaAcademica tutoriaAcademica = new TutoriaAcademica();
@@ -64,7 +64,7 @@ public class TutoriaAcademicaDAO implements ITutoriaAcademicaDAO {
         return listTutoriasAcademicas;
     }
 
-    public TutoriaAcademica getCurrentlyTutoriaAcademica(String claveProgramaEducativo) throws SQLException {
+    public TutoriaAcademica getCurrentlyTutoriaAcademica() throws SQLException {
         TutoriaAcademica tutoriaAcademica = new TutoriaAcademica();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
@@ -79,12 +79,10 @@ public class TutoriaAcademicaDAO implements ITutoriaAcademicaDAO {
                 periodoEscolar.setFechaInicio(resultPeriodoEscolar.getDate("fechaInicio"));
                 periodoEscolar.setFechaFin(resultPeriodoEscolar.getDate("fechaFin"));
                 String queryTutoriaAcademica = "SELECT idTutoriaAcademica, numeroDeSesion, fechaInicio, fechaFin,"
-                        + "clave, idPeriodoEscolar, DATE_ADD(fechaFin, INTERVAL 7 DAY) AS fechaLimite\n"
+                        + "idPeriodoEscolar, DATE_ADD(fechaFin, INTERVAL 5 DAY) AS fechaLimite\n"
                         + "FROM tutorias_academicas\n"
-                        + "WHERE NOW() BETWEEN fechaInicio AND DATE_ADD(fechaFin, INTERVAL 7 DAY)\n"
-                        + "AND clave = ?;";
+                        + "WHERE NOW() BETWEEN fechaInicio AND DATE_ADD(fechaFin, INTERVAL 7 DAY);";
                 PreparedStatement statementTutoriaAcademica = connection.prepareStatement(queryTutoriaAcademica);
-                statementTutoriaAcademica.setString(1, claveProgramaEducativo);
                 ResultSet resultTutoriaAcademica = statementTutoriaAcademica.executeQuery();
                 if (resultTutoriaAcademica.next()) {
                     tutoriaAcademica.setIdTutoriaAcademica(resultTutoriaAcademica.getInt("idTutoriaAcademica"));
