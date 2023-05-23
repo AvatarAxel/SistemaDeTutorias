@@ -47,5 +47,14 @@ public class DateLatinAmerica {
         String year = formattedDate.substring(6, 10);
         return day + " " + month + " " + year;
     }
+    
+     public static String DateWithMonths(Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = simpleDateFormat.format(date);
+        String day = formattedDate.substring(0, 2);
+        String month = MONTH.get(formattedDate.substring(3, 5));
+        String year = formattedDate.substring(6, 10);
+        return  month + " " + year;
+    }
 
 }

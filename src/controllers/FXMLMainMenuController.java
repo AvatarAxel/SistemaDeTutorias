@@ -399,7 +399,7 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuAsignaciones(ActionEvent event) {
-          WindowManager.NavigateToWindow(
+        WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLGestionarAsignacionesTutor.fxml",
                 "Gestionar Asignaciones"
@@ -408,12 +408,12 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuGestionarProblematicas(ActionEvent event) {
-        
+
     }
 
     @FXML
     private void menuConsultarProblematicas(ActionEvent event) {
-          WindowManager.NavigateToWindow(
+        WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLConsultarProblematicasAcademicas.fxml",
                 "Consultar Problemáticas"
@@ -458,10 +458,31 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void menuConsultarProbelmaticas(ActionEvent event) {
-          WindowManager.NavigateToWindow(
+        WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLConsultarProblematicasAcademicas.fxml",
                 "Consultar Problemáticas"
         );
     }
+
+    @FXML
+    private void menuRegistrarProfesorAction(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLRegistrarProfesor.fxml",
+                "Registrar Profesor"
+        );
+
+    }
+
+    @FXML
+    private void clicLogout(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLLogin.fxml",
+                "Iniciar Sesión"
+        );
+        User.killCurrentUser();
+    }
+
 }
