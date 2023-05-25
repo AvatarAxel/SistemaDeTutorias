@@ -21,27 +21,28 @@ import util.AlertManager;
  */
 public class ReporteDeTutoriaAcademicaDAO {
 
-    public ArrayList<ReporteDeTutoriaAcademica> getReportesDeTutorias(int idTutoriaAcademica) throws SQLException {
+    public ArrayList<ReporteDeTutoriaAcademica> getReportesDeTutorias(int idTutoriaAcademica, String clave) throws SQLException {
         ArrayList<ReporteDeTutoriaAcademica> listReporteDeTutoriaAcademica = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
 
         if (connection != null) {
             String query = ("SELECT \n"
-                    + "  r.idReporteTutoria,\n"
-                    + "  r.comentariosGenerales,\n"
-                    + "  u.nombre,\n"
-                    + "  u.apellidoPaterno,\n"
-                    + "  u.apellidoMaterno,\n"
-                    + "  (SELECT COUNT(*) FROM lista_de_asistencias WHERE esAsistente = 1 AND idReporteTutoria = r.idReporteTutoria) as totalAsistentes,\n"
-                    + "  (SELECT COUNT(*) FROM lista_de_asistencias WHERE idReporteTutoria = r.idReporteTutoria) as totalRegistrados\n"
-                    + "FROM \n"
-                    + "  reportes_de_tutorias_academicas r\n"
-                    + "  INNER JOIN usuarios u ON r.numeroDePersonal = u.numeroDePersonal\n"
+                    + "r.idReporteTutoria,\n"
+                    + "r.comentariosGenerales,\n"
+                    + "u.nombre,\n"
+                    + "u.apellidoPaterno,\n"
+                    + "u.apellidoMaterno,\n"
+                    + "(SELECT COUNT(*) FROM lista_de_asistencias WHERE esAsistente = 1 AND idReporteTutoria = r.idReporteTutoria) as totalAsistentes,\n"
+                    + "(SELECT COUNT(*) FROM lista_de_asistencias WHERE idReporteTutoria = r.idReporteTutoria) as totalRegistrados\n"
+                    + "FROM\n"
+                    + "reportes_de_tutorias_academicas r\n"
+                    + "INNER JOIN usuarios u ON r.numeroDePersonal = u.numeroDePersonal\n"
                     + "WHERE \n"
-                    + "  r.idTutoriaAcademica = ?;");
+                    + "r.idTutoriaAcademica = ? and r.clave = ?;");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, idTutoriaAcademica);
+            statement.setString(2, clave);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 ReporteDeTutoriaAcademica reporteDeTutoriaAcademica = new ReporteDeTutoriaAcademica();

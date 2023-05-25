@@ -33,7 +33,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javax.jws.soap.SOAPBinding;
 import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
@@ -97,13 +96,16 @@ public class FXMLConsultarReporteGeneralDeTutoriasAcademicasController implement
             protected Void call() throws Exception {
                 TutoriaAcademicaDAO tutoriaAcademicaDao = new TutoriaAcademicaDAO();
                 try {
-                    ArrayList<TutoriaAcademica> loadedTutoriasAcademicas = tutoriaAcademicaDao.getTutoriasAcademicas("14203");
+                    ArrayList<TutoriaAcademica> loadedTutoriasAcademicas = tutoriaAcademicaDao.getTutoriasAcademicas();
                     listTutoriasAcademicas.clear();
-                    listTutoriasAcademicas.addAll(loadedTutoriasAcademicas);
-                    loadInformationPeriodoEscolar();
-                    tableTutoriasAcademicas.setItems(listTutoriasAcademicas);
-                    Label noticeContent = new Label("Sin contenido...");
-                    tableTutoriasAcademicas.setPlaceholder(noticeContent);
+                    if (loadedTutoriasAcademicas.isEmpty() || loadedTutoriasAcademicas == null || loadedTutoriasAcademicas.size() <= 0) {
+                        Label noticeContent = new Label("Sin contenido...");
+                        tableTutoriasAcademicas.setPlaceholder(noticeContent);
+                    } else {
+                        listTutoriasAcademicas.addAll(loadedTutoriasAcademicas);
+                        loadInformationPeriodoEscolar();
+                        tableTutoriasAcademicas.setItems(listTutoriasAcademicas);
+                    }
                 } catch (SQLException sqle) {
                     AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
                 }

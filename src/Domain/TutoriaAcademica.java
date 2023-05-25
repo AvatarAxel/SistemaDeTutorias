@@ -17,16 +17,18 @@ public class TutoriaAcademica {
     private java.sql.Date fechaCierreEntregaReporte;
     private int idTutoriaAcademica;
     private PeriodoEscolar periodoEscolar;
+    private ReporteDeTutoriaAcademica reporteDeTutoriaAcademica;
 
     public TutoriaAcademica() {
     }
 
-    public TutoriaAcademica(int numeroDeSesion, Date fechaInicio, Date fechaFin, int idTutoriaAcademica, PeriodoEscolar periodoEscolar) {
+    public TutoriaAcademica(int numeroDeSesion, Date fechaInicio, Date fechaFin, int idTutoriaAcademica, PeriodoEscolar periodoEscolar, ReporteDeTutoriaAcademica reporteDeTutoriaAcademica) {
         this.numeroDeSesion = numeroDeSesion;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.idTutoriaAcademica = idTutoriaAcademica;
         this.periodoEscolar = periodoEscolar;
+        this.reporteDeTutoriaAcademica = reporteDeTutoriaAcademica;
     }
 
     public int getNumeroDeSesion() {
@@ -93,5 +95,13 @@ public class TutoriaAcademica {
         String fechasTutoriaAcademica = util.DateLatinAmerica.DateWithDays(fechaCierreEntregaReporte);
         return fechasTutoriaAcademica;
     }     
+
+    public ReporteDeTutoriaAcademica getReporteDeTutoriaAcademica() {
+        return reporteDeTutoriaAcademica;
+    }
+
+    public void setReporteDeTutoriaAcademica(ReporteDeTutoriaAcademica reporteDeTutoriaAcademica) {
+        this.reporteDeTutoriaAcademica = reporteDeTutoriaAcademica;
+    }
     
 }
