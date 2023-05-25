@@ -6,6 +6,8 @@ package BussinessLogic;
 
 import Domain.ExperienciaEducativa;
 import dataaccess.DataBaseConnection;
+import singleton.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -76,10 +78,18 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
         Connection connection = dataBaseConnection.getConnection();
 
         if(connection != null){
-            String query = ("SELECT experiencias_educativas.nrc, experiencias_educativas.nombre, experiencias_educativas.seccion, \n" +
-                    "experiencias_educativas.modalidad, experiencias_educativas.Clave, programas_educativos.nombre AS programaEducativo\n" +
-                    "FROM experiencias_educativas INNER JOIN programas_educativos ON experiencias_educativas.Clave = programas_educativos.clave;");
+            String query = ("SELECT experiencias_educativas.nrc, experiencias_educativas.nombre, "
+            + "experiencias_educativas.seccion, "
+            + "experiencias_educativas.modalidad, experiencias_educativas.Clave, "
+            + "programas_educativos.nombre AS programaEducativo "
+            + "FROM experiencias_educativas "
+            + "INNER JOIN programas_educativos "
+            + "ON experiencias_educativas.Clave = programas_educativos.clave "
+            + "INNER JOIN experiencias_periodos "
+            + "ON experiencias_periodos.nrc = experiencias_educativas.nrc "
+            + "WHERE experiencias_periodos.idPeriodoEscolar = ?;");
             PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, User.getCurrentUser().getPeriodoActual().getIdPeriodoEscolar());
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()){
                 ExperienciaEducativa experienciaEducativaTemp = new ExperienciaEducativa();
@@ -149,6 +159,28 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
                 result = (resultSet.getBoolean("existeNrc"));
             }
             
+            connection.close();
+        }
+        
+        return result;
+    }
+
+    @Override
+    public int updateExerienciasPeriodos(int periodo, String nrc) throws SQLException {
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        
+        int result = 0;
+
+        if(connection != null){
+            String query = ("INSERT INTO experiencias_periodos (nrc, idPeriodoEscolar) "
+            + "VALUES (?,?);");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, nrc);
+            statement.setInt(2, periodo);
+
+            int affectedRows = statement.executeUpdate();
+            result = (affectedRows == 1) ? 1 : 0;
             connection.close();
         }
         
