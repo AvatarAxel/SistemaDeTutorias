@@ -15,15 +15,14 @@ import java.util.ArrayList;
  */
 public class TutoriaAcademicaDAO implements ITutoriaAcademicaDAO {
 
-    public ArrayList<TutoriaAcademica> getTutoriasAcademicas(String clave) throws SQLException {
+    public ArrayList<TutoriaAcademica> getTutoriasAcademicas() throws SQLException {
         ArrayList<TutoriaAcademica> listTutoriasAcademicas = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
 
         if (connection != null) {
-            String query = ("SELECT * FROM tutorias_academicas WHERE clave = ?;");
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, clave);
+            String query = ("SELECT * FROM tutorias_academicas");
+            PreparedStatement statement = connection.prepareStatement(query);            
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 TutoriaAcademica tutoriaAcademica = new TutoriaAcademica();

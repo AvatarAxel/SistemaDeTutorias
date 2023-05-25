@@ -106,7 +106,7 @@ public class FXMLReporteGeneralController implements Initializable {
     private void loadInformationComentariosGenerales() {
         ReporteDeTutoriaAcademicaDAO ReporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
         try {
-            ArrayList<ReporteDeTutoriaAcademica> loadedReporteDeTutoriaAcademica = ReporteDeTutoriaAcademicaDao.getReportesDeTutorias(tutoriaAcademica.getIdTutoriaAcademica());
+            ArrayList<ReporteDeTutoriaAcademica> loadedReporteDeTutoriaAcademica = ReporteDeTutoriaAcademicaDao.getReportesDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(), User.getCurrentUser().getRol().getProgramaEducativo().getClave());
             listReportesDeTutoria.clear();
             listReportesDeTutoria.addAll(loadedReporteDeTutoriaAcademica);
             tableReportes.setItems(listReportesDeTutoria);
