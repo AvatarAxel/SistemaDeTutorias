@@ -5,11 +5,15 @@
 package BussinessLogic;
 
 import Domain.PeriodoEscolar;
+import Domain.SolucionAProblematica;
+import Domain.TutoriaAcademica;
+import DomainGraphicInterface.ProblematicaReporteTutoria;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -84,4 +88,27 @@ public class PeriodoEscolarDAO implements IPeriodoEscolarDAO {
         return periodoEscolar;
     }
 
+    @Override
+    public ArrayList<PeriodoEscolar> getAllPeriodos() throws SQLException {
+        ArrayList<PeriodoEscolar> listPeriodos = new ArrayList<>();
+
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String consulta = "SELECT * FROM sistema_tutorias.periodos_escolares;";
+            PreparedStatement statement = connection.prepareStatement(consulta);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                PeriodoEscolar periodoTemp = new PeriodoEscolar();
+                periodoTemp.setIdPeriodoEscolar(resultSet.getInt("idPeriodoEscolar"));
+                periodoTemp.setFechaInicio(resultSet.getDate("fechaInicio"));
+                periodoTemp.setFechaFin(resultSet.getDate("fechaFin"));
+                listPeriodos.add(periodoTemp);
+            }
+            connection.close();
+        }
+
+        return listPeriodos;
+    }
 }

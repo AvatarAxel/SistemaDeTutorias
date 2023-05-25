@@ -61,7 +61,7 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
             PeriodoEscolarDAO PeriodoEscolarDAO = new PeriodoEscolarDAO();
             periodoEscolar = PeriodoEscolarDAO.getCurrentPeriodo();
 
-            lbl_periodo.setText(periodoEscolar.getFechasPeridoEscolar());
+            lbl_periodo.setText(periodoEscolar.getMonthsPeridoEscolar());
             loadComboBoxSesiones();
 
         } catch (SQLException ex) {
@@ -78,20 +78,20 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
             java.sql.Date endDate = java.sql.Date.valueOf(datepicker_enddate.getValue());
             int numeroSesion = (int) cmb_numSesion.getValue();
             TutoriaAcademica tutoria = new TutoriaAcademica();
-            PeriodoEscolar periodo = new PeriodoEscolar();
+            //PeriodoEscolar periodo = new PeriodoEscolar();
             tutoria.setFechaInicio(startDate);
             tutoria.setFechaFin(endDate);
             tutoria.setNumeroDeSesion(numeroSesion);
-            periodo.setIdPeriodoEscolar(periodoEscolar.getIdPeriodoEscolar());
-            periodo.setClave(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
-            tutoria.setPeriodoEscolar(periodo);
+            // periodo.setIdPeriodoEscolar(periodoEscolar.getIdPeriodoEscolar());
+            // periodo.setClave(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
+            tutoria.setPeriodoEscolar(periodoEscolar);
             TutoriaAcademicaDAO tutoriadao = new TutoriaAcademicaDAO();
             try {
                 int result = tutoriadao.addTutoriaAcademica(tutoria);
                 if (result == 1) {
                     alerts.showAlertSuccesfulRegister();
                     disableItems();
-                    
+
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -106,11 +106,14 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
 
         TutoriaAcademicaDAO tutoriaDAO = new TutoriaAcademicaDAO();
         try {
-            tutoria = tutoriaDAO.getCurrentTutoriaAcademica(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
+
+            tutoria = tutoriaDAO.getLastTutoriaAcademica();
             JOptionPane.showMessageDialog(null, tutoria.getNumeroDeSesion());
 
             if (tutoria != null) {
+
                 if (tutoria.getNumeroDeSesion() >= 3) {
+                    this.disableItems();
 
                     alerts.showAlertRegisterCompletedSesiones();
 
@@ -120,12 +123,17 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
                 } else if (tutoria.getNumeroDeSesion() == 1) {
                     cmb_numSesion.getItems().addAll(2);
                 }
+                else if (tutoria.getNumeroDeSesion() == 0) {
+                    cmb_numSesion.getItems().addAll(1);
+                }
+                
 
-            } else if (tutoria==null) {
+            } else {
+
                 cmb_numSesion.getItems().addAll(1);
 
             }
-            cmb_numSesion.setItems(firstRegister);
+            //cmb_numSesion.setItems(firstRegister);
         } catch (SQLException ex) {
             alerts.showAlertErrorConexionDB();
             ex.printStackTrace();
@@ -150,14 +158,14 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
     private int validateDates() {
         int result = 0;
 
-        if (cmb_numSesion.getValue() != null && datepicker_startDate.getValue() != null && datepicker_enddate.getValue()!= null) {
+        if (cmb_numSesion.getValue() != null && datepicker_startDate.getValue() != null && datepicker_enddate.getValue() != null) {
             java.sql.Date startDate = java.sql.Date.valueOf(datepicker_startDate.getValue());
             java.sql.Date endDate = java.sql.Date.valueOf(datepicker_enddate.getValue());
             if (startDate.before(endDate) && !startDate.equals(endDate) && endDate.after(startDate)) {
 
                 if (startDate.after(periodoEscolar.getFechaInicio()) && endDate.before(periodoEscolar.getFechaFin())) {
 
-                    if (tutoria != null) {
+                    if (tutoria.getNumeroDeSesion() > 0) {
                         if (startDate.after(tutoria.getFechaFin())) {
                             result = 1;
                         } else {
@@ -165,12 +173,12 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
                             JOptionPane.showMessageDialog(null, "Fechas ya registradas dentro de otra Sesión");
                         }
 
-                    } else if (tutoria == null) {
+                    } else  {
                         result = 1;
                     }
                 } else {
-                    // mensahe de fechas fuera del periodo
-                    JOptionPane.showMessageDialog(null, "Fechas ya registradas fuera del Periodo Actual");
+                    // mensaje de fechas fuera del periodo
+                    JOptionPane.showMessageDialog(null, "Fechas  registradas fuera del Periodo Actual");
 
                 }
             } else {
@@ -192,21 +200,19 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
 
         datepicker_enddate.setDisable(false);
     }
-    
-     private void disableItems() {
-        datepicker_startDate.setDisable(true);
 
+    private void disableItems() {
+        datepicker_startDate.setDisable(true);
         datepicker_enddate.setDisable(true);
         cmb_numSesion.setDisable(true);
+        btn_save.setDisable(true);
     }
 
     @FXML
     private void closeWindow(ActionEvent event) {
-          
-        
-        WindowManager.NavigateToWindow(lbl_periodo.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú"); 
 
-    
+        WindowManager.NavigateToWindow(lbl_periodo.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
+
     }
 
 }

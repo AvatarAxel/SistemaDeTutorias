@@ -144,42 +144,10 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
         showTable();
     }
 
-    @FXML
-    private void searchByExperiencia(ActionEvent event) {
+ 
 
-        String keyword = txt_Experiencia.getText();
-        if (keyword.equals("")) {
-            tblProblematicas.setItems(problematicaAcademicaObservableList);
-        } else {
-            ObservableList<ProblematicaAcademica> filteredData = FXCollections.observableArrayList();
-            for (ProblematicaAcademica problematica : problematicaAcademicaObservableList) {
-                if (problematica.getExperienciaE().contains(keyword)) {
-                    filteredData.add(problematica);
-                }
-            }
 
-            tblProblematicas.setItems(filteredData);
-        }
-    }
-
-    @FXML
-    private void searchByProfesor(ActionEvent event) {
-        String keyword = txt_Profesor.getText();
-        if (keyword.equals("")) {
-            tblProblematicas.setItems(problematicaAcademicaObservableList);
-        } else {
-            ObservableList<ProblematicaAcademica> filteredData = FXCollections.observableArrayList();
-            for (ProblematicaAcademica problematica : problematicaAcademicaObservableList) {
-                if (problematica.getNombreProfesor().contains(keyword)) {
-                    filteredData.add(problematica);
-                }
-            }
-
-            tblProblematicas.setItems(filteredData);
-        }
-    }
-
-    @FXML
+   /* @FXML
     private void searchByFecha(ActionEvent event) {
         LocalDate keyword = txt_date.getValue();
         if (keyword.equals(null)) {
@@ -205,7 +173,7 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
 
             tblProblematicas.setItems(filteredItems);
         }
-    }
+    }*/
 
     private final ListChangeListener<ProblematicaAcademica> selectedProblematica = new ListChangeListener<ProblematicaAcademica>() {
         @Override
@@ -239,6 +207,10 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
         ProblematicaAcademicaDAO problematicasDAO = new ProblematicaAcademicaDAO();
         ArrayList<ProblematicaAcademica> problematicas = new ArrayList<ProblematicaAcademica>();
         try {
+            // condicón si es tutor o no 
+            // coordinador 2
+            // tutor 3
+            // if(User.getCurrentUser().getRol()==2){}elseif (User.getCurrentUser().getRol()==3){}
             problematicas = problematicasDAO.getProblematicasByPrograma(clavePrograma);
             if (!problematicas.isEmpty()) {
                 for (ProblematicaAcademica problematica : problematicas) {
@@ -352,7 +324,7 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
         String profesor = currentProblematica.getNombreProfesor();
         String descripcion = currentProblematica.getDescripcion();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String fecha = currentProblematica.getFechaFin().format(dateTimeFormatter);
+        String fechaTutoria = currentProblematica.getFechaTutoria();
 
         lbl_idProblematicaData.setText(idProblematica);
         lbl_afectadosData.setText(afectados);
@@ -360,7 +332,7 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
         lbl_eeData.setText(experiencia);
         lbl_profesorData.setText(profesor);
         lbl_descripData.setText(descripcion);
-        lbl_fechaData.setText(fecha);
+        lbl_fechaData.setText(fechaTutoria);
 
     }
 

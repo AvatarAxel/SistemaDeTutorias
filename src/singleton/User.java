@@ -4,7 +4,6 @@
  */
 package singleton;
 
-import Domain.ProgramaEducativo;
 import Domain.Rol;
 import java.util.ArrayList;
 
@@ -33,6 +32,10 @@ public class User {
             currentUser = new User();
         }
         return currentUser;
+    }
+    
+    public static void killCurrentUser(){
+        currentUser = null;
     }
 
     public int getNumeroDePersonal() {
@@ -91,9 +94,13 @@ public class User {
         this.roles = roles;
     }
 
+    public String getNombreCompleto(){
+        return nombre + " " + apellidoPaterno + " " + apellidoMaterno;
+    }
+    
     @Override
     public String toString() {
-        return "User{" + "numeroDePersonal=" + numeroDePersonal + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", rol=" + rol + ", roles=" + roles + '}';
+        return nombre + " " + apellidoPaterno + " " + apellidoMaterno;    
     }
     
     
