@@ -27,6 +27,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
 
@@ -107,6 +108,7 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
             for (int i = 0; i < listedExperienciasEducativas.size(); i++) {
                 if(!experienciaEducativaDAO.existNrc(listedExperienciasEducativas.get(i).getNrc())){
                     experienciaEducativaDAO.uploadAcademicOffer(listedExperienciasEducativas.get(i));
+                    experienciaEducativaDAO.updateExerienciasPeriodos(User.getCurrentUser().getPeriodoActual().getIdPeriodoEscolar(),listedExperienciasEducativas.get(i).getNrc());
                     tbExperiencias.getItems().remove(listedExperienciasEducativas.get(i));
                     tbExperiencias.refresh();
                 }

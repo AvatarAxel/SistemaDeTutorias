@@ -4,6 +4,7 @@
  */
 package singleton;
 
+import Domain.PeriodoEscolar;
 import Domain.Rol;
 import java.util.ArrayList;
 
@@ -17,9 +18,9 @@ public class User {
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String correo;
-    //private ProgramaEducativo programaEducativo;
     private Rol rol;
     private ArrayList<Rol> roles;
+    private PeriodoEscolar periodoActual;
     
     private static User currentUser;
 
@@ -97,7 +98,15 @@ public class User {
     public String getNombreCompleto(){
         return nombre + " " + apellidoPaterno + " " + apellidoMaterno;
     }
+
+    public void setPeriodoActual(PeriodoEscolar periodoActual){
+        this.periodoActual = periodoActual;
+    }
     
+    public PeriodoEscolar getPeriodoActual(){
+        return periodoActual;
+    }
+
     @Override
     public String toString() {
         return nombre + " " + apellidoPaterno + " " + apellidoMaterno;    
