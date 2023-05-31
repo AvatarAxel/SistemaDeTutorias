@@ -108,7 +108,6 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
             for (int i = 0; i < listedExperienciasEducativas.size(); i++) {
                 if(!experienciaEducativaDAO.existNrc(listedExperienciasEducativas.get(i).getNrc())){
                     experienciaEducativaDAO.uploadAcademicOffer(listedExperienciasEducativas.get(i));
-                    experienciaEducativaDAO.updateExerienciasPeriodos(User.getCurrentUser().getPeriodoActual().getIdPeriodoEscolar(),listedExperienciasEducativas.get(i).getNrc());
                     tbExperiencias.getItems().remove(listedExperienciasEducativas.get(i));
                     tbExperiencias.refresh();
                 }
@@ -122,6 +121,7 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
                         "Menú");
             }
         } catch (SQLException ex) {
+            ex.printStackTrace();
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
         }
         
