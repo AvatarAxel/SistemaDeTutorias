@@ -5,6 +5,7 @@
 package BussinessLogic;
 
 import Domain.ExperienciaEducativa;
+import Domain.Profesor;
 import dataaccess.DataBaseConnection;
 import singleton.User;
 
@@ -13,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javafx.scene.control.CheckBox;
 
 /**
  *
@@ -164,5 +166,40 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
         }
 
         return result;
+    }
+
+    public ArrayList<ExperienciaEducativa> getAllCurrentExperienciaEducativaByPeriodo(String clave, int idPeriodoEscolar) throws SQLException {
+        ArrayList<ExperienciaEducativa> listExperienciasEducativas = new ArrayList<>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if (connection != null) {
+            String query = ("SELECT epp.*, ee.nombre AS nombre_experiencia, p.nombre, p.apellidoPaterno, p.apellidoMaterno\n"
+                    + "FROM experiencias_periodos_profesores AS epp\n"
+                    + "LEFT JOIN experiencias_educativas AS ee ON epp.nrc = ee.nrc\n"
+                    + "LEFT JOIN profesores AS p ON epp.numeroDePersonal = p.numeroDePersonal;");
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                ExperienciaEducativa experienciaEducativa = new ExperienciaEducativa();
+                Profesor profesor = new Profesor();
+                experienciaEducativa.setNombre(resultSet.getString("nombre_experiencia"));
+                if (resultSet.getString("nombre") != null) {
+                    profesor.setNombre(resultSet.getString("nombre"));
+                    profesor.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
+                    profesor.setApellidoMaterno(resultSet.getString("apellidoMaterno"));
+                    profesor.setNumeroDePersonal(resultSet.getInt("numeroDePersonal"));
+                } else {
+                    profesor.setNombre("Sin Asignar");
+                    profesor.setApellidoPaterno("");
+                    profesor.setApellidoMaterno("");
+                }
+                experienciaEducativa.setProfesor(profesor);
+                experienciaEducativa.setNrc(resultSet.getString("nrc"));
+                experienciaEducativa.setEsSeleccionado(new CheckBox());                
+                listExperienciasEducativas.add(experienciaEducativa);
+            }
+        }
+        connection.close();
+        return listExperienciasEducativas;
     }
 }

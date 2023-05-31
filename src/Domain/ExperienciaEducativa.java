@@ -4,6 +4,8 @@
  */
 package Domain;
 
+import javafx.scene.control.CheckBox;
+
 /**
  *
  * @author Panther
@@ -16,22 +18,29 @@ public class ExperienciaEducativa {
     private String clave;
     private String profesorNombre;
     private String programaEducativo;
+    private Profesor profesor;
+    private CheckBox esSeleccionado;
     
     public ExperienciaEducativa() {
     }
 
-    public ExperienciaEducativa(String nrc, String nombre, String seccion, String modalidad, String clave) {
+    public ExperienciaEducativa(String nrc, String nombre, String seccion, String modalidad, String clave, Profesor profesor, CheckBox esSeleccionado) {
         this.nrc = nrc;
         this.nombre = nombre;
         this.seccion = seccion;
         this.modalidad = modalidad;
         this.clave = clave;
+        this.profesor = profesor;
+        this.esSeleccionado = esSeleccionado;
     }
 
     public ExperienciaEducativa(String nrc, String profesorNombre,String nombre) {
         this.nrc = nrc;
         this.profesorNombre = profesorNombre;
-        this.nombre=nombre;
+        this.nombre = nombre;
+    }
+
+    public ExperienciaEducativa(String atribute, String atribute0, String atribute1, String atribute2, String atribute3) {
     }
 
     public String getProfesorNombre() {
@@ -90,7 +99,27 @@ public class ExperienciaEducativa {
     public void setProgramaEducativo(String programaEducativo) {
         this.programaEducativo = programaEducativo;
     }
-    
+
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
+
+    public String getNombreCompletoProfesor() {
+        return profesor.getNombre() + " " + profesor.getApellidoPaterno() + " " + profesor.getApellidoMaterno();
+    }    
+
+    public CheckBox getEsSeleccionado() {
+        return esSeleccionado;
+    }
+
+    public void setEsSeleccionado(CheckBox esSeleccionado) {
+        this.esSeleccionado = esSeleccionado;
+    }
+
     @Override
     public int hashCode() {
         int hash = 3;
