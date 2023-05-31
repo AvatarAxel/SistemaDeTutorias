@@ -69,7 +69,7 @@ public class PeriodoEscolar {
 
     @Override
     public String toString() {
-        return this.getFechasPeridoEscolar();
+        return this.getMonthsPeridoEscolar();
     }
     
 }

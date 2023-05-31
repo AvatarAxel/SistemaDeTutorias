@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="440.0" prefWidth="552.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLProgramasEducativosController">
+   <children>
+      <TableView fx:id="tbProgramasEducativos" layoutX="93.0" layoutY="27.0" prefHeight="146.0" prefWidth="365.0">
+        <columns>
+          <TableColumn fx:id="ColumnClave" prefWidth="72.0" text="Clave" />
+          <TableColumn fx:id="ColumnNombre" editable="false" prefWidth="292.79998779296875" text="Nombre" />
+        </columns>
+      </TableView>
+      <Label fx:id="lbInstruccion" alignment="CENTER" layoutX="89.0" layoutY="188.0" prefHeight="28.0" prefWidth="366.0" text="Registro de Nuevo Programa Educativo" textAlignment="CENTER">
+         <font>
+            <Font name="System Italic" size="19.0" />
+         </font>
+      </Label>
+      <Label layoutX="93.0" layoutY="241.0" prefHeight="18.0" prefWidth="43.0" text="Clave:" />
+      <Label layoutX="95.0" layoutY="314.0" prefHeight="18.0" prefWidth="60.0" text="Nombre:" />
+      <TextField fx:id="tfClave" disable="true" layoutX="161.0" layoutY="237.0" onKeyReleased="#validateInputsClave" onKeyTyped="#validateLengthClave" prefHeight="26.0" prefWidth="97.0" />
+      <TextField fx:id="tfNombre" disable="true" layoutX="163.0" layoutY="310.0" onKeyReleased="#validateInputsNombre" onKeyTyped="#validateLengthNombre" prefHeight="26.0" prefWidth="233.0" />
+      <Button fx:id="btCancelar" layoutX="427.0" layoutY="387.0" mnemonicParsing="false" onAction="#clicButtonCancelar" prefHeight="34.0" prefWidth="110.0" text="Cancelar" />
+      <Button fx:id="btRegistrar" layoutX="14.0" layoutY="387.0" mnemonicParsing="false" onAction="#clicButtonRegistrar" prefHeight="34.0" prefWidth="110.0" text="Registrar" />
+      <Button fx:id="btModificar" disable="true" layoutX="136.0" layoutY="387.0" mnemonicParsing="false" onAction="#clicButtonModificar" prefHeight="34.0" prefWidth="110.0" text="Modificar" />
+      <Button fx:id="btEliminar" disable="true" layoutX="257.0" layoutY="387.0" mnemonicParsing="false" onAction="#clicButtonEliminar" prefHeight="34.0" prefWidth="110.0" text="Eliminar" />
+      <Button fx:id="btGuardar" layoutX="14.0" layoutY="387.0" mnemonicParsing="false" onAction="#clicButtonGuardar" prefHeight="34.0" prefWidth="110.0" text="Guardar" visible="false" />
+      <Button fx:id="btRegresar" layoutX="136.0" layoutY="387.0" mnemonicParsing="false" onAction="#clicButtonRegresar" prefHeight="34.0" prefWidth="50.0" text="⮌" visible="false" />
+      <Label fx:id="labelInvalidateClave" layoutX="161.0" layoutY="265.0" prefHeight="19.0" prefWidth="234.0" textFill="#d30c20" />
+      <Label fx:id="labelInvalidateNombre" layoutX="162.0" layoutY="340.0" prefHeight="19.0" prefWidth="234.0" textFill="#d30c20" />
+   </children>
+</AnchorPane>

@@ -42,4 +42,89 @@ public class ProgramaEducativoDAO implements IProgramaEducativoDAO {
         return listProgramasEducativos;
     }
     
+    public boolean setProgramaEducativoRegister(ProgramaEducativo programaEducativo) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if(connection!=null){
+            String query = ("INSERT INTO programas_educativos (`clave`, `nombre`) VALUES (?, ?);");            
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, programaEducativo.getClave());
+            statement.setString(2, programaEducativo.getNombre());
+            int resultInsert = statement.executeUpdate();            
+            if(resultInsert>0){
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }    
+    
+    public boolean updateProgramaEducativo(ProgramaEducativo programaEducativo)throws SQLException{
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if(connection!=null){
+            String querySet = "UPDATE programas_educativos\n"
+                        + "SET nombre = ?"+ "WHERE clave = ?";             
+            PreparedStatement statementSet = connection.prepareStatement(querySet);
+            statementSet.setString(1, programaEducativo.getNombre());
+            statementSet.setString(2, programaEducativo.getClave());            
+            int resultInsert = statementSet.executeUpdate();
+            if(resultInsert>0){
+                result = true;
+            }            
+        }        
+        connection.close();
+        return result;    
+    }    
+    
+    
+    public int validateProgramaEducativo(ProgramaEducativo programaEducativo)throws SQLException{
+        int ocurrencias = -1;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if(connection!=null){
+            String querySet = "SELECT COUNT(*) AS num_ocurrencias\n" +
+            "FROM programas_educativos\n" +
+            "WHERE clave = ?\n" +
+            "   AND (\n" +
+            "      EXISTS (SELECT * FROM estudiantes WHERE clave = ?)\n" +
+            "      OR EXISTS (SELECT * FROM experiencias_periodos_profesores WHERE clave = ?)\n" +
+            "      OR EXISTS (SELECT * FROM reportes_de_tutorias_academicas WHERE clave = ?)\n" +
+            "      OR EXISTS (SELECT * FROM roles_usuarios_programa_educativo WHERE clave = ?)\n" +
+            "   );";             
+            PreparedStatement statementSet = connection.prepareStatement(querySet);
+            statementSet.setString(1, programaEducativo.getClave());            
+            statementSet.setString(2, programaEducativo.getClave());    
+            statementSet.setString(3, programaEducativo.getClave());            
+            statementSet.setString(4, programaEducativo.getClave());      
+            statementSet.setString(5, programaEducativo.getClave());      
+            ResultSet resultSet = statementSet.executeQuery();
+            resultSet.next();
+            int resultInsert = resultSet.getInt("num_ocurrencias");
+            if(resultInsert>=0){
+                ocurrencias = resultInsert;
+            }            
+        }        
+        connection.close();
+        return ocurrencias;    
+    }     
+    
+    public boolean deleteProgramaEducativo(ProgramaEducativo programaEducativo) throws SQLException{
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();        
+        if(connection!=null){
+            String query = ("DELETE FROM `sistema_tutorias`.`programas_educativos` WHERE (`clave` = ?);");            
+          PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, programaEducativo.getClave());
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }        
+        connection.close();
+        return result;
+    }    
 }
