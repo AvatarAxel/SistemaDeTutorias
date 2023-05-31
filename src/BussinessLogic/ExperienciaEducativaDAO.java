@@ -5,6 +5,7 @@
 package BussinessLogic;
 
 import Domain.ExperienciaEducativa;
+import Domain.Profesor;
 import dataaccess.DataBaseConnection;
 import singleton.User;
 
@@ -186,5 +187,42 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
         
         return result;
     }
+    
+    public ArrayList<ExperienciaEducativa> getExperienciasEducativasByPeriodoEscoalar(int idPeriodoEscolar) throws SQLException {
+        ArrayList<ExperienciaEducativa> listExperienciaEducativas = new ArrayList<>();
+        
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if(connection != null){
+            String query = ("SELECT experiencias_educativas.nrc, experiencias_educativas.nombre,\n" +
+            "experiencias_periodos_profesores.seccion, experiencias_periodos_profesores. modalidad,experiencias_periodos_profesores.numeroDePersonal,\n" +
+            "profesores.nombre AS nombreProfesor, profesores.apellidoPaterno, profesores.apellidoMaterno\n" +
+            "FROM experiencias_periodos_profesores\n" +
+            "INNER JOIN experiencias_educativas ON experiencias_educativas.nrc = experiencias_periodos_profesores.nrc\n" +
+            "INNER JOIN profesores ON  profesores.numeroDePersonal = experiencias_periodos_profesores.numeroDePersonal\n" +
+            "WHERE experiencias_periodos_profesores.idPeriodoEscolar = ?;");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, idPeriodoEscolar);
+
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()){
+                Profesor profesortemp  =new Profesor();
+                ExperienciaEducativa experienciaEducativaTemp = new ExperienciaEducativa();
+                experienciaEducativaTemp.setNrc(resultSet.getString("nrc"));
+                experienciaEducativaTemp.setNombre(resultSet.getString("nombre"));
+                experienciaEducativaTemp.setSeccion(resultSet.getString("seccion"));
+                profesortemp.setNombre(resultSet.getString("nombreProfesor"));
+                profesortemp.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
+                profesortemp.setApellidoMaterno(resultSet.getString("apellidoMaterno"));                
+                experienciaEducativaTemp.setModalidad(resultSet.getString("modalidad"));
+                experienciaEducativaTemp.setProfesorNombre(profesortemp.getNombreCompleto());
+                listExperienciaEducativas.add(experienciaEducativaTemp);
+            }
+            connection.close();
+        }
+        
+        return listExperienciaEducativas;
+    }    
     
 }

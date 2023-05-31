@@ -26,7 +26,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import singleton.User;
@@ -137,7 +136,6 @@ public class FXMLImportarEstudiantesController implements Initializable {
                 }
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
         }
     }

@@ -110,7 +110,6 @@ import util.ExceptionCodes;
             loadEstudiantes(editableType);
         } catch (SQLException sqle) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
-            sqle.printStackTrace();
         }           
     }
     
@@ -148,10 +147,6 @@ import util.ExceptionCodes;
             lbProgramaEducativo.setText(User.getCurrentUser().getRol().getProgramaEducativo().getNombre());
             tfPeriodoEscolar.setText(tutoriaAcademica.getFechasPeriodoEscolar());
             ReporteDeTutoriaAcademica loadedReporteDeTutoriaAcademica = ReporteDeTutoriaAcademicaDao.getReporteDeTutoriaByTutor(tutoriaAcademica.getIdTutoriaAcademica(),User.getCurrentUser().getNumeroDePersonal(),User.getCurrentUser().getRol().getProgramaEducativo().getClave());
-                AlertManager.showAlert("PRUEBA", "TUTORIA ACADEMICA ID: " +tutoriaAcademica.getIdTutoriaAcademica(), Alert.AlertType.ERROR);        
-                AlertManager.showAlert("PRUEBA", "CLAVE: " +User.getCurrentUser().getRol().getProgramaEducativo().getClave(), Alert.AlertType.ERROR);        
-                AlertManager.showAlert("PRUEBA", "NUMPERSONAL: " +User.getCurrentUser().getNumeroDePersonal(), Alert.AlertType.ERROR);        
-            
             reporteTutoriaAcademica = loadedReporteDeTutoriaAcademica;
             if(reporteTutoriaAcademica.getComentariosGenerales().equals("")){
                 tfComentarioGeneral.setText("");
@@ -161,18 +156,13 @@ import util.ExceptionCodes;
             }
         } catch (SQLException sqle) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
-                        sqle.printStackTrace();
-
         }    
     }
     private void loadEstudiantes(boolean editableType) {
-                AlertManager.showAlert("Error", "TUTORIA ACADEMICA ID: " +tutoriaAcademica.getIdTutoriaAcademica(), Alert.AlertType.ERROR);        
-        
         EstudianteDAO estudianteDAO = new EstudianteDAO();
         ArrayList<Estudiante> listEstudiantesRecived =  new ArrayList<Estudiante>();
         try{
             if(editableType){
-                //AlertManager.showAlert("Error", "REPORTE ID: " +reporteTutoriaAcademica.getIdReporteTutoria(), Alert.AlertType.ERROR);        
                 listEstudiantesRecived = estudianteDAO.obtenerEstudiantesPorReporteTutoriaAcademica(reporteTutoriaAcademica.getIdReporteTutoria());             
             }else{
                 listEstudiantesRecived = estudianteDAO.getEstudiantesPorTutorAcademicoAndProgramaEducativo(User.getCurrentUser().getNumeroDePersonal(), Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()));          
@@ -191,7 +181,6 @@ import util.ExceptionCodes;
             }
             
         }catch(SQLException sqle){
-            sqle.printStackTrace();
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);        
         }
     }     
@@ -266,7 +255,6 @@ import util.ExceptionCodes;
                 }                                
             }            
         }catch(SQLException sqle){
-            sqle.printStackTrace();
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);        
         }        
   
@@ -303,7 +291,7 @@ import util.ExceptionCodes;
             controlador.receiveParameters(reporteTutoriaAcademica.getIdReporteTutoria());
             stage.show();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            AlertManager.showAlert("Error", "Intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
     @FXML
@@ -342,7 +330,6 @@ import util.ExceptionCodes;
                 closeWindow();
             }    
         } catch (SQLException sqle) {
-            sqle.printStackTrace();
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }        
     }    

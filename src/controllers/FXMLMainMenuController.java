@@ -79,6 +79,12 @@ public class FXMLMainMenuController implements Initializable {
     private Menu menuExperiencias;
     @FXML
     private Menu menuEstudiantes;
+    @FXML
+    private MenuItem miConsultGeneralReport;
+    @FXML
+    private MenuItem miConsultOffer;
+    @FXML
+    private Menu menuProgramaEducativo;
 
 
     /**
@@ -232,13 +238,15 @@ public class FXMLMainMenuController implements Initializable {
                 menuSolucionProblematicas.setVisible(true);
                 menuExperiencias.setVisible(true);
                 menuEstudiantes.setVisible(false);
+                menuProgramaEducativo.setVisible(false);
+                
                 //menuReadProblematic.setVisible(true);
                 break;
             case 2: //Coordinador de Tutoria
                 menuAsignaciones.setVisible(true);
                 menuFechas.setVisible(true);
                 menuHelp.setVisible(true);
-                menuOfertaAcademica.setVisible(false);
+                menuOfertaAcademica.setVisible(true);
                 menuProblematicas.setVisible(true);
                 menuRegistros.setVisible(true);
                 menuReportes.setVisible(true);
@@ -254,6 +262,8 @@ public class FXMLMainMenuController implements Initializable {
                 menuSolucionProblematicas.setVisible(true);
                 menuExperiencias.setVisible(true);
                 menuEstudiantes.setVisible(true);
+                menuProgramaEducativo.setVisible(false);
+                
                 break;
             case 3: // Tutor Academico
                 menuAsignaciones.setVisible(false);
@@ -274,6 +284,7 @@ public class FXMLMainMenuController implements Initializable {
                 
                 menuSolucionProblematicas.setVisible(false);
                 menuExperiencias.setVisible(true);
+                menuProgramaEducativo.setVisible(false);
                 
                 break;
             case 4: // Administrador
@@ -296,6 +307,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuSolucionProblematicas.setVisible(true);
                 menuExperiencias.setVisible(true);
                 menuEstudiantes.setVisible(true);
+                menuProgramaEducativo.setVisible(true);                
                 break;
             default:
                 menuAsignaciones.setVisible(false);
@@ -309,6 +321,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuReporteTutorial.setVisible(false);
                 menuSolucionProblematicas.setVisible(false);
                 menuEstudiantes.setVisible(false);
+                menuProgramaEducativo.setVisible(false);
                 break;
         }
     }
@@ -396,11 +409,20 @@ public class FXMLMainMenuController implements Initializable {
     private void menuReadOffer(ActionEvent event) {
         WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
-                "/GUI/FXMLEditarOfertaAcademica.fxml",
-                "Editar Oferta Académica"
+                "/GUI/FXMLConsultarOfertaAcademica.fxml",
+                "Consul Oferta Académica"
         );
     }
 
+    @FXML
+    private void menuEditOffer(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLEditarOfertaAcademica.fxml",
+                "Editar Oferta Académica"
+        );        
+    }    
+    
     @FXML
     private void menuRegistrarEstudiantesAction(ActionEvent event) {
         WindowManager.NavigateToWindow(
@@ -523,6 +545,16 @@ public class FXMLMainMenuController implements Initializable {
                 "Iniciar Sesión"
         );
         User.killCurrentUser();
+    }
+
+    @FXML
+    private void menuGestionProgramasEducativos(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLProgramasEducativos.fxml",
+                "Registrar Profesor"
+        );        
+        
     }
 
 }
