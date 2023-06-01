@@ -250,7 +250,7 @@ public class FXMLRegistrarProfesorController implements Initializable {
                 profesor.setNombre(textNombre.getText());
                 profesor.setApellidoPaterno(textApellidoPaterno.getText());
                 profesor.setApellidoMaterno(textApellidoMaterno.getText());
-                profesor.setCorreoElectronicoInstitucional(textCorreo.getText()+ "universidad@.com");                
+                profesor.setCorreoElectronicoInstitucional(textCorreo.getText()+ "@universidad.com");                
                 if(profesorDAO.setProfesorRegister(profesor)){
                     AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
                 }                                
