@@ -173,11 +173,16 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
+            System.out.println("clave: " + clave);
+            System.out.println("id periodo: " + idPeriodoEscolar);
             String query = ("SELECT epp.*, ee.nombre AS nombre_experiencia, p.nombre, p.apellidoPaterno, p.apellidoMaterno\n"
                     + "FROM experiencias_periodos_profesores AS epp\n"
                     + "LEFT JOIN experiencias_educativas AS ee ON epp.nrc = ee.nrc\n"
-                    + "LEFT JOIN profesores AS p ON epp.numeroDePersonal = p.numeroDePersonal;");
+                    + "LEFT JOIN profesores AS p ON epp.numeroDePersonal = p.numeroDePersonal\n"
+                    + "WHERE epp.clave = ? AND epp.idPeriodoEscolar = ?;");
             PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, clave);
+            statement.setInt(2, idPeriodoEscolar);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 ExperienciaEducativa experienciaEducativa = new ExperienciaEducativa();
@@ -195,11 +200,32 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
                 }
                 experienciaEducativa.setProfesor(profesor);
                 experienciaEducativa.setNrc(resultSet.getString("nrc"));
-                experienciaEducativa.setEsSeleccionado(new CheckBox());                
+                experienciaEducativa.setIdexperiencia_periodo_profesor(resultSet.getInt("idexperiencia_periodo_profesor"));
+                experienciaEducativa.setEsSeleccionado(new CheckBox());
                 listExperienciasEducativas.add(experienciaEducativa);
             }
         }
         connection.close();
         return listExperienciasEducativas;
     }
+
+    public boolean assignProfesorToExperienciaEducativa(Profesor profesor, ExperienciaEducativa experienciaEducativa, String clave) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if (connection != null) {
+            String query = ("UPDATE `sistema_tutorias`.`experiencias_periodos_profesores` SET `numeroDePersonal` = ? WHERE (`idexperiencia_periodo_profesor` = ? and `clave` = ?);");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, profesor.getNumeroDePersonal());
+            statement.setInt(2, experienciaEducativa.getIdexperiencia_periodo_profesor());
+            statement.setString(3, clave);            
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }
+    
 }

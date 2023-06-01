@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -8,8 +11,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
    <children>
       <MenuBar fx:id="mbMainMenu" prefHeight="29.0" prefWidth="1042.0">
         <menus>
@@ -58,6 +60,7 @@
             </Menu>
             <Menu fx:id="menuAsignaciones" mnemonicParsing="false" text="Asignaciones">
               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#asignarExperienciaEducativaProfesor" text="Asignar experiencia educativa a profesor" />
                 <MenuItem mnemonicParsing="false" onAction="#menuAsignaciones" text="Gestión de Asignaciones" />
               </items>
             </Menu>

@@ -20,11 +20,12 @@ public class ExperienciaEducativa {
     private String programaEducativo;
     private Profesor profesor;
     private CheckBox esSeleccionado;
+    private int idexperiencia_periodo_profesor;
     
     public ExperienciaEducativa() {
     }
 
-    public ExperienciaEducativa(String nrc, String nombre, String seccion, String modalidad, String clave, Profesor profesor, CheckBox esSeleccionado) {
+    public ExperienciaEducativa(String nrc, String nombre, String seccion, String modalidad, String clave, Profesor profesor, CheckBox esSeleccionado, int idexperiencia_periodo_profesor) {
         this.nrc = nrc;
         this.nombre = nombre;
         this.seccion = seccion;
@@ -32,6 +33,7 @@ public class ExperienciaEducativa {
         this.clave = clave;
         this.profesor = profesor;
         this.esSeleccionado = esSeleccionado;
+        this.idexperiencia_periodo_profesor = idexperiencia_periodo_profesor;
     }
 
     public ExperienciaEducativa(String nrc, String profesorNombre,String nombre) {
@@ -118,6 +120,14 @@ public class ExperienciaEducativa {
 
     public void setEsSeleccionado(CheckBox esSeleccionado) {
         this.esSeleccionado = esSeleccionado;
+    }
+
+    public int getIdexperiencia_periodo_profesor() {
+        return idexperiencia_periodo_profesor;
+    }
+
+    public void setIdexperiencia_periodo_profesor(int idexperiencia_periodo_profesor) {
+        this.idexperiencia_periodo_profesor = idexperiencia_periodo_profesor;
     }
 
     @Override
