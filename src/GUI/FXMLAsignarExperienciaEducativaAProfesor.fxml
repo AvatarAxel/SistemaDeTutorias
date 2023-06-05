@@ -6,29 +6,29 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="742.0" prefWidth="884.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controllers.FXMLAsignarExperienciaEducativaAProfesorController">
+<AnchorPane id="AnchorPane" prefHeight="742.0" prefWidth="884.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLAsignarExperienciaEducativaAProfesorController">
    <children>
-      <TableView layoutX="34.0" layoutY="95.0" prefHeight="246.0" prefWidth="810.0">
+      <TableView fx:id="tableExperienciasEducativas" layoutX="34.0" layoutY="95.0" prefHeight="186.0" prefWidth="810.0">
         <columns>
-            <TableColumn prefWidth="63.0" text="CB" />
-          <TableColumn prefWidth="196.0" text="NRC" />
-          <TableColumn prefWidth="550.0" text="Nombre" />
+            <TableColumn fx:id="checkBoxEsSeleccionado" prefWidth="38.0" />
+          <TableColumn fx:id="columNrc" prefWidth="88.0" text="NRC" />
+            <TableColumn fx:id="columExperienciaEducativa" prefWidth="332.0" text="Experiencia Educativa" />
+          <TableColumn fx:id="columFullNombre" prefWidth="351.0" text="Nombre del profesor asignado" />
         </columns>
       </TableView>
-      <TextField layoutX="228.0" layoutY="45.0" prefHeight="29.0" prefWidth="616.0" />
-      <Label layoutX="34.0" layoutY="50.0" text="Buscar Experiencia Educativa:" />
-      <Label layoutX="34.0" layoutY="387.0" text="Profesor:" />
-      <TextField layoutX="115.0" layoutY="382.0" prefHeight="29.0" prefWidth="726.0" />
-      <TableView layoutX="34.0" layoutY="431.0" prefHeight="235.0" prefWidth="810.0">
+      <Label layoutX="34.0" layoutY="327.0" text="Profesor:" />
+      <TextField layoutX="107.0" layoutY="322.0" prefHeight="29.0" prefWidth="726.0" />
+      <TableView fx:id="tableProfesor" layoutX="34.0" layoutY="365.0" onMouseClicked="#selectProfesor" prefHeight="171.0" prefWidth="810.0">
         <columns>
-          <TableColumn prefWidth="131.0" text="No. De personal" />
-          <TableColumn prefWidth="176.0" text="Nombre" />
-            <TableColumn prefWidth="245.0" text="Apellido Paterno" />
-            <TableColumn prefWidth="257.0" text="Apellido Materno" />
+          <TableColumn fx:id="columNumeroDePersonal" prefWidth="131.0" text="No. De personal" />
+          <TableColumn fx:id="columNombre" prefWidth="176.0" text="Nombre" />
+            <TableColumn fx:id="columApellidoPaterno" prefWidth="245.0" text="Apellido Paterno" />
+            <TableColumn fx:id="columApellidoMaterno" prefWidth="257.0" text="Apellido Materno" />
         </columns>
       </TableView>
-      <Button layoutX="675.0" layoutY="699.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="83.0" text="Asignar" />
-      <Button layoutX="772.0" layoutY="699.0" mnemonicParsing="false" text="Cancelar" />
+      <Button fx:id="buttonAsignar" layoutX="673.0" layoutY="566.0" mnemonicParsing="false" onAction="#buttonActionAsignar" prefHeight="29.0" prefWidth="83.0" text="Asignar" />
+      <Button layoutX="772.0" layoutY="566.0" mnemonicParsing="false" onAction="#buttonActionCancelar" text="Cancelar" />
+      <RadioButton layoutX="266.0" layoutY="64.0" mnemonicParsing="false" text="Experiencias con profesor" />
+      <RadioButton layoutX="34.0" layoutY="64.0" mnemonicParsing="false" text="Experiencias sin profesor" />
    </children>
 </AnchorPane>

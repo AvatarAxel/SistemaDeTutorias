@@ -533,7 +533,7 @@ public class FXMLMainMenuController implements Initializable {
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLRegistrarProfesor.fxml",
                 "Registrar Profesor"
-        );
+        );        
 
     }
 
@@ -553,8 +553,16 @@ public class FXMLMainMenuController implements Initializable {
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLProgramasEducativos.fxml",
                 "Registrar Profesor"
-        );        
-        
+        );
+    }
+    
+    @FXML
+    private void asignarExperienciaEducativaProfesor(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLAsignarExperienciaEducativaAProfesor.fxml",
+                "Asignar Experiencia Educativa A Profesor"
+        );
     }
 
 }
