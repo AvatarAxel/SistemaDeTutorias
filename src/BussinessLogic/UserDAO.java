@@ -73,7 +73,7 @@ public class UserDAO implements IUserDAO {
         return roles;
     }
 
-    public static ArrayList<Usuario> getUsuarioTutoresporProgramaEducativo(int clave) throws SQLException {
+    public static ArrayList<Usuario> getUsuarioTutoresporProgramaEducativos(int clave) throws SQLException {
         ArrayList<Usuario> tutores = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
