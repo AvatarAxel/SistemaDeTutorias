@@ -17,7 +17,7 @@
         </columns>
       </TableView>
       <Label layoutX="34.0" layoutY="327.0" text="Profesor:" />
-      <TextField layoutX="107.0" layoutY="322.0" prefHeight="29.0" prefWidth="726.0" />
+      <TextField fx:id="textFieldSearchProfesores" layoutX="107.0" layoutY="322.0" onKeyTyped="#validateLengthProfesor" prefHeight="29.0" prefWidth="726.0" />
       <TableView fx:id="tableProfesor" layoutX="34.0" layoutY="365.0" onMouseClicked="#selectProfesor" prefHeight="171.0" prefWidth="810.0">
         <columns>
           <TableColumn fx:id="columNumeroDePersonal" prefWidth="131.0" text="No. De personal" />
@@ -28,7 +28,11 @@
       </TableView>
       <Button fx:id="buttonAsignar" layoutX="673.0" layoutY="566.0" mnemonicParsing="false" onAction="#buttonActionAsignar" prefHeight="29.0" prefWidth="83.0" text="Asignar" />
       <Button layoutX="772.0" layoutY="566.0" mnemonicParsing="false" onAction="#buttonActionCancelar" text="Cancelar" />
-      <RadioButton layoutX="266.0" layoutY="64.0" mnemonicParsing="false" text="Experiencias con profesor" />
-      <RadioButton layoutX="34.0" layoutY="64.0" mnemonicParsing="false" text="Experiencias sin profesor" />
+      <RadioButton layoutX="266.0" layoutY="64.0" mnemonicParsing="false" onMousePressed="#whitProfesorAction" text="Experiencias con profesor">
+         <toggleGroup>
+            <ToggleGroup fx:id="radioButtonGroup" />
+         </toggleGroup></RadioButton>
+      <RadioButton layoutX="34.0" layoutY="64.0" mnemonicParsing="false" onMousePressed="#whitoutProfesorAction" text="Experiencias sin profesor" toggleGroup="$radioButtonGroup" />
+      <RadioButton layoutX="484.0" layoutY="64.0" mnemonicParsing="false" onMousePressed="#allExperienciasEducativas" text="Todas las experiencias educativas" toggleGroup="$radioButtonGroup" />
    </children>
 </AnchorPane>

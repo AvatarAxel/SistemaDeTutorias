@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controllers.FXMLCambiarContraseniaController">
+   <children>
+      <TextField fx:id="textFieldCorreo" layoutX="129.0" layoutY="109.0" prefHeight="29.0" prefWidth="313.0" />
+      <Button fx:id="buttonEnviarCodigo" layoutX="185.0" layoutY="193.0" mnemonicParsing="false" onAction="#buttonActionEnviarCodigo" text="Enviar codigo de verificacion" />
+      <Label layoutX="129.0" layoutY="90.0" text="Correo electronico" />
+      <PasswordField fx:id="textFieldContrasenia" layoutX="129.0" layoutY="178.0" prefHeight="29.0" prefWidth="313.0" />
+      <PasswordField fx:id="textFieldConfirmarConstrasenia" layoutX="129.0" layoutY="249.0" prefHeight="29.0" prefWidth="313.0" />
+      <Label layoutX="129.0" layoutY="159.0" text="Nueva contraseña" />
+      <Label layoutX="129.0" layoutY="230.0" text="Confirmar contraseña" />
+      <Button layoutX="469.0" layoutY="328.0" mnemonicParsing="false" onAction="#buttonActionCancelar" text="Cancelar" />
+      <Button fx:id="buttonAceptar" layoutX="376.0" layoutY="328.0" mnemonicParsing="false" onAction="#buttonActionAceptar" text="Aceptar" />
+   </children>
+</AnchorPane>

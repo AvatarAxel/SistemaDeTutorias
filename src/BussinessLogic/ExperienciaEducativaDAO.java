@@ -209,8 +209,6 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            System.out.println("clave: " + clave);
-            System.out.println("id periodo: " + idPeriodoEscolar);
             String query = ("SELECT epp.*, ee.nombre AS nombre_experiencia, p.nombre, p.apellidoPaterno, p.apellidoMaterno\n"
                     + "FROM experiencias_periodos_profesores AS epp\n"
                     + "LEFT JOIN experiencias_educativas AS ee ON epp.nrc = ee.nrc\n"
