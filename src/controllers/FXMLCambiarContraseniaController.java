@@ -5,8 +5,6 @@
 package controllers;
 
 import BussinessLogic.UserDAO;
-import Domain.TutoriaAcademica;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -14,10 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,10 +20,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import util.AlertManager;
 import util.WindowManager;
+import util.EmailUtil;
 
 /**
  * FXML Controller class
@@ -54,7 +48,19 @@ public class FXMLCambiarContraseniaController implements Initializable {
     private Pattern validateCharacterEmail = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     @FXML
     private Label labelInvalidateCorreo;
-    private boolean resultValidation = false;
+    @FXML
+    private Label labelCorreo;
+    @FXML
+    private Label labelMessage;
+    @FXML
+    private TextField textFieldCodigo;
+    private boolean[] validationPasword = {false, false};
+    @FXML
+    private Button buttonVerificar;
+    private String verificationCode;
+    private Pattern validateCharacterPassword = Pattern.compile("{10}");
+    @FXML
+    private Label errorPassword;
 
     /**
      * Initializes the controller class.
@@ -67,22 +73,22 @@ public class FXMLCambiarContraseniaController implements Initializable {
         labelConfirmNewPassword.setVisible(false);
         labelNewPassword.setVisible(false);
         buttonEnviarCodigo.setDisable(true);
+        labelMessage.setVisible(false);
+        buttonVerificar.setVisible(false);
+        textFieldCodigo.setVisible(false);
+        errorPassword.setVisible(false);
     }
 
     @FXML
     private void buttonActionEnviarCodigo(ActionEvent event) {
         try {
             boolean result = new UserDAO().existCorreo(textFieldCorreo.getText());
-            if (result) {
-                goingToVerificationCode(new util.Random().verificationCodeGenerator());
-                if (resultValidation) {
-                    buttonAceptar.setVisible(true);
-                    textFieldContrasenia.setVisible(true);
-                    textFieldConfirmarConstrasenia.setVisible(true);
-                    labelConfirmNewPassword.setVisible(true);
-                    labelNewPassword.setVisible(true);
-                    buttonEnviarCodigo.setDisable(false);
-                }
+            if (result) {     
+                verificationCode = new util.Random().verificationCodeGenerator();
+                System.out.println(verificationCode);
+                //Habilitar cuando se pueda enviar correo
+                //new EmailUtil().sendEmailChangePassword(textFieldCorreo.getText(), verificationCode);                
+                showValidationCode();
             } else {
                 labelInvalidateCorreo.setText("Correo no encontrado, porfavor vuelva a ingresarlo");
             }
@@ -91,21 +97,14 @@ public class FXMLCambiarContraseniaController implements Initializable {
         }
     }
 
-    private void goingToVerificationCode(String verificationCode) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXMLValidarCodigoDeVerificacion.fxml"));
-            Parent root = loader.load();
-            FXMLValidarCodigoDeVerificacionController controllerValidarCodigo = loader.getController();
-            controllerValidarCodigo.receiveData(resultValidation, verificationCode);
-            Scene sceneValidarCodigo = new Scene(root);
-            Stage escenarioValidarCodigo = new Stage();
-            escenarioValidarCodigo.setScene(sceneValidarCodigo);
-            escenarioValidarCodigo.initModality(Modality.APPLICATION_MODAL);
-            escenarioValidarCodigo.show();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }  
+    private void showValidationCode() {
+        buttonEnviarCodigo.setVisible(false);
+        textFieldCorreo.setVisible(false);
+        labelCorreo.setVisible(false);
+        labelMessage.setVisible(true);
+        buttonVerificar.setVisible(true);
+        textFieldCodigo.setVisible(true);
+    }
 
     @FXML
     private void buttonActionCancelar(ActionEvent event) {
@@ -118,6 +117,11 @@ public class FXMLCambiarContraseniaController implements Initializable {
 
     @FXML
     private void buttonActionAceptar(ActionEvent event) {
+        if(!textFieldConfirmarConstrasenia.getText().equals(textFieldContrasenia.getText())){
+            errorPassword.setVisible(true);
+        }else{
+            //TODO
+        }
     }
 
     @FXML
@@ -148,7 +152,14 @@ public class FXMLCambiarContraseniaController implements Initializable {
 
     @FXML
     private void validateInputPassword(KeyEvent event) {
-        
+        errorPassword.setVisible(false);
+        Matcher matcher = validateCharacterPassword.matcher(textFieldContrasenia.getText());
+        if (!matcher.matches()) {
+            validationPasword[0] = false;
+        } else {
+            validationPasword[0] = true;
+        }
+        enableButton();
     }
 
     @FXML
@@ -167,6 +178,14 @@ public class FXMLCambiarContraseniaController implements Initializable {
 
     @FXML
     private void validateInputConfirmPassword(KeyEvent event) {
+        errorPassword.setVisible(false);
+        Matcher matcher = validateCharacterPassword.matcher(textFieldConfirmarConstrasenia.getText());
+        if (!matcher.matches()) {
+            validationPasword[1] = false;
+        } else {
+            validationPasword[1] = true;
+        }
+        enableButton();
     }
 
     @FXML
@@ -183,4 +202,44 @@ public class FXMLCambiarContraseniaController implements Initializable {
         }
     }
 
+    @FXML
+    private void validateLengthCodigo(KeyEvent event) {
+        textFieldCodigo.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().length() <= 5) {
+                return change;
+            } else {
+                return null;
+            }
+        }));
+        if (textFieldCodigo.getText().length() > 5) {
+            textFieldCodigo.setText("");
+        }
+    }
+
+    @FXML
+    private void buttonVerificarAction(ActionEvent event) {
+        if(verificationCode.equals(textFieldCodigo.getText())){
+            showChangePassword();
+        }
+    }
+
+    private void showChangePassword() {
+        buttonAceptar.setVisible(true);
+        buttonAceptar.setDisable(true);        
+        textFieldContrasenia.setVisible(true);
+        textFieldConfirmarConstrasenia.setVisible(true);
+        labelConfirmNewPassword.setVisible(true);
+        labelNewPassword.setVisible(true);
+        labelMessage.setVisible(false);
+        buttonVerificar.setVisible(false);
+        textFieldCodigo.setVisible(false);
+    }
+
+    private void enableButton() {
+        if (!validationPasword[0] || !validationPasword[1]) {
+            buttonAceptar.setDisable(true);
+        } else {
+            buttonAceptar.setDisable(false);
+        }
+    }
 }

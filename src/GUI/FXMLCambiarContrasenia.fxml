@@ -9,15 +9,19 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLCambiarContraseniaController">
    <children>
-      <TextField fx:id="textFieldCorreo" layoutX="125.0" layoutY="96.0" onKeyReleased="#validateInputsCorreo" onKeyTyped="#validateLengthCorreo" prefHeight="29.0" prefWidth="313.0" />
-      <Button fx:id="buttonEnviarCodigo" layoutX="175.0" layoutY="155.0" mnemonicParsing="false" onAction="#buttonActionEnviarCodigo" text="Enviar codigo de verificacion" />
-      <Label layoutX="129.0" layoutY="67.0" text="Correo electronico" />
-      <PasswordField fx:id="textFieldContrasenia" layoutX="125.0" layoutY="193.0" onKeyReleased="#validateInputPassword" onKeyTyped="#validateLengthPassword" prefHeight="29.0" prefWidth="313.0" />
-      <PasswordField fx:id="textFieldConfirmarConstrasenia" layoutX="125.0" layoutY="273.0" onKeyReleased="#validateInputConfirmPassword" onKeyTyped="#validateLengthConfirmPassword" prefHeight="29.0" prefWidth="313.0" />
-      <Label fx:id="labelNewPassword" layoutX="130.0" layoutY="155.0" text="Nueva contraseña" />
+      <TextField fx:id="textFieldCorreo" layoutX="108.0" layoutY="96.0" onKeyReleased="#validateInputsCorreo" onKeyTyped="#validateLengthCorreo" prefHeight="29.0" prefWidth="385.0" />
+      <Button fx:id="buttonEnviarCodigo" layoutX="163.0" layoutY="155.0" mnemonicParsing="false" onAction="#buttonActionEnviarCodigo" text="Enviar codigo de verificacion" />
+      <Label fx:id="labelCorreo" layoutX="108.0" layoutY="67.0" text="Correo electronico" />
+      <PasswordField fx:id="textFieldContrasenia" layoutX="105.0" layoutY="186.0" onKeyReleased="#validateInputPassword" onKeyTyped="#validateLengthPassword" prefHeight="29.0" prefWidth="391.0" />
+      <PasswordField fx:id="textFieldConfirmarConstrasenia" layoutX="105.0" layoutY="274.0" onKeyReleased="#validateInputConfirmPassword" onKeyTyped="#validateLengthConfirmPassword" prefHeight="29.0" prefWidth="391.0" />
+      <Label fx:id="labelNewPassword" layoutX="110.0" layoutY="160.0" text="Nueva contraseña" />
       <Label fx:id="labelConfirmNewPassword" layoutX="125.0" layoutY="235.0" text="Confirmar contraseña" />
-      <Button layoutX="469.0" layoutY="328.0" mnemonicParsing="false" onAction="#buttonActionCancelar" text="Cancelar" />
-      <Button fx:id="buttonAceptar" layoutX="376.0" layoutY="328.0" mnemonicParsing="false" onAction="#buttonActionAceptar" text="Aceptar" />
-      <Label fx:id="labelInvalidateCorreo" layoutX="125.0" layoutY="125.0" prefHeight="19.0" prefWidth="313.0" textFill="#bf0e0e" />
+      <Button layoutX="467.0" layoutY="349.0" mnemonicParsing="false" onAction="#buttonActionCancelar" text="Cancelar" />
+      <Button fx:id="buttonAceptar" layoutX="373.0" layoutY="349.0" mnemonicParsing="false" onAction="#buttonActionAceptar" text="Aceptar" />
+      <Label fx:id="labelInvalidateCorreo" layoutX="125.0" layoutY="125.0" prefHeight="19.0" prefWidth="385.0" textFill="#bf0e0e" />
+      <Label fx:id="labelMessage" layoutX="98.0" layoutY="135.0" prefHeight="19.0" prefWidth="405.0" text="Ingrese el codigo de verificacion que recibio al correo electronico" />
+      <TextField fx:id="textFieldCodigo" layoutX="204.0" layoutY="201.0" onKeyTyped="#validateLengthCodigo" />
+      <Button fx:id="buttonVerificar" layoutX="255.0" layoutY="240.0" mnemonicParsing="false" onAction="#buttonVerificarAction" text="Verificar" />
+      <Label fx:id="errorPassword" layoutX="131.0" layoutY="309.0" text="Las contraseñas no coinciden, vuelva a ingresarlas" textFill="#eb1414" />
    </children>
 </AnchorPane>
