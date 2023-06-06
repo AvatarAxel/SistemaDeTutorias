@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles/globalStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLLoginController">
     <children>
-      <ImageView fitHeight="400.0" fitWidth="274.0" layoutY="1.0" pickOnBounds="true">
+      <ImageView fitHeight="344.0" fitWidth="279.0" layoutY="24.0" pickOnBounds="true">
          <image>
             <Image url="@../images/icon.png" />
          </image>
@@ -23,8 +23,9 @@
          </font></Label>
       <Label layoutX="324.0" layoutY="119.0" text="Correo" />
       <Label layoutX="300.0" layoutY="209.0" text="Contraseña" />
-      <Button layoutX="407.0" layoutY="312.0" mnemonicParsing="false" onAction="#clicLogin" text="Iniciar" />
+      <Button layoutX="392.0" layoutY="284.0" mnemonicParsing="false" onAction="#clicLogin" text="Iniciar" />
       <Label fx:id="lbEmail" layoutX="393.0" layoutY="143.0" prefHeight="17.0" prefWidth="149.0" textFill="RED" />
       <Label fx:id="lbPassword" layoutX="392.0" layoutY="234.0" prefHeight="17.0" prefWidth="149.0" textFill="RED" />
+      <Button layoutX="456.0" layoutY="284.0" mnemonicParsing="false" onAction="#changePasswordAction" text="Cambiar contraseña" />
    </children>
 </AnchorPane>

@@ -244,4 +244,26 @@ public class UserDAO implements IUserDAO {
         return result;
     }
 
+    public boolean existCorreo(String correoElectronicoInstitucional) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if (connection != null) {
+            String query = "SELECT COUNT(*) FROM `sistema_tutorias`.`usuarios` WHERE `correoElectronicoInstitucional` = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, correoElectronicoInstitucional);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                if (count > 0) {
+                    result = true;
+                }
+            }
+            resultSet.close();
+            statement.close();
+        }
+        connection.close();
+        return result;
+    }
+
 }

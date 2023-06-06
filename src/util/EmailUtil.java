@@ -45,6 +45,29 @@ public class EmailUtil {
             ex.printStackTrace();
         }
     }
+    
+    public void sendEmailChangePassword(String emailDestiner, String verificationCode) {
+        Email from = new Email(emailDirection);
+        String subject = "Codigo de verificación - Sistema de tutorias";
+        Email to = new Email(emailDestiner);
+        Content content = new Content("text/plain", "Codigo de verificacion \n \n \n"
+                                        + "NO LO COMPARTAS CON NADIE\n"
+                                        + "Codigo de verificación: " + verificationCode );
+        Mail mail = new Mail(from, subject, to, content);
+        SendGrid sg = new SendGrid(apiKey);
+        Request request = new Request();
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            Response response = sg.api(request);
+            System.out.println(response.getStatusCode());
+            System.out.println(response.getBody());
+            System.out.println(response.getHeaders());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }    
 
     private void readCredentialsFile() {
         try {

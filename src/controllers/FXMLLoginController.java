@@ -167,4 +167,13 @@ public class FXMLLoginController implements Initializable {
             tfEmail.setText("");
         }*/
     }
+
+    @FXML
+    private void changePasswordAction(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                pfPassword.getScene().getWindow(),
+                "/GUI/FXMLCambiarContrasenia.fxml",
+                "Cambiar contraseña"
+        );
+    }
 }
