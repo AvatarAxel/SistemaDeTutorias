@@ -51,11 +51,11 @@ public class UserDAO implements IUserDAO {
         ArrayList<Rol> roles = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = ("SELECT DISTINCT UR.IdRol, R.nombre AS nombreRol, UR.clave, PE.nombre AS nombrePrograma FROM usuarios U "
-                + "INNER JOIN roles_usuarios_programa_educativo UR ON UR.numeroDePersonal = ? "
-                + "INNER JOIN programas_educativos PE ON PE.clave = UR.clave "
-                + "INNER JOIN roles R ON R.idRol = UR.idRol"
-                + "WHERE PE.activo = 1;");
+        String query = ("SELECT DISTINCT UR.IdRol, R.nombre AS nombreRol, UR.clave, PE.nombre AS nombrePrograma FROM usuarios U\n" +
+        "INNER JOIN roles_usuarios_programa_educativo UR ON UR.numeroDePersonal = ? \n" +
+        "INNER JOIN programas_educativos PE ON PE.clave = UR.clave \n" +
+        "INNER JOIN roles R ON R.idRol = UR.idRol\n" +
+        "WHERE PE.activo = 1;");
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, numeroDePersonal);
         ResultSet resultSet = statement.executeQuery();
