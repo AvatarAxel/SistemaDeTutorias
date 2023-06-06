@@ -16,7 +16,6 @@ import security.SHA_512;
  * @author Valea
  */
 public class UserDAO implements IUserDAO {
-
     @Override
     public Usuario getUser(String correo, String contrasena) throws SQLException {
         Usuario user = new Usuario();
@@ -55,7 +54,8 @@ public class UserDAO implements IUserDAO {
         String query = ("SELECT DISTINCT UR.IdRol, R.nombre AS nombreRol, UR.clave, PE.nombre AS nombrePrograma FROM usuarios U "
                 + "INNER JOIN roles_usuarios_programa_educativo UR ON UR.numeroDePersonal = ? "
                 + "INNER JOIN programas_educativos PE ON PE.clave = UR.clave "
-                + "INNER JOIN roles R ON R.idRol = UR.idRol;");
+                + "INNER JOIN roles R ON R.idRol = UR.idRol"
+                + "WHERE PE.activo = 1;");
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, numeroDePersonal);
         ResultSet resultSet = statement.executeQuery();
@@ -127,7 +127,8 @@ public class UserDAO implements IUserDAO {
                     + "FROM usuarios u\n"
                     + "INNER JOIN roles_usuarios_programa_educativo rup\n"
                     + "ON u.numeroDePersonal = rup.numeroDePersonal\n"
-                    + "WHERE rup.clave = ? and u.esRegistrado = 1;";
+                    + "INNER JOIN programas_educativos pe ON pe.clave = rup.clave"
+                    + "WHERE rup.clave = ? and u.esRegistrado = 1 and pe.activo = 1;;";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, clave);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -149,10 +150,13 @@ public class UserDAO implements IUserDAO {
         ArrayList<Rol> roles = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = ("SELECT r.idRol, r.nombre\n"
-                + "FROM roles r\n"
-                + "INNER JOIN roles_usuarios_programa_educativo ru ON r.idRol = ru.idRol\n"
-                + "WHERE ru.numeroDePersonal = ? and ru.clave = ?;");
+        String query = ("SELECT r.idRol, r.nombre\n" +
+                    "FROM roles_usuarios_programa_educativo up\n" +
+                    "INNER JOIN roles r ON up.idRol = r.idRol\n" +
+                    "INNER JOIN programas_educativos pe ON up.clave = pe.clave\n" +
+                    "WHERE up.numeroDePersonal = ?\n" +
+                    "AND up.clave = ?\n" +
+                    "AND pe.activo = 1;");
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, numeroDePersonal);
         statement.setString(2, clave);
