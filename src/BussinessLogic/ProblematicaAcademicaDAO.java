@@ -360,7 +360,6 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                         resultSet.getString("descripcion_solucion")
                 ));
                 problematicaAcademicaTemp.setTutoria(new TutoriaAcademica(
-                        0, null, null, 0,
                         new PeriodoEscolar(
                                 "", null, null,
                                 resultSet.getInt("idPeriodoEscolar")

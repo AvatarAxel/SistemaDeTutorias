@@ -174,7 +174,7 @@ public class FXMLConsultarReporteTutoriaAcademicaController implements Initializ
             int alumnosTotalAsistentes = 0, alumnosTotalesRiesgo = 0;
             EstudianteDAO estudianteDAO = new EstudianteDAO();
             ArrayList<Estudiante> listEstudiantesRecived = estudianteDAO.obtenerEstudiantesPorReporteTutoriaAcademica(reporteTutoriaAcademica.getIdReporteTutoria());
-            if(listEstudiantesRecived !=null){
+            if(!listEstudiantesRecived.isEmpty()){
                 listEstudiantes.addAll(listEstudiantesRecived);
                 disableColumTable();                
                 tbEstudiantes.setItems(listEstudiantes);              
@@ -183,7 +183,6 @@ public class FXMLConsultarReporteTutoriaAcademicaController implements Initializ
                 tbEstudiantes.setPlaceholder(noticeLoadingTable);           
             }        
         } catch (SQLException sqle) {
-            sqle.printStackTrace();
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
@@ -192,7 +191,7 @@ public class FXMLConsultarReporteTutoriaAcademicaController implements Initializ
             ProblematicaAcademicaDAO problematicaAcademicaDao = new ProblematicaAcademicaDAO();
             ArrayList<ProblematicaAcademica> listProblematicasRecived = new ArrayList<>();
             listProblematicasRecived = problematicaAcademicaDao.getAllProblematicasByReporte(reporteTutoriaAcademica.getIdReporteTutoria());            
-            if(listProblematicasRecived != null){
+            if(!listProblematicasRecived.isEmpty()){
                 listProblematicasAcademicas.addAll(listProblematicasRecived);
                 tbProblematicasAcademicas.setItems(listProblematicasAcademicas);            
             }else{

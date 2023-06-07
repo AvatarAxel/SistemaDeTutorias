@@ -4,7 +4,9 @@
  */
 package controllers;
 
+import BussinessLogic.PeriodoEscolarDAO;
 import BussinessLogic.UserDAO;
+import Domain.PeriodoEscolar;
 import Domain.Rol;
 import Domain.Usuario;
 import java.net.URL;
@@ -78,12 +80,14 @@ public class FXMLLoginController implements Initializable {
 
     private void doLogin(String username, String password) throws SQLException {
         UserDAO userDAO = new UserDAO();
+        PeriodoEscolarDAO periodoEscolarDAO = new PeriodoEscolarDAO();
         
         Usuario usuarioLogin = userDAO.getUser(username, password);
         
         if (usuarioLogin != null) {
 
             ArrayList<Rol> roles = userDAO.getUserRoles(usuarioLogin.getNumeroDePersonal());
+            PeriodoEscolar periodoEscolar = periodoEscolarDAO.getCurrentPeriodo();
 
             User.getCurrentUser().setNumeroDePersonal(usuarioLogin.getNumeroDePersonal());
             User.getCurrentUser().setNombre(usuarioLogin.getNombre());
@@ -91,6 +95,7 @@ public class FXMLLoginController implements Initializable {
             User.getCurrentUser().setApellidoMaterno(usuarioLogin.getApellidoMaterno());
             User.getCurrentUser().setCorreo(usuarioLogin.getCorreoElectronicoInstitucional());
             User.getCurrentUser().setRoles(roles);
+            User.getCurrentUser().setPeriodoActual(periodoEscolar);
             
             
             
@@ -161,5 +166,14 @@ public class FXMLLoginController implements Initializable {
         if (tfEmail.getText().length() > 20) {
             tfEmail.setText("");
         }*/
+    }
+
+    @FXML
+    private void changePasswordAction(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                pfPassword.getScene().getWindow(),
+                "/GUI/FXMLCambiarContrasenia.fxml",
+                "Cambiar contraseña"
+        );
     }
 }

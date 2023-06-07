@@ -21,6 +21,12 @@ public class ProblematicaReporteTutoria {
     private ReporteDeTutoriaAcademica reporte;
     private TutoriaAcademica tutoria;
 
+    public ProblematicaReporteTutoria() {
+        this.problematica = new ProblematicaAcademica();
+        this.reporte = new ReporteDeTutoriaAcademica();
+        this.tutoria = new TutoriaAcademica();
+    }
+
     public ProblematicaAcademica getProblematica() {
         return problematica;
     }

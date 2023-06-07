@@ -13,11 +13,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -81,39 +78,27 @@ public class FXMLConsultarReporteGeneralDeTutoriasAcademicasController implement
     }
 
     private void configureTableColumns() {
-        Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
-        tableTutoriasAcademicas.setPlaceholder(noticeLoadingTable);
         columPeriodo.setCellValueFactory(new PropertyValueFactory("FechasPeriodoEscolar"));
         columNumeroDeSesion.setCellValueFactory(new PropertyValueFactory("numeroDeSesion"));
         listTutoriasAcademicas = FXCollections.observableArrayList();
     }
 
     private void loadInformationTutoriaAcademica() {
-        ExecutorService executorService;
-        executorService = Executors.newFixedThreadPool(1);
-        Task loadInformationTutoriaAcademicaTask = new Task() {
-            @Override
-            protected Void call() throws Exception {
-                TutoriaAcademicaDAO tutoriaAcademicaDao = new TutoriaAcademicaDAO();
-                try {
-                    ArrayList<TutoriaAcademica> loadedTutoriasAcademicas = tutoriaAcademicaDao.getTutoriasAcademicas();
-                    listTutoriasAcademicas.clear();
-                    if (loadedTutoriasAcademicas.isEmpty() || loadedTutoriasAcademicas == null || loadedTutoriasAcademicas.size() <= 0) {
-                        Label noticeContent = new Label("Sin contenido...");
-                        tableTutoriasAcademicas.setPlaceholder(noticeContent);
-                    } else {
-                        listTutoriasAcademicas.addAll(loadedTutoriasAcademicas);
-                        loadInformationPeriodoEscolar();
-                        tableTutoriasAcademicas.setItems(listTutoriasAcademicas);
-                    }
-                } catch (SQLException sqle) {
-                    AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
-                }
-                return null;
+        TutoriaAcademicaDAO tutoriaAcademicaDao = new TutoriaAcademicaDAO();
+        try {
+            ArrayList<TutoriaAcademica> loadedTutoriasAcademicas = tutoriaAcademicaDao.getTutoriasAcademicas();
+            listTutoriasAcademicas.clear();
+            if (loadedTutoriasAcademicas.isEmpty() || loadedTutoriasAcademicas == null || loadedTutoriasAcademicas.size() <= 0) {
+                Label noticeContent = new Label("Sin registros ...");
+                tableTutoriasAcademicas.setPlaceholder(noticeContent);
+            } else {
+                listTutoriasAcademicas.addAll(loadedTutoriasAcademicas);
+                loadInformationPeriodoEscolar();
+                tableTutoriasAcademicas.setItems(listTutoriasAcademicas);
             }
-        };
-        executorService.submit(loadInformationTutoriaAcademicaTask);
-        executorService.shutdown();
+        } catch (SQLException sqle) {
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+        }
     }
     
     private void loadInformationPeriodoEscolar() {

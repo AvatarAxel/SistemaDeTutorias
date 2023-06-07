@@ -4,6 +4,8 @@
  */
 package Domain;
 
+import javafx.scene.control.CheckBox;
+
 /**
  *
  * @author Panther
@@ -16,8 +18,29 @@ public class ExperienciaEducativa {
     private String clave;
     private String profesorNombre;
     private String programaEducativo;
+    private Profesor profesor;
+    private CheckBox esSeleccionado;
+    private int idexperiencia_periodo_profesor;
     
     public ExperienciaEducativa() {
+    }
+
+    public ExperienciaEducativa(String nrc, String nombre, String seccion, String modalidad, String clave, Profesor profesor, CheckBox esSeleccionado, int idexperiencia_periodo_profesor) {
+        this.nrc = nrc;
+        this.nombre = nombre;
+        this.seccion = seccion;
+        this.modalidad = modalidad;
+        this.clave = clave;
+        this.profesor = profesor;
+        this.esSeleccionado = esSeleccionado;
+        this.idexperiencia_periodo_profesor = idexperiencia_periodo_profesor;
+        this.esSeleccionado = new CheckBox();
+    }
+
+    public ExperienciaEducativa(String nrc, String profesorNombre,String nombre) {
+        this.nrc = nrc;
+        this.profesorNombre = profesorNombre;
+        this.nombre = nombre;
     }
 
     public ExperienciaEducativa(String nrc, String nombre, String seccion, String modalidad, String clave) {
@@ -26,12 +49,7 @@ public class ExperienciaEducativa {
         this.seccion = seccion;
         this.modalidad = modalidad;
         this.clave = clave;
-    }
-
-    public ExperienciaEducativa(String nrc, String profesorNombre,String nombre) {
-        this.nrc = nrc;
-        this.profesorNombre = profesorNombre;
-        this.nombre=nombre;
+        this.esSeleccionado = new CheckBox();
     }
 
     public String getProfesorNombre() {
@@ -90,7 +108,35 @@ public class ExperienciaEducativa {
     public void setProgramaEducativo(String programaEducativo) {
         this.programaEducativo = programaEducativo;
     }
-    
+
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
+
+    public String getNombreCompletoProfesor() {
+        return profesor.getNombre() + " " + profesor.getApellidoPaterno() + " " + profesor.getApellidoMaterno();
+    }    
+
+    public CheckBox getEsSeleccionado() {
+        return esSeleccionado;
+    }
+
+    public void setEsSeleccionado(CheckBox esSeleccionado) {
+        this.esSeleccionado = esSeleccionado;
+    }
+
+    public int getIdexperiencia_periodo_profesor() {
+        return idexperiencia_periodo_profesor;
+    }
+
+    public void setIdexperiencia_periodo_profesor(int idexperiencia_periodo_profesor) {
+        this.idexperiencia_periodo_profesor = idexperiencia_periodo_profesor;
+    }
+
     @Override
     public int hashCode() {
         int hash = 3;

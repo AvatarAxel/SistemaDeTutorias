@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="471.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="controllers.FXMLConsultarOfertaAcademicaController">
+   <children>
+      <Label layoutX="35.0" layoutY="62.0" text="Periodo Escolar">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="cbPeriodoEscolar" layoutX="165.0" layoutY="62.0" prefHeight="25.0" prefWidth="385.0" />
+      <Label fx:id="lbInstruccion2" layoutX="35.0" layoutY="97.0" text="Seleccione un Periodo Escolar para consultar la Oferta Academica" />
+      <Button layoutX="469.0" layoutY="428.0" mnemonicParsing="false" onAction="#clicButtonCancel" prefHeight="29.0" prefWidth="108.0" text="Cancelar" />
+      <Label layoutX="35.0" layoutY="21.0" text="Programa Educativo:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbProgramaEducativo" layoutX="217.0" layoutY="14.0" prefHeight="30.0" prefWidth="374.0" text="ssssssss" wrapText="true">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tbExperienciasEducativas" layoutX="35.0" layoutY="120.0" prefHeight="295.0" prefWidth="542.0">
+         <columns>
+            <TableColumn fx:id="ColumnNRC" editable="false" prefWidth="49.60003662109375" text="NRC" />
+            <TableColumn fx:id="ColumnNombre" editable="false" prefWidth="173.5999755859375" text="Nombre" />
+            <TableColumn fx:id="ColumnSeccion" editable="false" prefWidth="56.0" text="Sección " />
+            <TableColumn fx:id="ColumnModalidad" editable="false" prefWidth="71.199951171875" text="Modalidad " />
+            <TableColumn fx:id="ColumnProfesor" editable="false" prefWidth="195.20001220703125" text="Profesor" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>

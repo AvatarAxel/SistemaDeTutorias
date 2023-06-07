@@ -31,7 +31,7 @@ public class WindowManager {
         Stage currentStage = (Stage) window;
         currentStage.close();
     }
-    
+
     /*public static void NavigateToFloatingWindow(Window window, Object obj, String... arguments){
         WindowManager navigator = new WindowManager();
         navigator.showFloatingWindow(window, obj, arguments[0], arguments[1], arguments[2]);

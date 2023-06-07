@@ -211,5 +211,27 @@ public class ProfesorDAO implements IProfesorDAO {
         connection.close();
         return result;
     }
+    
+    public ArrayList<Profesor> getAllProfesores() throws SQLException {
+        ArrayList<Profesor> listProfesores = new ArrayList<>();
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if (connection != null) {
+            String query = ("SELECT * FROM profesores WHERE esRegistrado = 1");
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Profesor profesor = new Profesor();
+                profesor.setNumeroDePersonal(resultSet.getInt("numeroDePersonal"));
+                profesor.setNombre(resultSet.getString("nombre"));
+                profesor.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
+                profesor.setApellidoMaterno(resultSet.getString("apellidoMaterno"));
+                profesor.setCorreoElectronicoInstitucional(resultSet.getString("correoElectronicoInstitucional"));
+                listProfesores.add(profesor);
+            }
+        }
+        connection.close();
+        return listProfesores;
+    }    
 
 }

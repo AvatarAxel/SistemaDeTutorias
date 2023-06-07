@@ -27,6 +27,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
 
@@ -120,6 +121,7 @@ public class FXMLRegistrarOfertaAcademicaController implements Initializable {
                         "Menú");
             }
         } catch (SQLException ex) {
+            ex.printStackTrace();
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
         }
         

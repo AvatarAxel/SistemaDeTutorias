@@ -96,7 +96,7 @@ public class PeriodoEscolarDAO implements IPeriodoEscolarDAO {
         Connection connection = dataBaseConnection.getConnection();
 
         if (connection != null) {
-            String consulta = "SELECT * FROM sistema_tutorias.periodos_escolares;";
+            String consulta = "SELECT * FROM sistema_tutorias.periodos_escolares order by idPeriodoEscolar desc;";
             PreparedStatement statement = connection.prepareStatement(consulta);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
