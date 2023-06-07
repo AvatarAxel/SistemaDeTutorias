@@ -121,15 +121,14 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
 
         if (connection != null) {
             if (experienciaEducativa != null) {
-                String query = ("CALL actualizarExperiencias(?, ?, ?, ?, ?, ?, ?)");
+                String query = ("CALL actualizarExperiencias(?, ?, ?, ?, ?, ?)");
                 PreparedStatement statement = connection.prepareStatement(query);
                 statement.setString(1, experienciaEducativa.getNrc());
                 statement.setString(2, experienciaEducativa.getNombre());
                 statement.setString(3, experienciaEducativa.getSeccion());
                 statement.setString(4, experienciaEducativa.getModalidad());
                 statement.setString(5, experienciaEducativa.getClave());
-                statement.setString(6, experienciaEducativa.getClave());
-                statement.setInt(7, User.getCurrentUser().getPeriodoActual().getIdPeriodoEscolar());
+                statement.setInt(6, User.getCurrentUser().getPeriodoActual().getIdPeriodoEscolar());
 
                 int affectedRows = statement.executeUpdate();
                 result = (affectedRows >= 1) ? 1 : 0;

@@ -157,7 +157,7 @@ public class FXMLRegistrarExperienciaEducativaController implements Initializabl
         final String ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\\\\\]^_`{|}~]";
         tfNombre.setTextFormatter(new TextFormatter<String>(change -> {
             String newText = change.getControlNewText();
-            if (newText.matches("[" + ALLOWED_CHARACTERS + "]*")) {
+            if (newText.matches("[" + ALLOWED_CHARACTERS + " ]*")) {
                 return change;
             }
             return null;

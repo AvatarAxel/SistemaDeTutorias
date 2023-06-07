@@ -22,7 +22,7 @@ public class TutoriaAcademicaDAO implements ITutoriaAcademicaDAO {
 
         if (connection != null) {
             String query = ("SELECT * FROM tutorias_academicas");
-            PreparedStatement statement = connection.prepareStatement(query);            
+            PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 TutoriaAcademica tutoriaAcademica = new TutoriaAcademica();
@@ -48,7 +48,7 @@ public class TutoriaAcademicaDAO implements ITutoriaAcademicaDAO {
                     + "WHERE rta.numeroDePersonal = ? AND rta.clave= ?;");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, numeroPersonal);
-            statement.setString(2, clave);            
+            statement.setString(2, clave);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 TutoriaAcademica tutoriaAcademica = new TutoriaAcademica();
@@ -196,14 +196,12 @@ public class TutoriaAcademicaDAO implements ITutoriaAcademicaDAO {
         Connection connection = dataBaseConnection.getConnection();
 
         if (connection != null) {
-            String query = ("SELECT TA.idTutoriaAcademica, TA.clave, TA.fechaInicio, TA.fechaFin,\n"
-                    + "TA.numeroDeSesion, TA.idPeriodoEscolar, PE.fechaInicio, PE.fechaFin\n"
-                    + "FROM tutorias_academicas TA\n"
-                    + "INNER JOIN periodos_escolares PE ON TA.idPeriodoEscolar = PE.idPeriodoEscolar\n"
-                    + "WHERE PE.idPeriodoEscolar = ? AND TA.clave = ?;");
+            String query = ("SELECT TA.idTutoriaAcademica, TA.fechaInicio, TA.fechaFin, TA.numeroDeSesion, TA.idPeriodoEscolar \n"
+                    + "FROM tutorias_academicas TA \n"
+                    + "INNER JOIN periodos_escolares PE ON TA.idPeriodoEscolar = PE.idPeriodoEscolar \n"
+                    + "WHERE PE.idPeriodoEscolar = ?;");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, idPeriodo);
-            statement.setInt(2, Integer.parseInt(clave));
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
