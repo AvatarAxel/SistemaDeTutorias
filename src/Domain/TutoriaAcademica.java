@@ -31,8 +31,8 @@ public class TutoriaAcademica {
         this.reporteDeTutoriaAcademica = reporteDeTutoriaAcademica;
     }
 
-    public TutoriaAcademica(int i, Object object, Object object0, int i0, PeriodoEscolar periodoEscolar) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public TutoriaAcademica(PeriodoEscolar periodoEscolar) {
+        this.periodoEscolar = periodoEscolar;
     }
 
     public int getNumeroDeSesion() {

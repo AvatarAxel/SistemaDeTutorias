@@ -66,7 +66,7 @@ public class FXMLConsultarSolucionAProblematicaAcademicaController implements In
         tbProblematicas.setPlaceholder(noticeLabel);
         colDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));
         colNumeroAlumnos.setCellValueFactory(new PropertyValueFactory("numeroDeEstudiantesAfectados"));
-        colSolucion.setCellValueFactory(new PropertyValueFactory("solucion"));
+        colSolucion.setCellValueFactory(new PropertyValueFactory("solucionAProblematica"));
         listAllProblematicas = FXCollections.observableArrayList();
         listPeriodosEscolares = FXCollections.observableArrayList();
         listProblematicasa = FXCollections.observableArrayList();
@@ -87,6 +87,7 @@ public class FXMLConsultarSolucionAProblematicaAcademicaController implements In
             listAllProblematicas.addAll(loadedProblematicas);
             //tbProblematicas.setItems(listAllProblematicas);
         } catch (SQLException sqle) {
+            sqle.printStackTrace();
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
 

@@ -94,6 +94,7 @@ public class FXMLEditarFechasTutoriasController implements Initializable {
                     periodoEscolar.getIdPeriodoEscolar(),
                     User.getCurrentUser().getRol().getProgramaEducativo().getClave());
         } catch (SQLException ex) {
+            ex.printStackTrace();
             AlertManager.showAlert("Error", "No hay conexión con la base de datos. Inténtelo más tarde", Alert.AlertType.ERROR);
         }
     }

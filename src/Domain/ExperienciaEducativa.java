@@ -34,6 +34,7 @@ public class ExperienciaEducativa {
         this.profesor = profesor;
         this.esSeleccionado = esSeleccionado;
         this.idexperiencia_periodo_profesor = idexperiencia_periodo_profesor;
+        this.esSeleccionado = new CheckBox();
     }
 
     public ExperienciaEducativa(String nrc, String profesorNombre,String nombre) {
@@ -42,7 +43,13 @@ public class ExperienciaEducativa {
         this.nombre = nombre;
     }
 
-    public ExperienciaEducativa(String atribute, String atribute0, String atribute1, String atribute2, String atribute3) {
+    public ExperienciaEducativa(String nrc, String nombre, String seccion, String modalidad, String clave) {
+        this.nrc = nrc;
+        this.nombre = nombre;
+        this.seccion = seccion;
+        this.modalidad = modalidad;
+        this.clave = clave;
+        this.esSeleccionado = new CheckBox();
     }
 
     public String getProfesorNombre() {
