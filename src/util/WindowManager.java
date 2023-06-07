@@ -43,6 +43,7 @@ public class WindowManager {
             Scene menuScene = new Scene(FXMLLoader.load(getClass().getResource(windowPath)));
             primaryStage.setScene(menuScene);
             primaryStage.setTitle(windowTitle);
+            primaryStage.centerOnScreen();
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();

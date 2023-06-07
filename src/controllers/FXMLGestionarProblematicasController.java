@@ -37,6 +37,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
+import singleton.User;
+
 
 /**
  * FXML Controller class
@@ -467,11 +469,11 @@ public class FXMLGestionarProblematicasController implements Initializable {
         ProfesorDAO profesorDAO = new ProfesorDAO();
 
         try {
-            nombreExperiencias = experieniciasDAO.consultExperienciasName();
+            nombreExperiencias = experieniciasDAO.consultExperienciasName(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
             nombresProfesoresNrc = profesorDAO.consultProfesoresNames();
         } catch (SQLException ex) {
             alerts.showAlertErrorConexionDB();
-
+ 
         }
 
     }

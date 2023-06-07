@@ -28,6 +28,7 @@ public class SistemaDeTutorias extends Application {
         stage.setTitle("Inicio de Sesión");
         stage.centerOnScreen();
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
 
