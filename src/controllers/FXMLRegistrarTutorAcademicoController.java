@@ -159,7 +159,9 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
             boolean markRegistration = profesorDao.setTutorUser(tutorAcademico.getNumeroDePersonal());
             if (resultRegister && resultRolAssignment && markRegistration) {
                 AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
-                notifyTheNewUser(tutorAcademico.getCorreoElectronicoInstitucional(), randomPassword);                                                                
+                //Habilitar cuando se pueda enviar correo
+                //notifyTheNewUser(tutorAcademico.getCorreoElectronicoInstitucional(), randomPassword);                                                                
+                System.out.println(randomPassword);
             }
         } catch (SQLException e) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
@@ -179,7 +181,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
             @Override
             protected Void call() throws Exception {
                 EmailUtil email = new EmailUtil();
-                email.sendEmailNewUser(tutorEmail, randomPassword);
+                email.sendEmailNewUserOutlook(tutorEmail, randomPassword);
                 return null;
             }
         };
@@ -215,8 +217,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
 
     @FXML
     private void selectProfesor(MouseEvent event) {
-        if(!tableProfesor.getSelectionModel().isEmpty() 
-                && tableProfesor.getSelectionModel().getSelectedItem() != null){            
+        if (!tableProfesor.getSelectionModel().isEmpty() && tableProfesor.getSelectionModel().getSelectedItem() != null) {
             buttonRegister.setDisable(false);
         }
     }

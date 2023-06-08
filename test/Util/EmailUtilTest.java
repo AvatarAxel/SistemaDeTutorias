@@ -21,6 +21,6 @@ public class EmailUtilTest {
         EmailUtil emailUtil = new EmailUtil();
         String emailDestiner = "zs20015691@estudiantes.uv.mx";
         String newUserPassword = "temporalPassword";
-        emailUtil.sendEmailNewUser(emailDestiner, newUserPassword);
+        emailUtil.sendEmailNewUserOutlook(emailDestiner, newUserPassword);
     }
 }

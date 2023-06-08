@@ -269,5 +269,23 @@ public class UserDAO implements IUserDAO {
         connection.close();
         return result;
     }
+    
+    public boolean updatePassword(String contrasenia, String correoElectronicoInstitucional) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if (connection != null) {
+            String query = ("UPDATE `sistema_tutorias`.`usuarios` SET `contrasenia` = ? WHERE (`correoElectronicoInstitucional` = ?);");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, contrasenia);
+            statement.setString(2, correoElectronicoInstitucional);
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }    
 
 }
