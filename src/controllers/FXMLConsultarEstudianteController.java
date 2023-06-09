@@ -11,13 +11,10 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,6 +33,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
 
@@ -80,8 +78,6 @@ public class FXMLConsultarEstudianteController implements Initializable {
     }
 
     private void configureTableColumns() {
-        Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
-        tableEstudiantes.setPlaceholder(noticeLoadingTable);
         columMatricula.setCellValueFactory(new PropertyValueFactory("matricula"));
         columNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
         columApellidoPaterno.setCellValueFactory(new PropertyValueFactory("apellidoPaterno"));
@@ -90,31 +86,21 @@ public class FXMLConsultarEstudianteController implements Initializable {
     }
 
     private void loadInformationEstudiantes() {
-        ExecutorService executorService;
-        executorService = Executors.newFixedThreadPool(1);
-        Task loadInformationEstudiantesTask = new Task() {
-            @Override
-            protected Void call() throws Exception {
-                try {
-                    ArrayList<Estudiante> loadedListEstudiantes = new ArrayList<>();
-                    EstudianteDAO estudianteDAO = new EstudianteDAO();
-                    loadedListEstudiantes = estudianteDAO.getAllEstudiantes();
-                    if (!loadedListEstudiantes.isEmpty()) {
-                        listEstudiantes.clear();
-                        listEstudiantes.addAll(loadedListEstudiantes);
-                        tableEstudiantes.setItems(listEstudiantes);
-                    } else {
-                        Label noticeContentTable = new Label("Sin contenido...");
-                        tableEstudiantes.setPlaceholder(noticeContentTable);
-                    }
-                } catch (SQLException e) {
-                    AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
-                }
-                return null;
+        try {
+            ArrayList<Estudiante> loadedListEstudiantes = new ArrayList<>();
+            EstudianteDAO estudianteDAO = new EstudianteDAO();
+            loadedListEstudiantes = estudianteDAO.getAllEstudiantesInscribedByProgramaEducativo(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
+            if (!loadedListEstudiantes.isEmpty()) {
+                listEstudiantes.clear();
+                listEstudiantes.addAll(loadedListEstudiantes);
+                tableEstudiantes.setItems(listEstudiantes);
+            } else {
+                Label noticeContentTable = new Label("Sin coincidencias...");
+                tableEstudiantes.setPlaceholder(noticeContentTable);
             }
-        };
-        executorService.submit(loadInformationEstudiantesTask);
-        executorService.shutdown();
+        } catch (SQLException e) {
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
@@ -134,8 +120,7 @@ public class FXMLConsultarEstudianteController implements Initializable {
 
     @FXML
     private void selectEstudiante(MouseEvent event) {
-        if (!tableEstudiantes.getSelectionModel().isEmpty() 
-                && tableEstudiantes.getSelectionModel().getSelectedItem() != null) {
+        if (!tableEstudiantes.getSelectionModel().isEmpty() && tableEstudiantes.getSelectionModel().getSelectedItem() != null) {
             buttonEdit.setDisable(false);
             buttonDelete.setDisable(false);
         }
@@ -163,9 +148,10 @@ public class FXMLConsultarEstudianteController implements Initializable {
                 Stage escenarioEditarEstudiante = new Stage();
                 escenarioEditarEstudiante.setScene(esceneEditarEstudiante);
                 escenarioEditarEstudiante.initModality(Modality.APPLICATION_MODAL);
-                escenarioEditarEstudiante.show();
+                escenarioEditarEstudiante.showAndWait();
                 tableEstudiantes.getSelectionModel().clearSelection();  
                 textFieldSearchEstudiantes.clear();
+                tableEstudiantes.refresh();                
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

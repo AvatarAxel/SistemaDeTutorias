@@ -26,7 +26,7 @@ public class UserDAO implements IUserDAO {
             String query = ("SELECT U.correoElectronicoInstitucional, U.Nombre, U.ApellidoPaterno, U.ApellidoMaterno, U.numeroDePersonal "
                     + "FROM usuarios U "
                     + "WHERE U.correoElectronicoInstitucional = ? "
-                    + "AND U.contrasenia = ?;");
+                    + "AND U.contrasenia = ? and esRegistrado = 1;");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, correo);
             statement.setString(2, sha512.getSHA512(contrasena));
@@ -123,12 +123,10 @@ public class UserDAO implements IUserDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            String query = "SELECT DISTINCT u.numeroDePersonal, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.esRegistrado, u.correoElectronicoInstitucional\n"
+            String query = "SELECT DISTINCT u.numeroDePersonal, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.correoElectronicoInstitucional\n"
                     + "FROM usuarios u\n"
-                    + "INNER JOIN roles_usuarios_programa_educativo rup\n"
-                    + "ON u.numeroDePersonal = rup.numeroDePersonal\n"
-                    + "INNER JOIN programas_educativos pe ON pe.clave = rup.clave"
-                    + "WHERE rup.clave = ? and u.esRegistrado = 1 and pe.activo = 1;;";
+                    + "INNER JOIN roles_usuarios_programa_educativo r ON u.numeroDePersonal = r.numeroDePersonal\n"
+                    + "WHERE r.clave = ? AND u.esRegistrado = 1;";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, clave);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -253,7 +251,9 @@ public class UserDAO implements IUserDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            String query = "SELECT COUNT(*) FROM `sistema_tutorias`.`usuarios` WHERE `correoElectronicoInstitucional` = ?";
+            String query = "SELECT * FROM usuarios\n"
+                    + "WHERE correoElectronicoInstitucional = ?\n"
+                    + "AND esRegistrado = 1;";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, correoElectronicoInstitucional);
             ResultSet resultSet = statement.executeQuery();

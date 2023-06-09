@@ -117,14 +117,13 @@ public class FXMLReporteGeneralController implements Initializable {
 
     private void loadInformationProblematicas() {
         try {
-            ProblematicaAcademicaDAO problematicaAcademicaDao = new ProblematicaAcademicaDAO();
-            ArrayList<ProblematicaAcademica> listProblematicasRecived = new ArrayList<>();
+            ProblematicaAcademicaDAO problematicaAcademicaDao = new ProblematicaAcademicaDAO();            
             listProblematicasAcademicas.clear();
             for (int i = 0; i < listReportesDeTutoria.size(); i++) {
-                listProblematicasRecived = problematicaAcademicaDao.getAllProblematicasByReporte(listReportesDeTutoria.get(i).getIdReporteTutoria());
-                if (!listProblematicasRecived.isEmpty()) {
+                ArrayList<ProblematicaAcademica> listProblematicasRecived = problematicaAcademicaDao.getAllProblematicasByReporte(listReportesDeTutoria.get(i).getIdReporteTutoria());
+                //if (!listProblematicasRecived.isEmpty()) {
                     listProblematicasAcademicas.addAll(listProblematicasRecived);
-                }
+                //}
             }
             tableProblematicasTutorias.setItems(listProblematicasAcademicas);
         } catch (SQLException sqle) {

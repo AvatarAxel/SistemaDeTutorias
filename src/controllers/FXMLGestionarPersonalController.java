@@ -17,8 +17,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.application.Platform;
@@ -26,7 +24,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -41,6 +38,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import singleton.User;
 import util.AlertManager;
 import util.WindowManager;
 
@@ -91,14 +89,13 @@ public class FXMLGestionarPersonalController implements Initializable {
     private Label labelInvalidateApellidoMaterno;
     @FXML
     private Label labelInvalidateCorreo;
-    @FXML
-    private CheckBox checkBoxTutor;
     private ObservableList<PersonalUser> listPersonal;
     private boolean[] validationTextFields = {true, true, true, true, true};
     private Pattern validateCharacter = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$");
     private Pattern validateCharacterEmail = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     private PersonalUser personalUserSelected;
-    private int deleteProfesor;
+    @FXML
+    private CheckBox checkBoxAdministrador;
 
     /**
      * Initializes the controller class.
@@ -118,14 +115,13 @@ public class FXMLGestionarPersonalController implements Initializable {
         textApellidoMaterno.setDisable(true);
         textCorreo.setDisable(true);
         textNombre.setDisable(true);
-        buttonRegister.setVisible(false);
-        checkBoxTutor.setVisible(false);
-        loadInformationPersonalUsuarios();
+        buttonRegister.setVisible(true);
         loadInformationPersonalProfesores();        
+        loadInformationPersonalUsuarios();        
     }
 
     private void configureTableColumns() {
-        Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
+        Label noticeLoadingTable = new Label("Sin coincidencias...");
         tablePersonal.setPlaceholder(noticeLoadingTable);
         columNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
         columNumeroDePersonal.setCellValueFactory(new PropertyValueFactory("numeroDePersonal"));
@@ -136,99 +132,70 @@ public class FXMLGestionarPersonalController implements Initializable {
     }
 
     private void loadInformationPersonalProfesores() {
-        ExecutorService executorService;
-        executorService = Executors.newFixedThreadPool(1);
-        Task loadInformationPersonalTask = new Task() {
-            @Override
-            protected Void call() throws Exception {
-                ProfesorDAO profesorDAO = new ProfesorDAO();
-                try {
-                    ArrayList<Profesor> loadedProfesor = profesorDAO.getProfesoresNoUser();
-                    ArrayList<PersonalUser> listUsuarios = new ArrayList<>();
-                    if (!loadedProfesor.isEmpty()) {
-                        for (int i = 0; i < loadedProfesor.size(); i++) {
-                            Personal usuario = new Profesor();
-                            usuario.setNombre(loadedProfesor.get(i).getNombre());
-                            usuario.setApellidoPaterno(loadedProfesor.get(i).getApellidoPaterno());
-                            usuario.setApellidoMaterno(loadedProfesor.get(i).getApellidoMaterno());
-                            usuario.setNumeroDePersonal(loadedProfesor.get(i).getNumeroDePersonal());
-                            usuario.setCorreoElectronicoInstitucional(loadedProfesor.get(i).getCorreoElectronicoInstitucional());
-                            PersonalUser personalUser = new PersonalUser();
-                            ArrayList<Rol> listRoles = new ArrayList<>();
-                            listRoles.add(new Rol(0, "Profesor"));
-                            personalUser.setRol(listRoles);
-                            personalUser.setPersonal(usuario);
-                            listUsuarios.add(personalUser);
-                        }
-                        listPersonal.addAll(listUsuarios);
-                        tablePersonal.setItems(listPersonal);
-                    }
-                    Platform.runLater(() -> {
-                        Label noticeLoadingTable = new Label("Sin contenido...");
-                        tablePersonal.setPlaceholder(noticeLoadingTable);
-                    });
-                } catch (SQLException sqle) {
-                    AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+        ProfesorDAO profesorDAO = new ProfesorDAO();
+        try {
+            ArrayList<Profesor> loadedProfesor = profesorDAO.getProfesoresNoUser();
+            ArrayList<PersonalUser> listUsuarios = new ArrayList<>();
+            if (!loadedProfesor.isEmpty()) {
+                for (int i = 0; i < loadedProfesor.size(); i++) {
+                    Personal usuario = new Profesor();
+                    usuario.setNombre(loadedProfesor.get(i).getNombre());
+                    usuario.setApellidoPaterno(loadedProfesor.get(i).getApellidoPaterno());
+                    usuario.setApellidoMaterno(loadedProfesor.get(i).getApellidoMaterno());
+                    usuario.setNumeroDePersonal(loadedProfesor.get(i).getNumeroDePersonal());
+                    usuario.setCorreoElectronicoInstitucional(loadedProfesor.get(i).getCorreoElectronicoInstitucional());
+                    PersonalUser personalUser = new PersonalUser();
+                    ArrayList<Rol> listRoles = new ArrayList<>();
+                    listRoles.add(new Rol(0, "Profesor"));
+                    personalUser.setRol(listRoles);
+                    personalUser.setPersonal(usuario);
+                    listUsuarios.add(personalUser);
                 }
-                return null;
+                listPersonal.addAll(listUsuarios);
+                tablePersonal.setItems(listPersonal);
             }
-        };
-        executorService.submit(loadInformationPersonalTask);
-        executorService.shutdown();
+        } catch (SQLException sqle) {
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+        }
     }
 
     private void loadInformationPersonalUsuarios() {
-        ExecutorService executorService;
-        executorService = Executors.newFixedThreadPool(1);
-        Task loadInformationPersonalUsuarioTask = new Task() {
-            @Override
-            protected Void call() throws Exception {
-                UserDAO userDAO = new UserDAO();
-                try {
-                    ArrayList<Usuario> loadedPersonal = userDAO.getAllUsersByProgramaEducativo("14203");
-                    if (!loadedPersonal.isEmpty()) {
-                        for (int i = 0; i < loadedPersonal.size(); i++) {
-                            PersonalUser personalUser = new PersonalUser();
-                            personalUser.setPersonal(loadedPersonal.get(i));
-                            int numeroDePersonal = loadedPersonal.get(i).getNumeroDePersonal();
-                            personalUser.setRol(userDAO.getAllUserRolesByNumeroDePersonal(numeroDePersonal, "14203"));
-                            tablePersonal.getItems().add(personalUser);
-                        }
-                        textFieldSearchPersonal.setDisable(false);
-                    }
-                    Platform.runLater(() -> {
-                        Label noticeLoadingTable = new Label("Sin contenido...");
-                        tablePersonal.setPlaceholder(noticeLoadingTable);
-                    });
-                } catch (SQLException sqle) {
-                    AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+        UserDAO userDAO = new UserDAO();
+        try {
+            ArrayList<Usuario> loadedPersonal = userDAO.getAllUsersByProgramaEducativo(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
+            if (!loadedPersonal.isEmpty()) {
+                for (int i = 0; i < loadedPersonal.size(); i++) {
+                    PersonalUser personalUser = new PersonalUser();
+                    personalUser.setPersonal(loadedPersonal.get(i));
+                    int numeroDePersonal = loadedPersonal.get(i).getNumeroDePersonal();
+                    personalUser.setRol(userDAO.getAllUserRolesByNumeroDePersonal(numeroDePersonal, User.getCurrentUser().getRol().getProgramaEducativo().getClave()));
+                    tablePersonal.getItems().add(personalUser);
                 }
-                return null;
+                textFieldSearchPersonal.setDisable(false);
             }
-        };
-        executorService.submit(loadInformationPersonalUsuarioTask);
-        executorService.shutdown();
+        } catch (SQLException sqle) {
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+        }
     }
 
-    private void deletePersonal(int estatusPersonal) {
+    private void deletePersonal() {
         try {
             boolean resulDeleteProfesor = false;
             boolean resultDeleteUsuario = false;
+            PersonalUser personalUser = personalUserSelected;
             if (personalUserSelected.getRoles().get(0).getRolName().equals("Profesor")) {
-                resulDeleteProfesor = new ProfesorDAO().deleteProfesor(personalUserSelected.getNumeroDePersonal(), 0);
+                resulDeleteProfesor = new ProfesorDAO().deleteProfesor(personalUserSelected.getNumeroDePersonal());
                 resultDeleteUsuario = true;
             } else {
-                resulDeleteProfesor = new ProfesorDAO().deleteProfesor(personalUserSelected.getNumeroDePersonal(), deleteProfesor);
+                resulDeleteProfesor = new ProfesorDAO().deleteProfesor(personalUserSelected.getNumeroDePersonal());
                 resultDeleteUsuario = new UserDAO().deleteUsuario(personalUserSelected.getNumeroDePersonal());
-            }
+            }            
             if (resulDeleteProfesor && resultDeleteUsuario) {
                 AlertManager.showTemporalAlert(" ", "Acción realizada con éxito", 2);
-                tablePersonal.getSelectionModel().clearSelection();
-                tablePersonal.getItems().remove(personalUserSelected);
+                listPersonal.remove(personalUser);                
             }
         } catch (SQLException e) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
-            e.printStackTrace();
         } finally {
             clearFields();
             textFieldSearchPersonal.clear();
@@ -238,7 +205,7 @@ public class FXMLGestionarPersonalController implements Initializable {
     @FXML
     private void buttonActionDelete(ActionEvent event) {
         if (personalUserSelected != null) {
-            AlertManager.showTemporalAlert("Aviso", "Estimado usuario, estamos trabajando en ello, vuelva pronto", 3);
+            deletePersonal();
         }
     }
 
@@ -249,7 +216,11 @@ public class FXMLGestionarPersonalController implements Initializable {
 
     @FXML
     private void buttonActionRegister(ActionEvent event) {
-        //TODO
+        WindowManager.NavigateToWindow(
+                labelInvalidateNombre.getScene().getWindow(),
+                "/GUI/FXMLRegistrarProfesor.fxml",
+                "Registrar Profesor"
+        );
     }
 
     @FXML
@@ -271,7 +242,6 @@ public class FXMLGestionarPersonalController implements Initializable {
     private void selectPersonal(MouseEvent event) {
         clearFields();
         disableCheckbox();
-        uncheckBox();
         if (!tablePersonal.getSelectionModel().isEmpty() && tablePersonal.getSelectionModel().getSelectedItem() != null) {
             personalUserSelected = tablePersonal.getSelectionModel().getSelectedItem();
             buttonDelete.setDisable(false);
@@ -418,8 +388,8 @@ public class FXMLGestionarPersonalController implements Initializable {
                     usuario.setCorreoElectronicoInstitucional(textCorreo.getText());
                     usuario.setNumeroDePersonal(personalUserSelected.getNumeroDePersonal());
                     resultUpdateUsuario = new UserDAO().updateUsuario(usuario);
-                    deleteRoles(personalUserSelected);
                     saveRoles(personalUserSelected);
+                    deleteRoles(personalUserSelected);
                 }
                 if (resultUpdateProfesor || resultUpdateUsuario) {
                     AlertManager.showTemporalAlert(" ", "Acción realizada con éxito", 2);
@@ -427,7 +397,6 @@ public class FXMLGestionarPersonalController implements Initializable {
                 }
             } catch (SQLException e) {
                 AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
-                e.printStackTrace();
             } finally {
                 clearFields();
                 textFieldSearchPersonal.clear();
@@ -459,14 +428,13 @@ public class FXMLGestionarPersonalController implements Initializable {
                             usuario.getRoles().remove(rol);
                         }
                         break;
-                    case "Tutor":
-                        if (!checkBoxTutor.isSelected()) {
+                    case "Administrador":
+                        if (!checkBoxAdministrador.isSelected()) {
                             new UserDAO().deleteRol(usuario.getNumeroDePersonal(), rol);
                             usuario.getRoles().remove(rol);
                         }
                         break;
                     default:
-                        uncheckBox();
                         break;
                 }
             }
@@ -480,7 +448,7 @@ public class FXMLGestionarPersonalController implements Initializable {
         try {
             ArrayList<String> rolesString = new ArrayList<>();
             Rol rol = new Rol();
-            rol.setProgramaEducativo(new ProgramaEducativo("14203", ""));
+            rol.setProgramaEducativo(new ProgramaEducativo(User.getCurrentUser().getRol().getProgramaEducativo().getClave(), User.getCurrentUser().getRol().getProgramaEducativo().getNombre()));
             for (int i = 0; i < usuario.getRoles().size(); i++) {
                 rolesString.add(usuario.getRoles().get(i).getRolName());
             }
@@ -500,17 +468,16 @@ public class FXMLGestionarPersonalController implements Initializable {
                     usuario.getRoles().add(rol);
                 }
             }
-            if (checkBoxTutor.isSelected()) {
-                if (!rolesString.contains("Tutor")) {
-                    rol.setIdRol(3);
-                    rol.setRolName("Tutor");
+            if (checkBoxAdministrador.isSelected()) {
+                if (!rolesString.contains("Administrador")) {
+                    rol.setIdRol(4);
+                    rol.setRolName("Administrador");
                     new UserDAO().registerRol(usuario.getNumeroDePersonal(), rol);
                     usuario.getRoles().add(rol);
                 }
             }
         } catch (SQLException e) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
-            e.printStackTrace();
         }
     }
 
@@ -542,37 +509,36 @@ public class FXMLGestionarPersonalController implements Initializable {
     }
     
     private void loadCheckBox(PersonalUser usuario) {
-        checkBoxTutor.setDisable(false);
+        checkBoxAdministrador.setDisable(false);
         checkBoxJefe.setDisable(false);
         checkBoxCoordinador.setDisable(false);
         uncheckBox();
         for (int i = 0; i < usuario.getRoles().size(); i++) {
-            String rol = usuario.getRoles().get(i).getRolName();
+            int rol = usuario.getRoles().get(i).getIdRol();
             switch (rol) {
-                case "Jefe de Carrera":
+                case 1:
                     checkBoxJefe.setSelected(true);
                     break;
-                case "Coordinador":
+                case 2:
                     checkBoxCoordinador.setSelected(true);
                     break;
-                case "Tutor":
-                    checkBoxTutor.setSelected(true);
+                case 4:
+                    checkBoxAdministrador.setSelected(true);
                     break;
                 default:
-                    uncheckBox();
                     break;
             }
         }
     }
 
     private void disableCheckbox() {
-        checkBoxTutor.setDisable(true);
+        checkBoxAdministrador.setDisable(true);
         checkBoxJefe.setDisable(true);
         checkBoxCoordinador.setDisable(true);
     }
 
     private void uncheckBox() {
-        checkBoxTutor.setSelected(false);
+        checkBoxAdministrador.setSelected(false);
         checkBoxJefe.setSelected(false);
         checkBoxCoordinador.setSelected(false);
     }

@@ -85,6 +85,8 @@ public class FXMLMainMenuController implements Initializable {
     private MenuItem miConsultOffer;
     @FXML
     private Menu menuProgramaEducativo;
+    @FXML
+    private Menu menuPersonal;
 
 
     /**
@@ -227,6 +229,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuRegistros.setVisible(false);
                 menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(true);
+                menuPersonal.setVisible(false);
                 
                 //MENU REPORTE TUTORIA
                 menuReporteTutorial.setVisible(true);
@@ -251,6 +254,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuRegistros.setVisible(true);
                 menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(true);
+                menuPersonal.setVisible(true);
                 
                 //MENU REPORTE TUTORIA
                 menuReporteTutorial.setVisible(true);
@@ -274,6 +278,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuRegistros.setVisible(false);
                 menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(false);
+                menuPersonal.setVisible(false);
                 
                 //MENU REPORTE TUTORIA
                 menuReporteTutorial.setVisible(true);
@@ -296,6 +301,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuRegistros.setVisible(true);
                 menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(true);
+                menuPersonal.setVisible(true);
                 
                 //MENU REPORTE TUTORIA
                 menuReporteTutorial.setVisible(true);
@@ -322,6 +328,7 @@ public class FXMLMainMenuController implements Initializable {
                 menuSolucionProblematicas.setVisible(false);
                 menuEstudiantes.setVisible(false);
                 menuProgramaEducativo.setVisible(false);
+                menuPersonal.setVisible(false);
                 break;
         }
     }
@@ -562,6 +569,15 @@ public class FXMLMainMenuController implements Initializable {
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLAsignarExperienciaEducativaAProfesor.fxml",
                 "Asignar Experiencia Educativa A Profesor"
+        );
+    }
+
+    @FXML
+    private void menuItemGestionarPersonalOnAction(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLGestionarPersonal.fxml",
+                "Gestionar Personal"
         );
     }
 

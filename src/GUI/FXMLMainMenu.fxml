@@ -11,9 +11,9 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="1213.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="1249.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
    <children>
-      <MenuBar fx:id="mbMainMenu" prefHeight="29.0" prefWidth="1213.0">
+      <MenuBar fx:id="mbMainMenu" prefHeight="29.0" prefWidth="1249.0">
         <menus>
           <Menu fx:id="menuReportes" mnemonicParsing="false" text="Reportes">
             <items>
@@ -92,6 +92,11 @@
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#menuItemGestionarEstudiantesOnAction" text="Gestionar Estudiantes" />
               </items>
+            </Menu>
+            <Menu fx:id="menuPersonal" mnemonicParsing="false" text="Personal">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#menuItemGestionarPersonalOnAction" text="Gestionar Personal" />
+               </items>
             </Menu>
         </menus>
       </MenuBar>
