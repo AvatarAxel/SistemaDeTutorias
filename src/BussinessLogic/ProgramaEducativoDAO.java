@@ -86,9 +86,8 @@ public class ProgramaEducativoDAO implements IProgramaEducativoDAO {
         Connection connection = dataBaseConnection.getConnection();
         if(connection!=null){
             String querySet = "SELECT COUNT(*) AS num_ocurrencias\n" +
-                "FROM programas_educativos pe\n" +
-                "LEFT JOIN roles_usuarios_programa_educativo rupe ON pe.clave = rupe.clave\n" +
-                "WHERE pe.clave = ?;";                 
+                "FROM roles_usuarios_programa_educativo\n" +
+                "WHERE clave = ?;";                 
             PreparedStatement statementSet = connection.prepareStatement(querySet);
             statementSet.setString(1, programaEducativo.getClave());                   
             ResultSet resultSet = statementSet.executeQuery();
@@ -162,17 +161,9 @@ public class ProgramaEducativoDAO implements IProgramaEducativoDAO {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, programaEducativo.getClave());
             int resultSubInsert = subStatement.executeUpdate(); 
-            System.out.println("resultSubInsert="+resultSubInsert);
-
             if (resultSubInsert > 0) {
-                            System.out.println("resultSubInsert="+resultSubInsert);
-
                 int resultInsert = statement.executeUpdate();
-                                                System.out.println("resultInsert="+resultInsert);
-
                 if (resultInsert > 0) {
-                                System.out.println("resultInsert="+resultInsert);
-
                     result = true;
                 }
             }            
