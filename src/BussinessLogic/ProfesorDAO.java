@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -231,6 +232,61 @@ public class ProfesorDAO implements IProfesorDAO {
         }
         connection.close();
         return listProfesores;
+    }    
+    
+    
+    public ArrayList<ArrayList<Profesor>> getRegistradosYNoRegistrados() throws SQLException {
+        ArrayList<ArrayList<Profesor>> profesores =new ArrayList<>();
+        ArrayList<Profesor> profesoresRegistrados = new ArrayList<>();
+        ArrayList<Profesor> profesoresNoRegistrados = new ArrayList<>();        
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if (connection != null) {
+            String consulta = "SELECT p.numeroDePersonal, p.nombre, p.apellidoPaterno, p.apellidoMaterno, p.esUsuario, p.correoElectronicoInstitucional\n" +
+            "FROM profesores p\n" +
+            "WHERE p.numeroDePersonal NOT IN (\n" +
+            "    SELECT r.numeroDePersonal\n" +
+            "    FROM roles_usuarios_programa_educativo r\n" +
+            "    WHERE r.idRol = 2)";
+            PreparedStatement configurarConsulta = connection.prepareStatement(consulta);
+            ResultSet resultado = configurarConsulta.executeQuery();
+            while (resultado.next()) {
+                Profesor profesor = new Profesor();
+                profesor.setNumeroDePersonal(resultado.getInt("numeroDePersonal"));                
+                profesor.setNombre(resultado.getString("nombre"));
+                profesor.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+                profesor.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+                profesor.setCorreoElectronicoInstitucional(resultado.getString("correoElectronicoInstitucional"));                
+                if(resultado.getInt("esUsuario")== 1){
+                    profesoresRegistrados.add(profesor);
+                }else{
+                    profesoresNoRegistrados.add(profesor);
+                }
+            }
+            profesores.add(profesoresRegistrados);
+            profesores.add(profesoresNoRegistrados);
+            connection.close();
+        }
+        return profesores;
+    }    
+    
+    //**************************************
+    public boolean setCoordiadorUser(int numeroDePersonal) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String query = ("UPDATE `profesores` SET `esUsuario` = '1' WHERE (`numeroDePersonal` = ?);");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, numeroDePersonal);
+            int resultInsert = statement.executeUpdate();
+            if (resultInsert > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
     }    
 
 }

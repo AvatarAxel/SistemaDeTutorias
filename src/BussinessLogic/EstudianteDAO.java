@@ -121,17 +121,10 @@ public class EstudianteDAO {
                    }
                    estudiantes.add(estudiante);
                }
-               if(estudiantes.size() == 0){
-                    estudiantes = null;               
-               }
-            }else{
-                estudiantes = null;
             }
-
             connection.close();        
-        } else {
-            estudiantes = null;            
         }
+        System.out.println("IsEmpty:"+estudiantes.isEmpty());
         return estudiantes;    
     }
     

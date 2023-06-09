@@ -29,9 +29,9 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="lbProgramaEducativo" layoutX="211.0" layoutY="20.0" prefHeight="30.0" prefWidth="374.0" text="ssssssss" wrapText="true">
+      <Label fx:id="lbProgramaEducativo" layoutX="211.0" layoutY="25.0" prefHeight="30.0" prefWidth="374.0" text="ssssssss" wrapText="true">
          <font>
-            <Font size="27.0" />
+            <Font size="13.0" />
          </font>
       </Label>
    </children>

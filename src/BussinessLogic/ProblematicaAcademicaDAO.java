@@ -322,6 +322,8 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
             }
         }
         connection.close();
+        System.out.println("IsEmpty:"+listProblematicaAcademica.isEmpty());
+        
         return listProblematicaAcademica;
     }
 
