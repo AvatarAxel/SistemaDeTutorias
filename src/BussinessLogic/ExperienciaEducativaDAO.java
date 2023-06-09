@@ -121,15 +121,14 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
 
         if (connection != null) {
             if (experienciaEducativa != null) {
-                String query = ("CALL actualizarExperiencias(?, ?, ?, ?, ?, ?, ?)");
+                String query = ("CALL actualizarExperiencias(?, ?, ?, ?, ?, ?)");
                 PreparedStatement statement = connection.prepareStatement(query);
                 statement.setString(1, experienciaEducativa.getNrc());
                 statement.setString(2, experienciaEducativa.getNombre());
                 statement.setString(3, experienciaEducativa.getSeccion());
                 statement.setString(4, experienciaEducativa.getModalidad());
                 statement.setString(5, experienciaEducativa.getClave());
-                statement.setString(6, experienciaEducativa.getClave());
-                statement.setInt(7, User.getCurrentUser().getPeriodoActual().getIdPeriodoEscolar());
+                statement.setInt(6, User.getCurrentUser().getPeriodoActual().getIdPeriodoEscolar());
 
                 int affectedRows = statement.executeUpdate();
                 result = (affectedRows >= 1) ? 1 : 0;
@@ -225,8 +224,6 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            System.out.println("clave: " + clave);
-            System.out.println("id periodo: " + idPeriodoEscolar);
             String query = ("SELECT epp.*, ee.nombre AS nombre_experiencia, p.nombre, p.apellidoPaterno, p.apellidoMaterno\n"
                     + "FROM experiencias_periodos_profesores AS epp\n"
                     + "LEFT JOIN experiencias_educativas AS ee ON epp.nrc = ee.nrc\n"

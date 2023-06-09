@@ -6,26 +6,28 @@ package controllers;
 
 import BussinessLogic.ExperienciaEducativaDAO;
 import BussinessLogic.ProfesorDAO;
-import BussinessLogic.ReporteDeTutoriaAcademicaDAO;
 import Domain.ExperienciaEducativa;
-import Domain.ProblematicaAcademica;
 import Domain.Profesor;
-import Domain.ReporteDeTutoriaAcademica;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import singleton.User;
 import util.AlertManager;
@@ -62,6 +64,10 @@ public class FXMLAsignarExperienciaEducativaAProfesorController implements Initi
     private ObservableList<Profesor> listProfesor;
     @FXML
     private Button buttonAsignar;
+    @FXML
+    private TextField textFieldSearchProfesores;
+    @FXML
+    private ToggleGroup radioButtonGroup;
 
     /**
      * Initializes the controller class.
@@ -72,7 +78,7 @@ public class FXMLAsignarExperienciaEducativaAProfesorController implements Initi
         configureTableProfesores();
         loadInformationProfesores();
         loadInformationExperienciasEducativas();
-        buttonAsignar.setDisable(true);        
+        buttonAsignar.setDisable(true);
     }
 
     private void configureTableExperienciaEducativa() {
@@ -94,16 +100,15 @@ public class FXMLAsignarExperienciaEducativaAProfesorController implements Initi
     private void loadInformationExperienciasEducativas() {
         ExperienciaEducativaDAO experienciaEducativaDAO = new ExperienciaEducativaDAO();
         try {
-            ArrayList<ExperienciaEducativa> loadedExperienciasEducativas = experienciaEducativaDAO.getAllCurrentExperienciaEducativaByPeriodo(User.getCurrentUser().getRol().getProgramaEducativo().getClave() , User.getCurrentUser().getPeriodoActual().getIdPeriodoEscolar());
+            ArrayList<ExperienciaEducativa> loadedExperienciasEducativas = experienciaEducativaDAO.getAllCurrentExperienciaEducativaByPeriodo(User.getCurrentUser().getRol().getProgramaEducativo().getClave(), User.getCurrentUser().getPeriodoActual().getIdPeriodoEscolar());
             listExperienciasEducativas.clear();
             listExperienciasEducativas.addAll(loadedExperienciasEducativas);
             tableExperienciasEducativas.setItems(listExperienciasEducativas);
         } catch (SQLException sqle) {
-            //AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
-            sqle.printStackTrace();
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
-    
+
     private void loadInformationProfesores() {
         ProfesorDAO ProfesorDAO = new ProfesorDAO();
         try {
@@ -118,24 +123,25 @@ public class FXMLAsignarExperienciaEducativaAProfesorController implements Initi
 
     @FXML
     private void buttonActionAsignar(ActionEvent event) {
-        for (int i = 0; i < listExperienciasEducativas.size(); i++) {
+        for (int i = 0; i < tableProfesor.getItems().size(); i++) {
             ExperienciaEducativa experienciaEducativa = tableExperienciasEducativas.getItems().get(i);
             if (experienciaEducativa.getEsSeleccionado().isSelected()) {
                 try {
                     Profesor profesor = tableProfesor.getSelectionModel().getSelectedItem();
                     boolean result = new ExperienciaEducativaDAO().assignProfesorToExperienciaEducativa(profesor, experienciaEducativa, User.getCurrentUser().getRol().getProgramaEducativo().getClave());
                     if (result) {
-                        AlertManager.showTemporalAlert(" ", profesor.getNombreCompleto()+" se pudo asignar exitosamentete a: "+experienciaEducativa.getNombreCompletoProfesor(), 2);                        
-                    }else{
-                        AlertManager.showTemporalAlert(" ", experienciaEducativa.getNombre()+" no se pudo asignar al profesor: "+profesor.getNombreCompleto(), 2);
-                    }                    
+                        AlertManager.showTemporalAlert(" ", profesor.getNombreCompleto() + " se pudo asignar exitosamentete a: " + experienciaEducativa.getNombreCompletoProfesor(), 2);
+                    } else {
+                        AlertManager.showTemporalAlert(" ", experienciaEducativa.getNombre() + " no se pudo asignar al profesor: " + profesor.getNombreCompleto(), 2);
+                    }
                 } catch (Exception e) {
                     AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+                } finally {
+                    loadInformationExperienciasEducativas();
                 }
             }
         }
-        loadInformationExperienciasEducativas();
-        buttonAsignar.setDisable(false);
+        buttonAsignar.setDisable(true);
         tableProfesor.getSelectionModel().clearSelection();
     }
 
@@ -149,6 +155,83 @@ public class FXMLAsignarExperienciaEducativaAProfesorController implements Initi
         if (!tableProfesor.getSelectionModel().isEmpty() && tableProfesor.getSelectionModel().getSelectedItem() != null) {
             buttonAsignar.setDisable(false);
         }
+    }
+
+    private boolean validateSelectionTableItem() {
+        boolean result = false;
+        for (int i = 0; i < tableExperienciasEducativas.getItems().size(); i++) {
+            /*if(tableExperienciasEducativas.getItems().get(i).getEsSeleccionado().  ){
+            }*/
+        }
+        return result;
+    }
+
+    @FXML
+    private void validateLengthProfesor(KeyEvent event) {
+        filterTable();
+        textFieldSearchProfesores.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().length() <= 30) {
+                return change;
+            } else {
+                return null;
+            }
+        }));
+        if (textFieldSearchProfesores.getText().length() > 30) {
+            textFieldSearchProfesores.setText("");
+        }
+    }
+
+    private void filterTable() {
+        FilteredList<Profesor> filteredProfesor = new FilteredList<>(listProfesor, b -> true);
+        textFieldSearchProfesores.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredProfesor.setPredicate(profesor -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String inputText = newValue.toLowerCase();
+                if (profesor.getNombre().toLowerCase().indexOf(inputText) != -1) {
+                    return true;
+                } else if (profesor.getApellidoPaterno().toLowerCase().indexOf(inputText) != -1) {
+                    return true;
+                } else if (String.valueOf(profesor.getNumeroDePersonal()).indexOf(inputText) != -1) {
+                    return true;
+                } else if (profesor.getApellidoMaterno().toLowerCase().indexOf(inputText) != -1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        });
+        SortedList<Profesor> sortedListProfesor = new SortedList<>(filteredProfesor);
+        sortedListProfesor.comparatorProperty().bind(tableProfesor.comparatorProperty());
+        tableProfesor.setItems(sortedListProfesor);
+    }
+
+    @FXML
+    private void whitProfesorAction(MouseEvent event) {
+        ObservableList<ExperienciaEducativa> filteredList = FXCollections.observableArrayList();
+        for (ExperienciaEducativa experiencia : listExperienciasEducativas) {
+            if (!experiencia.getNombreCompletoProfesor().trim().equals("Sin Asignar")) {
+                filteredList.add(experiencia);
+            }
+        }
+        tableExperienciasEducativas.setItems(filteredList);
+    }
+
+    @FXML
+    private void whitoutProfesorAction(MouseEvent event) {
+        ObservableList<ExperienciaEducativa> filteredList = FXCollections.observableArrayList();
+        for (ExperienciaEducativa experiencia : listExperienciasEducativas) {
+            if (experiencia.getNombreCompletoProfesor().trim().equals("Sin Asignar")) {
+                filteredList.add(experiencia);
+            }
+        }
+        tableExperienciasEducativas.setItems(filteredList);
+    }
+
+    @FXML
+    private void allExperienciasEducativas(MouseEvent event) {
+        tableExperienciasEducativas.setItems(listExperienciasEducativas);
     }
 
 }

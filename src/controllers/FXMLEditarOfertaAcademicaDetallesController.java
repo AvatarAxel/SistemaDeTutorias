@@ -37,19 +37,19 @@ public class FXMLEditarOfertaAcademicaDetallesController implements Initializabl
     private ObservableList<ProgramaEducativo> listProgramasEducativos = FXCollections.observableArrayList();
     private ObservableList<String> listModalidad = FXCollections.observableArrayList();
     private ObservableList<String> listSeccion = FXCollections.observableArrayList();
-    
+
     @FXML
     private TextField tfNrc;
     @FXML
     private TextField tfNombre;
     @FXML
     private ComboBox<ProgramaEducativo> cbProgramaEducativo;
-    
+
     @FXML
     private ComboBox<String> cbModalidad;
     @FXML
     private ComboBox<String> cbSeccion;
-    
+
     /**
      * Initializes the controller class.
      */
@@ -57,34 +57,34 @@ public class FXMLEditarOfertaAcademicaDetallesController implements Initializabl
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         validateLengthNombre();
-    }    
+    }
 
-    private void loadFields(){
+    private void loadFields() {
         tfNrc.setText(experienciaEducativa.getNrc());
         tfNrc.setEditable(false);
         tfNombre.setText(experienciaEducativa.getNombre());
         cbProgramaEducativo.setItems(listProgramasEducativos);
-        
+
         listModalidad.add("Virtual");
         listModalidad.add("Presencial");
         listModalidad.add("Hibrida");
-        
+
         cbModalidad.setItems(listModalidad);
         cbModalidad.getSelectionModel().select(experienciaEducativa.getModalidad());
         //.setText(experienciaEducativa.getModalidad());
-        
+
         listSeccion.add("1");
         listSeccion.add("2");
         listSeccion.add("3");
-        
+
         cbSeccion.setItems(listSeccion);
         //.setText(experienciaEducativa.getSeccion());
         cbSeccion.getSelectionModel().select(experienciaEducativa.getSeccion());
     }
-    
+
     public void passExperienciaEducativa(ExperienciaEducativa experienciaEducativa) {
         this.experienciaEducativa = experienciaEducativa;
-        
+
         try {
             ProgramaEducativoDAO programaEducativoDAO = new ProgramaEducativoDAO();
             listProgramasEducativos.addAll(programaEducativoDAO.getProgramasEducativos());
@@ -106,9 +106,9 @@ public class FXMLEditarOfertaAcademicaDetallesController implements Initializabl
                 tfNombre.setText(oldValue);
             }
         });
-        
+
     }
-    
+
     @FXML
     private void clicCancel(ActionEvent event) {
         WindowManager.closeWindow(tfNrc.getScene().getWindow());
@@ -117,17 +117,17 @@ public class FXMLEditarOfertaAcademicaDetallesController implements Initializabl
     @FXML
     private void clicSave(ActionEvent event) {
         ExperienciaEducativaDAO experienciaEducativaDAO = new ExperienciaEducativaDAO();
-        
+
         experienciaEducativa.setNrc(tfNrc.getText());
         experienciaEducativa.setNombre(tfNombre.getText());
         experienciaEducativa.setProgramaEducativo(cbProgramaEducativo.getSelectionModel().getSelectedItem().getNombre());
         experienciaEducativa.setClave(cbProgramaEducativo.getSelectionModel().getSelectedItem().getClave());
         experienciaEducativa.setModalidad(cbModalidad.getSelectionModel().getSelectedItem());
         experienciaEducativa.setSeccion(cbSeccion.getSelectionModel().getSelectedItem());
-        
-        try{
+
+        try {
             experienciaEducativaDAO.updateAcademicOffer(experienciaEducativa);
-        }catch(SQLException sqle){
+        } catch (SQLException sqle) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
         WindowManager.closeWindow(tfNrc.getScene().getWindow());
@@ -138,10 +138,11 @@ public class FXMLEditarOfertaAcademicaDetallesController implements Initializabl
         final String ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\\\\\]^_`{|}~]";
         tfNombre.setTextFormatter(new TextFormatter<String>(change -> {
             String newText = change.getControlNewText();
-            if (newText.matches("[" + ALLOWED_CHARACTERS + "]*")) {
+            if (newText.matches("[" + ALLOWED_CHARACTERS + " ]*")) {
                 return change;
             }
             return null;
         }));
+
     }
 }
