@@ -322,7 +322,6 @@ public class FXMLProgramasEducativosController implements Initializable {
             Parent root = loader.load();
             FXMLAsignarPersonalProgramaEducativoController controladorFormulario = loader.getController();
             controladorFormulario.loadWindow(programaEducativo);
-            System.out.println("Nombre:  "+programaEducativo.getNombre());
             Scene primaryScene = new Scene(root);
             Stage floatingStage = new Stage();
             floatingStage.setTitle("Asignar Coordinador para el "+programaEducativo);
@@ -393,9 +392,7 @@ public class FXMLProgramasEducativosController implements Initializable {
                             }
                     }          
                 }else {
-                    System.out.println("DELETE");
                     if(programaEducativoDAO.deleteProgramaEducativo(item)){
-                        System.out.println("DELETE");
                         sceneType=0;
                         configureScene(sceneType);                      
                         Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
@@ -525,7 +522,6 @@ public class FXMLProgramasEducativosController implements Initializable {
             if (answer.get() == ButtonType.OK) {
                 ProgramaEducativoDAO programaEducativoDAO = new ProgramaEducativoDAO();
                 int result = programaEducativoDAO.validateToBorrarProgramaEducativo(item);
-                System.out.println("result="+result);
                 if(result>1 || result<0){
                     sceneType=1;
                     configureScene(sceneType);                  

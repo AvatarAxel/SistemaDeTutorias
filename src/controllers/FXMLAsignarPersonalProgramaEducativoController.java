@@ -41,7 +41,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import security.SHA_512;
 import util.AlertManager;
-import util.Email;
+import util.EmailUtil;
 import util.Random;
 import util.WindowManager;
 
@@ -215,7 +215,7 @@ public class FXMLAsignarPersonalProgramaEducativoController implements Initializ
         Task sendEmailTask = new Task() {
             @Override
             protected Void call() throws Exception {
-                Email email = new Email();
+                EmailUtil email = new EmailUtil();
                 email.sendEmailNewUser(tutorEmail, randomPassword);
                 return null;
             }
