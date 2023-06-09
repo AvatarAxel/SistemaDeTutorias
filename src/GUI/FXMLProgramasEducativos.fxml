@@ -33,5 +33,6 @@
       <Button fx:id="btRegresar" layoutX="136.0" layoutY="387.0" mnemonicParsing="false" onAction="#clicButtonRegresar" prefHeight="34.0" prefWidth="50.0" text="⮌" visible="false" />
       <Label fx:id="labelInvalidateClave" layoutX="161.0" layoutY="265.0" prefHeight="19.0" prefWidth="234.0" textFill="#d30c20" />
       <Label fx:id="labelInvalidateNombre" layoutX="162.0" layoutY="340.0" prefHeight="19.0" prefWidth="234.0" textFill="#d30c20" />
+      <Button fx:id="btBorrar" disable="true" layoutX="202.0" layoutY="387.0" mnemonicParsing="false" onAction="#clicButtonBorrar" prefHeight="34.0" prefWidth="110.0" text="Borrar" visible="false" />
    </children>
 </AnchorPane>

@@ -173,7 +173,8 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
     @FXML
     private void clicButtonConsult(ActionEvent event) {
         int validateRowSelected = tbReportesTutoriasAcademicas.getSelectionModel().getSelectedIndex();
-        if (validateRowSelected != -1) {        
+        if (validateRowSelected != -1) { 
+            //System.out.println("PERIODO ESCOLAR:"+tbReportesTutoriasAcademicas.getSelectionModel().getSelectedItem().getPeriodoEscolar().getIdPeriodoEscolar());
             goingToReporteTutoriaAcademica(tbReportesTutoriasAcademicas.getSelectionModel().getSelectedItem(),cbTutorAcademico.getSelectionModel().getSelectedItem());            
         }
     }

@@ -174,6 +174,8 @@ public class FXMLConsultarReporteTutoriaAcademicaController implements Initializ
             int alumnosTotalAsistentes = 0, alumnosTotalesRiesgo = 0;
             EstudianteDAO estudianteDAO = new EstudianteDAO();
             ArrayList<Estudiante> listEstudiantesRecived = estudianteDAO.obtenerEstudiantesPorReporteTutoriaAcademica(reporteTutoriaAcademica.getIdReporteTutoria());
+        System.out.println("IsEmpty:"+listEstudiantesRecived.isEmpty());
+            
             if(!listEstudiantesRecived.isEmpty()){
                 listEstudiantes.addAll(listEstudiantesRecived);
                 disableColumTable();                
@@ -183,7 +185,10 @@ public class FXMLConsultarReporteTutoriaAcademicaController implements Initializ
                 tbEstudiantes.setPlaceholder(noticeLoadingTable);           
             }        
         } catch (SQLException sqle) {
-            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+            sqle.printStackTrace();
+        System.out.println("JODER: loadEstudiantes");
+            
+            AlertManager.showAlert("Error loadEstudiantes", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
     private void loadProblematicas() {
@@ -200,7 +205,9 @@ public class FXMLConsultarReporteTutoriaAcademicaController implements Initializ
             }
 
         } catch (SQLException sqle) {
-            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+            sqle.printStackTrace();
+        System.out.println("JODER  loadProblematicas:");            
+            AlertManager.showAlert("Error loadProblematicas", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
     
