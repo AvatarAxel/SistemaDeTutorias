@@ -159,7 +159,7 @@ public class FXMLProgramasEducativosController implements Initializable {
     private void enableRegistrarButton() {
         try {
             ProgramaEducativoDAO programaEducativoDAO = new ProgramaEducativoDAO();
-            int result = programaEducativoDAO.validateRegistrarProgramaEducativo();
+            int result = programaEducativoDAO.validateRegistrarUsuariosProgramaEducativo();
             if(result==0){
                 btRegistrar.setDisable(true);   
                 AlertManager.showTemporalAlert("AVISO", "No se cuenta con usuarios Sufientes para poder registrar un nuevo Programa Educativo", 2);            
@@ -392,6 +392,7 @@ public class FXMLProgramasEducativosController implements Initializable {
                             }
                     }          
                 }else {
+                    System.out.println(programaEducativoDAO.deleteProgramaEducativo(item));
                     if(programaEducativoDAO.deleteProgramaEducativo(item)){
                         sceneType=0;
                         configureScene(sceneType);                      
@@ -417,13 +418,21 @@ public class FXMLProgramasEducativosController implements Initializable {
             ProgramaEducativoDAO programaEducativoDAO = new ProgramaEducativoDAO();
             switch (sceneType) {
                 case 2: //Registrar
-                    if(programaEducativoDAO.setProgramaEducativoRegister(item)){
-                        Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
-                        tbProgramasEducativos.setPlaceholder(noticeLoadingTable);
-                        loadProgramasEducativos();
-                        AlertManager.showTemporalAlert("AVISO", "Se registro el nuevo Programa Educativo.\nAhora seleccionará al Nuevo Coordinador.\n"+item.getNombre(), 4);   
-                        assingCoordinador(item);
-                        //*********
+                    if(programaEducativoDAO.validateExisteProgramaEducativo(item) >= 1){
+                        AlertManager.showTemporalAlert("AVISO", "Ya existen registros de un programa educativo con el mismo NRC.\nIngrese la información correctamente.", 4);   
+                        tfClave.clear();
+                        tfClave.requestFocus();
+                        tfNombre.setText(item.getNombre());
+                    }else{
+                        if(programaEducativoDAO.setProgramaEducativoRegister(item)){
+                            Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
+                            tbProgramasEducativos.setPlaceholder(noticeLoadingTable);
+                            loadProgramasEducativos();
+                            AlertManager.showTemporalAlert("AVISO", "Se registro el nuevo Programa Educativo.\nAhora seleccionará al Nuevo Coordinador.\n"+item.getNombre(), 4);   
+                            assingCoordinador(item);
+                        }
+                        sceneType=0;
+                        configureScene(sceneType);                           
                     }
                     break;
                 case 3: //Modificar     
@@ -433,12 +442,12 @@ public class FXMLProgramasEducativosController implements Initializable {
                         loadProgramasEducativos();
                         AlertManager.showTemporalAlert("AVISO", "Se Modifico el nuevo Programa Educativo", 2);                        
                     }
+                    sceneType=0;
+                    configureScene(sceneType);                       
                     break;
                 default:
                     break;
-            }
-            sceneType=0;
-            configureScene(sceneType);             
+            }          
         } catch (SQLException ex) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
         }        

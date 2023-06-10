@@ -172,7 +172,7 @@ public class ProgramaEducativoDAO implements IProgramaEducativoDAO {
         return result;
     }     
     
-    public int validateRegistrarProgramaEducativo()throws SQLException{
+    public int validateRegistrarUsuariosProgramaEducativo()throws SQLException{
         int ocurrencias = -1;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
@@ -196,4 +196,24 @@ public class ProgramaEducativoDAO implements IProgramaEducativoDAO {
         return ocurrencias;    
     }    
     
+    public int validateExisteProgramaEducativo(ProgramaEducativo programaEducativo)throws SQLException{
+        int ocurrencias = -1;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        if(connection!=null){
+            String querySet = "SELECT COUNT(*) AS num_ocurrencias\n" +
+            "FROM programas_educativos p\n" +
+            "WHERE p.clave = ?;";             
+            PreparedStatement statementSet = connection.prepareStatement(querySet);    
+            statementSet.setString(1, programaEducativo.getClave());            
+            ResultSet resultSet = statementSet.executeQuery();
+            resultSet.next();
+            int resultInsert = resultSet.getInt("num_ocurrencias");
+            if(resultInsert>=0){
+                ocurrencias = resultInsert;
+            }            
+        }        
+        connection.close();
+        return ocurrencias;    
+    }    
 }

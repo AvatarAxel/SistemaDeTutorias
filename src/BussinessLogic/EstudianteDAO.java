@@ -124,7 +124,6 @@ public class EstudianteDAO {
             }
             connection.close();        
         }
-        System.out.println("IsEmpty:"+estudiantes.isEmpty());
         return estudiantes;    
     }
     
