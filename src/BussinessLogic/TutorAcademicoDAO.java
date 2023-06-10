@@ -49,7 +49,7 @@ public class TutorAcademicoDAO {
     DataBaseConnection dataBaseConnection = new DataBaseConnection();
     Connection connection = dataBaseConnection.getConnection();        
         if (connection != null) {
-            String consulta = "SELECT DISTINCT u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.numeroDePersonal, p.clave, p.nombre\n" +
+            String consulta = "SELECT DISTINCT u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.numeroDePersonal, p.clave, p.nombre As nombrePrograma\n" +
             "FROM usuarios u\n" +
             "INNER JOIN reportes_de_tutorias_academicas r ON u.numeroDePersonal = r.numeroDePersonal\n" +
             "INNER JOIN programas_educativos p ON r.clave = p.clave\n" +
@@ -65,7 +65,7 @@ public class TutorAcademicoDAO {
                 usuario.setApellidoMaterno(resultado.getString("apellidoMaterno"));
                 usuario.setNumeroDePersonal(resultado.getInt("numeroDePersonal"));
                 pe.setClave(resultado.getString("clave"));
-                pe.setNombre(resultado.getString("nombre"));
+                pe.setNombre(resultado.getString("nombrePrograma"));
                 usuario.setProgramaEducativo(pe);
                 tutores.add(usuario);
             }

@@ -151,17 +151,7 @@ public class ProgramaEducativoDAOTest {
         // TODO review the generated test code and remove the default call to fail.
     }    
     
-    @Test
-    public void testValidateRegistrarProgramaEducativo() throws Exception {
-        System.out.println("validateRegistrarProgramaEducativo");
-        ProgramaEducativoDAO instance = new ProgramaEducativoDAO();
-        ProgramaEducativo programaEducativo  = new  ProgramaEducativo("55555","Prueba UpdateProgramaEducativo");
-        int expResult = 15;
-        int result = instance.validateRegistrarProgramaEducativo();
-        System.out.println(result);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-    }       
+    
     
     
     

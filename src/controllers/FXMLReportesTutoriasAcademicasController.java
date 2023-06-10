@@ -91,15 +91,15 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
             tutoresAcademicos = FXCollections.observableArrayList(); 
             if(!resultadoConsulta.isEmpty()){
                 tutoresAcademicos.addAll(resultadoConsulta);
-                cbTutorAcademico.setItems(tutoresAcademicos);
-                Label noticeLoadingTable = new Label("Intentelo de nuevo más tarde");
-                tbReportesTutoriasAcademicas.setPlaceholder(noticeLoadingTable);                   
+                cbTutorAcademico.setItems(tutoresAcademicos);                  
             }else{
                 cbTutorAcademico.setDisable(true);
                 cbTutorAcademico.setPromptText("No hay tutores disponibles");
+                Label noticeLoadingTable = new Label("No hay reportes disponibles. Intentelo de nuevo más tarde");
+                tbReportesTutoriasAcademicas.setPlaceholder(noticeLoadingTable);                 
             }      
         }catch(SQLException sqle){
-            AlertManager.showAlert("Error LOAD", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);                    
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);                    
         }
     }
     private void selectTutorAcademico() {
@@ -132,7 +132,7 @@ public class FXMLReportesTutoriasAcademicasController implements Initializable {
                 tbReportesTutoriasAcademicas.setPlaceholder(noticeLoadingTable);                       
             }    
         } catch (SQLException sqle) {
-            AlertManager.showAlert("Error", " loadReportesTutoriasAcademicasByTutorAcademico No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
     private void loadInformationPeriodoEscolar() {
