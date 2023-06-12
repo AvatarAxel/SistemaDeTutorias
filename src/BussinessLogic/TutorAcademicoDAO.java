@@ -27,7 +27,7 @@ public class TutorAcademicoDAO {
         Connection connection = dataBaseConnection.getConnection();
 
         if (connection != null) {
-            String query = ("INSERT INTO usuarios (`numeroDePersonal`, `nombre`, `apellidoPaterno`, `apellidoMaterno`, `contrasenia`, `correoElectronicoInstitucional`) VALUES (?, ?, ?, ?, ?, ?);");
+            String query = ("INSERT INTO usuarios (`numeroDePersonal`, `nombre`, `apellidoPaterno`, `apellidoMaterno`, `contrasenia`, `correoElectronicoInstitucional`, `esRegistrado`) VALUES (?, ?, ?, ?, ?, ?, ?);");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, tutorAcademico.getNumeroDePersonal());
             statement.setString(2, tutorAcademico.getNombre());
@@ -35,6 +35,7 @@ public class TutorAcademicoDAO {
             statement.setString(4, tutorAcademico.getApellidoMaterno());
             statement.setString(5, tutorAcademico.getContraseña());
             statement.setString(6, tutorAcademico.getCorreoElectronicoInstitucional());
+            statement.setInt(7, 1);
             int resultInsert = statement.executeUpdate();
             if (resultInsert > 0) {
                 result = true;
@@ -49,7 +50,7 @@ public class TutorAcademicoDAO {
     DataBaseConnection dataBaseConnection = new DataBaseConnection();
     Connection connection = dataBaseConnection.getConnection();        
         if (connection != null) {
-            String consulta = "SELECT DISTINCT u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.numeroDePersonal, p.clave, p.nombre\n" +
+            String consulta = "SELECT DISTINCT u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.numeroDePersonal, p.clave, p.nombre As nombrePrograma\n" +
             "FROM usuarios u\n" +
             "INNER JOIN reportes_de_tutorias_academicas r ON u.numeroDePersonal = r.numeroDePersonal\n" +
             "INNER JOIN programas_educativos p ON r.clave = p.clave\n" +
@@ -65,7 +66,7 @@ public class TutorAcademicoDAO {
                 usuario.setApellidoMaterno(resultado.getString("apellidoMaterno"));
                 usuario.setNumeroDePersonal(resultado.getInt("numeroDePersonal"));
                 pe.setClave(resultado.getString("clave"));
-                pe.setNombre(resultado.getString("nombre"));
+                pe.setNombre(resultado.getString("nombrePrograma"));
                 usuario.setProgramaEducativo(pe);
                 tutores.add(usuario);
             }

@@ -6,6 +6,7 @@ package controllers;
 
 import BussinessLogic.ProgramaEducativoDAO;
 import Domain.ProgramaEducativo;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,7 +21,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -31,7 +35,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import util.AlertManager;
 import util.WindowManager;
 
@@ -66,16 +72,18 @@ public class FXMLProgramasEducativosController implements Initializable {
     private Button btGuardar;
     @FXML
     private Button btRegresar;
+    @FXML
+    private Button btBorrar;   
+    @FXML
+    private Label labelInvalidateClave;
+    @FXML
+    private Label labelInvalidateNombre;    
     
     private int sceneType;
     private ObservableList<ProgramaEducativo> listProgramaEducativo;
     private boolean[] validationTextFields = {false, false};    
     private Pattern validateCharacter = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$");
     private Pattern validateCharacterClave = Pattern.compile("^[0-9]{5}$");    
-    @FXML
-    private Label labelInvalidateClave;
-    @FXML
-    private Label labelInvalidateNombre;
 
     /**
      * Initializes the controller class.
@@ -87,6 +95,7 @@ public class FXMLProgramasEducativosController implements Initializable {
         configureScene(sceneType);
         configureTableProgramasEducativos();
         loadProgramasEducativos();
+        enableRegistrarButton();
         selectProgramaEducativo();
         
     }    
@@ -146,6 +155,19 @@ public class FXMLProgramasEducativosController implements Initializable {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
         }
     }
+    
+    private void enableRegistrarButton() {
+        try {
+            ProgramaEducativoDAO programaEducativoDAO = new ProgramaEducativoDAO();
+            int result = programaEducativoDAO.validateRegistrarUsuariosProgramaEducativo();
+            if(result==0){
+                btRegistrar.setDisable(true);   
+                AlertManager.showTemporalAlert("AVISO", "No se cuenta con usuarios Sufientes para poder registrar un nuevo Programa Educativo", 2);            
+            }               
+        } catch (SQLException ex) {
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
+        }         
+    }    
 
     private void configureScene(int scene){
         ProgramaEducativo item = new ProgramaEducativo();
@@ -177,7 +199,9 @@ public class FXMLProgramasEducativosController implements Initializable {
                 btGuardar.setDisable(true);
                 btRegresar.setVisible(false);
                 btRegresar.setDisable(true);
-                                validationTextFields[0] = false;
+                btBorrar.setVisible(false);
+                btBorrar.setDisable(true);
+                validationTextFields[0] = false;
                 validationTextFields[1] = false;   
                 break;
             case 1: //Consultar
@@ -206,6 +230,8 @@ public class FXMLProgramasEducativosController implements Initializable {
                 btGuardar.setDisable(true);
                 btRegresar.setVisible(false);
                 btRegresar.setDisable(true); 
+                btBorrar.setVisible(false);
+                btBorrar.setDisable(true);                
                 validationTextFields[0] = false;
                 validationTextFields[1] = false;                   
                 break;
@@ -235,6 +261,8 @@ public class FXMLProgramasEducativosController implements Initializable {
                 btGuardar.setDisable(true);
                 btRegresar.setVisible(true);
                 btRegresar.setDisable(false); 
+                btBorrar.setVisible(false);
+                btBorrar.setDisable(true);                
                 validationTextFields[0] = false;
                 validationTextFields[1] = false;                 
                 break;
@@ -264,22 +292,48 @@ public class FXMLProgramasEducativosController implements Initializable {
                 btGuardar.setDisable(false);
                 btRegresar.setVisible(true);
                 btRegresar.setDisable(false);
+                btBorrar.setVisible(true);
+                btBorrar.setDisable(false);                
                 validationTextFields[0] = true;
                 validationTextFields[1] = false;                
                 break;
             default:
                 break;
         }    
-    
-    
-    
     }
+    
+    private void enableButton() {
+        if (!validationTextFields[0] || !validationTextFields[1]) {
+            btGuardar.setDisable(true);
+        } else {
+            btGuardar.setDisable(false);            
+        }
+    }      
     
     private void closeWindow() {
         Stage escenario = (Stage) lbInstruccion.getScene().getWindow();
         escenario.close();
         WindowManager.NavigateToWindow(lbInstruccion.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }    
+    
+    private void assingCoordinador(ProgramaEducativo programaEducativo) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXMLAsignarPersonalProgramaEducativo.fxml"));
+            Parent root = loader.load();
+            FXMLAsignarPersonalProgramaEducativoController controladorFormulario = loader.getController();
+            controladorFormulario.loadWindow(programaEducativo);
+            Scene primaryScene = new Scene(root);
+            Stage floatingStage = new Stage();
+            floatingStage.setTitle("Asignar Coordinador para el "+programaEducativo);
+            floatingStage.setOnCloseRequest(event -> {
+                event.consume();});
+            floatingStage.setScene(primaryScene);
+            floatingStage.initModality(Modality.APPLICATION_MODAL);
+            floatingStage.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }        
+    }     
     
     @FXML
     private void clicButtonCancelar(ActionEvent event) {
@@ -318,28 +372,40 @@ public class FXMLProgramasEducativosController implements Initializable {
         item.setNombre(tfNombre.getText());       
         try {
             Optional<ButtonType> answer;
-            answer = AlertManager.showAlert("AVISO", "Solo se eliminira el programa educativo seleccionado si no hay reportes relacionados.\n" +
+            answer = AlertManager.showAlert("AVISO", "Si elimina el programa educativo seleccionado, ningun usuario actual tendra acceso a las funciones de dicho programa educativo.\n" +
                                     "¿Desea continuar con la eliminación?", Alert.AlertType.CONFIRMATION);            
             if (answer.get() == ButtonType.OK) {
                 ProgramaEducativoDAO programaEducativoDAO = new ProgramaEducativoDAO();
-                int result = programaEducativoDAO.validateProgramaEducativo(item);
+                int result = programaEducativoDAO.validateToEliminarProgramaEducativo(item);
                 if(result>0){
-                    sceneType=1;
-                    configureScene(sceneType);                  
-                    AlertManager.showTemporalAlert("AVISO", "Este Programa Educativo Tiene registros", 2);            
-                }else if(result==0){
+                    Optional<ButtonType> answerConfirmation;
+                    answerConfirmation = AlertManager.showAlert("AVISO", "El programa educativo cuenta con ["+result+"] Usuarios activos Actualmente.\n" +
+                                            "¿Desea continuar con la eliminación?", Alert.AlertType.CONFIRMATION);            
+                    if (answerConfirmation.get() == ButtonType.OK) {
+                            if(programaEducativoDAO.deleteProgramaEducativo(item)){
+                                    sceneType=0;
+                                    configureScene(sceneType);                      
+                                    Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
+                                    tbProgramasEducativos.setPlaceholder(noticeLoadingTable);                    
+                                    loadProgramasEducativos();                    
+                                    AlertManager.showTemporalAlert("AVISO", "Se Elimino el Programa Educativo", 2);                                       
+                            }
+                    }          
+                }else {
+                    System.out.println(programaEducativoDAO.deleteProgramaEducativo(item));
                     if(programaEducativoDAO.deleteProgramaEducativo(item)){
-                            sceneType=0;
-                            configureScene(sceneType);                      
-                            Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
-                            tbProgramasEducativos.setPlaceholder(noticeLoadingTable);                    
-                            loadProgramasEducativos();                    
-                            AlertManager.showTemporalAlert("AVISO", "Se Elimino el Programa Educativo", 2);                                       
-                    }
+                        sceneType=0;
+                        configureScene(sceneType);                      
+                        Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
+                        tbProgramasEducativos.setPlaceholder(noticeLoadingTable);                    
+                        loadProgramasEducativos();                    
+                        AlertManager.showTemporalAlert("AVISO", "Se Elimino el Programa Educativo", 2);                                       
+                    }                    
                 }
             }                
         } catch (SQLException ex) {
-            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
+            ex.printStackTrace();
+            AlertManager.showAlert("Error", "clicButtonEliminar No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
         }              
     }
 
@@ -352,11 +418,21 @@ public class FXMLProgramasEducativosController implements Initializable {
             ProgramaEducativoDAO programaEducativoDAO = new ProgramaEducativoDAO();
             switch (sceneType) {
                 case 2: //Registrar
-                    if(programaEducativoDAO.setProgramaEducativoRegister(item)){
-                        Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
-                        tbProgramasEducativos.setPlaceholder(noticeLoadingTable);
-                        loadProgramasEducativos();
-                        AlertManager.showTemporalAlert("AVISO", "Se registro el nuevo Programa Educativo", 2);                        
+                    if(programaEducativoDAO.validateExisteProgramaEducativo(item) >= 1){
+                        AlertManager.showTemporalAlert("AVISO", "Ya existen registros de un programa educativo con el mismo NRC.\nIngrese la información correctamente.", 4);   
+                        tfClave.clear();
+                        tfClave.requestFocus();
+                        tfNombre.setText(item.getNombre());
+                    }else{
+                        if(programaEducativoDAO.setProgramaEducativoRegister(item)){
+                            Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
+                            tbProgramasEducativos.setPlaceholder(noticeLoadingTable);
+                            loadProgramasEducativos();
+                            AlertManager.showTemporalAlert("AVISO", "Se registro el nuevo Programa Educativo.\nAhora seleccionará al Nuevo Coordinador.\n"+item.getNombre(), 4);   
+                            assingCoordinador(item);
+                        }
+                        sceneType=0;
+                        configureScene(sceneType);                           
                     }
                     break;
                 case 3: //Modificar     
@@ -366,12 +442,12 @@ public class FXMLProgramasEducativosController implements Initializable {
                         loadProgramasEducativos();
                         AlertManager.showTemporalAlert("AVISO", "Se Modifico el nuevo Programa Educativo", 2);                        
                     }
+                    sceneType=0;
+                    configureScene(sceneType);                       
                     break;
                 default:
                     break;
-            }
-            sceneType=0;
-            configureScene(sceneType);             
+            }          
         } catch (SQLException ex) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
         }        
@@ -441,14 +517,41 @@ public class FXMLProgramasEducativosController implements Initializable {
         if (tfNombre.getText().length() > 30) {
             tfNombre.setText("");
         }        
+    }       
+
+    @FXML
+    private void clicButtonBorrar(ActionEvent event) {
+        ProgramaEducativo item = new ProgramaEducativo();
+        item.setClave(tfClave.getText());
+        item.setNombre(tfNombre.getText());       
+        try {
+            Optional<ButtonType> answer;
+            answer = AlertManager.showAlert("AVISO", "Solo se borrara el programa educativo seleccionado si no hay reportes y Usuarios relacionados.\n" +
+                                    "¿Desea continuar con el borrado del Programa Educativo?", Alert.AlertType.CONFIRMATION);            
+            if (answer.get() == ButtonType.OK) {
+                ProgramaEducativoDAO programaEducativoDAO = new ProgramaEducativoDAO();
+                int result = programaEducativoDAO.validateToBorrarProgramaEducativo(item);
+                if(result>1 || result<0){
+                    sceneType=1;
+                    configureScene(sceneType);                  
+                    AlertManager.showTemporalAlert("AVISO", "Este Programa Educativo Tiene registros de reportes. Solo se puede Eliminar", 2);            
+                }else if(result==1){
+                    if(programaEducativoDAO.eraseProgramaEducativo(item)){
+                            sceneType=0;
+                            configureScene(sceneType);                      
+                            Label noticeLoadingTable = new Label("Cargando información, espere un momento...");
+                            tbProgramasEducativos.setPlaceholder(noticeLoadingTable);                    
+                            loadProgramasEducativos();                    
+                            AlertManager.showTemporalAlert("AVISO", "Se Borro el Programa Educativo", 2);                                       
+                    }
+                    sceneType=0;
+                    configureScene(sceneType);                    
+                }
+            }                
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            AlertManager.showAlert("Error", "clicButtonBorrar No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
+        }         
     }
-    
-    private void enableButton() {
-        if (!validationTextFields[0] || !validationTextFields[1]) {
-            btGuardar.setDisable(true);
-        } else {
-            btGuardar.setDisable(false);            
-        }
-    }    
     
 }

@@ -12,8 +12,8 @@
       <TextField fx:id="textFieldCorreo" layoutX="108.0" layoutY="96.0" onKeyReleased="#validateInputsCorreo" onKeyTyped="#validateLengthCorreo" prefHeight="29.0" prefWidth="385.0" />
       <Button fx:id="buttonEnviarCodigo" layoutX="163.0" layoutY="155.0" mnemonicParsing="false" onAction="#buttonActionEnviarCodigo" text="Enviar codigo de verificacion" />
       <Label fx:id="labelCorreo" layoutX="108.0" layoutY="67.0" text="Correo electronico" />
-      <PasswordField fx:id="textFieldContrasenia" layoutX="105.0" layoutY="186.0" onKeyReleased="#validateInputPassword" onKeyTyped="#validateLengthPassword" prefHeight="29.0" prefWidth="391.0" />
-      <PasswordField fx:id="textFieldConfirmarConstrasenia" layoutX="105.0" layoutY="274.0" onKeyReleased="#validateInputConfirmPassword" onKeyTyped="#validateLengthConfirmPassword" prefHeight="29.0" prefWidth="391.0" />
+      <PasswordField fx:id="textFieldContrasenia" layoutX="105.0" layoutY="186.0" onKeyReleased="#validateInputPassword" onKeyTyped="#validateLengthPassword" prefHeight="29.0" prefWidth="391.0" promptText="Ingrese al menos 9 caracteres" />
+      <PasswordField fx:id="textFieldConfirmarConstrasenia" layoutX="105.0" layoutY="274.0" onKeyReleased="#validateInputConfirmPassword" onKeyTyped="#validateLengthConfirmPassword" prefHeight="29.0" prefWidth="391.0" promptText="Ingrese al menos 9 caracteres" />
       <Label fx:id="labelNewPassword" layoutX="110.0" layoutY="160.0" text="Nueva contraseña" />
       <Label fx:id="labelConfirmNewPassword" layoutX="125.0" layoutY="235.0" text="Confirmar contraseña" />
       <Button layoutX="467.0" layoutY="349.0" mnemonicParsing="false" onAction="#buttonActionCancelar" text="Cancelar" />

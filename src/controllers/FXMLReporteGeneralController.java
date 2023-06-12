@@ -112,23 +112,32 @@ public class FXMLReporteGeneralController implements Initializable {
             tableReportes.setItems(listReportesDeTutoria);
         } catch (SQLException sqle) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+        } finally {
+            Platform.runLater(() -> {
+                Label noticeLoadingTable = new Label("Sin contenido...");
+                tableReportes.setPlaceholder(noticeLoadingTable);
+            });
         }
     }
 
     private void loadInformationProblematicas() {
         try {
-            ProblematicaAcademicaDAO problematicaAcademicaDao = new ProblematicaAcademicaDAO();
-            ArrayList<ProblematicaAcademica> listProblematicasRecived = new ArrayList<>();
-            listProblematicasAcademicas.clear();
-            for (int i = 0; i < listReportesDeTutoria.size(); i++) {
-                listProblematicasRecived = problematicaAcademicaDao.getAllProblematicasByReporte(listReportesDeTutoria.get(i).getIdReporteTutoria());
-                if (!listProblematicasRecived.isEmpty()) {
+            if (!listReportesDeTutoria.isEmpty()) {
+                ProblematicaAcademicaDAO problematicaAcademicaDao = new ProblematicaAcademicaDAO();
+                listProblematicasAcademicas.clear();
+                for (int i = 0; i < listReportesDeTutoria.size(); i++) {
+                    ArrayList<ProblematicaAcademica> listProblematicasRecived = problematicaAcademicaDao.getAllProblematicasByReporte(listReportesDeTutoria.get(i).getIdReporteTutoria());
                     listProblematicasAcademicas.addAll(listProblematicasRecived);
                 }
+                tableProblematicasTutorias.setItems(listProblematicasAcademicas);
             }
-            tableProblematicasTutorias.setItems(listProblematicasAcademicas);
         } catch (SQLException sqle) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+        } finally {
+            Platform.runLater(() -> {
+                Label noticeLoadingTable = new Label("Sin contenido...");
+                tableProblematicasTutorias.setPlaceholder(noticeLoadingTable);
+            });
         }
     }
 
@@ -151,9 +160,6 @@ public class FXMLReporteGeneralController implements Initializable {
                 loadInformationProblematicas();
                 Platform.runLater(() -> {
                     loadInformationListaDeAsistencias();
-                    Label noticeLoadingTable = new Label("Sin contenido...");
-                    tableProblematicasTutorias.setPlaceholder(noticeLoadingTable);
-                    tableReportes.setPlaceholder(noticeLoadingTable);
                 });
                 return null;
             }

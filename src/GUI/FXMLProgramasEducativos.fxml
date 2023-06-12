@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -9,6 +10,9 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="440.0" prefWidth="552.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLProgramasEducativosController">
+    <stylesheets>
+        <URL value="@/styles/globalStyles.css" />
+    </stylesheets>    
    <children>
       <TableView fx:id="tbProgramasEducativos" layoutX="93.0" layoutY="27.0" prefHeight="146.0" prefWidth="365.0">
         <columns>
@@ -33,5 +37,6 @@
       <Button fx:id="btRegresar" layoutX="136.0" layoutY="387.0" mnemonicParsing="false" onAction="#clicButtonRegresar" prefHeight="34.0" prefWidth="50.0" text="⮌" visible="false" />
       <Label fx:id="labelInvalidateClave" layoutX="161.0" layoutY="265.0" prefHeight="19.0" prefWidth="234.0" textFill="#d30c20" />
       <Label fx:id="labelInvalidateNombre" layoutX="162.0" layoutY="340.0" prefHeight="19.0" prefWidth="234.0" textFill="#d30c20" />
+      <Button fx:id="btBorrar" disable="true" layoutX="202.0" layoutY="387.0" mnemonicParsing="false" onAction="#clicButtonBorrar" prefHeight="34.0" prefWidth="110.0" text="Borrar" visible="false" />
    </children>
 </AnchorPane>

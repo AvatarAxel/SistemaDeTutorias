@@ -183,25 +183,19 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
     private void registerEstudiante() {
         Estudiante estudiante = new Estudiante();
         try {
-            EstudianteDAO estudianteDao = new EstudianteDAO();
-            boolean estudianteExists = estudianteDao.validateExistEstudiante(textMatricula.getText().toLowerCase());
-            if (!estudianteExists) {
-                estudiante.setNombre(textNombre.getText());
-                estudiante.setApellidoPaterno(textApellidoPaterno.getText());
-                estudiante.setApellidoMaterno(textApellidoMaterno.getText());
-                estudiante.setMatricula(textMatricula.getText().toLowerCase());                
-                if(estudianteDao.setEstudianteRegister(estudiante, Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()))){
-                    AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
-                }                                
-            } else {
-                AlertManager.showAlert("Información", "Registro ya existente", Alert.AlertType.INFORMATION);
+            estudiante.setNombre(textNombre.getText());
+            estudiante.setApellidoPaterno(textApellidoPaterno.getText());
+            estudiante.setApellidoMaterno(textApellidoMaterno.getText());
+            estudiante.setMatricula(textMatricula.getText().toLowerCase());
+            if (new EstudianteDAO().setEstudianteRegister(estudiante, Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()))) {
+                AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
             }
         } catch (SQLException e) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
         }
     }
-    
-    private void restartGui(){
+
+    private void restartGui() {
         textNombre.setText("");
         textApellidoPaterno.setText("");
         textApellidoMaterno.setText("");
@@ -216,14 +210,13 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
         validationTextFields[4] = false;
         buttonRegister.setDisable(true);
     }
-    
+
     private void enableButton() {
-        if (!validationTextFields[0] || !validationTextFields[1]
-                || !validationTextFields[2] || !validationTextFields[3]) {
+        if (!validationTextFields[0] || !validationTextFields[1] || !validationTextFields[2] || !validationTextFields[3]) {
             buttonRegister.setDisable(true);
         } else {
             buttonRegister.setDisable(false);
         }
     }
-    
+
 }

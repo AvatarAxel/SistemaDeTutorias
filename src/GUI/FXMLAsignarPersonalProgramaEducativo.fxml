@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="440.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLAsignarPersonalProgramaEducativoController">
+   <children>
+      <TableView fx:id="tablePersonal" layoutX="30.0" layoutY="145.0" prefHeight="228.0" prefWidth="598.0">
+         <columns>
+            <TableColumn fx:id="columNumeroDePersonal" prefWidth="104.0000057220459" text="No. de personal" />
+            <TableColumn fx:id="columNombre" prefWidth="152.0" text="Nombre" />
+            <TableColumn fx:id="columApellidoPaterno" prefWidth="164.0" text="Apellido Paterno" />
+            <TableColumn fx:id="columApellidoMaterno" prefWidth="189.0" text="Apellido Materno" />
+         </columns>
+      </TableView>
+      <RadioButton fx:id="rbUsuarioRegistrado" layoutX="345.0" layoutY="106.0" mnemonicParsing="false" onAction="#filterTableUser" text="Usuario Registrado" />
+      <RadioButton fx:id="rbUsuarioNuevo" layoutX="526.0" layoutY="106.0" mnemonicParsing="false" onAction="#filterTableNotUser" text="Nuevo Usuario" />
+      <TextField fx:id="textFieldSearchPersonal" layoutX="140.0" layoutY="55.0" onKeyTyped="#validateLengthInput" prefHeight="30.0" prefWidth="487.0" promptText="No. de personal / Nombre / Apellido Paterno / Apellido Materno" />
+      <Text layoutX="30.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Buscar personal:" wrappingWidth="111.46200561523438" />
+      <Label fx:id="lbInstrucciones" layoutX="30.0" layoutY="20.0" text="Selecicone al nuevo coordinador del Programa Educativo:  " />
+      <Button fx:id="btAsignar" disable="true" layoutX="536.0" layoutY="395.0" mnemonicParsing="false" onAction="#clicButtonAsignar" prefHeight="30.0" prefWidth="91.0" text="Asignar" />
+   </children>
+</AnchorPane>

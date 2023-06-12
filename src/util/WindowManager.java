@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -41,6 +42,7 @@ public class WindowManager {
         try{
             Stage primaryStage = (Stage) window;
             Scene menuScene = new Scene(FXMLLoader.load(getClass().getResource(windowPath)));
+            primaryStage.getIcons().add(new Image("images/icon.png"));
             primaryStage.setScene(menuScene);
             primaryStage.setTitle(windowTitle);
             primaryStage.centerOnScreen();
