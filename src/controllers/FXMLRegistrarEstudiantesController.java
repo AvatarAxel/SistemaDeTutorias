@@ -8,6 +8,7 @@ import BussinessLogic.EstudianteDAO;
 import Domain.Estudiante;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -63,8 +65,25 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
 
     @FXML
     private void buttonSave(ActionEvent event) {
-        registerEstudiante();
-        restartGui();
+        Estudiante estudiante = new Estudiante();
+        EstudianteDAO estudianteDAO = new EstudianteDAO();
+        try {
+            if (estudianteDAO.validateExistEstudianteNoInscrito(textMatricula.getText().toLowerCase())) {
+                Optional<ButtonType> result = AlertManager.showAlert("Confirmación", "El estudiante ya encuentra registrado en el sistema,"
+                        + " pero no inscrito, ¿Quiere reactivarlo?", Alert.AlertType.CONFIRMATION);
+                if (result.get() == ButtonType.OK) {
+                    registerEstudiante();
+                }
+            } else if (estudianteDAO.validateExistEstudiante(textMatricula.getText().toLowerCase())) {
+                AlertManager.showAlert(" ", "El registro que se intenta ingresar ya existe en el sistema", Alert.AlertType.WARNING);
+            } else {
+                registerEstudiante();
+            }
+        } catch (SQLException e) {
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+        } finally {
+            restartGui();
+        }
     }
 
     @FXML
@@ -179,19 +198,15 @@ public class FXMLRegistrarEstudiantesController implements Initializable {
         }
         enableButton();
     }
-    
-    private void registerEstudiante() {
+
+    private void registerEstudiante() throws SQLException {
         Estudiante estudiante = new Estudiante();
-        try {
-            estudiante.setNombre(textNombre.getText());
-            estudiante.setApellidoPaterno(textApellidoPaterno.getText());
-            estudiante.setApellidoMaterno(textApellidoMaterno.getText());
-            estudiante.setMatricula(textMatricula.getText().toLowerCase());
-            if (new EstudianteDAO().setEstudianteRegister(estudiante, Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()))) {
-                AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
-            }
-        } catch (SQLException e) {
-            AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+        estudiante.setNombre(textNombre.getText());
+        estudiante.setApellidoPaterno(textApellidoPaterno.getText());
+        estudiante.setApellidoMaterno(textApellidoMaterno.getText());
+        estudiante.setMatricula(textMatricula.getText().toLowerCase());
+        if (new EstudianteDAO().setEstudianteRegister(estudiante, Integer.parseInt(User.getCurrentUser().getRol().getProgramaEducativo().getClave()))) {
+            AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
         }
     }
 

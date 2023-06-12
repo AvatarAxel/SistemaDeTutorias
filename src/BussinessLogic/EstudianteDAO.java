@@ -312,5 +312,25 @@ public class EstudianteDAO {
         return result;
         
     }
+
+    public boolean validateExistEstudianteNoInscrito(String matricula) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String query = ("SELECT COUNT(*) FROM estudiantes WHERE matricula = ? AND esInscrito = 0;");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, matricula);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            int resultQuery = resultSet.getInt(1);
+            if (resultQuery > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }
     
 }
