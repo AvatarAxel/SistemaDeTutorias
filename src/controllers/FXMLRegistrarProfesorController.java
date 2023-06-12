@@ -44,7 +44,7 @@ public class FXMLRegistrarProfesorController implements Initializable {
     private Label labelInvalidateMatricula;
     private boolean[] validationTextFields = {false, false, false, false, false};
     private Pattern validateCharacter = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$");
-        private Pattern validateCorreo = Pattern.compile("^(?=.*[a-zA-Z])[a-zA-Z\\d]+$");
+    private Pattern validateCorreo = Pattern.compile("^(?=.*[a-zA-Z])[a-zA-Z\\d]+$");
 
     private Pattern validateCharacterNumeroPersona = Pattern.compile("^[1-9][0-9]*$");
 
@@ -157,8 +157,6 @@ public class FXMLRegistrarProfesorController implements Initializable {
         WindowManager.NavigateToWindow(labelInvalidateApellidoPaterno.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
     }
 
-  
-
     private void enableButton() {
         if (!validationTextFields[0] || !validationTextFields[1]
                 || !validationTextFields[2] || !validationTextFields[3] || !validationTextFields[4]) {
@@ -240,8 +238,9 @@ public class FXMLRegistrarProfesorController implements Initializable {
         validationTextFields[4] = false;
         buttonRegister.setDisable(true);
     }
-    private void registerProfesor(){
-       Profesor profesor = new Profesor();
+
+    private void registerProfesor() {
+        Profesor profesor = new Profesor();
         try {
             ProfesorDAO profesorDAO = new ProfesorDAO();
             boolean profesorExists = profesorDAO.validateExistProfesor(Integer.parseInt(textNumeroDePersonal.getText()));
@@ -250,10 +249,10 @@ public class FXMLRegistrarProfesorController implements Initializable {
                 profesor.setNombre(textNombre.getText());
                 profesor.setApellidoPaterno(textApellidoPaterno.getText());
                 profesor.setApellidoMaterno(textApellidoMaterno.getText());
-                profesor.setCorreoElectronicoInstitucional(textCorreo.getText()+ "@universidad.com");                
-                if(profesorDAO.setProfesorRegister(profesor)){
+                profesor.setCorreoElectronicoInstitucional(textCorreo.getText() + "universidad@.com");
+                if (profesorDAO.setProfesorRegister(profesor)) {
                     AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
-                }                                
+                }
             } else {
                 AlertManager.showAlert("Información", "Registro ya existente", Alert.AlertType.INFORMATION);
             }
@@ -261,9 +260,7 @@ public class FXMLRegistrarProfesorController implements Initializable {
             e.printStackTrace();
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
         }
-    
-    
+
     }
-     
 
 }

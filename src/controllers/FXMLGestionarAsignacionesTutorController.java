@@ -322,6 +322,8 @@ public class FXMLGestionarAsignacionesTutorController implements Initializable {
 
     private void updateTables() {
         estudiantesObservableList.removeAll(estudiantesObservableList);
+        estudiantesWithoutTutorObservableList.removeAll(estudiantesWithoutTutorObservableList);
+        estudiantesWithTutorObservableList.removeAll(estudiantesWithTutorObservableList);
         tutoresObservableList.removeAll(tutoresObservableList);
         updateQuerys();
 

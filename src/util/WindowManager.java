@@ -45,6 +45,7 @@ public class WindowManager {
             primaryStage.getIcons().add(new Image("images/icon.png"));
             primaryStage.setScene(menuScene);
             primaryStage.setTitle(windowTitle);
+            primaryStage.centerOnScreen();
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
