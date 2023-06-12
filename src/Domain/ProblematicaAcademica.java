@@ -21,12 +21,14 @@ public class ProblematicaAcademica {
     private String descripcion;
     private int numeroDeEstudiantesAfectados;
     private int idReporteTutoria;
-   private String fechaTutoria;
+    private String fechaTutoria;
+    private int idexperienciaProfesor;
 
     private SolucionAProblematica solucion;
     private Profesor profesor;
     private ExperienciaEducativa experienciaEducativa;
     private PeriodoEscolar periodoEscolar;
+    
 
     public ProblematicaAcademica() {
     }
@@ -67,6 +69,14 @@ public class ProblematicaAcademica {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.numeroDeEstudiantesAfectados = numeroDeEstudiantesAfectados;
+    }
+
+    public int getIdexperienciaProfesor() {
+        return idexperienciaProfesor;
+    }
+
+    public void setIdexperienciaProfesor(int idexperienciaProfesor) {
+        this.idexperienciaProfesor = idexperienciaProfesor;
     }
 
     public int getIdProblematica() {
@@ -193,7 +203,10 @@ public class ProblematicaAcademica {
     public PeriodoEscolar getPeriodoEscolar() {
         return periodoEscolar;
     }
-
+    public int getIDPeriodoEscolar() {
+        return periodoEscolar.getIdPeriodoEscolar();
+    }
+    
     public void setPeriodoEscolar(PeriodoEscolar periodoEscolar) {
         this.periodoEscolar = periodoEscolar;
     }

@@ -96,6 +96,7 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
     private AlertManager alerts = new AlertManager();
     private ObservableList<PeriodoEscolar> listPeriodosEscolares;
     ArrayList<ProblematicaAcademica> problematicas = new ArrayList<ProblematicaAcademica>();
+    private ObservableList<ProblematicaAcademica> listProblematicas;
 
     ObservableList<ProblematicaAcademica> problematicaAcademicaObservableList = FXCollections.observableArrayList();
     ObservableList<ProblematicaAcademica> problematicaAcademicaPeriodoObservableList = FXCollections.observableArrayList();
@@ -104,7 +105,7 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
     @FXML
     private Button btn_closeWinodw;
     @FXML
-    private ComboBox cmb_Periodo;
+    private ComboBox<PeriodoEscolar> cmb_Periodo;
     @FXML
     private Label lbl_Periodo;
 
@@ -113,6 +114,8 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
         this.initializeTable();
         final ObservableList<ProblematicaAcademica> problematicaReportes = tblProblematicas.getSelectionModel().getSelectedItems();
         problematicaReportes.addListener(selectedProblematica);
+        this.selectedItem();
+
     }
 
     @FXML
@@ -181,12 +184,13 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
     private void initializeTable() {
 
         clm_Experiencia.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("ExperienciaEducativaName"));
-        clm_Profesor.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("ProfesorName"));
+        clm_Profesor.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("NombreCompletoProfesor"));
         clm_Hd.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("titulo"));
         clm_IdProblematica.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("idProblematica"));
         clm_numReportes.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("numeroDeEstudiantesAfectados"));
-        clm_fecha.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, Date>("fechaFin"));
+        clm_fecha.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, Date>("FechaTutoria"));
         listPeriodosEscolares = FXCollections.observableArrayList();
+        listProblematicas = FXCollections.observableArrayList();
 
         loadDataTable();
 
@@ -201,8 +205,14 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
             // condicón si es tutor o no 
             // coordinador 2
             // tutor 3
-            // if(User.getCurrentUser().getRol()==2){}elseif (User.getCurrentUser().getRol()==3){}
-            problematicas = problematicasDAO.getProblematicasByPrograma(clavePrograma);
+             if(User.getCurrentUser().getRol().getIdRol()==2){ 
+             
+                         problematicas = problematicasDAO.getProblematicasByPrograma(clavePrograma);
+
+             } else if  (User.getCurrentUser().getRol().getIdRol()==3){
+                        problematicas = problematicasDAO.getProblematicasByProgramaByTutor(clavePrograma,User.getCurrentUser().getNumeroDePersonal());
+
+            }
             ArrayList<PeriodoEscolar> loadedPeriodos = periodoEscolarDAO.getAllPeriodos();
 
             listPeriodosEscolares.addAll(loadedPeriodos);
@@ -220,6 +230,7 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
 
         } catch (SQLException ex) {
             alerts.showAlertErrorConexionDB();
+            ex.printStackTrace();
         }
 
         tblProblematicas.setItems(problematicaAcademicaObservableList);
@@ -249,7 +260,7 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
         //   txt_Experiencia.setVisible(result);
         txt_Profesor.setVisible(result);
 //        txt_date.setVisible(result);
-
+        lbl_Periodo.setVisible(result);
         btn_detail.setVisible(result);
         cmb_Periodo.setVisible(result);
 
@@ -301,7 +312,8 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
         boolean result = true;
         tblProblematicas.setVisible(result);
         txt_Profesor.setVisible(result);
-
+        lbl_Periodo.setVisible(result);
+        cmb_Periodo.setVisible(result);
         btn_detail.setVisible(result);
 
     }
@@ -313,7 +325,7 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
         String afectados = String.valueOf(currentProblematica.getNumeroDeEstudiantesAfectados());
         String titulo = currentProblematica.getTitulo();
         String experiencia = currentProblematica.getExperienciaEducativa().getNombre();
-        String profesor = currentProblematica.getProfesorName();
+        String profesor = currentProblematica.getNombreCompletoProfesor();
         String descripcion = currentProblematica.getDescripcion();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String fechaTutoria = currentProblematica.getFechaTutoria();
@@ -368,22 +380,22 @@ public class FXMLConsultarProblematicasAcademicasController implements Initializ
     }
 
     private void selectedItem() {
-     /*   cmb_Periodo.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends PeriodoEscolar> observable, PeriodoEscolar oldValue, PeriodoEscolar newValue) -> {
+        cmb_Periodo.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends PeriodoEscolar> observable, PeriodoEscolar oldValue, PeriodoEscolar newValue) -> {
             if (oldValue != null) {
             }
             if (newValue != null) {
                 Label noticeLabel = new Label("No hay datos");
                 tblProblematicas.setPlaceholder(noticeLabel);
-                listProblematicasa.clear();
-                for (ProblematicaAcademica problema : listAllProblematicas) {
+                listProblematicas.clear();
+                for (ProblematicaAcademica problema : problematicaAcademicaObservableList) {
                     if (problema.getPeriodoEscolar().getIdPeriodoEscolar() == newValue.getIdPeriodoEscolar()) {
-                        listProblematicasa.add(problema);
+                        listProblematicas.add(problema);
                     }
                 }
-                tblProblematicas.setItems(listProblematicasa);
+                tblProblematicas.setItems(listProblematicas);
             }
 
-        }); */
-    } 
+        });
+    }
 
 }

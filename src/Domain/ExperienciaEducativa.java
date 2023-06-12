@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package Domain;
 
 import javafx.scene.control.CheckBox;
@@ -42,6 +39,8 @@ public class ExperienciaEducativa {
         this.profesorNombre = profesorNombre;
         this.nombre = nombre;
     }
+    
+    
 
     public ExperienciaEducativa(String nrc, String nombre, String seccion, String modalidad, String clave) {
         this.nrc = nrc;
@@ -162,7 +161,7 @@ public class ExperienciaEducativa {
 
     @Override
     public String toString() {
-        return    profesorNombre + " - nrc=" + nrc;
+        return   getProfesorNombre() + " - nrc: " + nrc;
     }
             
 }

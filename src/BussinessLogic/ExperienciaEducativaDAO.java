@@ -18,7 +18,6 @@ import javafx.scene.control.Alert;
 import util.AlertManager;
 import javafx.scene.control.CheckBox;
 
-
 /**
  *
  * @author Panther
@@ -55,13 +54,18 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
         return result;
     }
 
-    @Override
-    public ArrayList<String> consultExperienciasName(String clave) throws SQLException {
+    public ArrayList<String> consultExperienciasName(String clave, int idPeriodo) throws SQLException {
         ArrayList<String> experienciasNames = new ArrayList<String>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = "select distinct nombre from experiencias_educativas";
+        String query = "SELECT distinct nombre \n"
+                + "FROM experiencias_educativas ee\n"
+                + "inner join experiencias_periodos_profesores epp on ee.nrc=epp.nrc\n"
+                + "WHERE epp.clave=? AND epp.idPeriodoEscolar=?;";
         PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, clave);
+        statement.setInt(2, idPeriodo);
+
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             String experiencia;
@@ -94,7 +98,7 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
                     + "WHERE experiencias_periodos_profesores.idPeriodoEscolar = ?;");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, User.getCurrentUser().getPeriodoActual().getIdPeriodoEscolar());
-            System.out.println("SSSS"+ User.getCurrentUser().getPeriodoActual().getIdPeriodoEscolar());
+            System.out.println("SSSS" + User.getCurrentUser().getPeriodoActual().getIdPeriodoEscolar());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 ExperienciaEducativa experienciaEducativaTemp = new ExperienciaEducativa();
@@ -172,43 +176,43 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
 
     public ArrayList<ExperienciaEducativa> getExperienciasEducativasByPeriodoEscoalar(int idPeriodoEscolar) throws SQLException {
         ArrayList<ExperienciaEducativa> listExperienciaEducativas = new ArrayList<>();
-        
+
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String clave=User.getCurrentUser().getRol().getProgramaEducativo().getClave();
-        if(connection != null){
-            String query = ("SELECT\n" +
-                "  ee.nombre,\n" +
-                "  ee.nrc,\n" +
-                "  epp.seccion,\n" +
-                "  epp.modalidad,\n" +
-                "  p.nombre AS nombreProfesor,\n" +
-                "  p.apellidoPaterno,\n" +
-                "  p.apellidoMaterno\n" +
-                "FROM\n" +
-                "  experiencias_educativas ee\n" +
-                "  JOIN experiencias_periodos_profesores epp ON ee.nrc = epp.nrc\n" +
-                "  LEFT JOIN profesores p ON epp.numeroDePersonal = p.numeroDePersonal\n" +
-                "WHERE\n" +
-                    "  epp.idPeriodoEscolar = ? and epp.clave= ? ORDER BY ee.nombre ASC;");
+        String clave = User.getCurrentUser().getRol().getProgramaEducativo().getClave();
+        if (connection != null) {
+            String query = ("SELECT\n"
+                    + "  ee.nombre,\n"
+                    + "  ee.nrc,\n"
+                    + "  epp.seccion,\n"
+                    + "  epp.modalidad,\n"
+                    + "  p.nombre AS nombreProfesor,\n"
+                    + "  p.apellidoPaterno,\n"
+                    + "  p.apellidoMaterno\n"
+                    + "FROM\n"
+                    + "  experiencias_educativas ee\n"
+                    + "  JOIN experiencias_periodos_profesores epp ON ee.nrc = epp.nrc\n"
+                    + "  LEFT JOIN profesores p ON epp.numeroDePersonal = p.numeroDePersonal\n"
+                    + "WHERE\n"
+                    + "  epp.idPeriodoEscolar = ? and epp.clave= ? ORDER BY ee.nombre ASC;");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, idPeriodoEscolar);
-            statement.setString(2, clave);            
+            statement.setString(2, clave);
             ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()){
-                Profesor profesortemp  = new Profesor();
+            while (resultSet.next()) {
+                Profesor profesortemp = new Profesor();
                 ExperienciaEducativa experienciaEducativaTemp = new ExperienciaEducativa();
                 experienciaEducativaTemp.setNrc(resultSet.getString("nrc"));
                 experienciaEducativaTemp.setNombre(resultSet.getString("nombre"));
                 experienciaEducativaTemp.setSeccion(resultSet.getString("seccion"));
                 profesortemp.setNombre(resultSet.getString("nombreProfesor"));
-                if(profesortemp.getNombre() != null){
+                if (profesortemp.getNombre() != null) {
                     profesortemp.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
-                    profesortemp.setApellidoMaterno(resultSet.getString("apellidoMaterno"));                
-                }else{
+                    profesortemp.setApellidoMaterno(resultSet.getString("apellidoMaterno"));
+                } else {
                     profesortemp.setNombre("SIN");
                     profesortemp.setApellidoPaterno("ASIGNAR");
-                    profesortemp.setApellidoMaterno("PROFESOR");                     
+                    profesortemp.setApellidoMaterno("PROFESOR");
                 }
                 experienciaEducativaTemp.setModalidad(resultSet.getString("modalidad"));
                 experienciaEducativaTemp.setProfesorNombre(profesortemp.getNombreCompleto());
@@ -216,9 +220,10 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
             }
             connection.close();
         }
-        
+
         return listExperienciaEducativas;
-    }    
+    }
+
     public ArrayList<ExperienciaEducativa> getAllCurrentExperienciaEducativaByPeriodo(String clave, int idPeriodoEscolar) throws SQLException {
         ArrayList<ExperienciaEducativa> listExperienciasEducativas = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -267,7 +272,7 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, profesor.getNumeroDePersonal());
             statement.setInt(2, experienciaEducativa.getIdexperiencia_periodo_profesor());
-            statement.setString(3, clave);            
+            statement.setString(3, clave);
             int resultInsert = statement.executeUpdate();
             if (resultInsert > 0) {
                 result = true;
@@ -276,5 +281,5 @@ public class ExperienciaEducativaDAO implements IExperiencaEducativaDAO {
         connection.close();
         return result;
     }
-    
+
 }
