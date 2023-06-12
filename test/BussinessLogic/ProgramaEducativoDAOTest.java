@@ -52,4 +52,107 @@ public class ProgramaEducativoDAOTest {
         fail("The test case is a prototype.");
     }
     
+    @Test
+    public void testSetProgramaEducativoRegister() throws Exception {
+        System.out.println("setProgramasEducativos");
+        ProgramaEducativoDAO instance = new ProgramaEducativoDAO();
+        ProgramaEducativo programaEducativo  = new  ProgramaEducativo("55555","Prueba Ulises");
+        boolean expResult = true;
+        boolean result = instance.setProgramaEducativoRegister(programaEducativo);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+    }    
+    
+    @Test
+    public void testUpdateProgramaEducativo() throws Exception {
+        System.out.println("updateProgramaEducativo");
+        ProgramaEducativoDAO instance = new ProgramaEducativoDAO();
+        ProgramaEducativo programaEducativo  = new  ProgramaEducativo("55555","Prueba UpdateProgramaEducativo");
+        boolean expResult = true;
+        boolean result = instance.updateProgramaEducativo(programaEducativo);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+    }     
+    
+    @Test
+    public void testValidateToEliminarProgramaEducativo() throws Exception {
+        System.out.println("validateToEliminarProgramaEducativo");
+        ProgramaEducativoDAO instance = new ProgramaEducativoDAO();
+        ProgramaEducativo programaEducativo  = new  ProgramaEducativo("55555","Prueba UpdateProgramaEducativo");
+        int expResult = 0;
+        int result = instance.validateToEliminarProgramaEducativo(programaEducativo);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+    }   
+    
+    @Test
+    public void testValidateToEliminarProgramaEducativo1() throws Exception {
+        System.out.println("validateToEliminarProgramaEducativo1");
+        ProgramaEducativoDAO instance = new ProgramaEducativoDAO();
+        ProgramaEducativo programaEducativo  = new  ProgramaEducativo("55555","Prueba UpdateProgramaEducativo");
+        int expResult = 1;
+        int result = instance.validateToEliminarProgramaEducativo(programaEducativo);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+    }    
+    
+    @Test
+    public void testValidateToBorrarProgramaEducativo() throws Exception {
+        System.out.println("validateToBorrarProgramaEducativo");
+        ProgramaEducativoDAO instance = new ProgramaEducativoDAO();
+        ProgramaEducativo programaEducativo  = new  ProgramaEducativo("55555","Prueba UpdateProgramaEducativo");
+        int expResult = 2;
+        int result = instance.validateToBorrarProgramaEducativo(programaEducativo);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+    } 
+
+    @Test
+    public void testDeleteProgramaEducativo() throws Exception {
+        System.out.println("deleteProgramaEducativo");
+        ProgramaEducativoDAO instance = new ProgramaEducativoDAO();
+        ProgramaEducativo programaEducativo  = new  ProgramaEducativo("55555","Prueba UpdateProgramaEducativo");
+        boolean expResult = true;
+        boolean result = instance.deleteProgramaEducativo(programaEducativo);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+    }    
+    
+    @Test
+    public void testDeleteProgramaEducativo1() throws Exception {
+        System.out.println("testDeleteProgramaEducativo1");
+        ProgramaEducativoDAO instance = new ProgramaEducativoDAO();
+        ProgramaEducativo programaEducativo  = new  ProgramaEducativo("55555","Prueba UpdateProgramaEducativo");
+        boolean expResult = false;
+        boolean result = instance.deleteProgramaEducativo(programaEducativo);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+    }       
+    
+    @Test
+    public void testEraseProgramaEducativo() throws Exception {
+        System.out.println("eraseProgramaEducativo");
+        ProgramaEducativoDAO instance = new ProgramaEducativoDAO();
+        ProgramaEducativo programaEducativo  = new  ProgramaEducativo("55555","Prueba UpdateProgramaEducativo");
+        boolean expResult = false;
+        boolean result = instance.eraseProgramaEducativo(programaEducativo);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+    }     
+    
+    @Test
+    public void testEraseProgramaEducativo1() throws Exception {
+        System.out.println("eraseProgramaEducativo1");
+        ProgramaEducativoDAO instance = new ProgramaEducativoDAO();
+        ProgramaEducativo programaEducativo  = new  ProgramaEducativo("55555","Prueba UpdateProgramaEducativo");
+        boolean expResult = true;
+        boolean result = instance.eraseProgramaEducativo(programaEducativo);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+    }    
+    
+    
+    
+    
+    
 }
