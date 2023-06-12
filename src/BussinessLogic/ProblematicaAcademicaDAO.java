@@ -294,7 +294,7 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            String query = ("SELECT EE.nrc, EE.nombre as nombreExperiencia,  P.nombre, P.apellidoPaterno, P.apellidoMaterno, PA.idProblematica, PA.titulo, PA.numeroDeEstudiantesAfectados FROM problematicas_academicas PA\n" +
+            String query = ("SELECT EE.nrc, EE.nombre as nombreExperiencia,  P.nombre, P.apellidoPaterno, P.apellidoMaterno, PA.idProblematica, PA.titulo, PA.numeroDeEstudiantesAfectados, PA.descripcion FROM problematicas_academicas PA\n" +
                 "INNER JOIN experiencias_periodos_profesores EPP ON PA.idexperiencia_periodo_profesor = EPP.idexperiencia_periodo_profesor\n" +
                 "INNER JOIN experiencias_educativas EE ON EPP.nrc = EE.nrc\n" +
                 "INNER JOIN profesores P ON EPP.numeroDePersonal = P.numeroDePersonal\n" +
@@ -315,7 +315,8 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
                 problematicaAcademica.setExperienciaEducativa(experienciaEducativa);
                 problematicaAcademica.setSolucion(new SolucionAProblematica(0, ""));
                 problematicaAcademica.setIdProblematica(resultSet.getInt("idProblematica"));
-                problematicaAcademica.setDescripcion(resultSet.getString("titulo"));
+                problematicaAcademica.setDescripcion(resultSet.getString("descripcion"));
+                problematicaAcademica.setTitulo(resultSet.getString("titulo"));
                 problematicaAcademica.setNumeroDeEstudiantesAfectados(resultSet.getInt("numeroDeEstudiantesAfectados"));
                 listProblematicaAcademica.add(problematicaAcademica);
             }
