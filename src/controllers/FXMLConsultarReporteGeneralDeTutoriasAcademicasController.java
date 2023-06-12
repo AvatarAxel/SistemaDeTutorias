@@ -131,8 +131,7 @@ public class FXMLConsultarReporteGeneralDeTutoriasAcademicasController implement
 
     @FXML
     private void selectPeriodo(MouseEvent event) {
-        if (!tableTutoriasAcademicas.getSelectionModel().isEmpty() 
-                && tableTutoriasAcademicas.getSelectionModel().getSelectedItem() != null) {
+        if (!tableTutoriasAcademicas.getSelectionModel().isEmpty() && tableTutoriasAcademicas.getSelectionModel().getSelectedItem() != null) {
             buttonConsultar.setDisable(false);
         }
     }

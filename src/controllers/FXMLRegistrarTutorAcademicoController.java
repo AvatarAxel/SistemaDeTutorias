@@ -9,7 +9,6 @@ import BussinessLogic.TutorAcademicoDAO;
 import BussinessLogic.UserDAO;
 import Domain.Profesor;
 import Domain.TutorAcademico;
-import Domain.Usuario;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -167,7 +166,6 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
             }
         } catch (SQLException e) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
-            e.printStackTrace();
         }
         buttonRegister.setDisable(true);
         tableProfesor.getSelectionModel().clearSelection();

@@ -216,7 +216,7 @@ public class FXMLAsignarPersonalProgramaEducativoController implements Initializ
             @Override
             protected Void call() throws Exception {
                 EmailUtil email = new EmailUtil();
-                email.sendEmailNewUser(tutorEmail, randomPassword);
+                email.sendEmailNewUserOutlook(tutorEmail, randomPassword);
                 return null;
             }
         };

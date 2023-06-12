@@ -294,13 +294,12 @@ public class ProblematicaAcademicaDAO implements IProblematicaAcademicaDAO {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            String query = ("SELECT p.idProblematica, p.descripcion, p.numeroDeEstudiantesAfectados, \n"
-                    + "    e.nrc, e.nombre as nombreExperiencia, \n"
-                    + "    pr.nombre, pr.apellidoPaterno, pr.apellidoMaterno\n"
-                    + "FROM problematicas_academicas p\n"
-                    + "INNER JOIN experiencias_educativas e ON p.nrc = e.nrc\n"
-                    + "INNER JOIN profesores pr ON e.numeroDePersonal = pr.numeroDePersonal\n"
-                    + "WHERE p.idReporteTutoria = ?;");
+            String query = ("SELECT pa.descripcion, pa.numeroDeEstudiantesAfectados, pr.nombre, pr.apellidoPaterno, pr.apellidoMaterno, ee.nrc, ee.nombre as nombreExperiencia\n"
+                    + "FROM problematicas_academicas pa\n"
+                    + "JOIN experiencias_periodos_profesores epp ON pa.idexperiencia_periodo_profesor = epp.idexperiencia_periodo_profesor\n"
+                    + "JOIN profesores pr ON epp.numeroDePersonal = pr.numeroDePersonal\n"
+                    + "JOIN experiencias_educativas ee ON epp.nrc = ee.nrc\n"
+                    + "WHERE pa.idReporteTutoria = ?;");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, idReporteTutoria);
             ResultSet resultSet = statement.executeQuery();

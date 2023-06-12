@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -134,16 +133,16 @@ public class FXMLGestionarPersonalController implements Initializable {
     private void loadInformationPersonalProfesores() {
         ProfesorDAO profesorDAO = new ProfesorDAO();
         try {
-            ArrayList<Profesor> loadedProfesor = profesorDAO.getProfesoresNoUser();
+            ArrayList<Profesor> loadedListProfesor = profesorDAO.getProfesoresNoUser();
             ArrayList<PersonalUser> listUsuarios = new ArrayList<>();
-            if (!loadedProfesor.isEmpty()) {
-                for (int i = 0; i < loadedProfesor.size(); i++) {
+            if (!loadedListProfesor.isEmpty()) {
+                for (int i = 0; i < loadedListProfesor.size(); i++) {
                     Personal usuario = new Profesor();
-                    usuario.setNombre(loadedProfesor.get(i).getNombre());
-                    usuario.setApellidoPaterno(loadedProfesor.get(i).getApellidoPaterno());
-                    usuario.setApellidoMaterno(loadedProfesor.get(i).getApellidoMaterno());
-                    usuario.setNumeroDePersonal(loadedProfesor.get(i).getNumeroDePersonal());
-                    usuario.setCorreoElectronicoInstitucional(loadedProfesor.get(i).getCorreoElectronicoInstitucional());
+                    usuario.setNombre(loadedListProfesor.get(i).getNombre());
+                    usuario.setApellidoPaterno(loadedListProfesor.get(i).getApellidoPaterno());
+                    usuario.setApellidoMaterno(loadedListProfesor.get(i).getApellidoMaterno());
+                    usuario.setNumeroDePersonal(loadedListProfesor.get(i).getNumeroDePersonal());
+                    usuario.setCorreoElectronicoInstitucional(loadedListProfesor.get(i).getCorreoElectronicoInstitucional());
                     PersonalUser personalUser = new PersonalUser();
                     ArrayList<Rol> listRoles = new ArrayList<>();
                     listRoles.add(new Rol(0, "Profesor"));
@@ -162,12 +161,12 @@ public class FXMLGestionarPersonalController implements Initializable {
     private void loadInformationPersonalUsuarios() {
         UserDAO userDAO = new UserDAO();
         try {
-            ArrayList<Usuario> loadedPersonal = userDAO.getAllUsersByProgramaEducativo(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
-            if (!loadedPersonal.isEmpty()) {
-                for (int i = 0; i < loadedPersonal.size(); i++) {
+            ArrayList<Usuario> loadedListPersonal = userDAO.getAllUsersByProgramaEducativo(User.getCurrentUser().getRol().getProgramaEducativo().getClave());
+            if (!loadedListPersonal.isEmpty()) {
+                for (int i = 0; i < loadedListPersonal.size(); i++) {
                     PersonalUser personalUser = new PersonalUser();
-                    personalUser.setPersonal(loadedPersonal.get(i));
-                    int numeroDePersonal = loadedPersonal.get(i).getNumeroDePersonal();
+                    personalUser.setPersonal(loadedListPersonal.get(i));
+                    int numeroDePersonal = loadedListPersonal.get(i).getNumeroDePersonal();
                     personalUser.setRol(userDAO.getAllUserRolesByNumeroDePersonal(numeroDePersonal, User.getCurrentUser().getRol().getProgramaEducativo().getClave()));
                     tablePersonal.getItems().add(personalUser);
                 }
@@ -189,10 +188,10 @@ public class FXMLGestionarPersonalController implements Initializable {
             } else {
                 resulDeleteProfesor = new ProfesorDAO().deleteProfesor(personalUserSelected.getNumeroDePersonal());
                 resultDeleteUsuario = new UserDAO().deleteUsuario(personalUserSelected.getNumeroDePersonal());
-            }            
+            }
             if (resulDeleteProfesor && resultDeleteUsuario) {
                 AlertManager.showTemporalAlert(" ", "Acción realizada con éxito", 2);
-                listPersonal.remove(personalUser);                
+                listPersonal.remove(personalUser);
             }
         } catch (SQLException e) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
@@ -200,7 +199,7 @@ public class FXMLGestionarPersonalController implements Initializable {
             clearFields();
             textFieldSearchPersonal.clear();
         }
-    }    
+    }
 
     @FXML
     private void buttonActionDelete(ActionEvent event) {
@@ -544,9 +543,9 @@ public class FXMLGestionarPersonalController implements Initializable {
     }
     
     private void filterTable() {
-        FilteredList<PersonalUser> filteredPersonal = new FilteredList<>(listPersonal, b -> true);
+        FilteredList<PersonalUser> filteredListPersonal = new FilteredList<>(listPersonal, b -> true);
         textFieldSearchPersonal.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredPersonal.setPredicate(Usuario -> {
+            filteredListPersonal.setPredicate(Usuario -> {
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
@@ -564,7 +563,7 @@ public class FXMLGestionarPersonalController implements Initializable {
                 }
             });
         });
-        SortedList<PersonalUser> sortedListPersonal = new SortedList<>(filteredPersonal);
+        SortedList<PersonalUser> sortedListPersonal = new SortedList<>(filteredListPersonal);
         sortedListPersonal.comparatorProperty().bind(tablePersonal.comparatorProperty());
         tablePersonal.setItems(sortedListPersonal);
     }    
