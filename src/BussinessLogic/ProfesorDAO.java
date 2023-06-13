@@ -35,7 +35,25 @@ public class ProfesorDAO implements IProfesorDAO {
         connection.close();
         return result;
     }
+  public boolean validateExistCorreoProfesor(String correo) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
 
+        if (connection != null) {
+            String query = ("SELECT COUNT(*) FROM profesores p WHERE p.correoElectronicoInstitucional= ?");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, correo);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            int resultQuery = resultSet.getInt(1);
+            if (resultQuery > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }
     public boolean setProfesorRegister(Profesor profesor) throws SQLException {
         boolean result = false;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
