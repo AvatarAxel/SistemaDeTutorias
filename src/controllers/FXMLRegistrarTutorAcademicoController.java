@@ -160,8 +160,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
             boolean markRegistration = profesorDao.setTutorUser(tutorAcademico.getNumeroDePersonal());
             if (resultRegister && resultRolAssignment && markRegistration) {
                 AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
-                notifyTheNewUser(tutorAcademico.getCorreoElectronicoInstitucional(), randomPassword);                                                                
-                System.out.println(randomPassword);
+                notifyTheNewUser(tutorAcademico.getCorreoElectronicoInstitucional(), randomPassword);
             }
         } catch (SQLException e) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
