@@ -85,8 +85,7 @@ public class FXMLCambiarContraseniaController implements Initializable {
         try {
             boolean result = new UserDAO().existCorreo(textFieldCorreo.getText());
             if (result) {     
-                verificationCode = new util.Random().verificationCodeGenerator();
-                System.out.println(verificationCode);                
+                verificationCode = new util.Random().verificationCodeGenerator();                  
                 new EmailUtil().sendEmailChangePasswordOutlook(textFieldCorreo.getText(), verificationCode);
                 showValidationCode();
             } else {

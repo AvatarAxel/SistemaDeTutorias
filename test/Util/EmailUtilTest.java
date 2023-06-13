@@ -23,4 +23,14 @@ public class EmailUtilTest {
         String newUserPassword = "temporalPassword";
         emailUtil.sendEmailNewUserOutlook(emailDestiner, newUserPassword);
     }
+    
+        @Test
+    public void testEmailChangePassword() {
+        EmailUtil emailUtil = new EmailUtil();
+        String emailDestiner = "zs20015691@estudiantes.uv.mx";
+        String newUserPassword = "temporalPassword";
+        emailUtil.sendEmailChangePasswordOutlook(emailDestiner, newUserPassword);
+    }
+    
+    //new EmailUtil().sendEmailChangePasswordOutlook(textFieldCorreo.getText(), verificationCode);
 }
