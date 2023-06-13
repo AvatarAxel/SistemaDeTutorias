@@ -86,12 +86,11 @@ public class FXMLCambiarContraseniaController implements Initializable {
             boolean result = new UserDAO().existCorreo(textFieldCorreo.getText());
             if (result) {     
                 verificationCode = new util.Random().verificationCodeGenerator();
-                System.out.println(verificationCode);
-                //Habilitar cuando se pueda enviar correo
-                //new EmailUtil().sendEmailChangePasswordOutlook(textFieldCorreo.getText(), verificationCode);
+                System.out.println(verificationCode);                
+                new EmailUtil().sendEmailChangePasswordOutlook(textFieldCorreo.getText(), verificationCode);
                 showValidationCode();
             } else {
-                labelInvalidateCorreo.setText("Correo no encontrado, porfavor vuelva a ingresarlo");
+                labelInvalidateCorreo.setText("Correo no encontrado, por favor vuelva a ingresarlo");
             }
         } catch (SQLException ex) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
