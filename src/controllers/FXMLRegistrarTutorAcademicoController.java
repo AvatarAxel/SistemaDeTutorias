@@ -160,8 +160,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
             boolean markRegistration = profesorDao.setTutorUser(tutorAcademico.getNumeroDePersonal());
             if (resultRegister && resultRolAssignment && markRegistration) {
                 AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
-                //Habilitar cuando se pueda enviar correo
-                //notifyTheNewUser(tutorAcademico.getCorreoElectronicoInstitucional(), randomPassword);                                                                
+                notifyTheNewUser(tutorAcademico.getCorreoElectronicoInstitucional(), randomPassword);                                                                
                 System.out.println(randomPassword);
             }
         } catch (SQLException e) {
