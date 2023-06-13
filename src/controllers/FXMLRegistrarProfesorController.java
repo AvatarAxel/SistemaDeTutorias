@@ -63,6 +63,7 @@ public class FXMLRegistrarProfesorController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        buttonRegister.setDisable(true);
     }
 
     @FXML
