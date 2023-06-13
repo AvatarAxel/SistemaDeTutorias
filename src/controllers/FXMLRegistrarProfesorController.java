@@ -245,14 +245,14 @@ public class FXMLRegistrarProfesorController implements Initializable {
         try {
             ProfesorDAO profesorDAO = new ProfesorDAO();
             boolean profesorExists = profesorDAO.validateExistProfesor(Integer.parseInt(textNumeroDePersonal.getText()));
-            boolean correoExists = profesorDAO.validateExistCorreoProfesor(textCorreo.getText() + "universidad@.com");
+            boolean correoExists = profesorDAO.validateExistCorreoProfesor(textCorreo.getText() + "@universidad.com");
 
             if (!profesorExists && !correoExists) {
                 profesor.setNumeroDePersonal(Integer.parseInt(textNumeroDePersonal.getText()));
                 profesor.setNombre(textNombre.getText());
                 profesor.setApellidoPaterno(textApellidoPaterno.getText());
                 profesor.setApellidoMaterno(textApellidoMaterno.getText());
-                profesor.setCorreoElectronicoInstitucional(textCorreo.getText() + "universidad@.com");
+                profesor.setCorreoElectronicoInstitucional(textCorreo.getText() + "@universidad.com");
                 if (profesorDAO.setProfesorRegister(profesor)) {
                     AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
                 }
