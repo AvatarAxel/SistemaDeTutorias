@@ -16,5 +16,4 @@ import java.util.ArrayList;
 public interface IProfesorDAO {
     
     public Profesor getProfesor(int numeroDePersonal) throws SQLException;
-    public ArrayList<ExperienciaEducativa> consultProfesoresNames()throws SQLException;
 }

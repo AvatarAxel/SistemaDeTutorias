@@ -20,6 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 import singleton.User;
@@ -50,12 +51,14 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
     PeriodoEscolar periodoEscolar = new PeriodoEscolar();
     @FXML
     private Button btn_close;
+    private boolean[] validationDatePickers = {false, false};
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        btn_save.setDisable(true);
 
         try {
             PeriodoEscolarDAO PeriodoEscolarDAO = new PeriodoEscolarDAO();
@@ -108,7 +111,7 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
         try {
 
             tutoria = tutoriaDAO.getLastTutoriaAcademica();
-            JOptionPane.showMessageDialog(null, tutoria.getNumeroDeSesion());
+            //JOptionPane.showMessageDialog(null, tutoria.getNumeroDeSesion());
 
             if (tutoria != null) {
 
@@ -122,11 +125,9 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
 
                 } else if (tutoria.getNumeroDeSesion() == 1) {
                     cmb_numSesion.getItems().addAll(2);
-                }
-                else if (tutoria.getNumeroDeSesion() == 0) {
+                } else if (tutoria.getNumeroDeSesion() == 0) {
                     cmb_numSesion.getItems().addAll(1);
                 }
-                
 
             } else {
 
@@ -173,7 +174,7 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
                             JOptionPane.showMessageDialog(null, "Fechas ya registradas dentro de otra Sesión");
                         }
 
-                    } else  {
+                    } else {
                         result = 1;
                     }
                 } else {
@@ -208,11 +209,38 @@ public class FXMLRegistrarFechasTutoriasController implements Initializable {
         btn_save.setDisable(true);
     }
 
+    private void enableButton() {
+        if (!validationDatePickers[0] || !validationDatePickers[1]) {
+            btn_save.setDisable(true);
+        } else {
+            btn_save.setDisable(false);
+        }
+    }
+
     @FXML
     private void closeWindow(ActionEvent event) {
 
         WindowManager.NavigateToWindow(lbl_periodo.getScene().getWindow(), "/GUI/FXMLMainMenu.fxml", "Menú");
 
     }
+
+    @FXML
+    private void startDateClick(ActionEvent event) {
+        if (datepicker_startDate.getValue() != null) {
+
+            validationDatePickers[0] = true;
+        }
+        enableButton();
+    }
+
+    @FXML
+    private void endDateClick(ActionEvent event) {
+        if (datepicker_enddate.getValue() != null) {
+
+            validationDatePickers[1] = true;
+        }
+         enableButton();
+    }
+
 
 }
