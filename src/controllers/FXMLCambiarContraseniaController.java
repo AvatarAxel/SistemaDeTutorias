@@ -62,6 +62,7 @@ public class FXMLCambiarContraseniaController implements Initializable {
     private Pattern validateCharacterPassword = Pattern.compile(".{9,}");
     @FXML
     private Label errorPassword;
+    private String email;
 
     /**
      * Initializes the controller class.
@@ -85,6 +86,7 @@ public class FXMLCambiarContraseniaController implements Initializable {
         try {
             boolean result = new UserDAO().existCorreo(textFieldCorreo.getText());
             if (result) {     
+                email = textFieldCorreo.getText();
                 verificationCode = new util.Random().verificationCodeGenerator();                  
                 new EmailUtil().sendEmailChangePasswordOutlook(textFieldCorreo.getText(), verificationCode);
                 showValidationCode();
@@ -125,7 +127,7 @@ public class FXMLCambiarContraseniaController implements Initializable {
         } else {
             try {
                 errorPassword.setVisible(false);
-                boolean result = new UserDAO().updatePassword(new SHA_512().getSHA512(textFieldContrasenia.getText()), textFieldCorreo.getText());
+                boolean result = new UserDAO().updatePassword(new SHA_512().getSHA512(textFieldContrasenia.getText()), email);
                 if (result) {
                     AlertManager.showTemporalAlert(" ", "Acción realizada con éxito", 2);
                     closeWindow();
