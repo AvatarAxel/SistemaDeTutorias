@@ -2,16 +2,13 @@
 package BussinessLogic;
 
 import Domain.Estudiante;
-import Domain.ReporteDeTutoriaAcademica;
 import dataaccess.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
-import util.AlertManager;
 
 /**
  *
@@ -23,9 +20,16 @@ public class EstudianteDAO {
         boolean result = false;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        
-        if(connection!=null){
-            String query = ("INSERT INTO estudiantes (`matricula`, `nombre`, `apellidoPaterno`, `apellidoMaterno`, `clave`, `esInscrito`) VALUES (?, ?, ?, ?, ?, ?);");            
+
+        if (connection != null) {
+            String query = ("INSERT INTO estudiantes (`matricula`, `nombre`, `apellidoPaterno`, `apellidoMaterno`, `clave`, `esInscrito`)\n"
+                    + "VALUES (?, ?, ?, ?, ?, ?)\n"
+                    + "ON DUPLICATE KEY UPDATE\n"
+                    + "    nombre = VALUES(nombre),\n"
+                    + "    apellidoPaterno = VALUES(apellidoPaterno),\n"
+                    + "    apellidoMaterno = VALUES(apellidoMaterno),\n"
+                    + "    clave = VALUES(clave),\n"
+                    + "    esInscrito = VALUES(esInscrito);");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, estudiante.getMatricula());
             statement.setString(2, estudiante.getNombre());
@@ -40,7 +44,7 @@ public class EstudianteDAO {
         }
         connection.close();
         return result;
-    }
+    }    
     
     public boolean validateExistEstudiante(String matricula) throws SQLException {
         boolean result = false;
@@ -185,13 +189,14 @@ public class EstudianteDAO {
         return allEstudiantes;
     }
 
-    public ArrayList<Estudiante> getAllEstudiantes() throws SQLException {
+    public ArrayList<Estudiante> getAllEstudiantesInscribedByProgramaEducativo(String clave) throws SQLException {
         ArrayList<Estudiante> listEstudiantes = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            String query = "SELECT * FROM estudiantes WHERE esInscrito = 1";
+            String query = "SELECT * FROM estudiantes WHERE esInscrito = 1 and clave = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, clave);
             ResultSet resultQuery = preparedStatement.executeQuery();
             while (resultQuery.next()) {
                 Estudiante estudiante = new Estudiante();
@@ -306,6 +311,26 @@ public class EstudianteDAO {
         connection.close();
         return result;
         
+    }
+
+    public boolean validateExistEstudianteNoInscrito(String matricula) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        if (connection != null) {
+            String query = ("SELECT COUNT(*) FROM estudiantes WHERE matricula = ? AND esInscrito = 0;");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, matricula);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            int resultQuery = resultSet.getInt(1);
+            if (resultQuery > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
     }
     
 }

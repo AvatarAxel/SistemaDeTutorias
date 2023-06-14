@@ -157,15 +157,6 @@ public class FXMLAsignarExperienciaEducativaAProfesorController implements Initi
         }
     }
 
-    private boolean validateSelectionTableItem() {
-        boolean result = false;
-        for (int i = 0; i < tableExperienciasEducativas.getItems().size(); i++) {
-            /*if(tableExperienciasEducativas.getItems().get(i).getEsSeleccionado().  ){
-            }*/
-        }
-        return result;
-    }
-
     @FXML
     private void validateLengthProfesor(KeyEvent event) {
         filterTable();

@@ -20,6 +20,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyEvent;
+import security.SHA_512;
 import util.AlertManager;
 import util.WindowManager;
 import util.EmailUtil;
@@ -58,7 +59,7 @@ public class FXMLCambiarContraseniaController implements Initializable {
     @FXML
     private Button buttonVerificar;
     private String verificationCode;
-    private Pattern validateCharacterPassword = Pattern.compile("{10}");
+    private Pattern validateCharacterPassword = Pattern.compile(".{9,}");
     @FXML
     private Label errorPassword;
 
@@ -84,13 +85,11 @@ public class FXMLCambiarContraseniaController implements Initializable {
         try {
             boolean result = new UserDAO().existCorreo(textFieldCorreo.getText());
             if (result) {     
-                verificationCode = new util.Random().verificationCodeGenerator();
-                System.out.println(verificationCode);
-                //Habilitar cuando se pueda enviar correo
-                //new EmailUtil().sendEmailChangePassword(textFieldCorreo.getText(), verificationCode);                
+                verificationCode = new util.Random().verificationCodeGenerator();                  
+                new EmailUtil().sendEmailChangePasswordOutlook(textFieldCorreo.getText(), verificationCode);
                 showValidationCode();
             } else {
-                labelInvalidateCorreo.setText("Correo no encontrado, porfavor vuelva a ingresarlo");
+                labelInvalidateCorreo.setText("Correo no encontrado, por favor vuelva a ingresarlo");
             }
         } catch (SQLException ex) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
@@ -108,6 +107,10 @@ public class FXMLCambiarContraseniaController implements Initializable {
 
     @FXML
     private void buttonActionCancelar(ActionEvent event) {
+        closeWindow();
+    }
+
+    private void closeWindow() {
         WindowManager.NavigateToWindow(
                 textFieldContrasenia.getScene().getWindow(),
                 "/GUI/FXMLLogin.fxml",
@@ -117,10 +120,19 @@ public class FXMLCambiarContraseniaController implements Initializable {
 
     @FXML
     private void buttonActionAceptar(ActionEvent event) {
-        if(!textFieldConfirmarConstrasenia.getText().equals(textFieldContrasenia.getText())){
+        if (!textFieldConfirmarConstrasenia.getText().equals(textFieldContrasenia.getText())) {
             errorPassword.setVisible(true);
-        }else{
-            //TODO
+        } else {
+            try {
+                errorPassword.setVisible(false);
+                boolean result = new UserDAO().updatePassword(new SHA_512().getSHA512(textFieldContrasenia.getText()), textFieldCorreo.getText());
+                if (result) {
+                    AlertManager.showTemporalAlert(" ", "Acción realizada con éxito", 2);
+                    closeWindow();
+                }
+            } catch (SQLException e) {
+                AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
+            }
         }
     }
 
@@ -225,7 +237,7 @@ public class FXMLCambiarContraseniaController implements Initializable {
 
     private void showChangePassword() {
         buttonAceptar.setVisible(true);
-        buttonAceptar.setDisable(true);        
+        buttonAceptar.setDisable(true);
         textFieldContrasenia.setVisible(true);
         textFieldConfirmarConstrasenia.setVisible(true);
         labelConfirmNewPassword.setVisible(true);

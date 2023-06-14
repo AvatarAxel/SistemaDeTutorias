@@ -27,7 +27,7 @@ public class TutorAcademicoDAO {
         Connection connection = dataBaseConnection.getConnection();
 
         if (connection != null) {
-            String query = ("INSERT INTO usuarios (`numeroDePersonal`, `nombre`, `apellidoPaterno`, `apellidoMaterno`, `contrasenia`, `correoElectronicoInstitucional`) VALUES (?, ?, ?, ?, ?, ?);");
+            String query = ("INSERT INTO usuarios (`numeroDePersonal`, `nombre`, `apellidoPaterno`, `apellidoMaterno`, `contrasenia`, `correoElectronicoInstitucional`, `esRegistrado`) VALUES (?, ?, ?, ?, ?, ?, ?);");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, tutorAcademico.getNumeroDePersonal());
             statement.setString(2, tutorAcademico.getNombre());
@@ -35,6 +35,7 @@ public class TutorAcademicoDAO {
             statement.setString(4, tutorAcademico.getApellidoMaterno());
             statement.setString(5, tutorAcademico.getContraseña());
             statement.setString(6, tutorAcademico.getCorreoElectronicoInstitucional());
+            statement.setInt(7, 1);
             int resultInsert = statement.executeUpdate();
             if (resultInsert > 0) {
                 result = true;

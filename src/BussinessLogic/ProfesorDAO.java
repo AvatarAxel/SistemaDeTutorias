@@ -35,17 +35,35 @@ public class ProfesorDAO implements IProfesorDAO {
         connection.close();
         return result;
     }
+  public boolean validateExistCorreoProfesor(String correo) throws SQLException {
+        boolean result = false;
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
 
+        if (connection != null) {
+            String query = ("SELECT COUNT(*) FROM profesores p WHERE p.correoElectronicoInstitucional= ?");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, correo);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            int resultQuery = resultSet.getInt(1);
+            if (resultQuery > 0) {
+                result = true;
+            }
+        }
+        connection.close();
+        return result;
+    }
     public boolean setProfesorRegister(Profesor profesor) throws SQLException {
         boolean result = false;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
 
         if (connection != null) {
-            String query = ("INSERT INTO `sistema_tutorias`.`profesores` \n" +
-            "(`numeroDePersonal`, `nombre`, `apellidoPaterno`, `apellidoMaterno`, `correoElectronicoInstitucional`,"
-            + " `esRegistrado`, `esUsuario`) "
-            + " VALUES (?, ?, ?, ?, ?, ?,?);");
+            String query = ("INSERT INTO `sistema_tutorias`.`profesores` \n"
+                    + "(`numeroDePersonal`, `nombre`, `apellidoPaterno`, `apellidoMaterno`, `correoElectronicoInstitucional`,"
+                    + " `esRegistrado`, `esUsuario`) "
+                    + " VALUES (?, ?, ?, ?, ?, ?,?);");
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, profesor.getNumeroDePersonal());
             statement.setString(2, profesor.getNombre());
@@ -127,25 +145,47 @@ public class ProfesorDAO implements IProfesorDAO {
         return result;
     }
 
-    @Override
-    public ArrayList<ExperienciaEducativa> consultProfesoresNames() throws SQLException {
+    public ArrayList<ExperienciaEducativa> consultProfesoresNames(String clave, int idPeriodo) throws SQLException {
         ArrayList<ExperienciaEducativa> profesoresNames = new ArrayList<ExperienciaEducativa>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = "select CONCAT(p.nombre,' ', p.apellidoPaterno,' ', p.apellidoMaterno) as profesorname, ee.nrc, ee.nombre from profesores p inner join experiencias_educativas ee on \n"
-                + "p.numeroDePersonal=ee.numeroDePersonal";
+        String query = "SELECT p.nombre, p.apellidoPaterno, p.apellidoMaterno, ee.nrc, ee.nombre as experiencia, epp.idexperiencia_periodo_profesor \n"
+                + "from experiencias_periodos_profesores epp\n"
+                + "INNER JOIN profesores p on  p.numeroDePersonal=epp.numeroDePersonal\n"
+                + "inner join experiencias_educativas ee on  epp.nrc=ee.nrc\n"
+                + "WHERE epp.clave=? AND epp.idPeriodoEscolar=?;";
         PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, clave);
+        statement.setInt(2, idPeriodo);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            String profesorName;
             String nrc;
-            String nombre;
+            String experiencia;
+            String profesorName;
+            String apellidoMaterno;
+            String apellidoPaterno;
+            int idexperienciaprofesor = 0;
             do {
-                profesorName = resultSet.getString("profesorname");
+
                 nrc = resultSet.getString("nrc");
-                nombre = resultSet.getString("nombre");
-                ExperienciaEducativa experienciaProfesor = new ExperienciaEducativa(nrc, profesorName, nombre);
-                profesoresNames.add(experienciaProfesor);
+                experiencia = resultSet.getString("experiencia");
+                profesorName = resultSet.getString("nombre");
+                apellidoMaterno = resultSet.getString("apellidoMaterno");
+                apellidoPaterno = resultSet.getString("apellidoPaterno");
+                idexperienciaprofesor = resultSet.getInt("idexperiencia_periodo_profesor");
+
+                Profesor profesor = new Profesor();
+                profesor.setNombre(profesorName);
+                profesor.setApellidoPaterno(apellidoPaterno);
+                profesor.setApellidoMaterno(apellidoMaterno);
+                ExperienciaEducativa experienciaEducativa = new ExperienciaEducativa();
+                experienciaEducativa.setProfesorNombre(profesorName + " " +apellidoPaterno + " " + apellidoPaterno);
+                experienciaEducativa.setNombre(experiencia);
+                experienciaEducativa.setNrc(nrc);
+                experienciaEducativa.setIdexperiencia_periodo_profesor(idexperienciaprofesor);
+                experienciaEducativa.setProfesor(profesor);
+                //  ExperienciaEducativa experienciaProfesor = new ExperienciaEducativa(nrc, profesorName, nombre);
+                profesoresNames.add(experienciaEducativa);
 
             } while (resultSet.next());
         }
@@ -195,15 +235,14 @@ public class ProfesorDAO implements IProfesorDAO {
         return result;
     }
 
-    public boolean deleteProfesor(int numeroDePersonal, int esUsuario) throws SQLException {
+    public boolean deleteProfesor(int numeroDePersonal) throws SQLException {
         boolean result = false;
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
         if (connection != null) {
-            String query = ("UPDATE `sistema_tutorias`.`profesores` SET `esRegistrado` = 0, `esUsuario` = ? WHERE (`numeroDePersonal` = ?);");
+            String query = ("UPDATE `sistema_tutorias`.`profesores` SET `esRegistrado` = 0 WHERE (`numeroDePersonal` = ?);");
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, esUsuario);
-            statement.setInt(2, numeroDePersonal);
+            statement.setInt(1, numeroDePersonal);
             int resultInsert = statement.executeUpdate();
             if (resultInsert > 0) {
                 result = true;
@@ -212,7 +251,7 @@ public class ProfesorDAO implements IProfesorDAO {
         connection.close();
         return result;
     }
-    
+
     public ArrayList<Profesor> getAllProfesores() throws SQLException {
         ArrayList<Profesor> listProfesores = new ArrayList<>();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();

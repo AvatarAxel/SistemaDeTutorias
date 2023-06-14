@@ -37,6 +37,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
+import singleton.User;
+
 
 /**
  * FXML Controller class
@@ -163,7 +165,7 @@ public class FXMLGestionarProblematicasController implements Initializable {
         ObservableList<ExperienciaEducativa> profesoresObservableList = FXCollections.observableArrayList();
 
         for (ExperienciaEducativa profesor : nombresProfesoresNrc) {
-            profesoresObservableList.add(new ExperienciaEducativa(profesor.getNrc(), profesor.getProfesorNombre(), profesor.getNombre()));
+            profesoresObservableList.add(profesor);
         }
 
         cmb_Profesor.setItems(profesoresObservableList);
@@ -175,12 +177,13 @@ public class FXMLGestionarProblematicasController implements Initializable {
 
     @FXML
     private void addProblematica(ActionEvent event) {
-
+        
         int validateData = validateData();
         if (validateData > 0) {
             ProblematicaAcademicaDAO problematicaDAO = new ProblematicaAcademicaDAO();
             ProblematicaAcademica problematica = new ProblematicaAcademica();
             problematica = convertDataToProblematica();
+            
             int result = 0;
             try {
                 result = problematicaDAO.insertProblematica(problematica);
@@ -192,6 +195,7 @@ public class FXMLGestionarProblematicasController implements Initializable {
 
             } catch (SQLException ex) {
                 alerts.showAlertErrorConexionDB();
+                ex.printStackTrace();
             }
             if (result > 0) {
                 alerts.showAlertSuccesfulRegister();
@@ -218,6 +222,8 @@ public class FXMLGestionarProblematicasController implements Initializable {
 
             } catch (SQLException ex) {
                 alerts.showAlertErrorConexionDB();
+                                ex.printStackTrace();
+
             }
             if (result > 0) {
                 alerts.showAlertSuccesfulUpdate();
@@ -249,10 +255,12 @@ public class FXMLGestionarProblematicasController implements Initializable {
                 updateDataTable();
 
             } catch (SQLException ex) {
+                ex.printStackTrace(); 
                 alerts.showAlertErrorConexionDB();
             }
             if (result > 0) {
                 alerts.showAlertSuccesfulDelete();
+                
             }
         } else if (action.get() == ButtonType.CANCEL) {
             alert.close();
@@ -347,11 +355,11 @@ public class FXMLGestionarProblematicasController implements Initializable {
         int reportados = 0;
         String titulo = "";
         String descripcion = "";
-        String nrc;
+        int idExperiencia;
 
         experiencia = experienciaEducativaSeleccionada;
         profesor = profesorSeleccionado.getProfesorNombre();
-        nrc = profesorSeleccionado.getNrc();
+        idExperiencia = profesorSeleccionado.getIdexperiencia_periodo_profesor();
         reportados = spn_numReportados.getValue();
         titulo = txt_Title.getText();
         descripcion = txt_descrip.getText();
@@ -364,7 +372,7 @@ public class FXMLGestionarProblematicasController implements Initializable {
         problematica.setNumeroDeEstudiantesAfectados(reportados);
         problematica.setTitulo(titulo);
         problematica.setDescripcion(descripcion);
-        problematica.setNrc(nrc);
+        problematica.setIdexperienciaProfesor(idExperiencia);
         problematica.setIdReporteTutoria(idReporteTutoria);
         problematica.setSolucion(new SolucionAProblematica(0, ""));
 
@@ -379,7 +387,7 @@ public class FXMLGestionarProblematicasController implements Initializable {
         btn_add.setVisible(false);
 
         String experiencia = currentProblematica.getExperienciaEducativaName();
-        autoSelectExperiencia(experiencia, currentProblematica.getNrc());
+        autoSelectExperiencia(experiencia, currentProblematica.getIdexperienciaProfesor());
 
         int reportados = currentProblematica.getNumeroDeEstudiantesAfectados();
         String titulo = currentProblematica.getTitulo();
@@ -391,7 +399,7 @@ public class FXMLGestionarProblematicasController implements Initializable {
 
     }
 
-    private void autoSelectExperiencia(String experienciaName, String nrc) {
+    private void autoSelectExperiencia(String experienciaName, int idExperiencia) {
         ObservableList<String> experieciasObservableList = FXCollections.observableArrayList();
         this.loadCmbExperiencias();
         experieciasObservableList = cmb_EE.getItems();
@@ -399,20 +407,20 @@ public class FXMLGestionarProblematicasController implements Initializable {
         for (String experiencia : experieciasObservableList) {
             if (experiencia.equals(experienciaName)) {
                 cmb_EE.setValue(experiencia);
-                autoSelectProfesores(nrc);
+                autoSelectProfesores(idExperiencia);
                 break;
             }
         }
 
     }
 
-    private void autoSelectProfesores(String nrc) {
+    private void autoSelectProfesores(int idExperiencia) {
         ObservableList<ExperienciaEducativa> experieciasObservableList = FXCollections.observableArrayList();
 
         experieciasObservableList = cmb_Profesor.getItems();
 
         for (ExperienciaEducativa experiencia : experieciasObservableList) {
-            if (experiencia.getNrc().equals(nrc)) {
+            if (experiencia.getIdexperiencia_periodo_profesor()== idExperiencia) {
                 cmb_Profesor.setValue(experiencia);
                 break;
             }
@@ -421,8 +429,8 @@ public class FXMLGestionarProblematicasController implements Initializable {
 
     private void initializeTable() {
 
-        clm_Experiencia.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("experienciaEducativaName"));
-        clm_Profesor.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("profesorName"));
+        clm_Experiencia.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("ExperienciaEducativaName"));
+        clm_Profesor.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("NombreCompletoProfesor"));
         clm_Hd.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("titulo"));
         clm_IdProblematica.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("idProblematica"));
         clm_numReportes.setCellValueFactory(new PropertyValueFactory<ProblematicaAcademica, String>("numeroDeEstudiantesAfectados"));
@@ -448,6 +456,7 @@ public class FXMLGestionarProblematicasController implements Initializable {
 
         } catch (SQLException ex) {
             alerts.showAlertErrorConexionDB();
+            ex.printStackTrace();
         }
 
         tblProblematicas.setItems(problematicaAcademicaObservableList);
@@ -467,11 +476,13 @@ public class FXMLGestionarProblematicasController implements Initializable {
         ProfesorDAO profesorDAO = new ProfesorDAO();
 
         try {
-            nombreExperiencias = experieniciasDAO.consultExperienciasName();
-            nombresProfesoresNrc = profesorDAO.consultProfesoresNames();
+            nombreExperiencias = experieniciasDAO.consultExperienciasName(User.getCurrentUser().getRol().getProgramaEducativo().getClave(),User.getCurrentUser().getPeriodoActual().getIdPeriodoEscolar());
+            nombresProfesoresNrc = profesorDAO.consultProfesoresNames(User.getCurrentUser().getRol().getProgramaEducativo().getClave(),User.getCurrentUser().getPeriodoActual().getIdPeriodoEscolar());
         } catch (SQLException ex) {
             alerts.showAlertErrorConexionDB();
+                        ex.printStackTrace();
 
+ 
         }
 
     }

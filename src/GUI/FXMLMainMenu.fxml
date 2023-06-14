@@ -11,15 +11,14 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="1213.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="1249.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FXMLMainMenuController">
    <children>
-      <MenuBar fx:id="mbMainMenu" prefHeight="29.0" prefWidth="1213.0">
+      <MenuBar fx:id="mbMainMenu" prefHeight="29.0" prefWidth="1249.0">
         <menus>
           <Menu fx:id="menuReportes" mnemonicParsing="false" text="Reportes">
             <items>
                   <Menu fx:id="menuReporteGeneral" mnemonicParsing="false" text="Reporte General">
                      <items>
-                    <MenuItem fx:id="miCreateGeneralReport" mnemonicParsing="false" onAction="#menuCreateGeneralReport" text="Crear" />
                         <MenuItem fx:id="miConsultGeneralReport" mnemonicParsing="false" onAction="#menuReadGeneralReport" text="Consultar" />
                      </items>
                   </Menu>
@@ -33,31 +32,22 @@
           </Menu>
           <Menu fx:id="menuSolucionProblematicas" mnemonicParsing="false" text="Solución a Problematicas">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#menuReadProblematic" text="Consultar Solución" />
-                  <MenuItem mnemonicParsing="false" onAction="#menuSolutionProblematic" text="Registrar Solución" />
-                  <MenuItem mnemonicParsing="false" onAction="#menuUpdateSolution" text="Editar Solución" />
+              <MenuItem fx:id="miConsultarSolucion" mnemonicParsing="false" onAction="#menuReadProblematic" text="Consultar Solución" />
+                  <MenuItem fx:id="miRegistrarSolucion" mnemonicParsing="false" onAction="#menuSolutionProblematic" text="Registrar Solución" />
+                  <MenuItem fx:id="miEditarSolucion" mnemonicParsing="false" onAction="#menuUpdateSolution" text="Editar Solución" />
             </items>
           </Menu>
             <Menu fx:id="menuOfertaAcademica" mnemonicParsing="false" text="Oferta Academica">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#menuUploadOffer" text="Registrar" />
-                  <MenuItem mnemonicParsing="false" onAction="#menuEditOffer" text="Editar" />
+                  <MenuItem fx:id="miRegistrarIferta" mnemonicParsing="false" onAction="#menuUploadOffer" text="Registrar" />
                   <MenuItem fx:id="miConsultOffer" mnemonicParsing="false" onAction="#menuReadOffer" text="Consultar" />
                   <Menu fx:id="menuExperiencias" mnemonicParsing="false" text="Experiencias">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#menuInsertExperiencia" text="Registrar" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuUpdateOffer" text="Editar" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuEditOffer" text="Editar" />
                     </items>
                   </Menu>
                </items>
-            </Menu>
-            <Menu fx:id="menuRegistros" mnemonicParsing="false" text="Registros">
-              <items>
-                  <MenuItem mnemonicParsing="false" onAction="#menuRegistrarEstudiantesAction" text="Registrar Estudiantes" />
-                  <MenuItem mnemonicParsing="false" onAction="#menuImportarEstudiantesAction" text="Importar Estudiantes" />
-                <MenuItem mnemonicParsing="false" onAction="#menuRegistrarTutorAction" text="Registrar Tutor Academico" />
-                  <MenuItem mnemonicParsing="false" onAction="#menuRegistrarProfesorAction" text="Registrar Profesor" />
-              </items>
             </Menu>
             <Menu fx:id="menuAsignaciones" mnemonicParsing="false" text="Asignaciones">
               <items>
@@ -67,7 +57,6 @@
             </Menu>
             <Menu fx:id="menuProblematicas" mnemonicParsing="false" text="Gestión Problematicas">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#menuGestionarProblematicas" text="Gestión de Problematicas" />
                   <MenuItem mnemonicParsing="false" onAction="#menuConsultarProblematicas" text="Consultar Problematicas" />
                </items>
             </Menu>
@@ -75,14 +64,8 @@
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#menuRegistrarFechas" text="Registrar Fechas" />
                   <MenuItem mnemonicParsing="false" onAction="#menuUpdateFechas" text="Editar Fechas" />
-                  <MenuItem mnemonicParsing="false" onAction="#menuConsultarProbelmaticas" text="Consultar Problemáticas" />
                </items>
             </Menu>
-          <Menu fx:id="menuHelp" mnemonicParsing="false" text="Ayuda">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
             <Menu fx:id="menuProgramaEducativo" mnemonicParsing="false" text="Programa Educativo">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#menuGestionProgramasEducativos" text="Gestion  Programas" />
@@ -90,8 +73,17 @@
             </Menu>
             <Menu fx:id="menuEstudiantes" mnemonicParsing="false" text="Estudiantes">
               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#menuImportarEstudiantesAction" text="Importar Estudiantes" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuRegistrarEstudiantesAction" text="Registrar Estudiantes" />
                 <MenuItem mnemonicParsing="false" onAction="#menuItemGestionarEstudiantesOnAction" text="Gestionar Estudiantes" />
               </items>
+            </Menu>
+            <Menu fx:id="menuPersonal" mnemonicParsing="false" text="Personal">
+               <items>
+                  <MenuItem fx:id="miGestionarPersonal" mnemonicParsing="false" onAction="#menuItemGestionarPersonalOnAction" text="Gestionar Personal" />
+                  <MenuItem fx:id="miRegistrarProfesor" mnemonicParsing="false" onAction="#menuRegistrarProfesorAction" text="Registrar Profesor" />
+                <MenuItem fx:id="miRegistrarTutor" mnemonicParsing="false" onAction="#menuRegistrarTutorAction" text="Registrar Tutor Academico" />
+               </items>
             </Menu>
         </menus>
       </MenuBar>

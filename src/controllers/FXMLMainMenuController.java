@@ -46,8 +46,6 @@ public class FXMLMainMenuController implements Initializable {
     @FXML
     private MenuBar mbMainMenu;
     @FXML
-    private MenuItem miCreateGeneralReport;  
-    @FXML
     private ComboBox<Rol> cbRol;
     @FXML
     private ComboBox<ProgramaEducativo> cbProgramaEducativo;
@@ -58,21 +56,17 @@ public class FXMLMainMenuController implements Initializable {
     @FXML
     private MenuItem miCreateTutorialReport;
     @FXML
-    private MenuItem miConsultTutorialReport;      
+    private MenuItem miConsultTutorialReport;
     @FXML
     private Menu menuSolucionProblematicas;
     @FXML
     private Menu menuOfertaAcademica;
-    @FXML
-    private Menu menuRegistros;
     @FXML
     private Menu menuAsignaciones;
     @FXML
     private Menu menuProblematicas;
     @FXML
     private Menu menuFechas;
-    @FXML
-    private Menu menuHelp;
     @FXML
     private Menu menuReportes;
     @FXML
@@ -85,7 +79,22 @@ public class FXMLMainMenuController implements Initializable {
     private MenuItem miConsultOffer;
     @FXML
     private Menu menuProgramaEducativo;
-
+    @FXML
+    private Menu menuPersonal;
+    @FXML
+    private MenuItem miGestionarPersonal;
+    @FXML
+    private MenuItem miRegistrarProfesor;
+    @FXML
+    private MenuItem miRegistrarTutor;
+    @FXML
+    private MenuItem miRegistrarIferta;
+    @FXML
+    private MenuItem miConsultarSolucion;
+    @FXML
+    private MenuItem miRegistrarSolucion;
+    @FXML
+    private MenuItem miEditarSolucion;
 
     /**
      * Initializes the controller class.
@@ -100,31 +109,31 @@ public class FXMLMainMenuController implements Initializable {
 
     private void loadTutorAcademicoMenu() {
         if (cbRol.getSelectionModel().getSelectedIndex() > -1) {
-            if(cbRol.getSelectionModel().getSelectedItem().getRolName().equals("Tutor")){
+            if (cbRol.getSelectionModel().getSelectedItem().getRolName().equals("Tutor")) {
                 try {
-                   TutoriaAcademicaDAO tutoriaAcademicaDAO = new TutoriaAcademicaDAO();
-                   tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica();
-                   if (tutoriaAcademica != null) {
-                       ReporteDeTutoriaAcademicaDAO reporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
-                       reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(), User.getCurrentUser().getNumeroDePersonal(), User.getCurrentUser().getRol().getProgramaEducativo().getClave());
-                       if (reporteTutoriaAcademica != null) {
-                           miCreateTutorialReport.setText("Editar");
-                           miCreateTutorialReport.setDisable(false);
-                       } else {
-                           miCreateTutorialReport.setText("Crear");
-                           miCreateTutorialReport.setDisable(false);
-                       }
-                   } else {
-                       miCreateTutorialReport.setText("Sin Actividades Pendientes");
-                       miCreateTutorialReport.setDisable(true);
-                       
-                   }
-               } catch (SQLException sqle) {
-                   sqle.printStackTrace();
-                   AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
-               }           
+                    TutoriaAcademicaDAO tutoriaAcademicaDAO = new TutoriaAcademicaDAO();
+                    tutoriaAcademica = tutoriaAcademicaDAO.getCurrentlyTutoriaAcademica();
+                    if (tutoriaAcademica != null) {
+                        ReporteDeTutoriaAcademicaDAO reporteDeTutoriaAcademicaDao = new ReporteDeTutoriaAcademicaDAO();
+                        reporteTutoriaAcademica = reporteDeTutoriaAcademicaDao.getCurrentlyReporteDeTutorias(tutoriaAcademica.getIdTutoriaAcademica(), User.getCurrentUser().getNumeroDePersonal(), User.getCurrentUser().getRol().getProgramaEducativo().getClave());
+                        if (reporteTutoriaAcademica != null) {
+                            miCreateTutorialReport.setText("Editar");
+                            miCreateTutorialReport.setDisable(false);
+                        } else {
+                            miCreateTutorialReport.setText("Crear");
+                            miCreateTutorialReport.setDisable(false);
+                        }
+                    } else {
+                        miCreateTutorialReport.setText("Sin Actividades Pendientes");
+                        miCreateTutorialReport.setDisable(true);
+
+                    }
+                } catch (SQLException sqle) {
+                    sqle.printStackTrace();
+                    AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo más tarde", Alert.AlertType.ERROR);
+                }
             }
-        }                
+        }
     }
 
     private void loadComboBoxes() {
@@ -219,117 +228,133 @@ public class FXMLMainMenuController implements Initializable {
     private void grantView() {
         switch (User.getCurrentUser().getRol().getIdRol()) {
             case 1: //Jefe de Carrera
-                menuAsignaciones.setVisible(false);
-                menuFechas.setVisible(false);
-                menuHelp.setVisible(false);
-                menuOfertaAcademica.setVisible(false);
-                menuProblematicas.setVisible(false);
-                menuRegistros.setVisible(false);
-                menuReportes.setVisible(true);
-                menuReporteGeneral.setVisible(true);
-                
-                //MENU REPORTE TUTORIA
-                menuReporteTutorial.setVisible(true);
-                //CU03
-                miConsultTutorialReport.setVisible(true);
-                //CU02 Y CU04
+                menuReporteGeneral.setVisible(true);//True
+                menuReporteTutorial.setVisible(true);//True
                 miCreateTutorialReport.setVisible(false);
-                
-                menuSolucionProblematicas.setVisible(true);
-                menuExperiencias.setVisible(true);
+                miConsultTutorialReport.setVisible(true);//True
+                menuSolucionProblematicas.setVisible(true);//True
+                menuOfertaAcademica.setVisible(false);
+                menuAsignaciones.setVisible(false);
+                menuProblematicas.setVisible(false);
+                menuFechas.setVisible(false);
+                menuReportes.setVisible(true);//True
+                menuExperiencias.setVisible(false);
                 menuEstudiantes.setVisible(false);
+                miConsultGeneralReport.setVisible(true);
+                miConsultOffer.setVisible(false);
                 menuProgramaEducativo.setVisible(false);
-                
-                //menuReadProblematic.setVisible(true);
+                menuPersonal.setVisible(false);
+                miGestionarPersonal.setVisible(false);
+                miRegistrarProfesor.setVisible(false);
+                miRegistrarTutor.setVisible(false);
+                miRegistrarIferta.setVisible(false);
+                miConsultarSolucion.setVisible(true);//True
+                miRegistrarSolucion.setVisible(true);//True
+                miEditarSolucion.setVisible(true);//True
                 break;
             case 2: //Coordinador de Tutoria
-                menuAsignaciones.setVisible(true);
-                menuFechas.setVisible(true);
-                menuHelp.setVisible(true);
-                menuOfertaAcademica.setVisible(true);
-                menuProblematicas.setVisible(true);
-                menuRegistros.setVisible(true);
-                menuReportes.setVisible(true);
-                menuReporteGeneral.setVisible(true);
-                
-                //MENU REPORTE TUTORIA
-                menuReporteTutorial.setVisible(true);
-                //CU03
-                miConsultTutorialReport.setVisible(true);
-                //CU02 Y CU04
+                menuReporteGeneral.setVisible(true);//True
+                menuReporteTutorial.setVisible(true);//True
                 miCreateTutorialReport.setVisible(false);
-                
-                menuSolucionProblematicas.setVisible(true);
-                menuExperiencias.setVisible(true);
-                menuEstudiantes.setVisible(true);
+                miConsultTutorialReport.setVisible(true);//True
+                menuSolucionProblematicas.setVisible(true);//True
+                menuOfertaAcademica.setVisible(true);//True
+                menuAsignaciones.setVisible(true);//True
+                menuProblematicas.setVisible(true);//True
+                menuFechas.setVisible(true);//True
+                menuReportes.setVisible(true);//True
+                menuExperiencias.setVisible(true);//True
+                menuEstudiantes.setVisible(true);//True
+                miConsultGeneralReport.setVisible(true);//True
+                miConsultOffer.setVisible(true);//True
                 menuProgramaEducativo.setVisible(false);
-                
+                menuPersonal.setVisible(true);//True
+                miGestionarPersonal.setVisible(false);
+                miRegistrarProfesor.setVisible(false);
+                miRegistrarTutor.setVisible(true);//True
+                miRegistrarIferta.setVisible(true);//True
+                miConsultarSolucion.setVisible(true);
+                miRegistrarSolucion.setVisible(false);
+                miEditarSolucion.setVisible(false);
                 break;
             case 3: // Tutor Academico
-                menuAsignaciones.setVisible(false);
-                menuFechas.setVisible(false);
-                menuHelp.setVisible(true);
-                menuOfertaAcademica.setVisible(true);
-                menuProblematicas.setVisible(true);
-                menuRegistros.setVisible(false);
-                menuReportes.setVisible(true);
                 menuReporteGeneral.setVisible(false);
-                
-                //MENU REPORTE TUTORIA
-                menuReporteTutorial.setVisible(true);
-                //CU03
-                miConsultTutorialReport.setVisible(false);
-                //CU02 Y CU04
-                miCreateTutorialReport.setVisible(true);
-                
+                menuReporteTutorial.setVisible(true);//True
+                miCreateTutorialReport.setVisible(true);//True
+                miConsultTutorialReport.setVisible(true);//True
                 menuSolucionProblematicas.setVisible(false);
-                menuExperiencias.setVisible(true);
+                menuOfertaAcademica.setVisible(false);
+                menuAsignaciones.setVisible(false);
+                menuProblematicas.setVisible(true);//True
+                menuFechas.setVisible(false);
+                menuReportes.setVisible(true);//True
+                menuExperiencias.setVisible(false);
+                menuEstudiantes.setVisible(false);
+                miConsultGeneralReport.setVisible(false);
+                miConsultOffer.setVisible(false);
                 menuProgramaEducativo.setVisible(false);
-                
+                menuPersonal.setVisible(false);
+                miGestionarPersonal.setVisible(false);
+                miRegistrarProfesor.setVisible(false);
+                miRegistrarTutor.setVisible(false);
+                miRegistrarIferta.setVisible(false);
+                miConsultarSolucion.setVisible(false);
+                miRegistrarSolucion.setVisible(false);
+                miEditarSolucion.setVisible(false);
                 break;
             case 4: // Administrador
-                menuAsignaciones.setVisible(true);
-                menuFechas.setVisible(true);
-                menuHelp.setVisible(true);
-                menuOfertaAcademica.setVisible(true);
-                menuProblematicas.setVisible(true);
-                menuRegistros.setVisible(true);
-                menuReportes.setVisible(true);
-                menuReporteGeneral.setVisible(true);
-                
-                //MENU REPORTE TUTORIA
-                menuReporteTutorial.setVisible(true);
-                //CU03
-                miConsultTutorialReport.setVisible(true);
-                //CU02 Y CU04
-                miCreateTutorialReport.setVisible(true);
-                
-                menuSolucionProblematicas.setVisible(true);
-                menuExperiencias.setVisible(true);
-                menuEstudiantes.setVisible(true);
-                menuProgramaEducativo.setVisible(true);                
-                break;
-            default:
-                menuAsignaciones.setVisible(false);
-                menuFechas.setVisible(false);
-                menuHelp.setVisible(false);
-                menuOfertaAcademica.setVisible(false);
-                menuProblematicas.setVisible(false);
-                menuRegistros.setVisible(false);
-                menuReportes.setVisible(false);
                 menuReporteGeneral.setVisible(false);
                 menuReporteTutorial.setVisible(false);
+                miCreateTutorialReport.setVisible(false);
+                miConsultTutorialReport.setVisible(false);
                 menuSolucionProblematicas.setVisible(false);
+                menuOfertaAcademica.setVisible(false);
+                menuAsignaciones.setVisible(false);
+                menuProblematicas.setVisible(false);
+                menuFechas.setVisible(false);
+                menuReportes.setVisible(false);
+                menuExperiencias.setVisible(true);//True
+                menuEstudiantes.setVisible(true);//True
+                miConsultGeneralReport.setVisible(false);
+                miConsultOffer.setVisible(false);//True
+                menuProgramaEducativo.setVisible(true);//True
+                menuPersonal.setVisible(true);//True
+                miGestionarPersonal.setVisible(true);//True
+                miRegistrarProfesor.setVisible(true);//True
+                miRegistrarTutor.setVisible(true);//True
+                miRegistrarIferta.setVisible(true);//True
+                miConsultarSolucion.setVisible(false);
+                miRegistrarSolucion.setVisible(false);
+                miEditarSolucion.setVisible(false);
+                break;
+            default:
+                menuReporteGeneral.setVisible(false);
+                menuReporteTutorial.setVisible(false);
+                miCreateTutorialReport.setVisible(false);
+                miConsultTutorialReport.setVisible(false);
+                menuSolucionProblematicas.setVisible(false);
+                menuOfertaAcademica.setVisible(false);
+                menuAsignaciones.setVisible(false);
+                menuProblematicas.setVisible(false);
+                menuFechas.setVisible(false);
+                menuReportes.setVisible(false);
+                menuExperiencias.setVisible(false);
                 menuEstudiantes.setVisible(false);
+                miConsultGeneralReport.setVisible(false);
+                miConsultOffer.setVisible(false);
                 menuProgramaEducativo.setVisible(false);
+                menuPersonal.setVisible(false);
+                miGestionarPersonal.setVisible(false);
+                miRegistrarProfesor.setVisible(false);
+                miRegistrarTutor.setVisible(false);
+                miRegistrarIferta.setVisible(false);
+                miConsultarSolucion.setVisible(false);
+                miRegistrarSolucion.setVisible(false);
+                miEditarSolucion.setVisible(false);
                 break;
         }
     }
 
-    @FXML
-    private void menuCreateGeneralReport(ActionEvent event) {
-
-    }
 
     @FXML
     private void menuReadGeneralReport(ActionEvent event) {
@@ -345,7 +370,7 @@ public class FXMLMainMenuController implements Initializable {
         boolean editableType;
         if (miCreateTutorialReport.getText() == "Editar") {
             editableType = true;
-        }else {
+        } else {
             editableType = false;
         }
         try {
@@ -422,9 +447,9 @@ public class FXMLMainMenuController implements Initializable {
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLEditarOfertaAcademica.fxml",
                 "Editar Oferta Académica"
-        );        
-    }    
-    
+        );
+    }
+
     @FXML
     private void menuRegistrarEstudiantesAction(ActionEvent event) {
         WindowManager.NavigateToWindow(
@@ -443,7 +468,6 @@ public class FXMLMainMenuController implements Initializable {
         );
     }
 
-    @FXML
     private void menuUpdateOffer(ActionEvent event) {
         WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
@@ -468,11 +492,6 @@ public class FXMLMainMenuController implements Initializable {
                 "/GUI/FXMLGestionarAsignacionesTutor.fxml",
                 "Gestionar Asignaciones"
         );
-    }
-
-    @FXML
-    private void menuGestionarProblematicas(ActionEvent event) {
-
     }
 
     @FXML
@@ -521,21 +540,12 @@ public class FXMLMainMenuController implements Initializable {
     }
 
     @FXML
-    private void menuConsultarProbelmaticas(ActionEvent event) {
-        WindowManager.NavigateToWindow(
-                mbMainMenu.getScene().getWindow(),
-                "/GUI/FXMLConsultarProblematicasAcademicas.fxml",
-                "Consultar Problemáticas"
-        );
-    }
-
-    @FXML
     private void menuRegistrarProfesorAction(ActionEvent event) {
         WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLRegistrarProfesor.fxml",
                 "Registrar Profesor"
-        );        
+        );
 
     }
 
@@ -557,13 +567,22 @@ public class FXMLMainMenuController implements Initializable {
                 "Gestion de Programas Educativos"
         );
     }
-    
+
     @FXML
     private void asignarExperienciaEducativaProfesor(ActionEvent event) {
         WindowManager.NavigateToWindow(
                 mbMainMenu.getScene().getWindow(),
                 "/GUI/FXMLAsignarExperienciaEducativaAProfesor.fxml",
                 "Asignar Experiencia Educativa A Profesor"
+        );
+    }
+
+    @FXML
+    private void menuItemGestionarPersonalOnAction(ActionEvent event) {
+        WindowManager.NavigateToWindow(
+                mbMainMenu.getScene().getWindow(),
+                "/GUI/FXMLGestionarPersonal.fxml",
+                "Gestionar Personal"
         );
     }
 

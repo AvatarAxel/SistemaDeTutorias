@@ -36,6 +36,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import security.SHA_512;
+import singleton.User;
 import util.AlertManager;
 import util.EmailUtil;
 import util.WindowManager;
@@ -120,8 +121,8 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
     @FXML
     private void buttonRegisterAction(ActionEvent event) throws InterruptedException {
         Optional<ButtonType> result = AlertManager.showAlert("Confirmación", "¿Seguro de realizar dicha acción?", Alert.AlertType.CONFIRMATION);
-        if (result.get() == ButtonType.OK) {            
-            registerTutor();            
+        if (result.get() == ButtonType.OK) {
+            registerTutor();
         }
     }
 
@@ -140,14 +141,14 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
         }
     }
 
-    private void registerTutor() {  
+    private void registerTutor() {
         Profesor profesor = tableProfesor.getSelectionModel().getSelectedItem();
         try {
             TutorAcademicoDAO tutorAcademicoDao = new TutorAcademicoDAO();
             UserDAO userDao = new UserDAO();
             ProfesorDAO profesorDao = new ProfesorDAO();
-            TutorAcademico tutorAcademico = new TutorAcademico();            
-            String randomPassword = new Random().passwordGenerator();            
+            TutorAcademico tutorAcademico = new TutorAcademico();
+            String randomPassword = new Random().passwordGenerator();
             tutorAcademico.setNombre(profesor.getNombre());
             tutorAcademico.setApellidoPaterno(profesor.getApellidoPaterno());
             tutorAcademico.setApellidoMaterno(profesor.getApellidoMaterno());
@@ -155,31 +156,30 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
             tutorAcademico.setNumeroDePersonal(profesor.getNumeroDePersonal());
             tutorAcademico.setContraseña(new SHA_512().getSHA512(randomPassword));
             boolean resultRegister = tutorAcademicoDao.setTutorRegister(tutorAcademico);
-            boolean resultRolAssignment = userDao.setRolUserTutor(tutorAcademico.getNumeroDePersonal(), "14203");
+            boolean resultRolAssignment = userDao.setRolUserTutor(tutorAcademico.getNumeroDePersonal(), User.getCurrentUser().getRol().getProgramaEducativo().getClave());
             boolean markRegistration = profesorDao.setTutorUser(tutorAcademico.getNumeroDePersonal());
             if (resultRegister && resultRolAssignment && markRegistration) {
                 AlertManager.showTemporalAlert(" ", "Registro realizado con éxito", 2);
-                notifyTheNewUser(tutorAcademico.getCorreoElectronicoInstitucional(), randomPassword);                                                                
+                notifyTheNewUser(tutorAcademico.getCorreoElectronicoInstitucional(), randomPassword);
             }
         } catch (SQLException e) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, porfavor intentelo mas tarde", Alert.AlertType.ERROR);
-            e.printStackTrace();
         }
         buttonRegister.setDisable(true);
         tableProfesor.getSelectionModel().clearSelection();
         listProfesores.remove(profesor);
         tableProfesor.setItems(listProfesores);
-        textFieldSearchProfesores.clear();        
+        textFieldSearchProfesores.clear();
     }
-    
-    private void notifyTheNewUser(String tutorEmail, String randomPassword) {        
+
+    private void notifyTheNewUser(String tutorEmail, String randomPassword) {
         ExecutorService executorService;
         executorService = Executors.newFixedThreadPool(1);
         Task sendEmailTask = new Task() {
             @Override
             protected Void call() throws Exception {
                 EmailUtil email = new EmailUtil();
-                email.sendEmailNewUser(tutorEmail, randomPassword);
+                email.sendEmailNewUserOutlook(tutorEmail, randomPassword);
                 return null;
             }
         };
@@ -215,8 +215,7 @@ public class FXMLRegistrarTutorAcademicoController implements Initializable {
 
     @FXML
     private void selectProfesor(MouseEvent event) {
-        if(!tableProfesor.getSelectionModel().isEmpty() 
-                && tableProfesor.getSelectionModel().getSelectedItem() != null){            
+        if (!tableProfesor.getSelectionModel().isEmpty() && tableProfesor.getSelectionModel().getSelectedItem() != null) {
             buttonRegister.setDisable(false);
         }
     }
