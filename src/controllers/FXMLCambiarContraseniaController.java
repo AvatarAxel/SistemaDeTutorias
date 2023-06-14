@@ -151,13 +151,13 @@ public class FXMLCambiarContraseniaController implements Initializable {
     @FXML
     private void validateLengthCorreo(KeyEvent event) {
         textFieldCorreo.setTextFormatter(new TextFormatter<>(change -> {
-            if (change.getControlNewText().length() <= 25) {
+            if (change.getControlNewText().length() <= 45) {
                 return change;
             } else {
                 return null;
             }
         }));
-        if (textFieldCorreo.getText().length() > 25) {
+        if (textFieldCorreo.getText().length() > 45) {
             textFieldCorreo.setText("");
         }
     }
