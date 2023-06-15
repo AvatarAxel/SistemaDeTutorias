@@ -162,7 +162,7 @@ public class FXMLProgramasEducativosController implements Initializable {
             int result = programaEducativoDAO.validateRegistrarUsuariosProgramaEducativo();
             if(result==0){
                 btRegistrar.setDisable(true);   
-                AlertManager.showTemporalAlert("AVISO", "No se cuenta con usuarios Sufientes para poder registrar un nuevo Programa Educativo", 2);            
+                AlertManager.showTemporalAlert("AVISO", "No se cuenta con usuarios Suficientes para poder registrar un nuevo Programa Educativo", 2);            
             }               
         } catch (SQLException ex) {
             AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
@@ -324,7 +324,7 @@ public class FXMLProgramasEducativosController implements Initializable {
             controladorFormulario.loadWindow(programaEducativo);
             Scene primaryScene = new Scene(root);
             Stage floatingStage = new Stage();
-            floatingStage.setTitle("Asignar Coordinador para el "+programaEducativo);
+            floatingStage.setTitle("Asignar Coordinador para el Programa Educativo: "+programaEducativo);
             floatingStage.setOnCloseRequest(event -> {
                 event.consume();});
             floatingStage.setScene(primaryScene);
@@ -405,7 +405,7 @@ public class FXMLProgramasEducativosController implements Initializable {
             }                
         } catch (SQLException ex) {
             ex.printStackTrace();
-            AlertManager.showAlert("Error", "clicButtonEliminar No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
         }              
     }
 
@@ -550,7 +550,7 @@ public class FXMLProgramasEducativosController implements Initializable {
             }                
         } catch (SQLException ex) {
             ex.printStackTrace();
-            AlertManager.showAlert("Error", "clicButtonBorrar No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
+            AlertManager.showAlert("Error", "No hay conexión con la base de datos, intentelo mas tarde", Alert.AlertType.ERROR);
         }         
     }
     
