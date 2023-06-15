@@ -123,7 +123,7 @@ public class FXMLAsignarExperienciaEducativaAProfesorController implements Initi
 
     @FXML
     private void buttonActionAsignar(ActionEvent event) {
-        for (int i = 0; i < tableProfesor.getItems().size(); i++) {
+        for (int i = 0; i < tableExperienciasEducativas.getItems().size(); i++) {
             ExperienciaEducativa experienciaEducativa = tableExperienciasEducativas.getItems().get(i);
             if (experienciaEducativa.getEsSeleccionado().isSelected()) {
                 try {

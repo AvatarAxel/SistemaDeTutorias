@@ -269,8 +269,8 @@ public class FXMLMainMenuController implements Initializable {
                 miConsultOffer.setVisible(true);//True
                 menuProgramaEducativo.setVisible(false);
                 menuPersonal.setVisible(true);//True
-                miGestionarPersonal.setVisible(false);
-                miRegistrarProfesor.setVisible(false);
+                miGestionarPersonal.setVisible(true);//True
+                miRegistrarProfesor.setVisible(true);//True
                 miRegistrarTutor.setVisible(true);//True
                 miRegistrarIferta.setVisible(true);//True
                 miConsultarSolucion.setVisible(true);
